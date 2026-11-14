@@ -415,5 +415,1097 @@
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
   ]
+ },
+ {
+  "id": "arch-prompt-012",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "システムプロンプトの返金規程が「状況に応じて適切に判断すること」とだけ書かれており、対応がばらつく。改善策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "返金できる条件、できない条件、上限、例外の扱いを、具体的に書く",
+    "why": "判断の基準を、明示する。"
+   },
+   {
+    "id": "b",
+    "text": "「より適切に判断すること」と、書き換える",
+    "why": "基準は、明確にならない。"
+   },
+   {
+    "id": "c",
+    "text": "規程を、削除する",
+    "why": "基準が、なくなる。"
+   },
+   {
+    "id": "d",
+    "text": "モデルを、替える",
+    "why": "基準の曖昧さは、残る。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "曖昧な指示は、ばらついた判断を生みます。条件と例外を具体的に書き、境界の事例を例として添えます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/be-clear-and-direct",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ]
+ },
+ {
+  "id": "arch-prompt-013",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "「荷物が届かない」という問い合わせで、エージェントが注文の照会と、アカウントの確認の、どちらを先にすべきか迷う。few-shot の例の作り方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "曖昧な問い合わせの例に、どのツールを選び、なぜそう判断したかを添えて示す",
+    "why": "判断の理由が、例にない事例への一般化を助ける。"
+   },
+   {
+    "id": "b",
+    "text": "明らかに簡単な例だけを、示す",
+    "why": "曖昧な場面の判断が、伝わらない。"
+   },
+   {
+    "id": "c",
+    "text": "例を、1 つだけ示す",
+    "why": "その例に、引きずられる。"
+   },
+   {
+    "id": "d",
+    "text": "理由は付けず、正解のツール名だけを並べる",
+    "why": "判断の基準が、伝わらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "例には、判断が分かれる場面を選び、選択の理由を含めます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+  ]
+ },
+ {
+  "id": "arch-prompt-014",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "顧客への回答の構成(謝意、状況、対応、次の手順)を、毎回揃えたい。最も確実な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "構成を明示し、その構成に沿った回答の例を、複数示す",
+    "why": "形式の指定と例が、一貫性を高める。"
+   },
+   {
+    "id": "b",
+    "text": "「分かりやすく書くこと」と指示する",
+    "why": "構成は、揃わない。"
+   },
+   {
+    "id": "c",
+    "text": "回答を、短くさせる",
+    "why": "構成は、揃わない。"
+   },
+   {
+    "id": "d",
+    "text": "毎回、違う構成を許す",
+    "why": "一貫性が、なくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "出力の形式を揃えるには、形式の明示と例示が有効です。後段で機械的に処理する場合は、構造化出力を使います。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+  ]
+ },
+ {
+  "id": "arch-prompt-015",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "複雑な関数を実装させる。品質を上げる反復の進め方として、効果的なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "期待する振る舞い、境界条件、性能の要件を表すテストを先に用意し、失敗したテストの結果を渡して直させる",
+    "why": "テストが、明確な目標と、具体的なフィードバックになる。"
+   },
+   {
+    "id": "b",
+    "text": "「バグがないように」と、繰り返し依頼する",
+    "why": "具体的な手がかりが、ない。"
+   },
+   {
+    "id": "c",
+    "text": "テストは書かず、目視で確認する",
+    "why": "見落としが、出る。"
+   },
+   {
+    "id": "d",
+    "text": "一度で完璧なコードを、求める",
+    "why": "反復の機会を、活かせない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "テスト駆動の反復では、Claude が自分で結果を確かめながら直せます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/claude-code-best-practices",
+   "https://code.claude.com/docs/en/common-workflows"
+  ]
+ },
+ {
+  "id": "arch-prompt-016",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "見つかった 3 つの問題が、互いに影響し合っている(1 つを直すと、他の直し方が変わる)。伝え方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "3 つを、1 つのメッセージでまとめて伝える",
+    "why": "関係のある問題は、全体を見て直す必要がある。"
+   },
+   {
+    "id": "b",
+    "text": "1 つずつ、別のセッションで伝える",
+    "why": "互いの影響を、考慮できない。"
+   },
+   {
+    "id": "c",
+    "text": "最初の 1 つだけ伝え、残りは伏せる",
+    "why": "後で、直し直しになる。"
+   },
+   {
+    "id": "d",
+    "text": "問題を伝えず、書き直させる",
+    "why": "何を直すべきかが、伝わらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "関係し合う問題は、まとめて伝えます。独立した問題は、1 つずつ順に直す方が確実です。",
+  "refs": [
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-prompt-017",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "新しい API のエンドポイントを、既存のものと同じ流儀で実装させたい。最も効果的な指示はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "手本になる既存のファイルを示し、その構成に倣うよう依頼する",
+    "why": "実物の例が、流儀を最も正確に伝える。"
+   },
+   {
+    "id": "b",
+    "text": "「きれいに書いて」と依頼する",
+    "why": "流儀が、伝わらない。"
+   },
+   {
+    "id": "c",
+    "text": "流儀を、一般論で長く説明する",
+    "why": "細部が、伝わりにくい。"
+   },
+   {
+    "id": "d",
+    "text": "何も示さず、任せる",
+    "why": "流儀が、揃わない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "コードベースにある良い例は、文章の説明より確実な手本です。",
+  "refs": [
+   "https://www.anthropic.com/engineering/claude-code-best-practices",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+  ]
+ },
+ {
+  "id": "arch-prompt-018",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "実装を依頼するとき、完了の判断を Claude 自身ができるようにしたい。指示に含めるべきものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "確認の方法(実行するテスト、型検査、期待する出力)",
+    "why": "確かめる手段があれば、自分で検証して直せる。"
+   },
+   {
+    "id": "b",
+    "text": "「完璧にすること」という要求",
+    "why": "確かめる手段に、ならない。"
+   },
+   {
+    "id": "c",
+    "text": "締め切りの時刻",
+    "why": "完了の基準に、ならない。"
+   },
+   {
+    "id": "d",
+    "text": "コードの行数の目安",
+    "why": "完了の基準に、ならない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "検証の手段を与えることは、成果の質を上げる最も効果的な方法の 1 つです。",
+  "refs": [
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-prompt-019",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "最終レポートには、財務の数値、報道の内容、技術的な知見が含まれる。すべてを同じ箇条書きにすると読みにくい。統合への指示として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "内容の種類に合わせた形式(数値は表、報道は文章、技術的な知見は構造化した一覧)で書くよう指示する",
+    "why": "内容に合った形式が、読みやすさを上げる。"
+   },
+   {
+    "id": "b",
+    "text": "すべてを、表にする",
+    "why": "文章で説明すべき内容が、読みにくくなる。"
+   },
+   {
+    "id": "c",
+    "text": "すべてを、1 段落の文章にする",
+    "why": "数値の比較が難しくなる。"
+   },
+   {
+    "id": "d",
+    "text": "形式は、指定しない",
+    "why": "揃わない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "統合の出力では、内容の種類ごとに適した表現を使います。一律の形式に押し込めないようにします。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ]
+ },
+ {
+  "id": "arch-prompt-020",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "検索のサブエージェントが、信頼性の低い個人のブログを、公的な統計と同じ重みで扱う。指示の改善として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "どのような出典を優先し、どのような出典を避けるかの基準を、具体的に示す",
+    "why": "基準を明示すると、選別が安定する。"
+   },
+   {
+    "id": "b",
+    "text": "「良い出典を使うこと」と書く",
+    "why": "基準が曖昧である。"
+   },
+   {
+    "id": "c",
+    "text": "出典の数を、増やさせる",
+    "why": "質は上がらない。"
+   },
+   {
+    "id": "d",
+    "text": "検索を、1 回に制限する",
+    "why": "質は上がらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "出典の質は、基準を明示して管理します。一次情報、公的機関、査読のある文献などの優先順位を示します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
+   "https://www.anthropic.com/engineering/multi-agent-research-system"
+  ]
+ },
+ {
+  "id": "arch-prompt-021",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "文書分析のサブエージェントが扱う文書は、論文、プレスリリース、決算資料と、構成がばらばらである。抽出の質を揃える方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "構成の異なる文書の例を、それぞれ抽出の結果と合わせて示す",
+    "why": "多様な例が、形式の違いへの対応を教える。"
+   },
+   {
+    "id": "b",
+    "text": "論文の例だけを示す",
+    "why": "他の形式に対応できない。"
+   },
+   {
+    "id": "c",
+    "text": "例を示さず、「正確に抽出すること」と書く",
+    "why": "形式の違いへの対応が伝わらない。"
+   },
+   {
+    "id": "d",
+    "text": "文書の種類を、1 つに限定する",
+    "why": "用途を満たせない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "形式の多様な入力には、多様な例で対応します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+  ]
+ },
+ {
+  "id": "arch-prompt-022",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "サブエージェントの結果を、コーディネーターがプログラムで処理する。サブエージェントの出力について、適切な指定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "JSON スキーマを定め、構造化した出力で返させる",
+    "why": "機械的に処理できる。"
+   },
+   {
+    "id": "b",
+    "text": "自由な文章で返させ、正規表現で取り出す",
+    "why": "表現の揺れで壊れる。"
+   },
+   {
+    "id": "c",
+    "text": "形式は、毎回変えてよいとする",
+    "why": "処理できない。"
+   },
+   {
+    "id": "d",
+    "text": "出力を、画像で返させる",
+    "why": "処理できない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エージェントの間の受け渡しは、構造化します。必須の項目と、任意の項目を、スキーマで定めます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ },
+ {
+  "id": "arch-prompt-023",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "定型コード(新しいサービスのひな形)を生成させるが、チームの流儀と合わない。最も効果的な改善はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "チームの既存のサービスを、手本として示す",
+    "why": "実例が、流儀を正確に伝える。"
+   },
+   {
+    "id": "b",
+    "text": "「流儀に合わせて」と書く",
+    "why": "流儀が、伝わらない。"
+   },
+   {
+    "id": "c",
+    "text": "生成の回数を、増やす",
+    "why": "流儀は、揃わない。"
+   },
+   {
+    "id": "d",
+    "text": "生成の後で、すべて手で直す",
+    "why": "自動化の意味がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "生成の質は、手本の質に左右されます。良い例を、1 つか 2 つ示します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting",
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-prompt-024",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "モジュールの説明文書を生成させるが、構成が毎回違う。揃える方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "見出しの構成(概要、主な型、データの流れ、注意点)を指定し、例を示す",
+    "why": "構成の指定と例が、一貫性を高める。"
+   },
+   {
+    "id": "b",
+    "text": "構成は、指定しない",
+    "why": "揃わない。"
+   },
+   {
+    "id": "c",
+    "text": "文書を、短くさせる",
+    "why": "構成は、揃わない。"
+   },
+   {
+    "id": "d",
+    "text": "毎回、モデルを替える",
+    "why": "揃わない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "出力の構成は、明示して揃えます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ]
+ },
+ {
+  "id": "arch-prompt-025",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "どの種類の指摘が、開発者に却下されやすいかを分析したい。レビューの構造化出力に、加えるべき項目はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "その指摘が、どの種類の問題として検出されたかを表す分類",
+    "why": "分類ごとに、却下の割合を集計できる。"
+   },
+   {
+    "id": "b",
+    "text": "指摘の文字数",
+    "why": "分析に役立たない。"
+   },
+   {
+    "id": "c",
+    "text": "実行した日の天気",
+    "why": "関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "モデルの名前だけ",
+    "why": "種類ごとの分析はできない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "指摘に検出の分類を付けておくと、誤検知の多い分類を特定して、その基準を直せます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ },
+ {
+  "id": "arch-prompt-026",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "「未使用の変数」の指摘は誤検知が多く、開発者が他の指摘まで信用しなくなっている。当面の対応として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "その分類を一時的に止め、基準を直してから再開する",
+    "why": "信頼を保ちながら、問題の分類を改善する。"
+   },
+   {
+    "id": "b",
+    "text": "すべての指摘を止める",
+    "why": "有用な指摘まで失われる。"
+   },
+   {
+    "id": "c",
+    "text": "何もしない",
+    "why": "信頼がさらに下がる。"
+   },
+   {
+    "id": "d",
+    "text": "指摘の数を増やす",
+    "why": "誤検知も増える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "誤検知の多い分類は、正確な分類への信頼も損ないます。分類ごとに有効・無効を切り替えられるようにしておきます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ]
+ },
+ {
+  "id": "arch-prompt-027",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "チーム固有の、問題のない書き方(社内のラッパー関数の使い方)が、毎回、問題として指摘される。対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "問題のない書き方と、本当の問題の例を、対にして示す",
+    "why": "許容される形との区別を、例で教える。"
+   },
+   {
+    "id": "b",
+    "text": "「誤検知をしないこと」と書く",
+    "why": "何が誤検知かが伝わらない。"
+   },
+   {
+    "id": "c",
+    "text": "ラッパー関数を、使わないようにする",
+    "why": "コードの側を曲げることになる。"
+   },
+   {
+    "id": "d",
+    "text": "レビューをやめる",
+    "why": "問題を見つけられなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "許容される形と、問題のある形を並べて示すと、Claude は、例にない場面でも区別できるようになります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+  ]
+ },
+ {
+  "id": "arch-prompt-028",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "指摘を、開発者がすぐ行動できる形にしたい。指摘の出力に含める項目として、適切な組み合わせはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "場所(ファイルと行)、問題の内容、重大度、修正の案",
+    "why": "どこで、何が、どの程度問題で、どう直すかが分かる。"
+   },
+   {
+    "id": "b",
+    "text": "「問題があります」という文だけ",
+    "why": "行動できない。"
+   },
+   {
+    "id": "c",
+    "text": "問題の内容だけ",
+    "why": "場所と直し方が分からない。"
+   },
+   {
+    "id": "d",
+    "text": "重大度だけ",
+    "why": "何が問題か分からない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "指摘の形式は、例で示して揃えます。場所、問題、重大度、修正案を、決まった構造で出力させます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+  ]
+ },
+ {
+  "id": "arch-prompt-029",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "コメントに書かれた説明と、実際のコードの動作が食い違っている箇所を見つけさせたい。「コメントの正確さを確認すること」と指示すると、言い回しへの細かい指摘ばかりになる。改善策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「コメントが述べる動作と、コードの実際の動作が矛盾している場合だけ報告する」と、基準を具体的に書く",
+    "why": "報告の対象を、明確に限定する。"
+   },
+   {
+    "id": "b",
+    "text": "「もっと正確に確認すること」と書く",
+    "why": "基準は明確にならない。"
+   },
+   {
+    "id": "c",
+    "text": "コメントの確認をやめる",
+    "why": "食い違いが見つからなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "コメントを、すべて削除させる",
+    "why": "破壊的である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "一般的な指示は、広すぎる解釈を招きます。何を報告し、何を報告しないかを、具体的に書きます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/be-clear-and-direct",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ]
+ },
+ {
+  "id": "arch-prompt-030",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "書式の乱れは、リンターがすでに検査している。レビューのプロンプトに書くべきことはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "リンターが扱う書式の問題は報告の対象外とし、ロジックや安全性の問題に集中するよう書く",
+    "why": "重複する指摘を除き、価値のある指摘に絞る。"
+   },
+   {
+    "id": "b",
+    "text": "書式の問題も、すべて報告させる",
+    "why": "リンターと重複し、雑音になる。"
+   },
+   {
+    "id": "c",
+    "text": "リンターを止める",
+    "why": "機械的に確実な検査が失われる。"
+   },
+   {
+    "id": "d",
+    "text": "何も書かない",
+    "why": "重複が続く。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "機械的に判定できる検査は、専用のツールに任せます。Claude には、判断の必要な問題を任せます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-prompt-031",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "引用の書き方が、文書によって違う(本文中に埋め込む形式と、末尾に一覧にする形式)。抽出の精度を揃える方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "それぞれの形式の文書について、抽出の例を示す",
+    "why": "形式ごとの扱いを、例で教える。"
+   },
+   {
+    "id": "b",
+    "text": "片方の形式の例だけを示す",
+    "why": "もう一方に、対応できない。"
+   },
+   {
+    "id": "c",
+    "text": "「どんな形式でも抽出すること」と書く",
+    "why": "具体的な扱いが伝わらない。"
+   },
+   {
+    "id": "d",
+    "text": "片方の形式の文書を、受け付けない",
+    "why": "用途を満たせない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "構造の違う入力には、それぞれの例を用意します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+  ]
+ },
+ {
+  "id": "arch-prompt-032",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "日付が「2026/3/5」「令和8年3月5日」「Mar 5, 2026」と、さまざまな表記で抽出される。スキーマでは文字列型としている。揃える方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プロンプトに、正規化の規則(例: YYYY-MM-DD に統一する)を書き、スキーマの説明にも明記する",
+    "why": "型だけでは、表記は揃わない。"
+   },
+   {
+    "id": "b",
+    "text": "スキーマを、さらに厳密にするだけにする",
+    "why": "文字列型である限り、表記は制約されない。"
+   },
+   {
+    "id": "c",
+    "text": "表記は、揃えない",
+    "why": "下流で、処理できない。"
+   },
+   {
+    "id": "d",
+    "text": "日付を、抽出しない",
+    "why": "必要な情報が失われる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "スキーマは構造を保証しますが、値の表記までは決めません。正規化の規則は、指示として与えます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency"
+  ]
+ },
+ {
+  "id": "arch-prompt-033",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "明細の合計と、請求書に記載された総額の食い違いを、検出しやすくしたい。スキーマの設計として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「記載された総額」と「明細から計算した合計」を、別々のフィールドとして出力させる",
+    "why": "2 つを比べれば、食い違いを機械的に検出できる。"
+   },
+   {
+    "id": "b",
+    "text": "総額だけを出力させる",
+    "why": "食い違いを検出できない。"
+   },
+   {
+    "id": "c",
+    "text": "合計は、出力させない",
+    "why": "検証できない。"
+   },
+   {
+    "id": "d",
+    "text": "食い違いは、モデルの判断で直させる",
+    "why": "原本と違う値が、黙って入る。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "自己検証のためのフィールドを設けると、意味上の誤りを検出できます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ },
+ {
+  "id": "arch-prompt-034",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "契約書の中で、支払条件が 2 か所に、異なる内容で書かれていることがある。抽出の設計として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "原本の中の矛盾を示すフィールドを設け、矛盾がある場合は、両方の記載を残す",
+    "why": "矛盾を隠さず、人の確認につなげる。"
+   },
+   {
+    "id": "b",
+    "text": "先に出てきた方を採用する",
+    "why": "根拠のない選択である。"
+   },
+   {
+    "id": "c",
+    "text": "後に出てきた方を採用する",
+    "why": "根拠のない選択である。"
+   },
+   {
+    "id": "d",
+    "text": "支払条件を、空にする",
+    "why": "矛盾があることが伝わらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "原本そのものに矛盾がある場合は、それを明示して、判断を人に委ねます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ },
+ {
+  "id": "arch-prompt-035",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "抽出した各値について、原本のどこに書かれていたかを、後から確認できるようにしたい。スキーマに加えるものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "値の根拠となった、原本の記述の抜き書き",
+    "why": "値と原本を、突き合わせられる。"
+   },
+   {
+    "id": "b",
+    "text": "値の文字数",
+    "why": "確認に役立たない。"
+   },
+   {
+    "id": "c",
+    "text": "抽出にかかった時間",
+    "why": "確認に役立たない。"
+   },
+   {
+    "id": "d",
+    "text": "モデルの名前",
+    "why": "確認に役立たない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "根拠の抜き書きは、検証を容易にし、作り出された値の発見にも役立ちます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/build-with-claude/citations"
+  ]
+ },
+ {
+  "id": "arch-prompt-036",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "JSON スキーマによる構造化出力で、防げない誤りはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "発行日と支払期日を、入れ違えて格納する",
+    "why": "型と構造は正しいので、スキーマでは検出できない。"
+   },
+   {
+    "id": "b",
+    "text": "必須のフィールドが、欠けている",
+    "why": "スキーマで防げる。"
+   },
+   {
+    "id": "c",
+    "text": "数値のフィールドに、文字列が入っている",
+    "why": "スキーマで防げる。"
+   },
+   {
+    "id": "d",
+    "text": "括弧が、閉じていない",
+    "why": "スキーマで防げる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "スキーマは、構文と構造の誤りを防ぎます。意味上の誤りには、検証の規則や、人の確認が必要です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ },
+ {
+  "id": "arch-prompt-037",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "数量が「2 ケース」「約 30 個」「ひと箱」のように、くだけた書き方で書かれている。抽出の扱いを安定させる方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "くだけた表記の例と、期待する出力(数値、単位、概数かどうか)を示す",
+    "why": "曖昧な表記の扱いを、例で決める。"
+   },
+   {
+    "id": "b",
+    "text": "数値だけを、出力させる",
+    "why": "単位や、概数であることが失われる。"
+   },
+   {
+    "id": "c",
+    "text": "くだけた表記は、すべて 0 にする",
+    "why": "情報が失われる。"
+   },
+   {
+    "id": "d",
+    "text": "扱いは、モデルに任せる",
+    "why": "結果がばらつく。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "判断の分かれる入力は、例で扱いを決めます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ },
+ {
+  "id": "arch-prompt-038",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "原本に書かれていない情報を、文脈から推測して埋めてしまう。指示とスキーマの組み合わせとして、適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「原本に明記されている内容だけを抽出し、推測しない」と指示し、記載がない場合に null を返せるスキーマにする",
+    "why": "指示と、逃げ道の両方が必要である。"
+   },
+   {
+    "id": "b",
+    "text": "指示だけを書き、スキーマは必須のままにする",
+    "why": "値を埋める圧力が残る。"
+   },
+   {
+    "id": "c",
+    "text": "スキーマだけを null 許容にし、指示は書かない",
+    "why": "推測の余地が残る。"
+   },
+   {
+    "id": "d",
+    "text": "推測を、積極的に勧める",
+    "why": "事実でない値が増える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "作り出された値を減らすには、推測を禁じる指示と、記載なしを表現できるスキーマを、組み合わせます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ },
+ {
+  "id": "arch-prompt-039",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "1 つのスキーマに、深い入れ子と、多数の任意のフィールドを詰め込んだところ、抽出の誤りが増えた。改善の方向はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "スキーマを単純にし、必要なら、抽出を複数の段階に分ける",
+    "why": "単純な構造の方が、正確に埋めやすい。"
+   },
+   {
+    "id": "b",
+    "text": "入れ子を、さらに深くする",
+    "why": "誤りが増える。"
+   },
+   {
+    "id": "c",
+    "text": "すべてのフィールドを、必須にする",
+    "why": "作り出された値が増える。"
+   },
+   {
+    "id": "d",
+    "text": "フィールドの説明を、削除する",
+    "why": "意味が伝わらなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "複雑なスキーマは、誤りの原因になります。段階を分けて、それぞれを単純にします。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts"
+  ]
+ },
+ {
+  "id": "arch-prompt-040",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "スキーマの各フィールドに、説明(何を、どの形式で入れるか)を書く効果はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "モデルが、各フィールドの意味を正しく理解し、適切な値を入れやすくなる",
+    "why": "説明は、指示として働く。"
+   },
+   {
+    "id": "b",
+    "text": "出力が、速くなる",
+    "why": "速度の効果ではない。"
+   },
+   {
+    "id": "c",
+    "text": "費用が、下がる",
+    "why": "費用の効果ではない。"
+   },
+   {
+    "id": "d",
+    "text": "効果はない",
+    "why": "効果がある。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "フィールドの名前と説明は、プロンプトの一部です。曖昧な名前は、誤った値の原因になります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+  ]
  }
 ]

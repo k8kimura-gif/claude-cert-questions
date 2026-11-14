@@ -376,5 +376,1130 @@
    "https://code.claude.com/docs/en/permissions",
    "https://code.claude.com/docs/en/cli-reference"
   ]
+ },
+ {
+  "id": "arch-cc-011",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "プロジェクトの CLAUDE.md が 1,000 行を超え、内容の把握も保守も難しくなった。整理の方法として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "話題ごとのファイルに分け、.claude/rules/ に置くか、@ による取り込みで参照する",
+    "why": "内容を分割して、関係する部分だけを管理できる。"
+   },
+   {
+    "id": "b",
+    "text": "すべてを、1 行に詰める",
+    "why": "読めなくなる。"
+   },
+   {
+    "id": "c",
+    "text": "CLAUDE.md を、削除する",
+    "why": "規約が、伝わらなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "同じ内容を、README にも複製する",
+    "why": "保守が、二重になる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "CLAUDE.md は、簡潔に保ちます。話題別のルールファイル(テスト、API の規約、デプロイなど)に分けると、見通しが良くなります。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory"
+  ]
+ },
+ {
+  "id": "arch-cc-012",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "CLAUDE.md から、別のファイル(例: docs/coding-standards.md)の内容を取り込みたい。記法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "@docs/coding-standards.md のように、@ に続けてパスを書く",
+    "why": "@ による取り込みで、外部のファイルを参照できる。"
+   },
+   {
+    "id": "b",
+    "text": "#include \"docs/coding-standards.md\"",
+    "why": "この記法ではない。"
+   },
+   {
+    "id": "c",
+    "text": "import docs/coding-standards.md",
+    "why": "この記法ではない。"
+   },
+   {
+    "id": "d",
+    "text": "取り込みは、できない",
+    "why": "できる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "@ による取り込みを使うと、各パッケージの CLAUDE.md が、関係する規約のファイルだけを選んで参照できます。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory"
+  ]
+ },
+ {
+  "id": "arch-cc-013",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "セッションによって Claude Code の挙動が違う。どの CLAUDE.md やルールが読み込まれているかを確かめたい。使うコマンドはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "/memory",
+    "why": "読み込まれているメモリのファイルを、確認できる。"
+   },
+   {
+    "id": "b",
+    "text": "/clear",
+    "why": "会話を消すコマンドである。"
+   },
+   {
+    "id": "c",
+    "text": "/compact",
+    "why": "会話を要約するコマンドである。"
+   },
+   {
+    "id": "d",
+    "text": "/review",
+    "why": "確認の用途ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "挙動のばらつきを調べるときは、まず、どの設定ファイルが読み込まれているかを確認します。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory",
+   "https://code.claude.com/docs/en/slash-commands"
+  ]
+ },
+ {
+  "id": "arch-cc-014",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "モノレポで、packages/api にだけ適用したい規約がある。そのディレクトリの作業のときに読み込ませる方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "packages/api/CLAUDE.md を置く",
+    "why": "ディレクトリの CLAUDE.md は、その配下の作業で読み込まれる。"
+   },
+   {
+    "id": "b",
+    "text": "ルートの CLAUDE.md に、全パッケージの規約を書く",
+    "why": "無関係な作業でも、読み込まれる。"
+   },
+   {
+    "id": "c",
+    "text": "各自の ~/.claude/CLAUDE.md に書く",
+    "why": "チームに、共有されない。"
+   },
+   {
+    "id": "d",
+    "text": "package.json に書く",
+    "why": "指示として、読み込まれない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "規約が、ディレクトリのまとまりに対応しているときは、ディレクトリ単位の CLAUDE.md が向きます。ディレクトリをまたぐ種類のファイルには、パスを条件にしたルールが向きます。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory"
+  ]
+ },
+ {
+  "id": "arch-cc-015",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "自分だけの好み(応答を短くしてほしい、など)を、すべてのプロジェクトで有効にしたい。チームには共有しない。置き場所はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "~/.claude/CLAUDE.md",
+    "why": "ユーザーレベルの設定で、本人の全プロジェクトに適用される。"
+   },
+   {
+    "id": "b",
+    "text": "プロジェクトの CLAUDE.md",
+    "why": "チームに、共有される。"
+   },
+   {
+    "id": "c",
+    "text": ".claude/rules/",
+    "why": "プロジェクトで、共有される。"
+   },
+   {
+    "id": "d",
+    "text": ".mcp.json",
+    "why": "MCP の設定である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "個人の好みはユーザーレベルに、チームの規約はプロジェクトレベルに置きます。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory"
+  ]
+ },
+ {
+  "id": "arch-cc-016",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "調査用のスキルを実行している間は、ファイルの書き込みをさせたくない。スキルの定義で指定するものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "フロントマターの allowed-tools で、使えるツールを読み取り系に限定する",
+    "why": "スキルの実行中に使えるツールを、絞れる。"
+   },
+   {
+    "id": "b",
+    "text": "スキルの本文に、「書き込み禁止」と書く",
+    "why": "強制力がない。"
+   },
+   {
+    "id": "c",
+    "text": "スキルの名前を、readonly にする",
+    "why": "名前に、効果はない。"
+   },
+   {
+    "id": "d",
+    "text": "指定する方法は、ない",
+    "why": "ある。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "スキルのフロントマターでは、使えるツール、引数の案内、分離したコンテキストでの実行などを設定できます。",
+  "refs": [
+   "https://code.claude.com/docs/en/skills"
+  ]
+ },
+ {
+  "id": "arch-cc-017",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "引数(対象のチケット番号)が必要なスキルを、引数なしで呼ぶ人が多い。スキルの定義で改善する方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "フロントマターの argument-hint に、必要な引数の案内を書く",
+    "why": "呼び出すときに、必要な引数が示される。"
+   },
+   {
+    "id": "b",
+    "text": "スキルを、削除する",
+    "why": "機能が、なくなる。"
+   },
+   {
+    "id": "c",
+    "text": "引数を、不要にするために、番号を固定で書く",
+    "why": "汎用性が、なくなる。"
+   },
+   {
+    "id": "d",
+    "text": "CLAUDE.md に、注意書きを書く",
+    "why": "呼び出しの場面で、示されない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "argument-hint は、スキルが期待する引数を利用者に示します。",
+  "refs": [
+   "https://code.claude.com/docs/en/skills",
+   "https://code.claude.com/docs/en/slash-commands"
+  ]
+ },
+ {
+  "id": "arch-cc-018",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "チームで共有しているスキルを、自分用に少し変えて使いたい。チームのものには影響を与えたくない。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "~/.claude/skills/ に、別の名前で自分用のスキルを作る",
+    "why": "個人用の場所に置けば、共有のものに影響しない。"
+   },
+   {
+    "id": "b",
+    "text": "プロジェクトのスキルを、直接書き換えてコミットする",
+    "why": "全員に、影響する。"
+   },
+   {
+    "id": "c",
+    "text": "プロジェクトのスキルを、削除する",
+    "why": "全員が、使えなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "CLAUDE.md に、変更点を書く",
+    "why": "スキルの定義は、変わらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "個人用のスキルは ~/.claude/skills/ に置きます。共有のものと名前を分けると、混同しません。",
+  "refs": [
+   "https://code.claude.com/docs/en/skills"
+  ]
+ },
+ {
+  "id": "arch-cc-019",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "1 つのファイルの、原因が明確なバグ(スタックトレースが、該当の行を示している)を直す。進め方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プランモードを使わず、直接修正させる",
+    "why": "範囲が明確で小さい変更には、計画の段階は不要である。"
+   },
+   {
+    "id": "b",
+    "text": "必ず、プランモードで計画を立てる",
+    "why": "過剰である。"
+   },
+   {
+    "id": "c",
+    "text": "サブエージェントを、5 つ起動する",
+    "why": "過剰である。"
+   },
+   {
+    "id": "d",
+    "text": "コードベース全体を、読み直させる",
+    "why": "不要である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "プランモードは、影響が広い変更や、方針の選択がある作業に使います。範囲のはっきりした修正は、直接実行します。",
+  "refs": [
+   "https://code.claude.com/docs/en/common-workflows",
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-cc-020",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "ライブラリの移行で、影響範囲が分からない。調査と実装の進め方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プランモードで影響範囲を調べて方針を決め、その後、通常のモードで計画どおりに実装する",
+    "why": "調査と計画を先に行い、実装は別の段階にする。"
+   },
+   {
+    "id": "b",
+    "text": "最初から最後まで、プランモードのままにする",
+    "why": "プランモードでは、ファイルを変更できない。"
+   },
+   {
+    "id": "c",
+    "text": "調査をせずに、実装を始める",
+    "why": "影響範囲が、分からないままである。"
+   },
+   {
+    "id": "d",
+    "text": "実装を先に行い、後で調査する",
+    "why": "手戻りが、大きくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "2 つのモードは、組み合わせて使えます。調査で方針を固めてから、実装に移ります。",
+  "refs": [
+   "https://code.claude.com/docs/en/common-workflows"
+  ]
+ },
+ {
+  "id": "arch-cc-021",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "Claude Code の設定のうち、チームで共有するものと、自分の端末だけのものを分けたい。ファイルの使い分けとして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "共有するものは .claude/settings.json、自分だけのものは .claude/settings.local.json に書く",
+    "why": "前者はコミットし、後者はコミットしない。"
+   },
+   {
+    "id": "b",
+    "text": "すべてを、.claude/settings.local.json に書く",
+    "why": "共有されない。"
+   },
+   {
+    "id": "c",
+    "text": "すべてを、README に書く",
+    "why": "設定として、読み込まれない。"
+   },
+   {
+    "id": "d",
+    "text": "分ける方法は、ない",
+    "why": "ある。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "設定には、ユーザー、プロジェクト(共有)、プロジェクト(ローカル)などの階層があります。",
+  "refs": [
+   "https://code.claude.com/docs/en/settings"
+  ]
+ },
+ {
+  "id": "arch-cc-022",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "コードレビュー専用のサブエージェントを、チームで共有したい。定義の置き場所と内容として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": ".claude/agents/ に Markdown のファイルを置き、説明、使えるツール、システムプロンプトを書く",
+    "why": "プロジェクトのサブエージェントは、リポジトリで共有される。"
+   },
+   {
+    "id": "b",
+    "text": "~/.claude/agents/ に置く",
+    "why": "個人用で、共有されない。"
+   },
+   {
+    "id": "c",
+    "text": "CLAUDE.md の末尾に書く",
+    "why": "サブエージェントの定義には、ならない。"
+   },
+   {
+    "id": "d",
+    "text": ".mcp.json に書く",
+    "why": "MCP の設定である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "サブエージェントの説明は、Claude がいつそれを使うかを判断する手がかりになります。",
+  "refs": [
+   "https://code.claude.com/docs/en/sub-agents"
+  ]
+ },
+ {
+  "id": "arch-cc-023",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "ファイルを編集するたびに、リンターを自動で実行したい。チーム全員に適用する。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プロジェクトの settings.json に、編集ツールの実行後に走るフックを定義する",
+    "why": "フックは、確実に実行される。設定は、共有される。"
+   },
+   {
+    "id": "b",
+    "text": "CLAUDE.md に、「編集後はリンターを実行すること」と書く",
+    "why": "実行されないことが、ありうる。"
+   },
+   {
+    "id": "c",
+    "text": "各自が、手で実行する",
+    "why": "忘れる可能性がある。"
+   },
+   {
+    "id": "d",
+    "text": "リンターを、やめる",
+    "why": "品質が、下がる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "必ず行いたい処理は、フックで実現します。CLAUDE.md は助言であり、強制ではありません。",
+  "refs": [
+   "https://code.claude.com/docs/en/hooks",
+   "https://code.claude.com/docs/en/settings"
+  ]
+ },
+ {
+  "id": "arch-cc-024",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "「auth-investigation」という名前を付けたセッションを、翌日に再開したい。使うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "--resume に、セッションの名前を指定する",
+    "why": "名前を付けたセッションを、指定して再開できる。"
+   },
+   {
+    "id": "b",
+    "text": "-p",
+    "why": "非対話の実行である。"
+   },
+   {
+    "id": "c",
+    "text": "/clear",
+    "why": "会話を消すコマンドである。"
+   },
+   {
+    "id": "d",
+    "text": "--output-format json",
+    "why": "出力形式の指定である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "セッションは、再開して続けられます。以前の文脈が、まだ有効な場合に役立ちます。",
+  "refs": [
+   "https://code.claude.com/docs/en/cli-reference",
+   "https://code.claude.com/docs/en/common-workflows"
+  ]
+ },
+ {
+  "id": "arch-cc-025",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "長い調査の途中で、コンテキストの残りが少なくなってきた。作業は続けたい。Claude Code で使うコマンドはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "/compact",
+    "why": "会話を要約に置き換えて、空きを作る。"
+   },
+   {
+    "id": "b",
+    "text": "/clear",
+    "why": "会話をすべて消すため、続きの作業には向かない。"
+   },
+   {
+    "id": "c",
+    "text": "/memory",
+    "why": "メモリのファイルを確認するコマンドである。"
+   },
+   {
+    "id": "d",
+    "text": "/help",
+    "why": "使い方を表示するコマンドである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "/compact は、経緯を保ちながらコンテキストを整理します。残したい点を、指示として添えることもできます。",
+  "refs": [
+   "https://code.claude.com/docs/en/slash-commands",
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-cc-026",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "新しいメンバーが、コードベースの構成(どこに何があるか、よく使うコマンド)を、Claude Code に毎回説明している。改善策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プロジェクトの CLAUDE.md に、構成の概要と、よく使うコマンドを書く",
+    "why": "毎回、自動的に読み込まれる。"
+   },
+   {
+    "id": "b",
+    "text": "毎回、説明を続ける",
+    "why": "手間がかかる。"
+   },
+   {
+    "id": "c",
+    "text": "各自の端末に、メモを置く",
+    "why": "共有されない。"
+   },
+   {
+    "id": "d",
+    "text": "説明を、省く",
+    "why": "Claude が、構成を把握できない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "CLAUDE.md には、ビルドやテストのコマンド、構成の要点、規約を書きます。簡潔に保ちます。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory"
+  ]
+ },
+ {
+  "id": "arch-cc-027",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "コードベースについての質問に答えるだけで、変更はさせたくない場面がある。Claude Code の使い方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プランモード(読み取りだけを行うモード)で作業させる",
+    "why": "ファイルを変更せずに、調査できる。"
+   },
+   {
+    "id": "b",
+    "text": "すべての権限確認を、省略する設定にする",
+    "why": "逆に、変更が自由になる。"
+   },
+   {
+    "id": "c",
+    "text": "「変更しないで」と、毎回書く",
+    "why": "保証にはならない。"
+   },
+   {
+    "id": "d",
+    "text": "リポジトリを、削除してから質問する",
+    "why": "破壊的である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "プランモードは、調査と計画のための読み取り専用のモードです。",
+  "refs": [
+   "https://code.claude.com/docs/en/common-workflows",
+   "https://code.claude.com/docs/en/permissions"
+  ]
+ },
+ {
+  "id": "arch-cc-028",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "パイプラインの中で、Claude Code にコードを生成させ、同じセッションでそのままレビューもさせている。レビューでの指摘が少ない。改善策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "レビューは、生成の経緯を持たない別の実行(新しいセッション)で行う",
+    "why": "独立した実行の方が、問題を見つけやすい。"
+   },
+   {
+    "id": "b",
+    "text": "同じセッションで、レビューを 2 回行う",
+    "why": "同じ前提のまま、見直すことになる。"
+   },
+   {
+    "id": "c",
+    "text": "レビューを省く",
+    "why": "問題が残る。"
+   },
+   {
+    "id": "d",
+    "text": "生成の指示を、長くする",
+    "why": "レビューの質は変わらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "生成したセッションは、自分の判断の前提を引き継いでいます。レビューは、成果物だけを見る独立した実行に任せます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/claude-code-best-practices",
+   "https://code.claude.com/docs/en/headless"
+  ]
+ },
+ {
+  "id": "arch-cc-029",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "開発者が新しいコミットを追加するたびにレビューを再実行すると、前回と同じ指摘が、重複して投稿される。対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "前回の指摘を入力に含め、新しい問題と、未対応の問題だけを報告するよう指示する",
+    "why": "既出の指摘が分かれば、重複を避けられる。"
+   },
+   {
+    "id": "b",
+    "text": "毎回、すべての指摘を投稿し直す",
+    "why": "重複が続く。"
+   },
+   {
+    "id": "c",
+    "text": "再実行をやめる",
+    "why": "新しいコミットがレビューされない。"
+   },
+   {
+    "id": "d",
+    "text": "指摘の件数に上限を設ける",
+    "why": "重複は減らず、重要な指摘が落ちる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "再レビューでは、以前の結果を文脈として渡します。対応済みの指摘を繰り返さないことが、開発者の信頼につながります。",
+  "refs": [
+   "https://code.claude.com/docs/en/headless",
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-cc-030",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "テストの自動生成で、すでに存在するテストと同じ内容の提案が多い。対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "既存のテストファイルを入力に含め、すでに検証されている場面を避けさせる",
+    "why": "何がすでにあるかが分かれば、重複を避けられる。"
+   },
+   {
+    "id": "b",
+    "text": "生成するテストの数を増やす",
+    "why": "重複も増える。"
+   },
+   {
+    "id": "c",
+    "text": "既存のテストを削除する",
+    "why": "検証が失われる。"
+   },
+   {
+    "id": "d",
+    "text": "重複は気にしない",
+    "why": "保守の負担が増える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "テストの生成では、既存のテストと、テストの規約を文脈として渡します。",
+  "refs": [
+   "https://code.claude.com/docs/en/headless",
+   "https://code.claude.com/docs/en/memory"
+  ]
+ },
+ {
+  "id": "arch-cc-031",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "次の 2 つの処理がある。(1) マージ前の検査で、開発者が結果を待っている。(2) 夜間に行う、技術的負債の報告書の作成。Message Batches API の使い方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "(2) だけをバッチにし、(1) は通常の API で即時に実行する",
+    "why": "待っている人がいる処理には、完了時刻の保証がないバッチは使えない。"
+   },
+   {
+    "id": "b",
+    "text": "両方をバッチにする",
+    "why": "(1) で、開発者が長時間待たされうる。"
+   },
+   {
+    "id": "c",
+    "text": "(1) だけをバッチにする",
+    "why": "逆である。"
+   },
+   {
+    "id": "d",
+    "text": "どちらもバッチにしない",
+    "why": "(2) で、割引を受けられない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "バッチは 50% 安くなりますが、最長 24 時間かかり、完了の時刻は保証されません。急がない処理にだけ使います。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ]
+ },
+ {
+  "id": "arch-cc-032",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "ヘッドレス実行の結果を、後続のスクリプトで処理する。出力に、実行の情報(結果、消費量など)を含む機械可読の形式がほしい。指定するものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "--output-format json",
+    "why": "結果を JSON で受け取れる。"
+   },
+   {
+    "id": "b",
+    "text": "--resume",
+    "why": "セッションの再開である。"
+   },
+   {
+    "id": "c",
+    "text": "--verbose だけ",
+    "why": "機械可読の形式にはならない。"
+   },
+   {
+    "id": "d",
+    "text": "指定は不要で、常に JSON で出る",
+    "why": "既定は文章である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "出力形式には、文章、JSON、逐次の JSON があります。スクリプトからは JSON を使います。",
+  "refs": [
+   "https://code.claude.com/docs/en/headless",
+   "https://code.claude.com/docs/en/cli-reference"
+  ]
+ },
+ {
+  "id": "arch-cc-033",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "インフラの定義(terraform/ 以下)を変更するプルリクエストにだけ、専用のレビュー観点を適用したい。保守しやすい方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": ".claude/rules/ に、terraform/**/* を対象にしたルールファイルを置く",
+    "why": "該当するファイルを扱うときだけ、読み込まれる。"
+   },
+   {
+    "id": "b",
+    "text": "ルートの CLAUDE.md に、すべての観点を書く",
+    "why": "関係のないレビューでも読み込まれる。"
+   },
+   {
+    "id": "c",
+    "text": "CI の担当者の個人設定に書く",
+    "why": "CI の環境には存在しない。"
+   },
+   {
+    "id": "d",
+    "text": "プルリクエストの本文に、毎回手で書く",
+    "why": "漏れが出る。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "パスを条件にしたルールは、必要な場面でだけ読み込まれるので、無関係な内容でコンテキストを消費しません。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory"
+  ]
+ },
+ {
+  "id": "arch-cc-034",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "CI で実行した Claude Code が、ツールの使用の許可を求めたところで、処理が進まなくなった。原因と対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "非対話の実行では、確認に答える人がいない。必要なツールを、あらかじめ許可しておく",
+    "why": "使うツールは、起動時の指定や設定で許可する。"
+   },
+   {
+    "id": "b",
+    "text": "モデルの性能が不足している",
+    "why": "権限の問題である。"
+   },
+   {
+    "id": "c",
+    "text": "ネットワークの障害である",
+    "why": "権限の問題である。"
+   },
+   {
+    "id": "d",
+    "text": "CI では、ツールは一切使えない",
+    "why": "許可すれば使える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "自動実行では、許可するツールを明示します。必要な範囲に絞り、すべてを無条件に許可する設定は避けます。",
+  "refs": [
+   "https://code.claude.com/docs/en/permissions",
+   "https://code.claude.com/docs/en/headless"
+  ]
+ },
+ {
+  "id": "arch-cc-035",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "CI のジョブで、エージェントが想定以上に長く動き続けることがある。費用と時間を抑える設定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ターン数の上限を指定して実行する",
+    "why": "上限に達すると終了する。"
+   },
+   {
+    "id": "b",
+    "text": "上限は設けず、終わるまで待つ",
+    "why": "費用と時間が膨らむ。"
+   },
+   {
+    "id": "c",
+    "text": "max_tokens を 1 にする",
+    "why": "何もできなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "ジョブを、並列に 10 本動かす",
+    "why": "費用が増える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "自動実行には、安全装置としての上限を設けます。上限に達した場合の扱い(失敗として通知するなど)も決めておきます。",
+  "refs": [
+   "https://code.claude.com/docs/en/cli-reference",
+   "https://code.claude.com/docs/en/headless"
+  ]
+ },
+ {
+  "id": "arch-cc-036",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "レビューの手順を、開発者の手元と CI の両方で、同じ内容で実行したい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "手順を、リポジトリの .claude/ 配下にコマンド(またはスキル)として定義し、両方から呼び出す",
+    "why": "定義が 1 つなので、内容が揃う。"
+   },
+   {
+    "id": "b",
+    "text": "手元用と CI 用で、別々のプロンプトを保守する",
+    "why": "内容がずれる。"
+   },
+   {
+    "id": "c",
+    "text": "手順を、各自が覚える",
+    "why": "内容がずれる。"
+   },
+   {
+    "id": "d",
+    "text": "CI でだけレビューする",
+    "why": "手元で、事前に確かめられない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "共有の定義を 1 か所に置くと、手元と CI の結果が一致します。",
+  "refs": [
+   "https://code.claude.com/docs/en/slash-commands",
+   "https://code.claude.com/docs/en/skills"
+  ]
+ },
+ {
+  "id": "arch-cc-037",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "CI 用の Claude Code の権限の設定を、チームで管理したい。置き場所はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "リポジトリの .claude/settings.json",
+    "why": "共有の設定として、バージョン管理できる。"
+   },
+   {
+    "id": "b",
+    "text": "各自の ~/.claude/settings.json",
+    "why": "CI の環境には存在しない。"
+   },
+   {
+    "id": "c",
+    "text": ".claude/settings.local.json",
+    "why": "個人用で、コミットしない。"
+   },
+   {
+    "id": "d",
+    "text": "CI サービスの画面に、手で入力する",
+    "why": "変更の履歴が残らない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "共有の設定は、リポジトリに置いてレビューの対象にします。",
+  "refs": [
+   "https://code.claude.com/docs/en/settings"
+  ]
+ },
+ {
+  "id": "arch-cc-038",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "CI で実行する処理のうち、コミットメッセージの形式の確認のような単純なものにも、最上位のモデルを使っている。費用を下げる方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "単純な処理には小型のモデルを指定し、難しいレビューにだけ上位のモデルを使う",
+    "why": "処理の難しさに合わせて、モデルを選ぶ。"
+   },
+   {
+    "id": "b",
+    "text": "すべての処理を、最上位のモデルで行う",
+    "why": "単純な処理に過剰である。"
+   },
+   {
+    "id": "c",
+    "text": "すべての処理を、やめる",
+    "why": "検査がなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "単純な処理を、2 回実行する",
+    "why": "費用が増える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "モデルは、実行ごとに指定できます。品質に影響しない範囲で、小型のモデルを使います。",
+  "refs": [
+   "https://code.claude.com/docs/en/cli-reference",
+   "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+  ]
+ },
+ {
+  "id": "arch-cc-039",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "抽出システムのコードを、チームで Claude Code を使って保守している。スキーマの命名規則や、検証の方針を、全員の Claude Code に守らせたい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プロジェクトの CLAUDE.md(または、.claude/rules/ のルール)に書く",
+    "why": "リポジトリで共有され、毎回読み込まれる。"
+   },
+   {
+    "id": "b",
+    "text": "口頭で、共有する",
+    "why": "Claude Code には伝わらない。"
+   },
+   {
+    "id": "c",
+    "text": "各自の、個人設定に書く",
+    "why": "内容がずれる。"
+   },
+   {
+    "id": "d",
+    "text": "コードのコメントに、書くだけにする",
+    "why": "確実には読み込まれない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "チームの規約は、プロジェクトレベルの設定に置きます。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory"
+  ]
+ },
+ {
+  "id": "arch-cc-040",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "抽出スキーマの大きな変更(項目の再編)を、Claude Code に任せる。下流の多数のコードに影響する。進め方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プランモードで、影響する箇所と、移行の手順を洗い出してから、実装する",
+    "why": "影響の広い変更は、計画を先に固める。"
+   },
+   {
+    "id": "b",
+    "text": "すぐに、スキーマを書き換える",
+    "why": "下流が、壊れる。"
+   },
+   {
+    "id": "c",
+    "text": "下流のコードは、確認しない",
+    "why": "影響を、見落とす。"
+   },
+   {
+    "id": "d",
+    "text": "変更を、1 行ずつ別のセッションで依頼する",
+    "why": "全体の整合が、取れない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "影響範囲の広い変更は、プランモードで調査と計画を行ってから、実装に移ります。",
+  "refs": [
+   "https://code.claude.com/docs/en/common-workflows"
+  ]
  }
 ]

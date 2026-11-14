@@ -147,5 +147,192 @@
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
   ]
+ },
+ {
+  "id": "dev-eval-005",
+  "cert": "developer",
+  "domain": "eval-testing-and-debugging",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "評価用のテストケースを作る。含めるべきものとして、適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "典型的な入力に加えて、境界事例(空の入力、極端に長い入力、曖昧な入力、悪意のある入力)",
+    "why": "本番で起こりうる、難しい場面を含める。"
+   },
+   {
+    "id": "b",
+    "text": "うまくいくと分かっている入力だけ",
+    "why": "弱点が、見つからない。"
+   },
+   {
+    "id": "c",
+    "text": "1 件だけ",
+    "why": "結果が、偶然に左右される。"
+   },
+   {
+    "id": "d",
+    "text": "本番では起こりえない入力だけ",
+    "why": "本番の品質を、反映しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "評価は、実際の入力の分布を反映させます。手作りの事例が少ない場合は、Claude に事例の生成を手伝わせて、量を増やせます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ },
+ {
+  "id": "dev-eval-006",
+  "cert": "developer",
+  "domain": "eval-testing-and-debugging",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェントが、期待と違う行動をする。原因を調べる方法として、最も有効なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "実際に送られたプロンプト、ツールの呼び出しと引数、ツールの結果を、順に読む",
+    "why": "何を見て、何を判断したかが分かる。"
+   },
+   {
+    "id": "b",
+    "text": "最終的な出力だけを見る",
+    "why": "途中の原因が、分からない。"
+   },
+   {
+    "id": "c",
+    "text": "プロンプトを、推測で書き換える",
+    "why": "原因が分からないまま、変更することになる。"
+   },
+   {
+    "id": "d",
+    "text": "モデルを、無作為に替える",
+    "why": "原因の特定に、ならない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "デバッグでは、まず実際のやり取りを観察します。ツールの説明の不足、結果の分かりにくさ、指示の曖昧さが、よくある原因です。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents",
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ },
+ {
+  "id": "dev-eval-007",
+  "cert": "developer",
+  "domain": "eval-testing-and-debugging",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "2 つのプロンプト案のどちらが良いかを判断する。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "同じ評価セットで両方を実行し、同じ基準で採点して比べる",
+    "why": "条件を揃えた比較が、必要である。"
+   },
+   {
+    "id": "b",
+    "text": "それぞれ、別の入力で 1 回ずつ試す",
+    "why": "入力の違いと、プロンプトの違いを、区別できない。"
+   },
+   {
+    "id": "c",
+    "text": "長い方を選ぶ",
+    "why": "長さは、品質の基準ではない。"
+   },
+   {
+    "id": "d",
+    "text": "新しく書いた方を選ぶ",
+    "why": "根拠がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "比較は、同じ入力、同じ採点基準で行います。差が小さい場合は、事例数を増やして確かめます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ },
+ {
+  "id": "dev-eval-008",
+  "cert": "developer",
+  "domain": "eval-testing-and-debugging",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "評価セットの成績を上げるために、プロンプトを何度も調整した。成績は上がったが、本番の品質は変わらなかった。考えられる原因と対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "評価セットに合わせ込みすぎた。調整に使わない事例を、別に確保して確認する",
+    "why": "調整に使った事例だけで測ると、過大評価になる。"
+   },
+   {
+    "id": "b",
+    "text": "評価セットが、大きすぎた",
+    "why": "大きさは、原因ではない。"
+   },
+   {
+    "id": "c",
+    "text": "採点を、コードで行ったことが原因である",
+    "why": "採点の方法は、原因ではない。"
+   },
+   {
+    "id": "d",
+    "text": "評価の回数が、少なすぎた",
+    "why": "回数ではなく、合わせ込みが問題である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "調整用と確認用の事例を分けると、合わせ込みを検知できます。評価セットが本番の入力を反映しているかも、見直します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+   "https://platform.claude.com/docs/en/test-and-evaluate/define-success"
+  ]
+ },
+ {
+  "id": "dev-eval-009",
+  "cert": "developer",
+  "domain": "eval-testing-and-debugging",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "成功の基準として、最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「評価用の 1,000 件で、分類の F1 が 0.85 以上、応答時間の 95 パーセンタイルが 2 秒以内」",
+    "why": "具体的で、測定できる。"
+   },
+   {
+    "id": "b",
+    "text": "「良い感じに分類できること」",
+    "why": "測定できない。"
+   },
+   {
+    "id": "c",
+    "text": "「利用者が満足すること」",
+    "why": "測り方が、決まっていない。"
+   },
+   {
+    "id": "d",
+    "text": "「できるだけ速いこと」",
+    "why": "目標の値がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "成功の基準は、具体的で、測定でき、達成可能で、用途に関連するものにします。品質、速度、費用など、複数の観点を持つのが一般的です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/define-success"
+  ]
  }
 ]

@@ -297,5 +297,755 @@
    "https://www.anthropic.com/engineering/building-effective-agents",
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
   ]
+ },
+ {
+  "id": "dev-agent-009",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェントを採用すべきでない状況はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "手順が完全に決まっていて、誤りの影響が大きく、後から検知も取り消しもできない処理",
+    "why": "予測可能性が必要で、誤りを回収できない処理は、固定の手順で実装する。"
+   },
+   {
+    "id": "b",
+    "text": "手順を事前に決められない、探索的な調査",
+    "why": "エージェントが向く。"
+   },
+   {
+    "id": "c",
+    "text": "テストで結果を検証できるコードの修正",
+    "why": "誤りを検知して直せるため、向く。"
+   },
+   {
+    "id": "d",
+    "text": "必要なステップ数が、入力によって大きく変わる作業",
+    "why": "エージェントが向く。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エージェントを選ぶ前に、タスクの複雑さ、成果の価値、モデルにとっての実現可能性、誤りの検知と回復のしやすさを確認します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-010",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Anthropic の資料では、エージェント的なシステムの基本部品を「拡張された LLM」と呼ぶ。これに含まれる拡張の組み合わせはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "検索、ツール、メモリ",
+    "why": "LLM に、情報の取得、行動、記憶の手段を加えたものである。"
+   },
+   {
+    "id": "b",
+    "text": "GPU、ストレージ、ネットワーク",
+    "why": "基盤の資源であり、ここでいう拡張ではない。"
+   },
+   {
+    "id": "c",
+    "text": "ファインチューニング、蒸留、量子化",
+    "why": "モデルの作り方であり、ここでいう拡張ではない。"
+   },
+   {
+    "id": "d",
+    "text": "認証、課金、監査",
+    "why": "運用の機能であり、ここでいう拡張ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "拡張された LLM は、自分で検索の問い合わせを作り、適切なツールを選び、残すべき情報を判断します。ワークフローもエージェントも、これを組み合わせて作ります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-011",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェント用のフレームワークを使うときの注意として、Anthropic の資料が挙げているものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "内部でどんなプロンプトと応答が流れているかを理解しておく。まずは API を直接使うところから始める",
+    "why": "抽象化の層が、デバッグを難しくすることがある。"
+   },
+   {
+    "id": "b",
+    "text": "フレームワークは、必ず使うべきである",
+    "why": "多くのパターンは、数行のコードで実装できる。"
+   },
+   {
+    "id": "c",
+    "text": "フレームワークを使えば、評価は不要になる",
+    "why": "評価は必要である。"
+   },
+   {
+    "id": "d",
+    "text": "フレームワークは、一切使ってはならない",
+    "why": "使ってよいが、中身を理解しておく。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "フレームワークは始めやすくしてくれますが、内部の仕組みについての誤った思い込みが、失敗の原因になりやすいとされています。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-012",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェントが各ステップで「正しく進んでいるか」を判断する根拠として、最も重要なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールの実行結果やテストの結果のような、環境から得られる事実",
+    "why": "実際の結果に基づいて、進み具合を評価する。"
+   },
+   {
+    "id": "b",
+    "text": "エージェント自身の、うまくいったという感覚",
+    "why": "自己評価は、実際の結果と一致するとは限らない。"
+   },
+   {
+    "id": "c",
+    "text": "経過した時間",
+    "why": "進み具合を表さない。"
+   },
+   {
+    "id": "d",
+    "text": "消費したトークンの量",
+    "why": "進み具合を表さない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エージェントは、各ステップで環境からの「正解の手がかり」を得ながら進みます。コードの実行結果やテストは、その代表です。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-013",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "並列化の「分割」の使い方として、Anthropic の資料が挙げている例はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "利用者への回答を作るモデルと、入力が不適切でないかを審査するモデルを、別々に並行して動かす",
+    "why": "回答と審査を分けると、1 つの呼び出しで両方を行うより良い結果になる。"
+   },
+   {
+    "id": "b",
+    "text": "同じ翻訳を 5 回実行し、多数決を取る",
+    "why": "それは「投票」の例である。"
+   },
+   {
+    "id": "c",
+    "text": "入力を分類して、担当を決める",
+    "why": "それはルーティングである。"
+   },
+   {
+    "id": "d",
+    "text": "下書きを批評して、書き直す",
+    "why": "それは評価者と最適化器である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "分割は、独立して処理できる観点を、それぞれ専用の呼び出しに任せる方法です。ガードレールを本体の処理と分けるのが、典型的な使い方です。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-014",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "プロンプトチェーンの各段階の間に置く「ゲート」の役割はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "途中の出力が条件を満たしているかをプログラムで検査し、満たさない場合に次へ進めない",
+    "why": "誤りが後の段階に伝わるのを防ぐ。"
+   },
+   {
+    "id": "b",
+    "text": "次の段階のモデルを、無作為に選ぶ",
+    "why": "ゲートの役割ではない。"
+   },
+   {
+    "id": "c",
+    "text": "出力を暗号化する",
+    "why": "ゲートの役割ではない。"
+   },
+   {
+    "id": "d",
+    "text": "利用者に課金する",
+    "why": "ゲートの役割ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "チェーンでは、段階ごとに出力を確認できます。形式の検査や、基準に達しているかの判定を挟むと、全体の信頼性が上がります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts"
+  ]
+ },
+ {
+  "id": "dev-agent-015",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "評価者と最適化器のパターンを実装する。必ず設けるべきものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "反復の上限と、合格とみなす基準",
+    "why": "基準と上限がないと、ループが終わらない可能性がある。"
+   },
+   {
+    "id": "b",
+    "text": "評価者と生成者に、必ず同じプロンプトを使うこと",
+    "why": "役割が違うので、プロンプトは別になる。"
+   },
+   {
+    "id": "c",
+    "text": "毎回の反復で、モデルを替えること",
+    "why": "必須ではない。"
+   },
+   {
+    "id": "d",
+    "text": "評価の結果を、生成者に伝えないこと",
+    "why": "伝えなければ、改善できない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "生成と評価の反復は、明確な評価基準があるときに効果を発揮します。終了の条件を決めておかないと、費用が膨らみます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-016",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "マルチエージェント構成の費用面の特徴として、Anthropic の資料が述べているものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "単一のエージェントや通常のチャットに比べ、トークンの消費が大幅に多い",
+    "why": "複数のコンテキストで並行して作業するため、消費が増える。"
+   },
+   {
+    "id": "b",
+    "text": "トークンの消費は、チャットと変わらない",
+    "why": "何倍にもなる。"
+   },
+   {
+    "id": "c",
+    "text": "必ず安くなる",
+    "why": "費用は増える。"
+   },
+   {
+    "id": "d",
+    "text": "費用は、エージェントの数と無関係である",
+    "why": "数が増えるほど増える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "マルチエージェントは、成果の価値が費用に見合う、難しく幅の広いタスクに向きます。単純なタスクには過剰です。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system"
+  ]
+ },
+ {
+  "id": "dev-agent-017",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "マルチエージェント構成が特に向いているタスクはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "互いに独立した多数の方向を、並行して調べる幅の広い調査",
+    "why": "並列化の効果が大きく、1 つのコンテキストには収まらない情報量を扱える。"
+   },
+   {
+    "id": "b",
+    "text": "すべての作業が密接に依存し合い、全員が同じ文脈を必要とするタスク",
+    "why": "情報の共有が難しく、向かない。"
+   },
+   {
+    "id": "c",
+    "text": "1 回の呼び出しで終わる分類",
+    "why": "過剰である。"
+   },
+   {
+    "id": "d",
+    "text": "厳密に同じ順序で進む、3 段階の定型処理",
+    "why": "プロンプトチェーンで足りる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "マルチエージェントは、並列化しやすく、情報量が単一のコンテキストを超えるタスクで効果を発揮します。依存の強い作業では、調整の負担が利点を上回ります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system"
+  ]
+ },
+ {
+  "id": "dev-agent-018",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "サブエージェントを使う利点として、コンテキストの観点から正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "サブエージェントは自分のコンテキストで詳細な作業を行い、要点だけを返すので、主エージェントのコンテキストが埋まりにくい",
+    "why": "探索の詳細が、主エージェントに流れ込まない。"
+   },
+   {
+    "id": "b",
+    "text": "サブエージェントは、主エージェントのコンテキストを共有するので、説明が不要である",
+    "why": "共有されない。必要な情報は渡す。"
+   },
+   {
+    "id": "c",
+    "text": "サブエージェントは、コンテキストを消費しない",
+    "why": "自分のコンテキストを消費する。"
+   },
+   {
+    "id": "d",
+    "text": "サブエージェントの数だけ、主エージェントのウィンドウが広がる",
+    "why": "広がらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "サブエージェントは、関心の分離を実現します。それぞれが大量のトークンを使って調べ、圧縮した結果だけを返します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-019",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "数時間に及ぶ作業をエージェントに任せる。コンテキストの上限を越えて作業を続けさせるための手段として、適切なものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "進み具合や決定事項を、ファイルなどコンテキストの外に記録させ、必要なときに読み直させる",
+    "why": "外部の記録は、コンテキストが入れ替わっても残る。"
+   },
+   {
+    "id": "b",
+    "text": "会話が長くなったら、要約に置き換えて続ける(コンパクション)",
+    "why": "重要な点を保ったまま、コンテキストを空ける。"
+   },
+   {
+    "id": "c",
+    "text": "何も管理せず、上限に達したら終了する",
+    "why": "作業が途中で終わる。"
+   },
+   {
+    "id": "d",
+    "text": "同じ内容を何度も繰り返させ、忘れないようにする",
+    "why": "コンテキストを浪費する。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "長時間の作業には、コンパクション、構造化したメモ、サブエージェントが使われます。どれも、限られたコンテキストに重要な情報だけを残すための手段です。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/compaction",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool"
+  ]
+ },
+ {
+  "id": "dev-agent-020",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Agent SDK の説明として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude Code と同じエージェントの仕組み(ループ、組み込みツール、コンテキスト管理)をライブラリとして利用でき、自分の環境で動かす",
+    "why": "ファイル操作やコマンド実行などのツールを備えたエージェントを、自前の基盤で動かせる。"
+   },
+   {
+    "id": "b",
+    "text": "Messages API の別名である",
+    "why": "別の製品である。"
+   },
+   {
+    "id": "c",
+    "text": "Anthropic がエージェントの実行環境まで運用する、マネージドのサービスである",
+    "why": "それは Managed Agents の説明である。"
+   },
+   {
+    "id": "d",
+    "text": "ツールを 1 つも持たない、軽量なクライアントである",
+    "why": "組み込みツールを備える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エージェントを作る方法には、API でループを自作する、SDK のツールランナーを使う、Agent SDK を使う、Managed Agents を使う、といった選択肢があります。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview"
+  ]
+ },
+ {
+  "id": "dev-agent-021",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "自分で定義したツールを使うエージェントを作りたいが、ツール呼び出しのループ(呼び出しの検出、実行、結果の返送)を手書きしたくない。API の SDK に用意されている手段はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールランナー(tool runner)",
+    "why": "ツールの関数を渡すと、ループを SDK が回す。"
+   },
+   {
+    "id": "b",
+    "text": "Message Batches API",
+    "why": "非同期の一括処理のための機能である。"
+   },
+   {
+    "id": "c",
+    "text": "Files API",
+    "why": "ファイルを扱う機能である。"
+   },
+   {
+    "id": "d",
+    "text": "トークンカウント",
+    "why": "トークン数を数える機能である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールランナーは、ツール定義と実行関数をまとめて渡すと、Claude が終了するまでの往復を自動で処理します。ループを完全に制御したい場合は、手書きします。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+  ]
+ },
+ {
+  "id": "dev-agent-022",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェントの設計原則として、Anthropic の資料が挙げているものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "設計を単純に保ち、エージェントの計画の手順を見えるようにし、ツールの説明とテストを丁寧に作る",
+    "why": "単純さ、透明性、ツールとのインターフェースの作り込みが柱である。"
+   },
+   {
+    "id": "b",
+    "text": "できるだけ多くの層と抽象化を重ねる",
+    "why": "複雑さは、必要が示されたときだけ足す。"
+   },
+   {
+    "id": "c",
+    "text": "エージェントの判断過程は、隠す",
+    "why": "見えるようにする。"
+   },
+   {
+    "id": "d",
+    "text": "ツールの説明は、最小限にする",
+    "why": "丁寧に書く。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールの設計は、人間向けのインターフェースと同じくらいの労力をかける価値があるとされています。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-023",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "自律的に動くエージェントを本番に出す前に行うべきこととして、適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "隔離された環境で十分にテストし、権限の制限や停止条件などのガードレールを用意する",
+    "why": "自律性には、費用の増加と誤りの連鎖の危険が伴う。"
+   },
+   {
+    "id": "b",
+    "text": "テストは省き、本番で様子を見る",
+    "why": "誤りの影響が、利用者に及ぶ。"
+   },
+   {
+    "id": "c",
+    "text": "権限を最大にして、失敗を減らす",
+    "why": "誤りの影響範囲が広がる。"
+   },
+   {
+    "id": "d",
+    "text": "停止条件を外して、最後までやらせる",
+    "why": "暴走を止められない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エージェントは、信頼できる環境で、範囲を限定して使い始め、実績に応じて任せる範囲を広げます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-024",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェントが長い手順の途中で小さな誤りを犯し、それに気付かないまま進んで、最終結果が大きく外れた。この種の問題を減らす設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "途中の段階で、結果を検証する仕組み(テストの実行、検査の段階、人の確認点)を入れる",
+    "why": "誤りを早く検知すれば、連鎖を止められる。"
+   },
+   {
+    "id": "b",
+    "text": "手順の数を増やす",
+    "why": "誤りの機会が増える。"
+   },
+   {
+    "id": "c",
+    "text": "検証を、最後に 1 回だけ行う",
+    "why": "途中の誤りの連鎖を防げない。"
+   },
+   {
+    "id": "d",
+    "text": "エージェントに、「間違えないこと」と指示する",
+    "why": "指示だけでは防げない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "自律的な処理では、誤りが積み重なります。区切りごとに検証を入れ、必要なら人が介入できる点を設けます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-025",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェントが作業の途中で人に確認を求めるべき場面として、適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "取り消せない操作の前、判断材料が不足しているとき、行き詰まったとき",
+    "why": "影響が大きい場面と、自力で進めない場面で、人に戻す。"
+   },
+   {
+    "id": "b",
+    "text": "すべてのツール呼び出しの前",
+    "why": "自律性の利点が失われる。"
+   },
+   {
+    "id": "c",
+    "text": "どんな場面でも、一切求めない",
+    "why": "重大な誤りを防げない。"
+   },
+   {
+    "id": "d",
+    "text": "作業が、順調に進んでいるときだけ",
+    "why": "確認が必要なのは、むしろ逆の場面である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "人による確認は、区切りのよい点や、障害にぶつかった点に置きます。確認が多すぎても少なすぎても、うまく機能しません。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-026",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Managed Agents の説明として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "エージェントのループと、ツールを実行する隔離環境の両方を、Anthropic が運用する",
+    "why": "自分でループや実行環境を持たずに、長時間のエージェントを動かせる。"
+   },
+   {
+    "id": "b",
+    "text": "ツールの実行環境は、必ず自分で用意する",
+    "why": "それは、API でツールを使う場合や Agent SDK の場合である。"
+   },
+   {
+    "id": "c",
+    "text": "1 回の応答だけを返す、単発の API である",
+    "why": "状態を持つセッションとして動く。"
+   },
+   {
+    "id": "d",
+    "text": "Claude Code の設定ファイルの名前である",
+    "why": "製品であり、設定ファイルではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Managed Agents は、エージェントの設定を保存し、セッションごとに隔離された作業環境を用意して実行する、サーバー管理型の仕組みです。実行環境を自分で持ちたい場合は、API や Agent SDK を使います。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+  ]
+ },
+ {
+  "id": "dev-agent-027",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ルーティングの活用として、費用の観点から有効なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "簡単な質問は小型モデルに、難しい質問は高性能なモデルに振り分ける",
+    "why": "難しさに応じて、費用をかける場所を変える。"
+   },
+   {
+    "id": "b",
+    "text": "すべての質問を、高性能なモデルに送る",
+    "why": "簡単な質問に、過剰な費用がかかる。"
+   },
+   {
+    "id": "c",
+    "text": "すべての質問を、2 つのモデルに送る",
+    "why": "費用が倍になる。"
+   },
+   {
+    "id": "d",
+    "text": "質問を、無作為に振り分ける",
+    "why": "品質が安定しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ルーティングは、種類ごとの専用プロンプトへの振り分けだけでなく、モデルの使い分けにも使えます。分類の精度が、全体の品質を左右します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+  ]
+ },
+ {
+  "id": "dev-agent-028",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "オーケストレーターとワーカーのパターンで、オーケストレーターが担う役割はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "タスクを分解してワーカーに割り振り、返ってきた結果を統合する",
+    "why": "計画と統合を担う。"
+   },
+   {
+    "id": "b",
+    "text": "すべての作業を、自分で実行する",
+    "why": "それでは、ワーカーを置く意味がない。"
+   },
+   {
+    "id": "c",
+    "text": "ワーカーの出力を、検査せずに連結するだけである",
+    "why": "統合には、内容を踏まえた判断が必要である。"
+   },
+   {
+    "id": "d",
+    "text": "利用者の入力を、そのままワーカーに転送するだけである",
+    "why": "分解と割り振りが役割である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "オーケストレーターは、入力に応じてサブタスクを決めます。割り振りの指示が曖昧だと、ワーカーの作業が重複したり、抜けたりします。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://www.anthropic.com/engineering/multi-agent-research-system"
+  ]
  }
 ]

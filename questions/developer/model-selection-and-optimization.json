@@ -335,5 +335,871 @@
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/effort"
   ]
+ },
+ {
+  "id": "dev-model-010",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "どのモデルで要件を満たせるか分からない新機能がある。Anthropic の資料が示す進め方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "評価セットを用意し、モデルを替えて品質、速度、費用を比べて決める",
+    "why": "実際の入力での測定に基づいて選ぶ。"
+   },
+   {
+    "id": "b",
+    "text": "価格表だけを見て、最も安いモデルに決める",
+    "why": "品質の要件を満たすかどうかが分からない。"
+   },
+   {
+    "id": "c",
+    "text": "評判の良いモデルを、評価せずに採用する",
+    "why": "自分の用途での性能は、測らないと分からない。"
+   },
+   {
+    "id": "d",
+    "text": "全モデルを本番に同時投入し、苦情の少ないものを残す",
+    "why": "利用者に影響が出る。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "モデル選択には、小型モデルから始めて不足があれば上げる進め方と、高性能なモデルで実現できることを確かめてから下げる進め方があります。どちらも、評価に基づいて判断します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ },
+ {
+  "id": "dev-model-011",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "応答の速さが最優先のリアルタイム用途(入力補完、短い案内文の生成)に、まず検討すべきモデルの系統はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "最も高速な小型モデル(Haiku 系)",
+    "why": "速度と費用で最も有利である。"
+   },
+   {
+    "id": "b",
+    "text": "最も高性能なモデル",
+    "why": "応答が遅く、費用も高い。"
+   },
+   {
+    "id": "c",
+    "text": "どの系統でも速度は同じなので、問わない",
+    "why": "系統によって速度に差がある。"
+   },
+   {
+    "id": "d",
+    "text": "Message Batches API 経由の最上位モデル",
+    "why": "バッチは即時の応答に向かない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "小型モデルは、リアルタイムの用途、大量処理、サブエージェントの下請け作業に向きます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
+   "https://platform.claude.com/docs/en/about-claude/models/overview"
+  ]
+ },
+ {
+  "id": "dev-model-012",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェントの費用を見積もるとき、最も適切な指標はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "タスク 1 件を完了するまでの合計費用",
+    "why": "安いモデルでも、ターン数や再試行が増えれば高くつく。"
+   },
+   {
+    "id": "b",
+    "text": "1 リクエストあたりの費用",
+    "why": "完了までの回数を反映しない。"
+   },
+   {
+    "id": "c",
+    "text": "入力 100 万トークンあたりの単価",
+    "why": "消費量を反映しない。"
+   },
+   {
+    "id": "d",
+    "text": "1 トークンの生成にかかる時間",
+    "why": "費用の指標ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "費用対効果は、タスクの成功率と、完了までに消費したトークンの合計で評価します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
+   "https://platform.claude.com/docs/en/about-claude/pricing"
+  ]
+ },
+ {
+  "id": "dev-model-013",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "入力トークンと出力トークンの料金について正しい記述はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "出力トークンの単価は、入力トークンの単価より高い",
+    "why": "出力は入力の数倍の単価である。"
+   },
+   {
+    "id": "b",
+    "text": "入力と出力は、同じ単価である",
+    "why": "出力の方が高い。"
+   },
+   {
+    "id": "c",
+    "text": "入力トークンの単価の方が高い",
+    "why": "逆である。"
+   },
+   {
+    "id": "d",
+    "text": "出力トークンは無料である",
+    "why": "課金される。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "出力は入力より高価なので、不要に長い出力を避けることが節約になります。応答時間も、主に出力の長さで決まります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/pricing"
+  ]
+ },
+ {
+  "id": "dev-model-014",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "1 回のリクエストで指定できるキャッシュのブレークポイント(cache_control)の数について、正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "最大 4 つ",
+    "why": "上限は 4 つである。"
+   },
+   {
+    "id": "b",
+    "text": "1 つだけ",
+    "why": "複数指定できる。"
+   },
+   {
+    "id": "c",
+    "text": "無制限",
+    "why": "上限がある。"
+   },
+   {
+    "id": "d",
+    "text": "メッセージの数と同じだけ",
+    "why": "メッセージ数とは関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ブレークポイントを複数置くと、更新頻度の異なる部分(ツール定義、システムプロンプト、資料、会話履歴)を別々にキャッシュできます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "dev-model-015",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "200 トークンほどの短いシステムプロンプトに cache_control を付けたが、キャッシュの書き込みが発生しない。理由はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "キャッシュできる最小の長さに達していない",
+    "why": "短すぎる内容は、指定してもキャッシュされない。エラーにもならない。"
+   },
+   {
+    "id": "b",
+    "text": "システムプロンプトは、キャッシュの対象外である",
+    "why": "対象になる。"
+   },
+   {
+    "id": "c",
+    "text": "キャッシュは、有料の追加契約が必要である",
+    "why": "標準の機能である。"
+   },
+   {
+    "id": "d",
+    "text": "cache_control は、user メッセージにしか付けられない",
+    "why": "ツール定義やシステムプロンプトにも付けられる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "キャッシュには、モデルごとに最小のトークン数があります。これに満たない場合は、黙って通常の入力として処理されます。usage で実際の書き込みと読み出しを確認します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "dev-model-016",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "1 件の処理に 10〜20 分かかる作業の合間に、同じ長い資料を使って Claude を呼び出す。既定のキャッシュでは毎回失効してしまう。適切な対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "キャッシュの有効期間を 1 時間に指定する",
+    "why": "呼び出しの間隔が 5 分を超える用途のための選択肢である。"
+   },
+   {
+    "id": "b",
+    "text": "キャッシュをやめる",
+    "why": "毎回、通常の入力料金がかかる。"
+   },
+   {
+    "id": "c",
+    "text": "5 分ごとに、意味のないリクエストを自前のタイマーで永久に送り続ける",
+    "why": "使わない時間帯も費用がかかる。1 時間の指定の方が単純である。"
+   },
+   {
+    "id": "d",
+    "text": "資料を、毎回少しずつ書き換える",
+    "why": "キャッシュに当たらなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "1 時間のキャッシュは、書き込みの料金が高くなる代わりに、間隔の長い呼び出しでも読み出しの割引を受けられます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "dev-model-017",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "会話の途中でツール定義を 1 つ変更した。プロンプトキャッシュへの影響として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツール定義は先頭に位置するため、それ以降のシステムプロンプトと会話履歴のキャッシュも、すべて無効になる",
+    "why": "先頭の変更は、後ろのすべてに影響する。"
+   },
+   {
+    "id": "b",
+    "text": "変更したツールの分だけが無効になる",
+    "why": "後続の部分も無効になる。"
+   },
+   {
+    "id": "c",
+    "text": "影響はない",
+    "why": "先頭部分が変わっている。"
+   },
+   {
+    "id": "d",
+    "text": "会話履歴のキャッシュだけが無効になる",
+    "why": "システムプロンプトの分も無効になる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "キャッシュは、tools、system、messages の順の接頭部分に対して働きます。前の方ほど変更の影響が大きいので、ツール定義とシステムプロンプトは会話の途中で変えないようにします。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "dev-model-018",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "長く続くチャットで、ターンが進むたびに履歴のキャッシュを伸ばしていきたい。ブレークポイントの置き方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "毎回、会話の最後のメッセージにブレークポイントを置く",
+    "why": "前のターンまでの部分が読み出され、新しい部分が追加で書き込まれる。"
+   },
+   {
+    "id": "b",
+    "text": "最初のメッセージにだけ置き、動かさない",
+    "why": "後のターンの履歴がキャッシュされない。"
+   },
+   {
+    "id": "c",
+    "text": "ブレークポイントを、毎回無作為な位置に置く",
+    "why": "読み出しが安定しない。"
+   },
+   {
+    "id": "d",
+    "text": "履歴にはキャッシュを使えない",
+    "why": "使える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "会話では、履歴が毎ターン伸びます。末尾にブレークポイントを置くと、直前までの接頭部分がキャッシュから読み出され、差分だけが新たに処理されます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "dev-model-019",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "同じシステムプロンプトのまま、途中からモデルを別のものに切り替えた。プロンプトキャッシュはどうなるか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "キャッシュはモデルごとに別なので、切り替え先では最初から書き込み直しになる",
+    "why": "別のモデルのキャッシュは使えない。"
+   },
+   {
+    "id": "b",
+    "text": "内容が同じなので、そのまま読み出される",
+    "why": "モデルが違えば、当たらない。"
+   },
+   {
+    "id": "c",
+    "text": "切り替え先でも、半分だけ読み出される",
+    "why": "そのような部分的な共有はない。"
+   },
+   {
+    "id": "d",
+    "text": "エラーになる",
+    "why": "エラーにはならず、通常の入力として処理される。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "キャッシュはモデル単位です。複数のモデルを使い分ける構成では、モデル間でキャッシュを再利用できない点を、費用の見積もりに含めます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "dev-model-020",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "多数のツール定義(合計で数千トークン)が毎回同じである。これをキャッシュする方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "tools 配列の最後のツール定義に cache_control を付ける",
+    "why": "そこまでのツール定義全体が、キャッシュの対象になる。"
+   },
+   {
+    "id": "b",
+    "text": "ツール定義は、キャッシュできない",
+    "why": "できる。"
+   },
+   {
+    "id": "c",
+    "text": "各ツールの description を短くするしかない",
+    "why": "キャッシュで費用を下げられる。"
+   },
+   {
+    "id": "d",
+    "text": "ツール定義を、user メッセージに貼り付ける",
+    "why": "ツールとして認識されなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツール定義は、リクエストの先頭に位置します。順序と内容を固定し、最後の定義にブレークポイントを置くと、まとめてキャッシュできます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+  ]
+ },
+ {
+  "id": "dev-model-021",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "プロンプトキャッシュの効果として正しいものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "繰り返し送る入力の費用が下がる",
+    "why": "読み出しは、通常の入力より大幅に安い。"
+   },
+   {
+    "id": "b",
+    "text": "長いプロンプトの応答が速くなる",
+    "why": "キャッシュされた部分の処理が省かれる。"
+   },
+   {
+    "id": "c",
+    "text": "出力の品質が上がる",
+    "why": "品質には影響しない。"
+   },
+   {
+    "id": "d",
+    "text": "出力トークンの費用が下がる",
+    "why": "入力に対する仕組みである。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "キャッシュは、費用と応答時間の両方を改善します。長い資料や多数の例を含むプロンプト、ツールの多いエージェント、長い会話で効果が大きくなります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "dev-model-022",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "応答全体にかかる時間を短くしたい。最も影響が大きい要素はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "出力するトークンの量",
+    "why": "生成は 1 トークンずつ進むため、出力が長いほど時間がかかる。"
+   },
+   {
+    "id": "b",
+    "text": "システムプロンプトの文体",
+    "why": "時間には、ほとんど影響しない。"
+   },
+   {
+    "id": "c",
+    "text": "API キーの長さ",
+    "why": "関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "リクエストの JSON のインデント",
+    "why": "関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "応答時間を縮めるには、出力を短くする(簡潔な回答を求める、不要な前置きを省かせる)、小型のモデルを使う、といった方法が効きます。max_tokens は上限であり、短く書かせる指示にはなりません。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency"
+  ]
+ },
+ {
+  "id": "dev-model-023",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "max_tokens と effort の違いとして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "max_tokens は出力の強制的な上限で、モデルは意識しない。effort は、モデルがどれだけ労力をかけるかの目安である",
+    "why": "前者は打ち切りの上限、後者は振る舞いの調整である。"
+   },
+   {
+    "id": "b",
+    "text": "どちらも同じ意味である",
+    "why": "役割が異なる。"
+   },
+   {
+    "id": "c",
+    "text": "max_tokens を下げると、モデルは簡潔に書くよう自動的に調整する",
+    "why": "モデルは上限を知らず、途中で打ち切られるだけである。"
+   },
+   {
+    "id": "d",
+    "text": "effort は、入力トークンの上限である",
+    "why": "入力の上限ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "簡潔な出力がほしいときは、プロンプトで長さを指示するか、effort を調整します。max_tokens を下げるだけでは、途中で切れた出力になります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/effort",
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ]
+ },
+ {
+  "id": "dev-model-024",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "思考(thinking)を使う効果が大きいのは、次のうちどの処理か。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "複数の制約を満たす設計の検討や、段階的な推論が必要な数理的な問題",
+    "why": "考える余地が、正確さに直結する。"
+   },
+   {
+    "id": "b",
+    "text": "「こんにちは」への挨拶の返答",
+    "why": "推論を必要としない。"
+   },
+   {
+    "id": "c",
+    "text": "固定の定型文の出力",
+    "why": "推論を必要としない。"
+   },
+   {
+    "id": "d",
+    "text": "単語 1 つの翻訳",
+    "why": "推論をほとんど必要としない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "思考は、複雑な分析、多段階の計画、難しいコーディングなどで効果を発揮します。単純な処理では、費用と時間が増えるだけになります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/extended-thinking"
+  ]
+ },
+ {
+  "id": "dev-model-025",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "思考(thinking)を深くしたときの影響として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "難しい問題での正確さは上がりうるが、費用と応答時間が増える",
+    "why": "品質と、費用・速度の兼ね合いである。"
+   },
+   {
+    "id": "b",
+    "text": "費用も時間も変わらない",
+    "why": "思考のトークンは課金され、時間もかかる。"
+   },
+   {
+    "id": "c",
+    "text": "入力トークンが減る",
+    "why": "入力には影響しない。"
+   },
+   {
+    "id": "d",
+    "text": "レート制限が緩和される",
+    "why": "関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "思考の深さは、用途ごとに測って決めます。応答時間の要件が厳しい経路では浅く、正確さが重要な経路では深く設定します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/extended-thinking",
+   "https://platform.claude.com/docs/en/build-with-claude/effort"
+  ]
+ },
+ {
+  "id": "dev-model-026",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "新しいモデルに移行する。手順として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "既存の評価セットを新しいモデルで実行し、結果を比べて、必要ならプロンプトを調整する",
+    "why": "モデルが変わると、同じプロンプトでも挙動が変わる。"
+   },
+   {
+    "id": "b",
+    "text": "モデル ID だけを書き換えて、すぐ本番に出す",
+    "why": "挙動の変化を検知できない。"
+   },
+   {
+    "id": "c",
+    "text": "プロンプトを、すべて一から書き直す",
+    "why": "評価せずに書き直す根拠がない。"
+   },
+   {
+    "id": "d",
+    "text": "旧モデル向けの強い強調表現を、さらに増やす",
+    "why": "新しいモデルでは、過剰な強調が逆効果になることがある。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "新しいモデルは指示への反応が良く、旧モデル向けの回避策(強い強調、細かすぎる手順)が不要になったり、害になったりします。評価で確かめながら移行します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+   "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ]
+ },
+ {
+  "id": "dev-model-027",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude に今日のニュースについて質問したところ、古い情報に基づいて回答した。原因と対策として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "モデルの知識には学習時点までという期限がある。検索ツールや、最新の資料の提供で補う",
+    "why": "学習後の出来事は、外部から与える必要がある。"
+   },
+   {
+    "id": "b",
+    "text": "effort を上げれば、最新の情報を知るようになる",
+    "why": "知識そのものは増えない。"
+   },
+   {
+    "id": "c",
+    "text": "max_tokens を増やせば、最新の情報が出る",
+    "why": "関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "同じ質問を繰り返せば、いずれ正しい答えが出る",
+    "why": "知らない情報は出てこない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "最新の情報が必要な用途では、Web 検索ツール、RAG、現在の日付や関連データのプロンプトへの挿入によって、知識を補います。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/overview",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool"
+  ]
+ },
+ {
+  "id": "dev-model-028",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "同じ品質を保ちながら費用を下げる取り組みの順序として、最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "まず、品質に影響しない対策(キャッシュ、不要な入力の削除、バッチ)を行い、その後で、品質との兼ね合いがある対策(effort やモデルの変更)を評価付きで検討する",
+    "why": "品質を損なわない対策から着手する。"
+   },
+   {
+    "id": "b",
+    "text": "最初に、最も安いモデルへ切り替える",
+    "why": "品質が落ちる可能性があり、評価が必要である。"
+   },
+   {
+    "id": "c",
+    "text": "最初に、max_tokens を極端に下げる",
+    "why": "出力が途中で切れる。"
+   },
+   {
+    "id": "d",
+    "text": "最初に、システムプロンプトを削除する",
+    "why": "必要な指示が失われる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "費用の最適化は、現状の内訳の把握から始めます。キャッシュの読み出しがどれだけあるか、入力と出力のどちらが大きいかを見て、効果の大きい対策を選びます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+   "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+   "https://platform.claude.com/docs/en/about-claude/pricing"
+  ]
+ },
+ {
+  "id": "dev-model-029",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Message Batches API とプロンプトキャッシュの併用について正しい記述はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "併用でき、割引は重なる。ただし、バッチ内でのキャッシュの命中は保証されない",
+    "why": "リクエストは並行して処理されるため、命中はベストエフォートになる。"
+   },
+   {
+    "id": "b",
+    "text": "併用できない",
+    "why": "併用できる。"
+   },
+   {
+    "id": "c",
+    "text": "併用すると、割引はどちらか一方だけになる",
+    "why": "両方の割引が適用される。"
+   },
+   {
+    "id": "d",
+    "text": "バッチでは、必ず全リクエストがキャッシュに命中する",
+    "why": "保証はない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "バッチでは処理の順序が決まっていないため、キャッシュの命中は確実ではありません。共通の接頭部分を揃え、長めの有効期間を使うと、命中しやすくなります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "dev-model-030",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "大型モデルを高い effort で使う構成と、小型モデルを使う構成の、どちらが良いか分からない。Anthropic の資料に沿った考え方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "複数モデルの複雑な使い分けを作る前に、高性能なモデルを低い effort で使う単純な構成も測ってみる",
+    "why": "新しいモデルの低い設定が、旧世代の高い設定に並ぶことがある。"
+   },
+   {
+    "id": "b",
+    "text": "必ず、小型モデルの方が安く済む",
+    "why": "ターン数や再試行が増えると、逆転しうる。"
+   },
+   {
+    "id": "c",
+    "text": "必ず、大型モデルを最高の effort で使う",
+    "why": "多くの処理には過剰である。"
+   },
+   {
+    "id": "d",
+    "text": "測らずに、直感で決める",
+    "why": "判断の根拠がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "1 つのモデルで effort を調整する構成は、キャッシュを共有でき、運用も単純です。複数モデルの構成は、測定で効果を確かめてから採用します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/effort",
+   "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+  ]
+ },
+ {
+  "id": "dev-model-031",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "応答が始まるまでの時間(最初のトークンまでの時間)を短くする対策として、有効なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "長い固定の入力をキャッシュし、処理を省く",
+    "why": "入力の処理時間が減り、最初の出力が早くなる。"
+   },
+   {
+    "id": "b",
+    "text": "出力の最大長を伸ばす",
+    "why": "開始までの時間は短くならない。"
+   },
+   {
+    "id": "c",
+    "text": "ツール定義を増やす",
+    "why": "入力が増え、遅くなる。"
+   },
+   {
+    "id": "d",
+    "text": "思考を最も深く設定する",
+    "why": "最初の出力までが、かえって遅くなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "最初のトークンまでの時間は、入力の量、思考の深さ、モデルの大きさに左右されます。体感を重視する用途では、ストリーミングと合わせて調整します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "dev-model-032",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "高性能なモデルと小型モデルを組み合わせる構成のうち、Anthropic の資料で紹介されているものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "高性能なモデルが全体を計画・統括し、定型的な下請け作業を小型モデルのサブエージェントに任せる",
+    "why": "難しい判断と単純な作業を、モデルで分担する。"
+   },
+   {
+    "id": "b",
+    "text": "小型モデルが全体を統括し、高性能なモデルは使わない",
+    "why": "難しい判断を任せる先がない。"
+   },
+   {
+    "id": "c",
+    "text": "1 文ごとに、2 つのモデルを交互に使う",
+    "why": "一貫性がなく、キャッシュも効かない。"
+   },
+   {
+    "id": "d",
+    "text": "両方のモデルに全リクエストを送り、長い方の回答を採用する",
+    "why": "費用が倍になり、長さは品質の基準にならない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "統括役に高性能なモデル、作業役に小型モデルを置く構成は、品質を保ちながら費用と時間を抑えます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
+   "https://www.anthropic.com/engineering/multi-agent-research-system"
+  ]
  }
 ]

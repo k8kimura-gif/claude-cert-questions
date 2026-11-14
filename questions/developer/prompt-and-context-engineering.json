@@ -223,5 +223,608 @@
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
    "https://platform.claude.com/docs/en/build-with-claude/citations"
   ]
+ },
+ {
+  "id": "dev-prompt-007",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "法務文書の確認を任せる。回答の観点と口調を、専門家らしくしたい。最も基本的な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "システムプロンプトで、役割(例: 企業法務の担当弁護士)を与える",
+    "why": "役割を与えると、その分野に合った観点と口調になる。"
+   },
+   {
+    "id": "b",
+    "text": "max_tokens を増やす",
+    "why": "観点や口調には影響しない。"
+   },
+   {
+    "id": "c",
+    "text": "質問を、英語に翻訳する",
+    "why": "役割の設定とは関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "同じ質問を、3 回繰り返す",
+    "why": "観点は変わらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "役割の付与は、システムプロンプトの基本的な使い方です。「データサイエンティスト」より「小売業の顧客分析を専門とするデータサイエンティスト」のように具体的にすると、効果が上がります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/system-prompts"
+  ]
+ },
+ {
+  "id": "dev-prompt-008",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "プロンプトが分かりやすいかどうかを確かめる方法として、Anthropic の資料が勧めているものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "その仕事の背景を知らない同僚に、同じ指示を渡したと想像する。相手が迷うなら、Claude も迷う",
+    "why": "前提を知らない人に通じるかどうかが、目安になる。"
+   },
+   {
+    "id": "b",
+    "text": "プロンプトの文字数を数える",
+    "why": "長さは、分かりやすさの基準ではない。"
+   },
+   {
+    "id": "c",
+    "text": "大文字の割合を増やす",
+    "why": "分かりやすさとは関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "専門用語を増やす",
+    "why": "前提を共有していない相手には、通じにくくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "明確なプロンプトには、作業の目的、想定する読み手、成果物の使い道、完了の基準が含まれます。手順がある場合は、番号付きで示します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/be-clear-and-direct"
+  ]
+ },
+ {
+  "id": "dev-prompt-009",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "複雑な分析で、結論だけを求めると誤りが多い。推論の過程と最終的な答えを分けて出力させたい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "考える過程を <thinking>、答えを <answer> のようなタグで分けて出力するよう指示する(または、モデルの思考機能を使う)",
+    "why": "考える余地を与えると正確さが上がり、タグで分ければ答えだけを取り出せる。"
+   },
+   {
+    "id": "b",
+    "text": "「考えずに、すぐ答えよ」と指示する",
+    "why": "複雑な問題では、誤りが増える。"
+   },
+   {
+    "id": "c",
+    "text": "max_tokens を 50 にする",
+    "why": "考える余地がなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "答えを、先に書かせる",
+    "why": "推論より先に結論を出すと、過程が結論に引きずられる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "段階的に考えさせると、複雑な問題での正確さが上がります。出力が長くなり、応答時間が延びる点が代償です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-of-thought",
+   "https://platform.claude.com/docs/en/build-with-claude/extended-thinking"
+  ]
+ },
+ {
+  "id": "dev-prompt-010",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "調査、下書き、校正、整形を 1 つのプロンプトで依頼すると、どれかが雑になる。改善策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "段階ごとにプロンプトを分け、前の段階の出力を次の入力にする",
+    "why": "各段階に、モデルの注意を集中させられる。"
+   },
+   {
+    "id": "b",
+    "text": "1 つのプロンプトを、さらに長くする",
+    "why": "注意の分散は、解消しない。"
+   },
+   {
+    "id": "c",
+    "text": "すべての段階の指示を、大文字にする",
+    "why": "解決しない。"
+   },
+   {
+    "id": "d",
+    "text": "出力を、短くさせる",
+    "why": "雑になった段階は、改善しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "プロンプトの連鎖は、段階ごとの品質を上げ、問題のある段階の特定も容易にします。段階の間は、XML タグで出力を受け渡すと明確です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts"
+  ]
+ },
+ {
+  "id": "dev-prompt-011",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "出力に Markdown の記号を使わせたくない。指示の書き方として、より効果的なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「滑らかな文章の段落で書いてください」のように、してほしいことを書く",
+    "why": "望む形を伝える方が、禁止するより確実である。"
+   },
+   {
+    "id": "b",
+    "text": "「Markdown を使うな」と、禁止だけを書く",
+    "why": "禁止だけでは、何を使えばよいかが伝わらない。"
+   },
+   {
+    "id": "c",
+    "text": "何も指示しない",
+    "why": "既定の書式になる。"
+   },
+   {
+    "id": "d",
+    "text": "「記号は絶対禁止」と、繰り返し書く",
+    "why": "過剰な強調は、不自然な出力を招く。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "書式の制御では、望む形を肯定形で伝える、出力を特定のタグで囲ませる、プロンプト自体の文体を望む出力に合わせる、といった方法が有効です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/be-clear-and-direct"
+  ]
+ },
+ {
+  "id": "dev-prompt-012",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "多数の利用者の入力に、同じ指示を繰り返し適用するアプリを作る。プロンプトの構成として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "固定の指示部分と、入力ごとに変わる部分(変数)を分けたテンプレートにする",
+    "why": "固定部分を一貫して管理でき、評価やキャッシュもしやすい。"
+   },
+   {
+    "id": "b",
+    "text": "毎回、プロンプト全体を手で書き直す",
+    "why": "一貫性がなく、評価もできない。"
+   },
+   {
+    "id": "c",
+    "text": "利用者の入力を、指示の文の途中に区切りなく埋め込む",
+    "why": "指示と入力の境界が、曖昧になる。"
+   },
+   {
+    "id": "d",
+    "text": "指示を、利用者に書かせる",
+    "why": "品質を管理できない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "テンプレートでは、変数を {{変数名}} のように示し、XML タグで囲んで指示と区別します。固定部分を前に置けば、プロンプトキャッシュも効きます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/use-xml-tags"
+  ]
+ },
+ {
+  "id": "dev-prompt-013",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "few-shot の例を 1 つだけ示したところ、出力がその例の言い回しや長さまで真似るようになった。原因と対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude は例の細部まで手がかりにする。互いに異なる複数の例を示し、共通させたい点だけが共通するようにする",
+    "why": "例のばらつきが、何を真似るべきかを伝える。"
+   },
+   {
+    "id": "b",
+    "text": "例の数が多すぎる。0 にする",
+    "why": "形式が伝わらなくなる。"
+   },
+   {
+    "id": "c",
+    "text": "モデルが小さすぎる",
+    "why": "例への追従は、モデルの大きさの問題ではない。"
+   },
+   {
+    "id": "d",
+    "text": "例は、システムプロンプトに置けない",
+    "why": "置ける。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "例は、望む振る舞いと正確に一致させます。意図しない共通点(長さ、冒頭の言い回し、題材)があると、それも規則として拾われます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+  ]
+ },
+ {
+  "id": "dev-prompt-014",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "長い契約書から特定の条項について答えさせる。精度を上げる方法として、Anthropic の資料が勧めているものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "回答の前に、関連する箇所を文書から引用させ、その引用に基づいて答えさせる",
+    "why": "関連部分に注意が絞られ、無関係な部分に惑わされにくくなる。"
+   },
+   {
+    "id": "b",
+    "text": "文書を、無作為に並べ替える",
+    "why": "精度は上がらない。"
+   },
+   {
+    "id": "c",
+    "text": "文書を渡さず、記憶で答えさせる",
+    "why": "根拠がなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "質問を、文書の前に置く",
+    "why": "長文では、質問を末尾に置く方がよい。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "長い文書を扱うときは、まず関連する引用を抜き出させると、残りの内容による雑音を減らせます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ },
+ {
+  "id": "dev-prompt-015",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "複数の資料を 1 つのプロンプトで渡す。推奨される渡し方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "資料ごとに <document> タグで囲み、出典や日付などの情報をサブタグで添える",
+    "why": "資料の境界と属性が明確になり、出典を示した回答がしやすくなる。"
+   },
+   {
+    "id": "b",
+    "text": "すべての資料を、区切りなく連結する",
+    "why": "どこまでがどの資料か、分からなくなる。"
+   },
+   {
+    "id": "c",
+    "text": "資料ごとに、別のリクエストに分ける",
+    "why": "資料を横断した回答ができない。"
+   },
+   {
+    "id": "d",
+    "text": "資料の題名だけを渡す",
+    "why": "内容がないので、答えられない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "複数の文書は、それぞれタグで囲み、内容と出典などのメタデータを分けて示します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/use-xml-tags"
+  ]
+ },
+ {
+  "id": "dev-prompt-016",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "同じ入力に対する出力の形式を、毎回揃えたい。有効な手段を2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "望む形式を具体的に指定し、例を示す",
+    "why": "形式の説明と例が、ばらつきを減らす。"
+   },
+   {
+    "id": "b",
+    "text": "構造化出力で、スキーマを指定する",
+    "why": "形式そのものが保証される。"
+   },
+   {
+    "id": "c",
+    "text": "形式については何も書かず、モデルに任せる",
+    "why": "毎回、形式が変わりうる。"
+   },
+   {
+    "id": "d",
+    "text": "max_tokens を、毎回変える",
+    "why": "形式の安定とは関係がない。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "一貫性を高める方法には、形式の明示、例示、構造化出力、長い作業の分割、検索による根拠の固定があります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ },
+ {
+  "id": "dev-prompt-017",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェントに必要な情報を与える方法として、「必要になった時点で取りに行く」方式の説明はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ファイルのパスや検索の手段といった軽い手がかりだけを持たせ、エージェントがツールで必要な情報を読み込む",
+    "why": "すべてを先に入れず、必要な分だけをコンテキストに載せる。"
+   },
+   {
+    "id": "b",
+    "text": "関連しそうな全データを、最初にすべてプロンプトに入れる",
+    "why": "それは、事前に読み込む方式である。"
+   },
+   {
+    "id": "c",
+    "text": "情報は、一切与えない",
+    "why": "作業ができない。"
+   },
+   {
+    "id": "d",
+    "text": "情報を、利用者に毎回入力させる",
+    "why": "方式の説明ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "必要な時点で取得する方式は、コンテキストを無駄にせず、段階的に理解を深められます。事前の読み込みより時間はかかるため、用途によって両者を組み合わせます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "dev-prompt-018",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "コンパクションと、古いツール結果の消去(コンテキスト編集)の違いとして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "コンパクションは会話を要約に置き換える。ツール結果の消去は、古い結果そのものを取り除く",
+    "why": "前者は要約、後者は削除である。"
+   },
+   {
+    "id": "b",
+    "text": "どちらも、会話の要約である",
+    "why": "消去は、要約を作らない。"
+   },
+   {
+    "id": "c",
+    "text": "どちらも、コンテキストを増やす機能である",
+    "why": "減らす機能である。"
+   },
+   {
+    "id": "d",
+    "text": "コンパクションは、ツール定義を削除する",
+    "why": "会話の内容を要約する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "長い作業では、もう参照しない古いツール結果を消すだけで、かなりの空きが得られます。要約は、経緯を保ちたい場合に使います。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/compaction",
+   "https://platform.claude.com/docs/en/build-with-claude/context-editing"
+  ]
+ },
+ {
+  "id": "dev-prompt-019",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "システムプロンプトの書き方として、Anthropic の資料が勧める「適切な具体性」の説明はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "振る舞いを導くのに十分なほど具体的で、かつ、状況に応じた判断の余地を残す",
+    "why": "細かすぎる規則の羅列と、曖昧すぎる指示の、中間を狙う。"
+   },
+   {
+    "id": "b",
+    "text": "起こりうるすべての場合を、if 文のように列挙する",
+    "why": "壊れやすく、保守が難しい。"
+   },
+   {
+    "id": "c",
+    "text": "「うまくやって」とだけ書く",
+    "why": "具体的な手がかりがない。"
+   },
+   {
+    "id": "d",
+    "text": "書かない",
+    "why": "指針がなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "プロンプトは、最小限の情報で望む振る舞いを十分に伝えるものを目指します。最小限は、短いという意味ではありません。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "dev-prompt-020",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェントのシステムプロンプトに、思いつく限りの例外的な事例を並べたところ、かえって挙動が不安定になった。改善の方向はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "例外の羅列をやめ、期待する振る舞いをよく表す、多様で代表的な例を少数示す",
+    "why": "代表的な例の方が、規則の羅列より伝わる。"
+   },
+   {
+    "id": "b",
+    "text": "例外の事例を、さらに追加する",
+    "why": "同じ問題が悪化する。"
+   },
+   {
+    "id": "c",
+    "text": "例を、すべて削除する",
+    "why": "手がかりがなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "同じ例を、10 回繰り返す",
+    "why": "改善しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "あらゆる規則を詰め込むより、振る舞いを的確に示す例を選ぶ方が効果的です。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+  ]
+ },
+ {
+  "id": "dev-prompt-021",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude が、作業の背景を知らないために、的外れな提案をする。プロンプトに加えるべき情報はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "成果物の目的、読み手、それが作業全体のどこに位置するか",
+    "why": "背景が分かると、状況に合った判断ができる。"
+   },
+   {
+    "id": "b",
+    "text": "「賢く考えること」という指示",
+    "why": "背景は補われない。"
+   },
+   {
+    "id": "c",
+    "text": "同じ質問の繰り返し",
+    "why": "背景は補われない。"
+   },
+   {
+    "id": "d",
+    "text": "出力の最大文字数だけ",
+    "why": "背景は補われない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "指示に理由や背景を添えると、Claude は目的を理解して、書かれていない状況にも適切に対応します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/be-clear-and-direct",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ]
+ },
+ {
+  "id": "dev-prompt-022",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェントのコンテキストに置く情報として、最も優先度が低いものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "すでに用が済み、今後参照しない、古い大量のツール出力",
+    "why": "残しておくと、必要な情報への注意が薄れる。"
+   },
+   {
+    "id": "b",
+    "text": "現在の作業の目的",
+    "why": "常に必要である。"
+   },
+   {
+    "id": "c",
+    "text": "直近の決定事項と、未解決の問題",
+    "why": "作業の継続に必要である。"
+   },
+   {
+    "id": "d",
+    "text": "今使っているツールの定義",
+    "why": "作業に必要である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "コンテキストには、今の判断に役立つ情報を残します。古いツール結果の整理は、最も手軽で安全な整理の 1 つです。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/context-editing"
+  ]
  }
 ]

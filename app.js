@@ -158,7 +158,7 @@ const routes = {};
 function go(name, arg) { bar(); routes[name](arg); }
 
 // ---------- ホーム ----------
-routes.home = () => {
+routes.home = (msg) => {
   const d = ensureDay();
   const remaining = dayRemaining().length;
   const done = d.ids.length - remaining;
@@ -170,7 +170,12 @@ routes.home = () => {
 
   show(
     el('div', { class: 'seg', role: 'tablist' }, CERTS.map((c) =>
-      el('button', { class: c === A.cert ? 'on' : '', onclick: async () => { if (c !== A.cert) { await loadCert(c); go('home'); } } },
+      el('button', { class: c === A.cert ? 'on' : '', onclick: async () => {
+        if (c === A.cert) return;
+        const prev = A.cert;
+        try { await loadCert(c); } catch { await loadCert(prev).catch(() => {}); return go('home', '問題データを読み込めませんでした。通信状態を確認してください。'); }
+        go('home');
+      } },
         c === 'developer' ? 'Developer' : 'Architect', el('small', {}, 'Foundations')))),
     el('div', { class: 'card' },
       el('div', { class: 'row' },
@@ -179,6 +184,7 @@ routes.home = () => {
         el('div', {}, el('div', { class: 'muted' }, '今日の目標'), el('div', { class: 'big' }, `${done} / ${d.ids.length}`))),
       el('div', { class: 'meter' }, el('i', { style: `width:${pct(done, d.ids.length)}%` })),
       el('div', { class: 'muted' }, [breakdown, d.acc !== null && `直近の正答率 ${Math.round(d.acc * 100)}%`, d.adjust].filter(Boolean).join(' ・ '))),
+    msg && el('div', { class: 'notice' }, msg),
     !A.qs.length && el('div', { class: 'notice' }, 'この資格の問題がまだ登録されていません。'),
     el('button', { class: 'btn primary', disabled: !remaining, onclick: () => startSession('today') },
       remaining ? `今日の問題を解く(残り ${remaining} 問)` : '今日の分は完了しました'),
@@ -306,7 +312,15 @@ function buildMock() {
   let ids = [];
   if (A.exam.scenarioBased) {
     const chosen = shuffle(Object.keys(A.scenarios).filter((s) => A.qs.some((q) => q.scenarioId === s))).slice(0, A.exam.scenariosPerExam);
-    for (const s of chosen) ids.push(...shuffle(A.qs.filter((q) => q.scenarioId === s)).map((q) => q.id));
+    // シナリオごとの問題数を均等にし、その中でドメインの比率を本番に近づける
+    const per = Math.ceil(A.exam.questions / chosen.length);
+    for (const s of chosen) {
+      const pool = shuffle(A.qs.filter((q) => q.scenarioId === s));
+      const picked = [];
+      for (const d of A.exam.domains) picked.push(...pool.filter((q) => q.domain === d.id).slice(0, Math.round(d.mockCount / chosen.length)));
+      picked.push(...pool.filter((q) => !picked.includes(q)));
+      ids.push(...shuffle(picked.slice(0, per)).map((q) => q.id));
+    }
     ids = ids.slice(0, A.exam.questions);
   } else {
     for (const d of A.exam.domains) ids.push(...shuffle(A.qs.filter((q) => q.domain === d.id)).slice(0, d.mockCount).map((q) => q.id));

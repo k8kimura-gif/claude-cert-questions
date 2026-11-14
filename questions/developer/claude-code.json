@@ -146,5 +146,193 @@
   "refs": [
    "https://code.claude.com/docs/en/hooks"
   ]
+ },
+ {
+  "id": "dev-cc-005",
+  "cert": "developer",
+  "domain": "claude-code",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Code のプランモードの説明として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ファイルを変更せずに、コードベースを調査して計画を立てるモードである",
+    "why": "実装の前に、方針を固めるために使う。"
+   },
+   {
+    "id": "b",
+    "text": "すべての権限確認を、省略するモードである",
+    "why": "そのようなモードではない。"
+   },
+   {
+    "id": "c",
+    "text": "料金プランを、切り替える機能である",
+    "why": "関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "テストだけを、実行するモードである",
+    "why": "関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "プランモードは、影響の大きい変更や、方針の選択を伴う作業の前に使います。計画を確認してから、実装に移ります。",
+  "refs": [
+   "https://code.claude.com/docs/en/common-workflows"
+  ]
+ },
+ {
+  "id": "dev-cc-006",
+  "cert": "developer",
+  "domain": "claude-code",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Code のサブエージェントの特徴として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "独立したコンテキストで動き、専用のシステムプロンプトと、使えるツールの範囲を設定できる",
+    "why": "役割ごとに、文脈と権限を分けられる。"
+   },
+   {
+    "id": "b",
+    "text": "メインの会話の履歴を、すべて自動的に引き継ぐ",
+    "why": "引き継がない。"
+   },
+   {
+    "id": "c",
+    "text": "ツールは、一切使えない",
+    "why": "使える。範囲を設定できる。"
+   },
+   {
+    "id": "d",
+    "text": "同時に、1 つしか定義できない",
+    "why": "複数定義できる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "サブエージェントは、Markdown のファイルで定義します。プロジェクト用は .claude/agents/、個人用は ~/.claude/agents/ に置きます。",
+  "refs": [
+   "https://code.claude.com/docs/en/sub-agents"
+  ]
+ },
+ {
+  "id": "dev-cc-007",
+  "cert": "developer",
+  "domain": "claude-code",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Code のスキルと CLAUDE.md の違いとして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "CLAUDE.md は毎回読み込まれる。スキルは、関連する作業のときに必要に応じて読み込まれる",
+    "why": "常に必要な情報と、特定の作業にだけ必要な手順を、分けられる。"
+   },
+   {
+    "id": "b",
+    "text": "どちらも、毎回すべて読み込まれる",
+    "why": "スキルの本文は、必要なときに読み込まれる。"
+   },
+   {
+    "id": "c",
+    "text": "スキルは、個人用にしか置けない",
+    "why": "プロジェクト用にも置ける。"
+   },
+   {
+    "id": "d",
+    "text": "CLAUDE.md は、コマンドとして呼び出す",
+    "why": "呼び出すものではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "常に守らせたい規約は CLAUDE.md に、特定の作業の手順はスキルに書くと、コンテキストを節約できます。",
+  "refs": [
+   "https://code.claude.com/docs/en/skills",
+   "https://code.claude.com/docs/en/memory"
+  ]
+ },
+ {
+  "id": "dev-cc-008",
+  "cert": "developer",
+  "domain": "claude-code",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Code で、特定のコマンド(例: テストの実行)は確認なしで許可し、危険なコマンドは拒否したい。設定する場所はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "settings.json の権限設定(許可と拒否の規則)",
+    "why": "ツールやコマンドごとに、許可・拒否を定義する。"
+   },
+   {
+    "id": "b",
+    "text": "CLAUDE.md",
+    "why": "権限を強制する場所ではない。"
+   },
+   {
+    "id": "c",
+    "text": "README.md",
+    "why": "関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "package.json",
+    "why": "関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "権限の規則は、settings.json に書きます。プロジェクトで共有する設定と、個人用の設定を分けられます。",
+  "refs": [
+   "https://code.claude.com/docs/en/permissions",
+   "https://code.claude.com/docs/en/settings"
+  ]
+ },
+ {
+  "id": "dev-cc-009",
+  "cert": "developer",
+  "domain": "claude-code",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Code で、ある作業を終えて、まったく関係のない別の作業を始める。推奨される操作はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "/clear でコンテキストを空にしてから、始める",
+    "why": "前の作業の内容が、次の作業の邪魔をしない。"
+   },
+   {
+    "id": "b",
+    "text": "そのまま、同じ会話で続ける",
+    "why": "無関係な内容が、コンテキストを占める。"
+   },
+   {
+    "id": "c",
+    "text": "PC を、再起動する",
+    "why": "不要である。"
+   },
+   {
+    "id": "d",
+    "text": "CLAUDE.md を、削除する",
+    "why": "必要な設定が、失われる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "コンテキストは、作業ごとに整理します。同じ作業を続ける場合は /compact、別の作業に移る場合は /clear が向きます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/claude-code-best-practices",
+   "https://code.claude.com/docs/en/slash-commands"
+  ]
  }
 ]

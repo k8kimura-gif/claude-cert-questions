@@ -265,5 +265,875 @@
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
    "https://platform.claude.com/docs/en/test-and-evaluate/define-success"
   ]
+ },
+ {
+  "id": "arch-ctx-008",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "lookup_order は、1 件の注文について 40 以上の項目を返す。返品の判断に必要なのは 5 項目である。やり取りが長くなると、エージェントの判断が鈍る。対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールの結果から、必要な項目だけを残して、コンテキストに積む",
+    "why": "不要な項目が、コンテキストを圧迫している。"
+   },
+   {
+    "id": "b",
+    "text": "すべての項目を、毎回 2 回ずつ送る",
+    "why": "圧迫が、悪化する。"
+   },
+   {
+    "id": "c",
+    "text": "lookup_order を、使わない",
+    "why": "必要な情報が、得られない。"
+   },
+   {
+    "id": "d",
+    "text": "max_tokens を、増やす",
+    "why": "入力の圧迫は、解消しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールの結果は、関連性に比べて過大なトークンを消費しがちです。必要な項目に絞ってから、履歴に加えます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "arch-ctx-009",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "長いプロンプトの中ほどに置いた情報が、見落とされやすい。重要な事実を確実に参照させる配置はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "要点のまとめを先頭に置き、詳細は見出しを付けて整理する",
+    "why": "先頭と末尾の情報は、参照されやすい。"
+   },
+   {
+    "id": "b",
+    "text": "重要な事実を、中ほどに埋め込む",
+    "why": "見落とされやすい位置である。"
+   },
+   {
+    "id": "c",
+    "text": "重要な事実を、削除する",
+    "why": "参照できなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "すべての情報を、無作為に並べる",
+    "why": "見落としが、増える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "長い入力では、先頭と末尾の内容が確実に処理され、中ほどは抜けやすい傾向があります。重要な内容は先頭にまとめます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips",
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "arch-ctx-010",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "会話の一貫性を保つために、各リクエストで行うべきことはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "それまでの会話履歴(必要に応じて整理したもの)を、リクエストに含める",
+    "why": "API はステートレスで、履歴は毎回渡す。"
+   },
+   {
+    "id": "b",
+    "text": "最新のメッセージだけを送る",
+    "why": "経緯が、伝わらない。"
+   },
+   {
+    "id": "c",
+    "text": "履歴は、サーバーが保持している",
+    "why": "保持しない。"
+   },
+   {
+    "id": "d",
+    "text": "顧客の名前だけを送る",
+    "why": "経緯が、伝わらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "履歴を毎回渡すことで、Claude は経緯を踏まえて応答します。長くなった場合は、重要な事実を保ったまま整理します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/messages",
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "arch-ctx-011",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "ツールの障害が続き、エージェントが対応を進められない。人に引き継ぐときに、伝えるべき内容はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "顧客の要望、確認できた事実、試した操作と失敗の内容、残っている作業",
+    "why": "受け手が、続きからすぐ着手できる。"
+   },
+   {
+    "id": "b",
+    "text": "「システム障害です」の一言",
+    "why": "状況が、伝わらない。"
+   },
+   {
+    "id": "c",
+    "text": "何も伝えずに、会話を終える",
+    "why": "顧客が、放置される。"
+   },
+   {
+    "id": "d",
+    "text": "失敗したことは伏せて、成功したと伝える",
+    "why": "虚偽である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "進行できない場合は、状況を構造化して引き継ぎます。何が確認でき、何ができなかったかを明確にします。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "arch-ctx-012",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "初回解決率 80% の目標に対して、エージェントが「解決済み」とした案件が、本当に正しく解決されているかを確かめたい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "解決済みの案件から、種類ごとに無作為に抜き出して、人が確認する",
+    "why": "種類ごとの誤りの偏りを、検出できる。"
+   },
+   {
+    "id": "b",
+    "text": "エージェントの自己申告を、そのまま信じる",
+    "why": "誤りに、気付けない。"
+   },
+   {
+    "id": "c",
+    "text": "苦情が来た案件だけを、確認する",
+    "why": "表面化していない誤りを、見逃す。"
+   },
+   {
+    "id": "d",
+    "text": "返金の案件だけを、確認する",
+    "why": "他の種類の誤りを、見逃す。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "全体の数値は、種類ごとの弱点を隠します。層別の抜き取りによる確認を続けると、新しい誤りの傾向も見つかります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+   "https://platform.claude.com/docs/en/test-and-evaluate/define-success"
+  ]
+ },
+ {
+  "id": "arch-ctx-013",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "昨日の問い合わせの続きとして、顧客が再び連絡してきた。前回の会話で取得した注文の状態が、履歴に残っている。適切な扱いはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "注文の状態は変わっている可能性があるので、lookup_order で取り直す",
+    "why": "時間が経ったツールの結果は、古くなっている。"
+   },
+   {
+    "id": "b",
+    "text": "履歴に残っている状態を、そのまま使う",
+    "why": "古い情報で、案内することになる。"
+   },
+   {
+    "id": "c",
+    "text": "前回の履歴を、すべて捨てる",
+    "why": "経緯が、失われる。"
+   },
+   {
+    "id": "d",
+    "text": "顧客に、状態を尋ねる",
+    "why": "顧客は、正確な状態を知らないことがある。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "会話を再開するときは、経緯は引き継ぎつつ、状態を表すデータは取り直します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://code.claude.com/docs/en/agent-sdk/overview"
+  ]
+ },
+ {
+  "id": "arch-ctx-014",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "長い対応の途中で、会話を新しいコンテキストに切り替える。引き継ぐ内容として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "顧客の識別情報、確定した事実、行った対応、未解決の事項を、構造化した要約",
+    "why": "続きに必要な状態を、過不足なく渡す。"
+   },
+   {
+    "id": "b",
+    "text": "全履歴の、そのままの複製",
+    "why": "切り替える意味が、ない。"
+   },
+   {
+    "id": "c",
+    "text": "最後のメッセージだけ",
+    "why": "経緯が、伝わらない。"
+   },
+   {
+    "id": "d",
+    "text": "何も引き継がない",
+    "why": "最初から、やり直しになる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "要約には、金額や日付などの具体的な事実を、曖昧にせずに含めます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/compaction"
+  ]
+ },
+ {
+  "id": "arch-ctx-015",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "大きなコードベースの調査で、メインの会話を、検索結果やファイルの中身で埋めたくない。Claude Code で使うべきものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "調査用のサブエージェント(Explore)に任せ、要約を受け取る",
+    "why": "冗長な出力が、メインの会話に入らない。"
+   },
+   {
+    "id": "b",
+    "text": "すべてのファイルを、メインの会話で読む",
+    "why": "コンテキストが、埋まる。"
+   },
+   {
+    "id": "c",
+    "text": "調査を、省略する",
+    "why": "必要な理解が、得られない。"
+   },
+   {
+    "id": "d",
+    "text": "max_tokens を、増やす",
+    "why": "入力の圧迫は、解消しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "調査の詳細はサブエージェントに閉じ込め、メインの会話には結論だけを残します。",
+  "refs": [
+   "https://code.claude.com/docs/en/sub-agents",
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "arch-ctx-016",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "調査、設計、実装の 3 段階で進める。段階の切り替えで、コンテキストを保つための工夫はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各段階の終わりに、要点をまとめさせ、次の段階ではそれを前提にする",
+    "why": "詳細を持ち越さず、結論だけを引き継ぐ。"
+   },
+   {
+    "id": "b",
+    "text": "全段階のすべての出力を、残し続ける",
+    "why": "コンテキストが、埋まる。"
+   },
+   {
+    "id": "c",
+    "text": "段階ごとに、前の内容をすべて忘れさせる",
+    "why": "結論まで、失われる。"
+   },
+   {
+    "id": "d",
+    "text": "段階を、分けない",
+    "why": "注意が、分散する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "段階ごとの要約は、長い作業で文脈を保つ基本的な方法です。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/compaction"
+  ]
+ },
+ {
+  "id": "arch-ctx-017",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "数時間かかる移行作業の途中で、セッションが落ちた。最初からやり直さずに済むようにしておくべきことはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "進み具合(完了した項目、残りの項目、決定事項)を、ファイルに書き出しながら進めさせる",
+    "why": "再開するときに、そのファイルを読ませればよい。"
+   },
+   {
+    "id": "b",
+    "text": "何も残さない",
+    "why": "最初から、やり直しになる。"
+   },
+   {
+    "id": "c",
+    "text": "進み具合を、会話の中だけで管理する",
+    "why": "セッションと一緒に、失われる。"
+   },
+   {
+    "id": "d",
+    "text": "作業を、1 回の依頼に詰め込む",
+    "why": "失敗したときの損失が、大きい。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "長い作業では、状態を外部のファイルに残します。再開のときは、その内容をプロンプトに読み込みます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool"
+  ]
+ },
+ {
+  "id": "arch-ctx-018",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "作業の途中で、別のブランチに切り替えた。Claude が、切り替える前のファイルの内容を前提に、編集しようとする。適切な対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ブランチを切り替えたことを伝え、関係するファイルを読み直させる",
+    "why": "以前に読んだ内容は、古くなっている。"
+   },
+   {
+    "id": "b",
+    "text": "そのまま、続けさせる",
+    "why": "古い内容に基づく、誤った編集になる。"
+   },
+   {
+    "id": "c",
+    "text": "ブランチの切り替えを、禁止する",
+    "why": "開発の妨げになる。"
+   },
+   {
+    "id": "d",
+    "text": "すべてのファイルを、削除する",
+    "why": "破壊的である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "コンテキストにあるファイルの内容は、読んだ時点のものです。外部で変更があったときは、読み直させます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-ctx-019",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "2 つの信頼できる出典が、同じ指標について異なる数値を示している。レポートでの扱いとして適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "両方の数値を、それぞれの出典と合わせて示し、食い違いがあることを明記する",
+    "why": "一方を恣意的に選ばず、判断材料を残す。"
+   },
+   {
+    "id": "b",
+    "text": "大きい方の数値を採用する",
+    "why": "根拠のない選択である。"
+   },
+   {
+    "id": "c",
+    "text": "2 つの平均を計算して、1 つの数値として示す",
+    "why": "出典にない数値を作ることになる。"
+   },
+   {
+    "id": "d",
+    "text": "その指標に触れない",
+    "why": "重要な情報が欠ける。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "出典の食い違いは、隠さずに示します。調査の時期や定義の違いが原因のことも多いため、日付や条件も添えます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system"
+  ]
+ },
+ {
+  "id": "arch-ctx-020",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "市場規模の数値が、出典によって大きく違うように見える。調べると、片方は 3 年前の数値だった。構造化出力の設計として、取り違えを防ぐものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各主張に、出典の公開日やデータの対象時点を必ず含める",
+    "why": "時点が分かれば、違いを矛盾と誤解しない。"
+   },
+   {
+    "id": "b",
+    "text": "数値だけを集める",
+    "why": "時点の違いが分からない。"
+   },
+   {
+    "id": "c",
+    "text": "古い出典は、すべて捨てる",
+    "why": "推移を示す情報まで失われる。"
+   },
+   {
+    "id": "d",
+    "text": "新しい出典の数値で、古い出典を上書きする",
+    "why": "出典の内容を改変することになる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "時点の情報がないと、時期による違いが矛盾に見えます。日付を必須の項目にします。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ },
+ {
+  "id": "arch-ctx-021",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "最終レポートで、根拠の強さの違いを読者に伝えたい。統合の出力に含めるべきものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "確立した知見と、出典間で争いのある知見を分け、調べきれなかった範囲を明記する",
+    "why": "確からしさと、限界を示す。"
+   },
+   {
+    "id": "b",
+    "text": "すべての記述を、同じ確かさで書く",
+    "why": "根拠の差が伝わらない。"
+   },
+   {
+    "id": "c",
+    "text": "根拠の弱い記述を、黙って削る",
+    "why": "何が分かっていないかが伝わらない。"
+   },
+   {
+    "id": "d",
+    "text": "確かさの表示を、すべて省く",
+    "why": "読者が判断できない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "統合では、どの知見が十分に裏付けられ、どこに不足があるかを示します。調査できなかった出典がある場合は、その旨を書きます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ },
+ {
+  "id": "arch-ctx-022",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "文書分析のサブエージェントが、推論の経過をすべて含む長い報告を返し、統合のサブエージェントのコンテキストを圧迫する。改善策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "要点、出典、関連度を、構造化した形で返させる",
+    "why": "下流が必要とする情報に絞る。"
+   },
+   {
+    "id": "b",
+    "text": "報告を、さらに詳しくさせる",
+    "why": "圧迫が悪化する。"
+   },
+   {
+    "id": "c",
+    "text": "報告を、返させない",
+    "why": "結果が伝わらない。"
+   },
+   {
+    "id": "d",
+    "text": "統合のサブエージェントに、全文を 2 回読ませる",
+    "why": "圧迫が悪化する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "上流のエージェントは、下流のコンテキストの制約を考えて、出力を圧縮します。冗長な推論の経過は含めません。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "arch-ctx-023",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "多数のサブエージェントの結果を、統合のサブエージェントに渡す。重要な発見が見落とされないようにする渡し方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "主要な発見のまとめを先頭に置き、詳細は見出しで区切って続ける",
+    "why": "先頭の情報は、確実に参照される。"
+   },
+   {
+    "id": "b",
+    "text": "結果を、到着した順にそのまま連結する",
+    "why": "重要な発見が、中ほどに埋もれる。"
+   },
+   {
+    "id": "c",
+    "text": "重要な発見を、最後の段落の途中に入れる",
+    "why": "見落とされやすい。"
+   },
+   {
+    "id": "d",
+    "text": "結果を、無作為に並べる",
+    "why": "見落としが増える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "長い入力では、中ほどの情報が抜けやすくなります。要点を先頭にまとめます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips",
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "arch-ctx-024",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "4 つのサブエージェントのうち 1 つが失敗し、再試行でも回復しなかった。コーディネーターの対応として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "得られた 3 つの結果で進め、欠けた範囲をレポートに明記する",
+    "why": "部分的な成果を活かし、限界を正直に示す。"
+   },
+   {
+    "id": "b",
+    "text": "調査全体を、失敗として破棄する",
+    "why": "得られた成果まで失われる。"
+   },
+   {
+    "id": "c",
+    "text": "欠けた範囲を、推測で埋める",
+    "why": "事実に基づかない記述になる。"
+   },
+   {
+    "id": "d",
+    "text": "欠けたことに触れず、完全なレポートとして出す",
+    "why": "読者を誤解させる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "部分的な失敗では、成果を活かしつつ、欠落を明示します。黙って穴を残すことも、全体を捨てることも避けます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-ctx-025",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "調査で分かった重要な事実(主要なクラス、データの流れ)を、コンテキストの整理の後も失わないようにしたい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "メモ用のファイルに書き出させ、後の質問では、それを参照させる",
+    "why": "ファイルに残した内容は、整理の後も残る。"
+   },
+   {
+    "id": "b",
+    "text": "会話の中で、覚えておくよう頼む",
+    "why": "整理で、失われうる。"
+   },
+   {
+    "id": "c",
+    "text": "同じ調査を、毎回やり直す",
+    "why": "時間の無駄である。"
+   },
+   {
+    "id": "d",
+    "text": "事実を、ツールの名前に埋め込む",
+    "why": "保存の方法ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "発見の記録を、コンテキストの外に持つことは、長い作業の基本です。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool"
+  ]
+ },
+ {
+  "id": "arch-ctx-026",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "複数のエージェントが、数時間かけて調査している。途中でプロセスが落ちても、続きから再開できるようにする設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各エージェントが、状態を決まった場所に書き出し、コーディネーターが、再開のときに一覧を読み込む",
+    "why": "状態を外に持てば、再開できる。"
+   },
+   {
+    "id": "b",
+    "text": "状態を、メモリの中だけに持つ",
+    "why": "プロセスと一緒に、失われる。"
+   },
+   {
+    "id": "c",
+    "text": "落ちたら、最初からやり直す",
+    "why": "時間と費用が、無駄になる。"
+   },
+   {
+    "id": "d",
+    "text": "落ちないことを、前提にする",
+    "why": "障害に備えられない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "長時間の処理では、状態の書き出しと、再開の手順を、最初から設計します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-ctx-027",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "次のうち、コンテキストの劣化を示す兆候として、最も当てはまるものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "以前に特定した具体的な名前や事実の代わりに、一般論での回答が増える",
+    "why": "具体的な情報への参照が、弱くなっている。"
+   },
+   {
+    "id": "b",
+    "text": "応答が、速くなる",
+    "why": "劣化の兆候ではない。"
+   },
+   {
+    "id": "c",
+    "text": "ツールの呼び出しが、成功する",
+    "why": "劣化の兆候ではない。"
+   },
+   {
+    "id": "d",
+    "text": "テストが、通る",
+    "why": "劣化の兆候ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "回答が一般論に寄る、以前の発見と矛盾する、といった変化は、コンテキストを整理する合図です。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "arch-ctx-028",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "フィールドごとに、モデルに信頼度を出力させている。この信頼度を、人による確認の振り分けに使う前に、行うべきことはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "正解の付いた検証用のデータで、信頼度と実際の正答率の関係を確かめ、しきい値を決める",
+    "why": "較正していない信頼度は、当てにならない。"
+   },
+   {
+    "id": "b",
+    "text": "信頼度を、そのまま信じる",
+    "why": "実際の正しさと、一致しないことがある。"
+   },
+   {
+    "id": "c",
+    "text": "信頼度を、使わない",
+    "why": "振り分けの手がかりが失われる。"
+   },
+   {
+    "id": "d",
+    "text": "信頼度を、すべて最大にする",
+    "why": "意味がなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "モデルの自己申告は、検証して初めて使えます。検証用のデータで、しきい値を決めます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ },
+ {
+  "id": "arch-ctx-029",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "人による確認の対象を、限られた人数で回したい。優先して回すべきものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "信頼度の低い抽出と、原本が曖昧、または矛盾している抽出",
+    "why": "誤りの可能性が高いものに、人手を集中する。"
+   },
+   {
+    "id": "b",
+    "text": "すべての抽出を、同じ割合で",
+    "why": "人手が足りない。"
+   },
+   {
+    "id": "c",
+    "text": "信頼度の高い抽出だけ",
+    "why": "誤りの多い部分を、見逃す。"
+   },
+   {
+    "id": "d",
+    "text": "無作為に選んだものだけ",
+    "why": "誤りの多い部分に、集中できない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "確認の人手は、誤りの可能性が高い部分に振り向けます。信頼度の高い部分も、抜き取りで監視を続けます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ },
+ {
+  "id": "arch-ctx-030",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "300 ページの契約書が、1 回のリクエストに収まらない。抽出の進め方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "章などの単位で分割して、部分ごとに抽出し、結果を統合する。分割の境界をまたぐ情報に注意する",
+    "why": "入力を黙って切り詰めず、分割して処理する。"
+   },
+   {
+    "id": "b",
+    "text": "先頭の 100 ページだけを処理し、残りは無視する",
+    "why": "情報が失われる。"
+   },
+   {
+    "id": "c",
+    "text": "文書を、画像 1 枚に縮小する",
+    "why": "読めなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "処理を、あきらめる",
+    "why": "分割すれば、処理できる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "長い文書は、分割して処理します。境界をまたぐ条項があるため、分割の単位と、統合の方法を設計します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+   "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+  ]
  }
 ]

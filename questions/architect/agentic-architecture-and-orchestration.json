@@ -452,5 +452,1588 @@
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
   ]
+ },
+ {
+  "id": "arch-agent-013",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "エージェントのループを自前で実装している。ループを続けるか終えるかの判定として、正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "応答の stop_reason を見て、\"tool_use\" なら続け、\"end_turn\" なら終える",
+    "why": "停止の理由は、API が明示的に返す。"
+   },
+   {
+    "id": "b",
+    "text": "応答の文章に「完了しました」が含まれるかどうかで判定する",
+    "why": "文章の表現は一定でなく、誤判定する。"
+   },
+   {
+    "id": "c",
+    "text": "応答にテキストが含まれていたら、終える",
+    "why": "テキストとツール呼び出しは、同じ応答に同居しうる。"
+   },
+   {
+    "id": "d",
+    "text": "常に 5 回で打ち切る",
+    "why": "必要な回数は、案件によって異なる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ループの制御は stop_reason で行います。自然言語の解析や、テキストの有無による判定は、誤った終了や継続を招きます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+   "https://code.claude.com/docs/en/agent-sdk/overview"
+  ]
+ },
+ {
+  "id": "arch-agent-014",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "エージェントのループに「最大 3 回で終了」という上限を、主な終了条件として入れたところ、複雑な案件が途中で終わるようになった。上限の位置づけとして適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "終了は stop_reason で判定し、反復の上限は、暴走を防ぐための余裕を持った安全装置として使う",
+    "why": "上限は、通常の終了条件ではない。"
+   },
+   {
+    "id": "b",
+    "text": "上限を、1 回に下げる",
+    "why": "解決できる案件が、さらに減る。"
+   },
+   {
+    "id": "c",
+    "text": "上限を、外すだけにする",
+    "why": "暴走を止める手段が、なくなる。"
+   },
+   {
+    "id": "d",
+    "text": "上限に達したら、成功として顧客に返す",
+    "why": "未完了の対応を、完了と偽ることになる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "反復の上限は必要ですが、通常の完了は Claude 自身の判断(end_turn)に任せます。上限に達した場合は、未完了として引き継ぎます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ]
+ },
+ {
+  "id": "arch-agent-015",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "lookup_order の結果を受け取った後、Claude が次の行動を判断できるようにするために、必要なことはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールの結果を会話履歴に追加し、それまでの履歴と合わせて次のリクエストで送る",
+    "why": "Claude は、履歴にある結果を見て、次の手を決める。"
+   },
+   {
+    "id": "b",
+    "text": "結果は、アプリケーションが保持するだけでよい",
+    "why": "送らなければ、Claude には見えない。"
+   },
+   {
+    "id": "c",
+    "text": "結果を、次回のシステムプロンプトに上書きする",
+    "why": "経緯が失われ、キャッシュも効かなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "結果の要点だけを、口頭で顧客に伝える",
+    "why": "Claude の判断材料に、ならない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エージェントのループでは、ツールの結果を履歴に積み上げながら進みます。これにより、Claude は状況に応じて次のツールを選べます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-016",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "各 MCP ツールが返す日時の形式が、Unix 時刻、ISO 8601、文字列の日付と、ばらばらである。エージェントが日付の比較を誤る。対策として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールの結果を受け取った直後に走るフック(PostToolUse)で、形式を統一してからモデルに渡す",
+    "why": "モデルが処理する前に、決定的に正規化できる。"
+   },
+   {
+    "id": "b",
+    "text": "システムプロンプトに、各ツールの形式を説明する",
+    "why": "解釈の負担と、誤りの可能性が残る。"
+   },
+   {
+    "id": "c",
+    "text": "顧客に、日付を言い直してもらう",
+    "why": "顧客の入力の問題ではない。"
+   },
+   {
+    "id": "d",
+    "text": "日付を使う処理を、やめる",
+    "why": "業務が成り立たない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "フックは、ツールの呼び出しを止めるだけでなく、結果を変換する用途にも使えます。形式の統一のような機械的な処理は、コードで行います。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview",
+   "https://code.claude.com/docs/en/hooks"
+  ]
+ },
+ {
+  "id": "arch-agent-017",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "顧客が最初のメッセージで「人の担当者と話したい」と明言した。問題自体は、エージェントで解決できそうに見える。適切な対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "すぐに escalate_to_human で引き継ぐ",
+    "why": "顧客の明確な希望は、尊重する。"
+   },
+   {
+    "id": "b",
+    "text": "先に、自分で調査して解決を試みる",
+    "why": "希望を無視することになる。"
+   },
+   {
+    "id": "c",
+    "text": "人に代わる理由を、詳しく問いただす",
+    "why": "顧客に、不要な負担をかける。"
+   },
+   {
+    "id": "d",
+    "text": "「私が対応できます」と、繰り返し説得する",
+    "why": "希望を無視することになる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "顧客が人の対応を明示的に求めた場合は、調査を挟まずに引き継ぎます。不満を述べているだけの場合は、まず解決を申し出て、重ねて求められたら引き継ぎます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-018",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "顧客が「他店の方が安かったので、差額を返してほしい」と求めている。自社の規程には、自社サイト内の価格調整の定めしかない。適切な対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "規程に定めのない要求なので、人の担当者に引き継ぐ",
+    "why": "規程の空白を、エージェントが独自の判断で埋めない。"
+   },
+   {
+    "id": "b",
+    "text": "近い規程を当てはめて、差額を返金する",
+    "why": "定めのない対応を、勝手に作ることになる。"
+   },
+   {
+    "id": "c",
+    "text": "規程にないので、理由を告げずに断る",
+    "why": "例外の判断は、人が行うべきである。"
+   },
+   {
+    "id": "d",
+    "text": "他店の価格を調べて、妥当なら返金する",
+    "why": "権限のない判断である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "規程が曖昧な場合や、定めがない場合は、引き継ぎの対象です。エージェントは、定められた範囲で確実に動くことを優先します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-019",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "顧客が強い不満を述べているが、問題は標準的な返品で、エージェントが解決できる。人への引き継ぎは求めていない。適切な対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "不満を受け止めたうえで、解決の手順を進める。重ねて人の対応を求められたら、引き継ぐ",
+    "why": "感情だけを理由に、解決できる案件を手放さない。"
+   },
+   {
+    "id": "b",
+    "text": "不満を検知したら、即座に引き継ぐ",
+    "why": "解決できる案件まで、引き継ぐことになる。"
+   },
+   {
+    "id": "c",
+    "text": "不満には触れず、事務的に処理する",
+    "why": "顧客の状況への配慮を、欠く。"
+   },
+   {
+    "id": "d",
+    "text": "対応を打ち切る",
+    "why": "問題が、解決されない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "顧客の感情は、案件の複雑さを表しません。引き継ぎは、顧客の希望、規程の空白、進行不能といった条件で判断します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-020",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "get_customer を名前で検索したところ、同姓同名の顧客が 3 人見つかった。適切な対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "メールアドレスや注文番号など、追加の識別情報を顧客に尋ねる",
+    "why": "推測で選ぶと、他人の情報を扱う危険がある。"
+   },
+   {
+    "id": "b",
+    "text": "最も最近登録された顧客を選ぶ",
+    "why": "根拠のない推測である。"
+   },
+   {
+    "id": "c",
+    "text": "3 人全員の注文を調べて、それらしいものを選ぶ",
+    "why": "他人の情報を、不必要に扱うことになる。"
+   },
+   {
+    "id": "d",
+    "text": "一覧を顧客に見せて、選んでもらう",
+    "why": "他人の個人情報を、開示することになる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "本人の特定が曖昧なときは、追加の情報を求めます。もっともらしい候補を、発見的な規則で選んではいけません。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-021",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "次のうち、プロンプトでの指示ではなく、プログラムによる強制が特に必要なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "返金の前の本人確認のように、守られなかった場合に金銭的な損害が生じる手順",
+    "why": "失敗が許されない手順は、確率的な指示に任せない。"
+   },
+   {
+    "id": "b",
+    "text": "回答の口調を、丁寧にすること",
+    "why": "多少のぶれは、許容できる。"
+   },
+   {
+    "id": "c",
+    "text": "挨拶の言い回し",
+    "why": "多少のぶれは、許容できる。"
+   },
+   {
+    "id": "d",
+    "text": "回答の長さの目安",
+    "why": "多少のぶれは、許容できる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "指示による制御は柔軟ですが、確実ではありません。金銭、権限、法令に関わる手順は、フックや前提条件で強制します。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview",
+   "https://code.claude.com/docs/en/hooks"
+  ]
+ },
+ {
+  "id": "arch-agent-022",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "互いに関係のない 3 つの機能を、同時に進めたい。Claude Code の使い方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Git のワークツリーで作業の場所を分け、それぞれで別のセッションを動かす",
+    "why": "ファイルの変更が、互いに衝突しない。"
+   },
+   {
+    "id": "b",
+    "text": "1 つのセッションで、3 つを交互に進める",
+    "why": "文脈が、混ざる。"
+   },
+   {
+    "id": "c",
+    "text": "同じディレクトリで、3 つのセッションを同時に動かす",
+    "why": "変更が、衝突する。"
+   },
+   {
+    "id": "d",
+    "text": "1 つずつ、順番にしか進められない",
+    "why": "並行して、進められる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ワークツリーは、同じリポジトリの別々の作業用ディレクトリです。独立した作業を、並行して進められます。",
+  "refs": [
+   "https://code.claude.com/docs/en/common-workflows"
+  ]
+ },
+ {
+  "id": "arch-agent-023",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "200 個のファイルに、同じ種類の機械的な書き換えを行う。進め方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "対象の一覧を作り、ファイルごとに非対話の実行を繰り返すスクリプトで処理する。まず数件で試す",
+    "why": "独立した小さな作業に分け、検証しながら広げる。"
+   },
+   {
+    "id": "b",
+    "text": "200 個を、1 回の依頼で、1 つの会話に詰め込む",
+    "why": "コンテキストがあふれ、後半の質が落ちる。"
+   },
+   {
+    "id": "c",
+    "text": "手作業で、すべて書き換える",
+    "why": "自動化の利点が、ない。"
+   },
+   {
+    "id": "d",
+    "text": "試さずに、全件を一度に実行する",
+    "why": "誤りが、全件に及ぶ。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "大量の定型作業は、分割して扇状に展開します。少数で試してプロンプトを直してから、全体に適用します。",
+  "refs": [
+   "https://code.claude.com/docs/en/headless",
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-agent-024",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "「レガシーなモジュールにテストを追加する」という、範囲の決まっていない作業を任せる。進め方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "まず構造を把握し、影響の大きい箇所を特定して優先順位を付け、分かったことに応じて計画を見直しながら進める",
+    "why": "発見に応じて、計画を調整する。"
+   },
+   {
+    "id": "b",
+    "text": "最初に決めた固定の手順を、何があっても変えない",
+    "why": "発見した依存関係に、対応できない。"
+   },
+   {
+    "id": "c",
+    "text": "アルファベット順に、全ファイルへ機械的にテストを足す",
+    "why": "重要度を、反映しない。"
+   },
+   {
+    "id": "d",
+    "text": "構造を調べずに、書き始める",
+    "why": "的外れなテストになる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "手順の決まった作業には、固定の連鎖が向きます。探索的な作業には、途中の結果に応じて分解を変える進め方が向きます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://code.claude.com/docs/en/common-workflows"
+  ]
+ },
+ {
+  "id": "arch-agent-025",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "Claude Code に実装とレビューの両方を任せる体制を作る。構成として効果的なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "実装するセッションと、レビューするセッション(またはサブエージェント)を分け、レビュー側には実装の経緯を渡さない",
+    "why": "独立した視点が、見落としを見つけやすい。"
+   },
+   {
+    "id": "b",
+    "text": "同じセッションで、実装の直後に自己レビューさせる",
+    "why": "実装時の前提を、引きずる。"
+   },
+   {
+    "id": "c",
+    "text": "レビューは、行わない",
+    "why": "問題が、残る。"
+   },
+   {
+    "id": "d",
+    "text": "レビュー側に、実装側の思考の記録をすべて渡す",
+    "why": "同じ前提に、引きずられる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "生成と検証の役割を分けると、品質が上がります。レビュー側には、成果物と基準だけを渡します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/claude-code-best-practices",
+   "https://code.claude.com/docs/en/sub-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-026",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "コーディネーターがサブエージェントを起動しようとしても、起動できない。コーディネーターに許可したツールは Read と WebSearch だけである。原因はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "サブエージェントを起動するためのツール(Task)が、許可したツールに含まれていない",
+    "why": "サブエージェントは、専用のツールを通じて起動する。"
+   },
+   {
+    "id": "b",
+    "text": "サブエージェントの数が多すぎる",
+    "why": "起動そのものができていない。"
+   },
+   {
+    "id": "c",
+    "text": "WebSearch を許可していることが原因である",
+    "why": "関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "サブエージェントは、自動的に起動するので、設定は不要である",
+    "why": "起動のためのツールが必要である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Agent SDK では、コーディネーターがサブエージェントを起動するためのツールを使えるようにしておく必要があります。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview",
+   "https://code.claude.com/docs/en/sub-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-027",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "サブエージェントを定義するときに設定する項目として、適切な組み合わせはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "いつ使うかを示す説明、役割を定めるシステムプロンプト、使えるツールの範囲",
+    "why": "説明は選択の手がかりに、プロンプトとツールは役割の境界になる。"
+   },
+   {
+    "id": "b",
+    "text": "GPU の種類とメモリの量",
+    "why": "設定する項目ではない。"
+   },
+   {
+    "id": "c",
+    "text": "コーディネーターの会話履歴の全文",
+    "why": "定義に含めるものではない。"
+   },
+   {
+    "id": "d",
+    "text": "利用者のパスワード",
+    "why": "含めてはならない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "サブエージェントは、役割ごとに説明、システムプロンプト、ツールの制限を持ちます。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview",
+   "https://code.claude.com/docs/en/sub-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-028",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "「ある企業の設立年を教えて」という単純な質問でも、コーディネーターが 4 つのサブエージェントをすべて起動し、時間と費用がかかる。改善の方向はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "依頼の複雑さを見て、必要なサブエージェントだけを選ぶ(単純なら自分で答える)",
+    "why": "労力は、依頼の難しさに合わせる。"
+   },
+   {
+    "id": "b",
+    "text": "常に全サブエージェントを通す設計を維持する",
+    "why": "単純な依頼に過剰である。"
+   },
+   {
+    "id": "c",
+    "text": "サブエージェントを、さらに増やす",
+    "why": "過剰さが増す。"
+   },
+   {
+    "id": "d",
+    "text": "単純な質問を、受け付けない",
+    "why": "利用者に不便である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "コーディネーターは、依頼を分析して、どのサブエージェントを使うかを動的に決めます。固定の全段階を毎回通す必要はありません。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-029",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "統合の結果を見ると、あるサブトピックの根拠が薄い。コーディネーターの動きとして適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "不足している点を特定し、その点に絞った追加の調査を再度割り振ってから、統合し直す",
+    "why": "不足を見つけて、狙いを絞って補う。"
+   },
+   {
+    "id": "b",
+    "text": "不足には触れず、そのまま最終レポートにする",
+    "why": "弱い根拠が、そのまま残る。"
+   },
+   {
+    "id": "c",
+    "text": "調査全体を、最初からやり直す",
+    "why": "十分な部分まで、繰り返すことになる。"
+   },
+   {
+    "id": "d",
+    "text": "根拠を、推測で補う",
+    "why": "事実に基づかない記述になる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "コーディネーターは、統合の結果を評価し、不足があれば的を絞って再度委任します。この反復が、網羅性を高めます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system"
+  ]
+ },
+ {
+  "id": "arch-agent-030",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "2 つの検索サブエージェントが、ほぼ同じ内容を調べて、同じ出典を返してきた。原因と対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "割り振りの範囲が重なっている。コーディネーターが、各サブエージェントの担当範囲を明確に分ける",
+    "why": "境界の曖昧な指示が、重複を生む。"
+   },
+   {
+    "id": "b",
+    "text": "サブエージェントのモデルが同じだからである",
+    "why": "重複の原因は、指示の範囲である。"
+   },
+   {
+    "id": "c",
+    "text": "サブエージェントが、互いに相談しているからである",
+    "why": "サブエージェントは、直接やり取りしない。"
+   },
+   {
+    "id": "d",
+    "text": "重複は避けられないので、対策はない",
+    "why": "指示で防げる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "委任のときは、担当する範囲と、担当しない範囲を伝えます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system"
+  ]
+ },
+ {
+  "id": "arch-agent-031",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "結果の見通しが立たない、探索的な調査を行う。タスクの分解の方法として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "途中で分かったことに応じて、次に調べるサブタスクを決めていく",
+    "why": "探索的な作業は、発見に応じて計画を変える。"
+   },
+   {
+    "id": "b",
+    "text": "最初に決めた 5 つの手順を、結果に関係なく順に実行する",
+    "why": "途中の発見を、活かせない。"
+   },
+   {
+    "id": "c",
+    "text": "分解せず、1 回の呼び出しで済ませる",
+    "why": "幅の広い調査には足りない。"
+   },
+   {
+    "id": "d",
+    "text": "無作為に手順を選ぶ",
+    "why": "根拠がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "手順が予測できる作業には固定の連鎖が、予測できない作業には動的な分解が向きます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://www.anthropic.com/engineering/multi-agent-research-system"
+  ]
+ },
+ {
+  "id": "arch-agent-032",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "統合のサブエージェントは、日付や数値のような単純な事実の確認のたびに、コーディネーター経由で検索を依頼しており、往復が多い。権限を広げすぎずに改善する方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "単純な事実確認だけができる、範囲を絞ったツールを統合のサブエージェントに与え、複雑な調査は引き続きコーディネーター経由にする",
+    "why": "頻度の高い単純な必要だけを、最小の権限で満たす。"
+   },
+   {
+    "id": "b",
+    "text": "統合のサブエージェントに、全ツールを与える",
+    "why": "役割の外の行動が増える。"
+   },
+   {
+    "id": "c",
+    "text": "事実確認を、やめる",
+    "why": "誤りが残る。"
+   },
+   {
+    "id": "d",
+    "text": "コーディネーターを、廃止する",
+    "why": "全体の統制が失われる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールは役割に合わせて絞りますが、頻繁に必要になる単純な操作には、範囲を限定したツールを用意すると、往復を減らせます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-033",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "同じ調査結果から、構成の異なる 2 通りのレポート案を作って比べたい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "調査を終えた時点のセッションを分岐させ、それぞれで別の構成を試す",
+    "why": "共通の調査結果を出発点に、独立して試せる。"
+   },
+   {
+    "id": "b",
+    "text": "調査を 2 回、最初から行う",
+    "why": "同じ調査を、繰り返すことになる。"
+   },
+   {
+    "id": "c",
+    "text": "1 つのセッションで、2 つの案を混ぜて書く",
+    "why": "案が混ざる。"
+   },
+   {
+    "id": "d",
+    "text": "片方だけを作る",
+    "why": "比べられない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "セッションの分岐は、共通の基盤から異なる方針を試すときに使います。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview"
+  ]
+ },
+ {
+  "id": "arch-agent-034",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "次のうち、マルチエージェントにせず、単一のエージェントで足りる依頼はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "1 つの文書の内容について、短い質問に答える",
+    "why": "範囲が狭く、並列化する部分がない。"
+   },
+   {
+    "id": "b",
+    "text": "10 の業界について、それぞれの動向を並行して調べる",
+    "why": "並列化の効果が大きい。"
+   },
+   {
+    "id": "c",
+    "text": "多数の出典を突き合わせる、包括的な調査",
+    "why": "情報量が多く、分担が有効である。"
+   },
+   {
+    "id": "d",
+    "text": "独立した多数の文書を、それぞれ分析する",
+    "why": "並列化の効果が大きい。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "マルチエージェントは、費用と複雑さを伴います。範囲の狭い依頼には、単純な構成を使います。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-035",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "レポートに誤りがあったとき、どのサブエージェントの、どの段階で生じたかを追えない。設計の改善として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "コーディネーターを通るすべての委任と結果を、記録して追跡できるようにする",
+    "why": "中央を通る構成は、流れを 1 か所で記録できる。"
+   },
+   {
+    "id": "b",
+    "text": "サブエージェントどうしを、直接やり取りさせる",
+    "why": "流れが、さらに追いにくくなる。"
+   },
+   {
+    "id": "c",
+    "text": "記録を取らない",
+    "why": "原因を調べられない。"
+   },
+   {
+    "id": "d",
+    "text": "最終レポートだけを保存する",
+    "why": "途中の経過が分からない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "マルチエージェントの問題は、段階ごとの入出力を見ないと特定できません。委任の内容と結果を記録します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system"
+  ]
+ },
+ {
+  "id": "arch-agent-036",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "コーディネーターが、サブエージェントに「次の 12 の手順を、この順に実行せよ」と細かく指示している。サブエージェントは、検索結果が想定と違っても、手順を機械的に進める。改善策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "手順の代わりに、調査の目的と、満たすべき品質の基準を伝える",
+    "why": "目的が分かれば、状況に応じて手段を変えられる。"
+   },
+   {
+    "id": "b",
+    "text": "手順を、30 に増やす",
+    "why": "硬直さが増す。"
+   },
+   {
+    "id": "c",
+    "text": "手順を、すべて大文字で書く",
+    "why": "改善しない。"
+   },
+   {
+    "id": "d",
+    "text": "サブエージェントに、何も伝えない",
+    "why": "何をすべきか、分からない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "サブエージェントへの指示は、手順の列挙より、目的と基準を示す方が、状況への適応を引き出します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ]
+ },
+ {
+  "id": "arch-agent-037",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "関数 parseConfig が、いくつかのラッパーモジュールから別名で再エクスポートされている。利用箇所を漏れなく調べる手順として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "まず、再エクスポートされている名前をすべて特定し、それぞれの名前でコードベース全体を検索する",
+    "why": "別名での利用を、取りこぼさない。"
+   },
+   {
+    "id": "b",
+    "text": "元の関数名だけで、検索する",
+    "why": "別名での利用が漏れる。"
+   },
+   {
+    "id": "c",
+    "text": "定義のあるファイルだけを読む",
+    "why": "利用箇所は分からない。"
+   },
+   {
+    "id": "d",
+    "text": "利用箇所は、推測する",
+    "why": "裏付けがない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ラッパーを経由する利用は、名前を変えて現れます。エクスポートされた名前を洗い出してから検索します。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview",
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-038",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "エージェントが rm -rf のような破壊的なコマンドを実行しないことを、確実に保証したい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "コマンドの実行前に走るフックで、危険なパターンを検査して拒否する",
+    "why": "コードによる検査は、必ず働く。"
+   },
+   {
+    "id": "b",
+    "text": "システムプロンプトに、「危険なコマンドを実行しないこと」と書く",
+    "why": "保証にはならない。"
+   },
+   {
+    "id": "c",
+    "text": "エージェントを、信頼する",
+    "why": "保証にはならない。"
+   },
+   {
+    "id": "d",
+    "text": "実行の後で、ログを確認する",
+    "why": "実行されてからでは遅い。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "破壊的な操作の防止は、フックや権限の設定で強制します。隔離された環境での実行も、併用します。",
+  "refs": [
+   "https://code.claude.com/docs/en/hooks",
+   "https://code.claude.com/docs/en/permissions"
+  ]
+ },
+ {
+  "id": "arch-agent-039",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "互いに独立した 4 つのモジュール(認証、課金、通知、検索)の構造を、それぞれ調べる。時間を短くし、メインのコンテキストも保つ方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "モジュールごとのサブエージェントを、並列に起動する",
+    "why": "独立した調査を同時に進め、詳細を分離できる。"
+   },
+   {
+    "id": "b",
+    "text": "メインのエージェントが、順番に全部を読む",
+    "why": "時間がかかり、コンテキストも埋まる。"
+   },
+   {
+    "id": "c",
+    "text": "1 つのサブエージェントに、4 つを順に調べさせる",
+    "why": "並列にならない。"
+   },
+   {
+    "id": "d",
+    "text": "調査を省いて、推測する",
+    "why": "裏付けがない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "独立した調査は、並列のサブエージェントに向きます。各サブエージェントは、要約だけを返します。",
+  "refs": [
+   "https://code.claude.com/docs/en/sub-agents",
+   "https://www.anthropic.com/engineering/multi-agent-research-system"
+  ]
+ },
+ {
+  "id": "arch-agent-040",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "エージェントのツールの使い方について、「この質問には、必ずこの順でツールを呼ぶ」という決まった分岐を、コードで組んだ。想定外の質問に対応できない。エージェントらしい設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "状況を見て、どのツールを呼ぶかをモデルに判断させる(必要な制約だけを、コードで強制する)",
+    "why": "柔軟さは、モデルの判断から得られる。"
+   },
+   {
+    "id": "b",
+    "text": "分岐を、さらに細かく増やす",
+    "why": "想定外の質問は、残り続ける。"
+   },
+   {
+    "id": "c",
+    "text": "ツールを、すべて外す",
+    "why": "作業ができない。"
+   },
+   {
+    "id": "d",
+    "text": "想定外の質問は、すべて断る",
+    "why": "利用者に不便である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エージェントは、文脈に基づいてツールを選びます。固定の順序が必要なのは、業務上の制約がある部分だけです。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-041",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "ビルドのコマンドが、数千行のログを返し、毎回そのすべてがコンテキストに入る。必要なのは、エラーの行だけである。エージェントの側の対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールの結果を受け取った後のフックで、必要な部分だけに絞ってからモデルに渡す",
+    "why": "不要な出力を、機械的に取り除ける。"
+   },
+   {
+    "id": "b",
+    "text": "ログを、すべて残す",
+    "why": "コンテキストが埋まる。"
+   },
+   {
+    "id": "c",
+    "text": "ビルドを、実行しない",
+    "why": "確認ができない。"
+   },
+   {
+    "id": "d",
+    "text": "モデルに、「ログを読まないこと」と指示する",
+    "why": "コンテキストには、すでに入っている。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "冗長なツール出力は、モデルに渡す前に絞ります。コマンドの側で、出力を減らすオプションを使う方法もあります。",
+  "refs": [
+   "https://code.claude.com/docs/en/hooks",
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-042",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "「このレガシーシステムを理解して、文書化して」という大きな依頼を受けた。最初の一歩として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "入口となる箇所と、全体の構成を把握し、そこから調べる範囲の計画を立てる",
+    "why": "全体像をつかんでから、詳細に進む。"
+   },
+   {
+    "id": "b",
+    "text": "最初のファイルから、順に全部読む",
+    "why": "重要度に関係なく、コンテキストを使う。"
+   },
+   {
+    "id": "c",
+    "text": "すぐに、文書を書き始める",
+    "why": "理解が伴わない。"
+   },
+   {
+    "id": "d",
+    "text": "依頼を、断る",
+    "why": "分解すれば進められる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "大きな依頼は、構造の把握、重点の特定、計画の順に進めます。計画は、分かったことに応じて見直します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://code.claude.com/docs/en/common-workflows"
+  ]
+ },
+ {
+  "id": "arch-agent-043",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "エージェントが、定型コードの生成の後に、必ず型検査を通すようにしたい。型検査に失敗したら、直させたい。構成として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "生成の後に型検査を実行し、失敗の内容をエージェントに返して、修正させるループにする",
+    "why": "実際の結果が、修正の手がかりになる。"
+   },
+   {
+    "id": "b",
+    "text": "型検査は、行わない",
+    "why": "誤りが残る。"
+   },
+   {
+    "id": "c",
+    "text": "「型エラーを出さないこと」と指示するだけにする",
+    "why": "確かめる手段がない。"
+   },
+   {
+    "id": "d",
+    "text": "失敗したら、成果物を黙って捨てる",
+    "why": "修正の機会がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エージェントは、環境からのフィードバックで自分の成果を直せます。検査の結果を、そのまま返します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-agent-044",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "誤検知を減らすために、指摘を投稿する前に、もう一段階を入れたい。構成として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "別の実行で、各指摘が実際のコードに照らして正しいかを検証し、通ったものだけを投稿する",
+    "why": "独立した検証が、誤検知を除く。"
+   },
+   {
+    "id": "b",
+    "text": "同じ実行に、「自信はあるか」と尋ねる",
+    "why": "自己申告は、当てにならない。"
+   },
+   {
+    "id": "c",
+    "text": "指摘を、無作為に半分捨てる",
+    "why": "正しい指摘も失われる。"
+   },
+   {
+    "id": "d",
+    "text": "検証せずに、すべて投稿する",
+    "why": "現状のままである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "検証の段階を分けると、精度が上がります。検証の側には、指摘と該当のコードだけを渡します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-agent-045",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "大きなプルリクエストのレビューに、時間がかかりすぎる。ファイル単位のレビューは、互いに独立している。短縮する方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ファイル単位のレビューを並列に実行し、その後で、全体を見る統合のレビューを行う",
+    "why": "独立した部分は、同時に進められる。"
+   },
+   {
+    "id": "b",
+    "text": "ファイルを、1 つずつ直列にレビューする",
+    "why": "時間がかかる。"
+   },
+   {
+    "id": "c",
+    "text": "レビューの対象を、半分にする",
+    "why": "残りがレビューされない。"
+   },
+   {
+    "id": "d",
+    "text": "プルリクエストを、禁止する",
+    "why": "開発ができない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "独立した作業の並列化は、時間を短縮します。ファイルをまたぐ問題は、別の段階で確認します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-046",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "テストの生成を、1 回の依頼で行うと、重要でない箇所のテストばかりになる。進め方の改善はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "まず、検証が不足している重要な箇所を分析させ、その結果をもとに、テストを生成させる",
+    "why": "分析と生成を分けると、重点が定まる。"
+   },
+   {
+    "id": "b",
+    "text": "依頼を、短くする",
+    "why": "重点は定まらない。"
+   },
+   {
+    "id": "c",
+    "text": "テストの数を、増やさせる",
+    "why": "重要でないテストが増える。"
+   },
+   {
+    "id": "d",
+    "text": "対象を、無作為に選ばせる",
+    "why": "重点は定まらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "段階を分けると、各段階の質が上がります。分析の結果は、人が確認する機会にもなります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts",
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-047",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "自動レビューの結果の扱いとして、適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "指摘はコメントとして投稿し、マージの判断は人が行う",
+    "why": "自動の判定を補助として使い、最終判断は人に残す。"
+   },
+   {
+    "id": "b",
+    "text": "指摘がなければ、自動でマージする",
+    "why": "見落としが、そのまま入る。"
+   },
+   {
+    "id": "c",
+    "text": "指摘があれば、プルリクエストを自動で閉じる",
+    "why": "誤検知で、作業が失われる。"
+   },
+   {
+    "id": "d",
+    "text": "指摘を、開発者に見せない",
+    "why": "活用できない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "自動レビューは、人のレビューを助けるものです。誤りの可能性を前提に、人が最終的に判断する流れにします。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-agent-048",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "レビューのジョブが、API の障害で失敗した。パイプラインの設計として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "失敗を検知して再試行し、それでも失敗したら、レビューが行われなかったことを明示する",
+    "why": "失敗を、成功と区別して伝える。"
+   },
+   {
+    "id": "b",
+    "text": "失敗しても、「問題なし」として通す",
+    "why": "レビューされていないものが、確認済みに見える。"
+   },
+   {
+    "id": "c",
+    "text": "失敗の理由を、記録しない",
+    "why": "原因を調べられない。"
+   },
+   {
+    "id": "d",
+    "text": "失敗したら、リポジトリを凍結する",
+    "why": "過剰である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "自動化の失敗は、黙って通さないようにします。終了コードや出力を確認して、状態を正しく表示します。",
+  "refs": [
+   "https://code.claude.com/docs/en/headless",
+   "https://platform.claude.com/docs/en/api/errors"
+  ]
+ },
+ {
+  "id": "arch-agent-049",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "検証に失敗した抽出を、エラーの内容を付けて再試行する。ループの設計として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "再試行の回数に上限を設け、上限に達したら、人による確認に回す",
+    "why": "直らない場合の出口を用意する。"
+   },
+   {
+    "id": "b",
+    "text": "成功するまで、無制限に繰り返す",
+    "why": "原本に情報がない場合、終わらない。"
+   },
+   {
+    "id": "c",
+    "text": "1 回も、再試行しない",
+    "why": "直せる誤りも、残る。"
+   },
+   {
+    "id": "d",
+    "text": "失敗したら、黙って破棄する",
+    "why": "文書が抜け落ちる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "検証と再試行のループには、上限と、その後の扱いを決めておきます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ },
+ {
+  "id": "arch-agent-050",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "抽出結果は、受け取りから 30 時間以内に、業務システムに渡す必要がある。Message Batches API は、最長 24 時間かかる。投入の頻度として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "数時間ごとに投入する(例: 4〜6 時間ごと)",
+    "why": "待ち時間と処理時間の合計が、期限に収まる。"
+   },
+   {
+    "id": "b",
+    "text": "1 日 1 回、まとめて投入する",
+    "why": "投入を待つ最大 24 時間と、処理の 24 時間で、期限を超えうる。"
+   },
+   {
+    "id": "c",
+    "text": "週に 1 回、投入する",
+    "why": "期限を超える。"
+   },
+   {
+    "id": "d",
+    "text": "バッチは使えないので、すべて同期の API にする",
+    "why": "投入の頻度を上げれば、バッチで間に合う。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "期限から、処理にかかる最長の時間を引いた残りが、投入を待てる時間です。30 時間の期限なら、待てるのは 6 時間までです。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ]
+ },
+ {
+  "id": "arch-agent-051",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "1 万件の文書を、バッチで一括処理する前に、行うべきことはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "少数の文書で試し、プロンプトとスキーマを直してから、全体に適用する",
+    "why": "誤りを、小さな範囲で見つけて直す。"
+   },
+   {
+    "id": "b",
+    "text": "試さずに、全件を投入する",
+    "why": "誤りが、全件に及ぶ。"
+   },
+   {
+    "id": "c",
+    "text": "全件を、2 回投入する",
+    "why": "費用が、倍になる。"
+   },
+   {
+    "id": "d",
+    "text": "プロンプトを、空にする",
+    "why": "抽出できない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "大量の処理の前に、少数で試して、初回の成功率を上げておくと、再送の費用を減らせます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ },
+ {
+  "id": "arch-agent-052",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "請求書、契約書、領収書で、抽出すべき項目も、注意点も違う。処理の構成として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "最初に種別を判定し、種別ごとの専用のプロンプトとスキーマに振り分ける",
+    "why": "種別ごとに、最適化できる。"
+   },
+   {
+    "id": "b",
+    "text": "1 つの巨大なプロンプトとスキーマで、全種別を扱う",
+    "why": "注意が分散し、スキーマも複雑になる。"
+   },
+   {
+    "id": "c",
+    "text": "種別を、利用者に必ず入力させる",
+    "why": "自動化の利点が減る。"
+   },
+   {
+    "id": "d",
+    "text": "請求書だけを、処理する",
+    "why": "用途を満たせない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "入力に明確な種類があるときは、ルーティングが有効です。種別が不明なものの扱い(その他、人による確認)も決めておきます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ },
+ {
+  "id": "arch-agent-053",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "抽出を行った実行に、そのまま結果の見直しもさせているが、誤りがほとんど見つからない。改善策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "別の実行に、原本と抽出結果を渡して、検証させる",
+    "why": "抽出時の判断を引きずらない、独立した検証になる。"
+   },
+   {
+    "id": "b",
+    "text": "同じ実行に、もう一度見直させる",
+    "why": "同じ判断を、繰り返しやすい。"
+   },
+   {
+    "id": "c",
+    "text": "見直しを、やめる",
+    "why": "誤りが残る。"
+   },
+   {
+    "id": "d",
+    "text": "抽出を、2 回行って、長い方を採用する",
+    "why": "長さは、正しさの基準ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "生成と検証は、分けると効果的です。検証は、原本との突き合わせに集中させます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-agent-054",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "関連する複数の文書(契約書と、その変更覚書)から、最新の条件を抽出する。進め方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "文書ごとに抽出し、その後、文書間の関係(どれが、どれを変更したか)を踏まえて、統合する段階を設ける",
+    "why": "個別の抽出と、文書間の整合を、分ける。"
+   },
+   {
+    "id": "b",
+    "text": "最初の文書だけを、抽出する",
+    "why": "変更が、反映されない。"
+   },
+   {
+    "id": "c",
+    "text": "すべての文書を連結して、1 回で抽出する",
+    "why": "注意が分散し、関係を取り違えやすい。"
+   },
+   {
+    "id": "d",
+    "text": "最後の文書だけを、抽出する",
+    "why": "変更されていない条件が、抜ける。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "複数の文書にまたがる抽出は、局所的な段階と、統合の段階に分けます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts",
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
  }
 ]

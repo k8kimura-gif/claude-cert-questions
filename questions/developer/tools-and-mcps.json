@@ -222,5 +222,603 @@
    "https://modelcontextprotocol.io/docs/learn/architecture",
    "https://modelcontextprotocol.io/specification/latest"
   ]
+ },
+ {
+  "id": "dev-tool-007",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ツール定義の input_schema に書くものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールが受け取る引数の構造(型、説明、必須かどうか)を表す JSON Schema",
+    "why": "Claude は、これに沿って引数を作る。"
+   },
+   {
+    "id": "b",
+    "text": "ツールの実装コード",
+    "why": "実装は、アプリケーション側にある。"
+   },
+   {
+    "id": "c",
+    "text": "ツールが返す値の例だけ",
+    "why": "入力の構造を書く。"
+   },
+   {
+    "id": "d",
+    "text": "ツールの呼び出し回数の上限",
+    "why": "スキーマに書くものではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツール定義は、name、description、input_schema で構成します。各引数にも説明を付けると、正しい値が渡されやすくなります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+  ]
+ },
+ {
+  "id": "dev-tool-008",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "複数のサービス(課題管理、チャット、カレンダー)のツールを、合わせて数十個与える。名前の付け方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "サービス名などの共通の接頭辞を付け、どの系統のツールかが分かるようにする",
+    "why": "名前空間が、ツールの選択を助ける。"
+   },
+   {
+    "id": "b",
+    "text": "tool1、tool2 のように、連番にする",
+    "why": "何をするツールか、分からない。"
+   },
+   {
+    "id": "c",
+    "text": "すべて、同じ名前にする",
+    "why": "区別できない。"
+   },
+   {
+    "id": "d",
+    "text": "できるだけ短い、1 文字の名前にする",
+    "why": "意味が伝わらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールが多いときは、名前の接頭辞でまとまりを示します。似た機能のツールは、名前と説明で違いを明確にします。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "dev-tool-009",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ツールの結果に、内部の UUID だけを並べて返したところ、Claude がそれらを取り違えた。改善策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "人が読んで意味の分かる名前や要約を、識別子と合わせて返す",
+    "why": "意味のある情報の方が、Claude は正確に扱える。"
+   },
+   {
+    "id": "b",
+    "text": "UUID を、さらに長くする",
+    "why": "改善しない。"
+   },
+   {
+    "id": "c",
+    "text": "結果を、base64 で符号化する",
+    "why": "読めなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "結果を、返さない",
+    "why": "作業が進まない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールの結果には、次の判断に役立つ、意味のある情報を優先して含めます。技術的な識別子だけでは、誤りが増えます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "dev-tool-010",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "検索ツールが、1 回の呼び出しで数万トークンの結果を返し、コンテキストがすぐ埋まる。ツール側の改善として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "絞り込みの引数、ページ分割、件数の上限を設け、切り詰めた場合はその旨と、絞り込み方を伝える",
+    "why": "必要な分だけを返し、続きの取り方を示す。"
+   },
+   {
+    "id": "b",
+    "text": "すべての結果を、常に全件返す",
+    "why": "コンテキストを圧迫する。"
+   },
+   {
+    "id": "c",
+    "text": "結果を、無作為に間引く",
+    "why": "必要な情報が、失われうる。"
+   },
+   {
+    "id": "d",
+    "text": "エラーにして、何も返さない",
+    "why": "作業が進まない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールの応答は、トークンの効率を考えて設計します。既定で適度な件数に制限し、Claude が必要に応じて範囲を広げられるようにします。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "dev-tool-011",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "既存の REST API の全エンドポイントを、1 対 1 でツールにしたところ、Claude が多数のツールを順に呼ぶ必要があり、誤りが増えた。改善策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "よくある作業の単位で、複数の操作をまとめた、少数の高水準なツールにする",
+    "why": "作業の流れに合ったツールの方が、使いやすい。"
+   },
+   {
+    "id": "b",
+    "text": "ツールを、さらに細かく分ける",
+    "why": "呼び出しが、さらに増える。"
+   },
+   {
+    "id": "c",
+    "text": "すべてのツールを、1 つの万能ツールにまとめ、引数で操作を選ばせる",
+    "why": "説明が複雑になり、誤用が増える。"
+   },
+   {
+    "id": "d",
+    "text": "ツールの説明を、削除する",
+    "why": "選択ができなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールは、API をそのまま包むのではなく、エージェントが行う作業に合わせて設計します。たとえば、候補の検索と予定の登録を、1 つのツールにまとめます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "dev-tool-012",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ツール定義に strict: true を指定する目的はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールの引数が、スキーマに必ず適合するようにする",
+    "why": "型の誤りや、必須フィールドの欠落がなくなる。"
+   },
+   {
+    "id": "b",
+    "text": "ツールを、必ず呼び出させる",
+    "why": "呼び出しの強制ではない。"
+   },
+   {
+    "id": "c",
+    "text": "ツールの実行を、速くする",
+    "why": "速度の機能ではない。"
+   },
+   {
+    "id": "d",
+    "text": "ツールの結果を、暗号化する",
+    "why": "暗号化の機能ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "strict は、ツール定義の最上位に指定します。スキーマには、追加のプロパティを許さない指定と、必須フィールドの指定が必要です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+  ]
+ },
+ {
+  "id": "dev-tool-013",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "複数のツール呼び出しが、同時に行われると困る処理がある。1 回の応答で、ツール呼び出しを最大 1 つに制限する指定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "disable_parallel_tool_use を有効にする",
+    "why": "並列のツール呼び出しを、止める指定である。"
+   },
+   {
+    "id": "b",
+    "text": "max_tokens を、1 にする",
+    "why": "出力が、ほぼなくなる。"
+   },
+   {
+    "id": "c",
+    "text": "ツールを、1 つしか定義しない",
+    "why": "同じツールが、複数回呼ばれうる。"
+   },
+   {
+    "id": "d",
+    "text": "stop_sequences を指定する",
+    "why": "関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "並列のツール呼び出しは既定で有効で、通常は速度の面で有利です。順序に依存する処理があるときだけ、無効にします。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+  ]
+ },
+ {
+  "id": "dev-tool-014",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "数百個のツールがあり、すべての定義を毎回送ると、コンテキストを大きく消費する。適切な対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツール検索の仕組みを使い、大半のツールは遅延読み込みにして、必要なものだけを読み込ませる",
+    "why": "定義の大半を、コンテキストの外に置ける。"
+   },
+   {
+    "id": "b",
+    "text": "すべてのツールの説明を、空にする",
+    "why": "選択ができなくなる。"
+   },
+   {
+    "id": "c",
+    "text": "ツールを、無作為に 10 個だけ送る",
+    "why": "必要なツールが、欠ける。"
+   },
+   {
+    "id": "d",
+    "text": "ツールを、システムプロンプトに文章で書く",
+    "why": "ツールとして、呼び出せない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツール検索ツールを使うと、Claude が必要なツールを検索して読み込みます。検索ツール自体と、よく使うツールは、遅延させずに残します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool"
+  ]
+ },
+ {
+  "id": "dev-tool-015",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "MCP における「ホスト」「クライアント」「サーバー」の関係として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ホスト(AI アプリケーション)が、サーバーごとにクライアントを 1 つ作り、各クライアントがサーバーと 1 対 1 で接続する",
+    "why": "クライアントは、ホストの中で、接続を管理する部品である。"
+   },
+   {
+    "id": "b",
+    "text": "サーバーが、ホストを起動する",
+    "why": "逆である。"
+   },
+   {
+    "id": "c",
+    "text": "1 つのクライアントが、すべてのサーバーと同時に接続する",
+    "why": "クライアントとサーバーは、1 対 1 である。"
+   },
+   {
+    "id": "d",
+    "text": "ホストとサーバーは、同じものである",
+    "why": "別の役割である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ホストの例は、Claude Code や Claude Desktop です。サーバーは、ローカルでもリモートでも動きます。",
+  "refs": [
+   "https://modelcontextprotocol.io/docs/learn/architecture"
+  ]
+ },
+ {
+  "id": "dev-tool-016",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "MCP の 3 つの機能(ツール、リソース、プロンプト)の、制御の主体について正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールはモデルが判断して呼び出し、リソースはアプリケーションが文脈として取り込み、プロンプトは利用者が選んで使う",
+    "why": "それぞれ、誰が使うかが異なる。"
+   },
+   {
+    "id": "b",
+    "text": "3 つとも、モデルが自由に呼び出す",
+    "why": "リソースとプロンプトは、主体が異なる。"
+   },
+   {
+    "id": "c",
+    "text": "3 つとも、利用者が手動で実行する",
+    "why": "ツールは、モデルが判断する。"
+   },
+   {
+    "id": "d",
+    "text": "ツールは利用者が、プロンプトはモデルが実行する",
+    "why": "逆である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールは行動、リソースは読み取るデータ、プロンプトは再利用できるひな形です。",
+  "refs": [
+   "https://modelcontextprotocol.io/docs/learn/architecture"
+  ]
+ },
+ {
+  "id": "dev-tool-017",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "MCP のクライアントとサーバーがやり取りするメッセージの形式はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "JSON-RPC 2.0",
+    "why": "MCP のデータ層は、JSON-RPC 2.0 に基づく。"
+   },
+   {
+    "id": "b",
+    "text": "SOAP",
+    "why": "使われない。"
+   },
+   {
+    "id": "c",
+    "text": "GraphQL",
+    "why": "使われない。"
+   },
+   {
+    "id": "d",
+    "text": "Protocol Buffers",
+    "why": "使われない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "MCP は、JSON-RPC 2.0 のメッセージを、stdio か Streamable HTTP のトランスポートで運びます。",
+  "refs": [
+   "https://modelcontextprotocol.io/docs/learn/architecture",
+   "https://modelcontextprotocol.io/specification/latest"
+  ]
+ },
+ {
+  "id": "dev-tool-018",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "MCP の接続が始まるとき、最初に行われることはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "初期化のやり取りで、プロトコルのバージョンと、互いが対応する機能を確認する",
+    "why": "双方が、何をできるかを取り決める。"
+   },
+   {
+    "id": "b",
+    "text": "すべてのツールを、1 回ずつ実行する",
+    "why": "実行はしない。"
+   },
+   {
+    "id": "c",
+    "text": "サーバーが、モデルを学習し直す",
+    "why": "行わない。"
+   },
+   {
+    "id": "d",
+    "text": "クライアントが、サーバーのソースコードを取得する",
+    "why": "行わない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "接続は、初期化から始まります。その後、クライアントはツールの一覧を取得し、必要に応じて呼び出します。",
+  "refs": [
+   "https://modelcontextprotocol.io/docs/learn/architecture",
+   "https://modelcontextprotocol.io/specification/latest"
+  ]
+ },
+ {
+  "id": "dev-tool-019",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "MCP サーバーが提供するツールが、実行中に増減した。クライアントに知らせる仕組みはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツール一覧の変更を知らせる通知を送り、クライアントが一覧を取り直す",
+    "why": "通知によって、動的な変更に追従できる。"
+   },
+   {
+    "id": "b",
+    "text": "知らせる仕組みはなく、再起動するしかない",
+    "why": "通知の仕組みがある。"
+   },
+   {
+    "id": "c",
+    "text": "クライアントが、毎秒すべてのツールを呼び出して確かめる",
+    "why": "無駄で、副作用の危険もある。"
+   },
+   {
+    "id": "d",
+    "text": "利用者に、メールで知らせる",
+    "why": "プロトコルの仕組みではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "MCP は、要求と応答に加えて、通知をサポートします。ツールの一覧が変わると、サーバーが通知を送ります。",
+  "refs": [
+   "https://modelcontextprotocol.io/docs/learn/architecture"
+  ]
+ },
+ {
+  "id": "dev-tool-020",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "リモートの MCP サーバーで、利用者ごとのデータにアクセスさせる。認証の方法として、仕様で想定されているものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "OAuth による認可",
+    "why": "HTTP のトランスポートでは、OAuth などの標準的な認証を使う。"
+   },
+   {
+    "id": "b",
+    "text": "認証なしで、公開する",
+    "why": "利用者のデータが、保護されない。"
+   },
+   {
+    "id": "c",
+    "text": "全利用者が、同じパスワードを共有する",
+    "why": "利用者を、区別できない。"
+   },
+   {
+    "id": "d",
+    "text": "ツールの説明に、パスワードを書く",
+    "why": "モデルと利用者に、露出する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "リモートの MCP サーバーは、HTTP の標準的な認証を使います。仕様では、OAuth によるトークンの取得が推奨されています。",
+  "refs": [
+   "https://modelcontextprotocol.io/docs/learn/architecture",
+   "https://modelcontextprotocol.io/specification/latest"
+  ]
+ },
+ {
+  "id": "dev-tool-021",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ツールの説明を書き直した。改善したかどうかを確かめる方法として、適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "実際の利用を想定したタスクの集まりで、変更の前後の成績を比べる",
+    "why": "ツールの説明も、評価で確かめる。"
+   },
+   {
+    "id": "b",
+    "text": "説明が長くなったので、改善したとみなす",
+    "why": "長さは、基準ではない。"
+   },
+   {
+    "id": "c",
+    "text": "1 回だけ手で試す",
+    "why": "偶然の成功と、区別できない。"
+   },
+   {
+    "id": "d",
+    "text": "確かめる必要はない",
+    "why": "改悪の可能性がある。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールの説明の小さな変更が、成績を大きく変えることがあります。評価用のタスクを用意し、失敗の記録を読んで改善します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents",
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ },
+ {
+  "id": "dev-tool-022",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "第三者が公開している MCP サーバーを導入する。注意点として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "提供元を確認し、信頼できるものだけを導入する。サーバーが返す内容には、指示の注入が含まれうると考える",
+    "why": "外部のサーバーは、ツールの説明や結果を通じて、モデルに影響を与えうる。"
+   },
+   {
+    "id": "b",
+    "text": "MCP サーバーは規格に沿っているので、すべて安全である",
+    "why": "規格は、中身の安全性を保証しない。"
+   },
+   {
+    "id": "c",
+    "text": "導入後は、すべての操作を無条件に許可する",
+    "why": "権限は、必要な範囲に絞る。"
+   },
+   {
+    "id": "d",
+    "text": "管理者権限のトークンを渡しておく",
+    "why": "権限が過大である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "外部の MCP サーバーは、自分のデータや権限に触れる入口になります。信頼性の確認、権限の最小化、重要な操作の承認を組み合わせます。",
+  "refs": [
+   "https://code.claude.com/docs/en/mcp",
+   "https://modelcontextprotocol.io/docs/learn/architecture"
+  ]
  }
 ]

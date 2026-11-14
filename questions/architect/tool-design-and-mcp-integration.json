@@ -300,5 +300,1054 @@
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
   ]
+ },
+ {
+  "id": "arch-tool-009",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "「念のため」として、サポートのエージェントに、在庫管理や社内人事など 15 個のツールを追加した。その後、ツールの選択の誤りが増えた。原因として最も可能性が高いものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "役割に関係のないツールが増え、選択が難しくなった",
+    "why": "ツールが多いほど、判断は難しくなる。"
+   },
+   {
+    "id": "b",
+    "text": "MCP サーバーの数が、上限を超えた",
+    "why": "誤りの原因は、数の上限ではない。"
+   },
+   {
+    "id": "c",
+    "text": "モデルの max_tokens が、不足した",
+    "why": "選択の誤りとは、関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "ツール名が、長すぎた",
+    "why": "主な原因ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エージェントには、役割に必要なツールだけを与えます。役割の外のツールは、誤用の原因になります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "arch-tool-010",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "lookup_order が「該当する注文がなかった」ときと、「データベースに接続できなかった」ときで、同じ空の結果を返している。エージェントは、障害のときにも「ご注文は見つかりませんでした」と答える。改善策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "該当なしは正常な結果として返し、接続の失敗は、エラーとして区別して返す",
+    "why": "2 つは、取るべき行動が異なる。"
+   },
+   {
+    "id": "b",
+    "text": "どちらも、エラーとして返す",
+    "why": "正常な「該当なし」まで、障害として扱われる。"
+   },
+   {
+    "id": "c",
+    "text": "どちらも、空の結果のままにする",
+    "why": "区別できない状態が、続く。"
+   },
+   {
+    "id": "d",
+    "text": "障害のときは、架空の注文を返す",
+    "why": "誤った情報を、顧客に伝えることになる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "アクセスの失敗と、有効な空の結果は、必ず区別します。前者は再試行や引き継ぎ、後者は顧客への確認につながります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents",
+   "https://modelcontextprotocol.io/docs/learn/architecture"
+  ]
+ },
+ {
+  "id": "arch-tool-011",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "process_refund が「返品期限を過ぎているため返金できない」という理由で失敗する。ツールの応答として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "再試行しても結果が変わらないことを示し、顧客に説明できる理由を添えて返す",
+    "why": "業務上の制約は、再試行の対象ではない。"
+   },
+   {
+    "id": "b",
+    "text": "一時的な障害として、再試行を促す",
+    "why": "何度試しても、同じ結果になる。"
+   },
+   {
+    "id": "c",
+    "text": "理由を付けずに、失敗とだけ返す",
+    "why": "エージェントが、顧客に説明できない。"
+   },
+   {
+    "id": "d",
+    "text": "成功として返す",
+    "why": "虚偽の結果である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エラーは、一時的な障害、入力の誤り、業務上の制約、権限の問題に分けます。業務上の制約は、再試行できないことと、顧客向けの説明を含めます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "arch-tool-012",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "lookup_order が、まれにタイムアウトする。再試行すれば成功することが多い。エラー処理の設計として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールの内部で数回再試行し、それでも失敗した場合だけ、試した内容を添えてエージェントに伝える",
+    "why": "回復できる失敗は、その場で処理する。"
+   },
+   {
+    "id": "b",
+    "text": "1 回の失敗で、すぐ人に引き継ぐ",
+    "why": "回復できる失敗まで、引き継ぐことになる。"
+   },
+   {
+    "id": "c",
+    "text": "失敗を隠して、空の結果を返す",
+    "why": "「該当なし」と、区別できない。"
+   },
+   {
+    "id": "d",
+    "text": "失敗するたびに、会話を最初からやり直す",
+    "why": "顧客に、負担をかける。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "一時的な障害は、発生した場所の近くで回復させます。解決できなかったものだけを、何を試したかと合わせて上位に伝えます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents",
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-tool-013",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "process_refund の引数「返金理由」が自由記述で、集計できない値が入る。スキーマの改善として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "理由を enum で定義し、当てはまらない場合の「その他」と、補足の文字列を用意する",
+    "why": "集計できる値と、例外への対応を、両立できる。"
+   },
+   {
+    "id": "b",
+    "text": "自由記述のままにして、後で人が読む",
+    "why": "集計できない状態が、続く。"
+   },
+   {
+    "id": "c",
+    "text": "理由の引数を、削除する",
+    "why": "必要な情報が、失われる。"
+   },
+   {
+    "id": "d",
+    "text": "理由を、数値の ID だけにする",
+    "why": "意味が分かりにくく、誤りやすい。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールの入力スキーマは、モデルが正しい値を作りやすい形にします。選択肢が決まっているものは enum にし、各引数に説明を付けます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ },
+ {
+  "id": "arch-tool-014",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "ツールの説明を丁寧に書いたのに、エージェントが「注文」という語を含む質問で、常に lookup_order を呼ぶ。システムプロンプトには「注文という語があれば、必ず注文を照会すること」と書かれていた。原因はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "システムプロンプトのキーワードに基づく指示が、ツールの説明による判断より強く働いている",
+    "why": "機械的な規則が、意図しない結び付きを作っている。"
+   },
+   {
+    "id": "b",
+    "text": "ツールの説明が、長すぎる",
+    "why": "原因ではない。"
+   },
+   {
+    "id": "c",
+    "text": "MCP の接続が、不安定である",
+    "why": "選択の傾向とは、関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "モデルが、ツールを 1 つしか扱えない",
+    "why": "複数のツールを、扱える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールの選択が偏るときは、ツールの説明だけでなく、システムプロンプトの文言も見直します。キーワードに反応する規則は、誤った結び付きを生みます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ]
+ },
+ {
+  "id": "arch-tool-015",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "似た名前の 2 つのツール(get_order と get_order_details)があり、エージェントが取り違える。最も効果的な対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "名前と説明を見直し、役割の違いが一目で分かるようにする(必要なら、1 つに統合する)",
+    "why": "重なりをなくすことが、根本的な対策である。"
+   },
+   {
+    "id": "b",
+    "text": "両方を、毎回呼ばせる",
+    "why": "無駄が多い。"
+   },
+   {
+    "id": "c",
+    "text": "取り違えたら、エラーにする",
+    "why": "原因が、残る。"
+   },
+   {
+    "id": "d",
+    "text": "ツールを、もう 1 つ追加する",
+    "why": "選択が、さらに難しくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "説明や名前が似ているツールは、誤った振り分けの原因になります。名前の変更と、説明の書き分けで、重なりをなくします。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "arch-tool-016",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "Web 検索のサブエージェントの analyze_content と、文書分析のサブエージェントの analyze_document は、説明がほぼ同じである。コーディネーターが、振り分けを誤る。改善策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "名前と説明を、対象と目的が分かるものに変える(例: Web ページからの抽出用であることを明示する)",
+    "why": "重なりをなくし、違いを明確にする。"
+   },
+   {
+    "id": "b",
+    "text": "2 つのツールを、両方のサブエージェントに与える",
+    "why": "混同が広がる。"
+   },
+   {
+    "id": "c",
+    "text": "説明を、削除する",
+    "why": "振り分けの手がかりがなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "振り分けを、無作為にする",
+    "why": "誤りが増える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "似た説明のツールは、誤った振り分けの原因です。名前と説明で、役割の境界を示します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "arch-tool-017",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "エージェントが、社内の文書庫にどんな資料があるかを知るために、探索的な検索を何度も繰り返している。MCP の機能で、これを減らせるものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "資料の目録を、MCP のリソースとして公開する",
+    "why": "一覧を文脈として与えれば、手探りの検索が減る。"
+   },
+   {
+    "id": "b",
+    "text": "検索ツールの呼び出し回数の上限を、1 回にする",
+    "why": "必要な検索までできなくなる。"
+   },
+   {
+    "id": "c",
+    "text": "文書庫の全文を、システムプロンプトに入れる",
+    "why": "コンテキストに収まらない。"
+   },
+   {
+    "id": "d",
+    "text": "MCP のプロンプト機能に、資料を保存する",
+    "why": "プロンプトは、再利用するひな形である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "MCP のリソースは、読み取り用のデータを公開する仕組みです。目録やスキーマを公開すると、エージェントが全体像を把握できます。",
+  "refs": [
+   "https://modelcontextprotocol.io/docs/learn/architecture"
+  ]
+ },
+ {
+  "id": "arch-tool-018",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "文書を読み込むツールが、任意の URL を受け付けており、エージェントが関係のないサイトまで取得する。ツールの設計として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "受け付ける入力を、用途に合う範囲(許可したドメインや形式)に制限し、範囲外は理由を付けて拒否する",
+    "why": "汎用のツールを、目的に合わせて絞る。"
+   },
+   {
+    "id": "b",
+    "text": "どんな URL でも受け付ける",
+    "why": "現状のままである。"
+   },
+   {
+    "id": "c",
+    "text": "ツールの説明に、「関係のないサイトは見ないこと」と書くだけにする",
+    "why": "強制力がない。"
+   },
+   {
+    "id": "d",
+    "text": "ツールを廃止する",
+    "why": "必要な読み込みもできなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "汎用のツールは、誤用されやすくなります。入力を検証して、目的に合う範囲に制限します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "arch-tool-019",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "各サブエージェントが返す結果の形式が、それぞれ違う(項目名、日付の表記、出典の書き方)。統合の段階で、対応付けを誤る。対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "サブエージェントの出力に、共通のスキーマ(主張、出典、日付、関連度)を定める",
+    "why": "形式を揃えれば、機械的に統合できる。"
+   },
+   {
+    "id": "b",
+    "text": "統合のサブエージェントに、推測で対応付けさせる",
+    "why": "誤りの原因が残る。"
+   },
+   {
+    "id": "c",
+    "text": "形式は、各サブエージェントに任せる",
+    "why": "現状のままである。"
+   },
+   {
+    "id": "d",
+    "text": "出典を、省略する",
+    "why": "帰属が失われる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "段階の間で受け渡すデータは、共通の構造にします。内容とメタデータを分けておくと、帰属が保たれます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://www.anthropic.com/engineering/multi-agent-research-system"
+  ]
+ },
+ {
+  "id": "arch-tool-020",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "Edit ツールでの置換が、「対象の文字列が一意に特定できない」として失敗した(同じ行が、ファイルに複数ある)。適切な対処はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "前後の行を含めて対象を一意にするか、Read で全体を読んで Write で書き直す",
+    "why": "一意に特定できる範囲を指定するか、確実な方法に切り替える。"
+   },
+   {
+    "id": "b",
+    "text": "同じ Edit を、繰り返す",
+    "why": "同じ理由で失敗する。"
+   },
+   {
+    "id": "c",
+    "text": "ファイルを、削除する",
+    "why": "破壊的である。"
+   },
+   {
+    "id": "d",
+    "text": "編集を、あきらめる",
+    "why": "作業が進まない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Edit は、一意に一致する文字列を置き換えます。一致が複数ある場合は、範囲を広げて特定するか、Read と Write で確実に書き換えます。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview"
+  ]
+ },
+ {
+  "id": "arch-tool-021",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "名前が .test.tsx で終わるファイルを、コードベース全体から一覧にしたい。使うべき組み込みツールはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Glob",
+    "why": "ファイル名のパターンで探すツールである。"
+   },
+   {
+    "id": "b",
+    "text": "Grep",
+    "why": "ファイルの中身を検索するツールである。"
+   },
+   {
+    "id": "c",
+    "text": "Read",
+    "why": "1 つのファイルの内容を読むツールである。"
+   },
+   {
+    "id": "d",
+    "text": "Edit",
+    "why": "ファイルを編集するツールである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Glob は、**/*.test.tsx のようなパターンでファイルを探します。中身の検索には Grep を使います。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview"
+  ]
+ },
+ {
+  "id": "arch-tool-022",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "修正の後で、テストを実行して結果を確かめさせたい。使うべき組み込みツールはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Bash",
+    "why": "コマンドを実行するツールである。"
+   },
+   {
+    "id": "b",
+    "text": "Glob",
+    "why": "ファイルを探すツールである。"
+   },
+   {
+    "id": "c",
+    "text": "Read",
+    "why": "ファイルを読むツールである。"
+   },
+   {
+    "id": "d",
+    "text": "Write",
+    "why": "ファイルを書くツールである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "テストやビルドの実行には、Bash を使います。実行できるコマンドは、権限の設定で制限できます。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview",
+   "https://code.claude.com/docs/en/permissions"
+  ]
+ },
+ {
+  "id": "arch-tool-023",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "自分だけで試している、実験的な MCP サーバーがある。チームのリポジトリには入れたくない。設定する場所はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ユーザースコープ(自分の設定)",
+    "why": "自分の環境だけに適用され、共有されない。"
+   },
+   {
+    "id": "b",
+    "text": "プロジェクトの .mcp.json",
+    "why": "チームに共有される。"
+   },
+   {
+    "id": "c",
+    "text": "CLAUDE.md",
+    "why": "MCP の設定の場所ではない。"
+   },
+   {
+    "id": "d",
+    "text": "package.json",
+    "why": "関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "チームで使うサーバーはプロジェクトスコープに、個人的なものや実験的なものはユーザースコープに置きます。",
+  "refs": [
+   "https://code.claude.com/docs/en/mcp"
+  ]
+ },
+ {
+  "id": "arch-tool-024",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "課題管理サービス(Jira など)と連携させたい。一般的な機能で足りる。進め方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "既存の(コミュニティや提供元の)MCP サーバーを使い、自作は、チーム固有の業務に限る",
+    "why": "標準的な連携を、作り直す必要はない。"
+   },
+   {
+    "id": "b",
+    "text": "必ず、自作する",
+    "why": "保守の負担が増える。"
+   },
+   {
+    "id": "c",
+    "text": "連携を、あきらめる",
+    "why": "既存のものが使える。"
+   },
+   {
+    "id": "d",
+    "text": "API の全エンドポイントを、手でツールに書き写す",
+    "why": "既存のサーバーで足りる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "標準的なサービスには、既存の MCP サーバーがあることが多く、それを使うのが早道です。導入の際は、提供元の信頼性を確認します。",
+  "refs": [
+   "https://code.claude.com/docs/en/mcp"
+  ]
+ },
+ {
+  "id": "arch-tool-025",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "エージェントが、データベースの構造を知るために、何度も探索的なクエリを実行している。MCP サーバーの設計で、これを減らせるものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "スキーマ(テーブルと列の定義)を、リソースとして公開する",
+    "why": "構造を、最初から文脈として与えられる。"
+   },
+   {
+    "id": "b",
+    "text": "クエリのツールを、削除する",
+    "why": "必要な照会もできなくなる。"
+   },
+   {
+    "id": "c",
+    "text": "スキーマを、ツールの名前に埋め込む",
+    "why": "名前は、構造を伝える場所ではない。"
+   },
+   {
+    "id": "d",
+    "text": "エージェントに、構造を推測させる",
+    "why": "誤りが増える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "リソースは、エージェントが参照できるデータです。スキーマ、目録、文書の階層などを公開すると、手探りの呼び出しが減ります。",
+  "refs": [
+   "https://modelcontextprotocol.io/docs/learn/architecture"
+  ]
+ },
+ {
+  "id": "arch-tool-026",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": ".mcp.json に、3 つの MCP サーバーを設定した。エージェントから見た、ツールの使われ方として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "接続の時点で、すべてのサーバーのツールが取得され、同時に使える状態になる",
+    "why": "複数のサーバーのツールを、合わせて使える。"
+   },
+   {
+    "id": "b",
+    "text": "同時に使えるのは、1 つのサーバーだけである",
+    "why": "複数を、同時に使える。"
+   },
+   {
+    "id": "c",
+    "text": "ツールは、利用者が毎回手で読み込む",
+    "why": "接続の時点で取得される。"
+   },
+   {
+    "id": "d",
+    "text": "最初に定義したサーバーだけが、有効になる",
+    "why": "すべてが有効になる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "設定したすべての MCP サーバーのツールが、まとめて利用可能になります。数が増えると選択が難しくなるため、必要なものに絞ります。",
+  "refs": [
+   "https://code.claude.com/docs/en/mcp",
+   "https://modelcontextprotocol.io/docs/learn/architecture"
+  ]
+ },
+ {
+  "id": "arch-tool-027",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "社内 API を呼ぶ MCP ツールが、認証の期限切れで失敗する。ツールの応答として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "権限に関する失敗であること、再試行しても直らないこと、利用者が取るべき行動(再認証)を示す",
+    "why": "原因と次の行動が分かれば、適切に案内できる。"
+   },
+   {
+    "id": "b",
+    "text": "「エラー」とだけ返す",
+    "why": "原因が分からない。"
+   },
+   {
+    "id": "c",
+    "text": "空の結果を、成功として返す",
+    "why": "データがないと、誤解される。"
+   },
+   {
+    "id": "d",
+    "text": "期限切れのトークンの値を、返す",
+    "why": "秘密情報を、モデルに見せることになる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エラーは、種類と、再試行の可否と、次の行動を伝えます。秘密情報は、応答に含めません。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents",
+   "https://modelcontextprotocol.io/docs/learn/architecture"
+  ]
+ },
+ {
+  "id": "arch-tool-028",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "設定ファイルの 1 行だけを変えたい。使うべき組み込みツールと、その理由として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Edit。該当の箇所だけを、置き換えられる",
+    "why": "部分的な変更に向く。"
+   },
+   {
+    "id": "b",
+    "text": "Write。ファイル全体を、毎回書き直すのが安全である",
+    "why": "全体の書き直しは、意図しない変更の危険がある。"
+   },
+   {
+    "id": "c",
+    "text": "Glob。ファイルの内容を、変更できる",
+    "why": "ファイルを探すツールである。"
+   },
+   {
+    "id": "d",
+    "text": "Grep。行を、置き換えられる",
+    "why": "検索のツールである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "部分的な変更には Edit を、新しいファイルの作成や全面的な書き換えには Write を使います。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview"
+  ]
+ },
+ {
+  "id": "arch-tool-029",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "レビューのジョブで、Bash ツールを使わせたい。ただし、実行できるコマンドは、テストの実行と git の参照だけに限りたい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "権限の規則で、許可するコマンドのパターンを指定する",
+    "why": "コマンドの単位で、許可を絞れる。"
+   },
+   {
+    "id": "b",
+    "text": "Bash を、無条件に許可する",
+    "why": "任意のコマンドが実行できる。"
+   },
+   {
+    "id": "c",
+    "text": "プロンプトに、「他のコマンドは使わないこと」と書く",
+    "why": "保証にはならない。"
+   },
+   {
+    "id": "d",
+    "text": "Bash を、まったく使わせない",
+    "why": "テストを実行できない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "権限の規則は、ツールの種類だけでなく、コマンドのパターンでも指定できます。",
+  "refs": [
+   "https://code.claude.com/docs/en/permissions"
+  ]
+ },
+ {
+  "id": "arch-tool-030",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "CI で、課題管理の MCP サーバーを使わせたい。設定の方法として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "リポジトリの .mcp.json にサーバーを定義し、認証情報は、CI のシークレットから環境変数で渡す",
+    "why": "設定を共有し、秘密は外から注入する。"
+   },
+   {
+    "id": "b",
+    "text": "認証情報を、.mcp.json に直接書く",
+    "why": "秘密が、リポジトリに入る。"
+   },
+   {
+    "id": "c",
+    "text": "CI では、MCP は使えない",
+    "why": "使える。"
+   },
+   {
+    "id": "d",
+    "text": "サーバーの設定を、プロンプトに書く",
+    "why": "接続の設定にはならない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": ".mcp.json は環境変数の展開に対応しているので、秘密情報をファイルに含めずに済みます。",
+  "refs": [
+   "https://code.claude.com/docs/en/mcp"
+  ]
+ },
+ {
+  "id": "arch-tool-031",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "CI のエージェントに与えるツールの選び方として、適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "その処理に必要なものだけを与える",
+    "why": "少ないほど、選択が安定し、危険も小さい。"
+   },
+   {
+    "id": "b",
+    "text": "使えるものを、すべて与える",
+    "why": "誤用と危険が増える。"
+   },
+   {
+    "id": "c",
+    "text": "ツールは、一切与えない",
+    "why": "作業ができない。"
+   },
+   {
+    "id": "d",
+    "text": "無作為に、選ぶ",
+    "why": "根拠がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールの数と権限は、最小限にします。自動実行では、人の目が届かないため、特に重要です。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents",
+   "https://code.claude.com/docs/en/permissions"
+  ]
+ },
+ {
+  "id": "arch-tool-032",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "抽出の前に、必ず文書の種別を判定するツール(classify_document)を呼ばせ、その結果に応じて抽出を行いたい。従来から用いられてきた方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "最初のリクエストで、tool_choice に classify_document を指定して呼び出しを強制し、その結果を受けて、次のリクエストで抽出を行う",
+    "why": "特定のツールの指定で、最初の一手を固定する。"
+   },
+   {
+    "id": "b",
+    "text": "tool_choice を \"none\" にする",
+    "why": "ツールが呼ばれなくなる。"
+   },
+   {
+    "id": "c",
+    "text": "ツールの説明に、「最初に呼ぶこと」と書くだけにする",
+    "why": "保証にはならない。"
+   },
+   {
+    "id": "d",
+    "text": "両方のツールを、同時に呼ばせる",
+    "why": "順序が保証されない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "特定のツールの強制は、手順の最初の一手を固定するために使われてきました。ただし、一部の新しいモデルでは、強制の指定が使えません。その場合は、段階ごとにリクエストを分け、各段階で与えるツールを 1 つに絞る、あるいは構造化出力を使う、といった方法を取ります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ },
+ {
+  "id": "arch-tool-033",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "「ツールの入力スキーマを、抽出結果のスキーマとして使う」方法の説明として、正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "抽出したい構造を、ツールの引数として定義し、Claude にそのツールを呼ばせて、引数として結果を受け取る",
+    "why": "ツール呼び出しの引数が、構造化された結果になる。"
+   },
+   {
+    "id": "b",
+    "text": "ツールが、文書を読んで抽出する",
+    "why": "抽出するのは Claude で、ツールは受け皿である。"
+   },
+   {
+    "id": "c",
+    "text": "ツールを、定義だけして呼ばせない",
+    "why": "結果を受け取れない。"
+   },
+   {
+    "id": "d",
+    "text": "ツールの結果を、スキーマとして返す",
+    "why": "逆である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツール呼び出しは、構造化された出力を得る確実な方法の 1 つです。strict を付けると、引数がスキーマに適合します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ },
+ {
+  "id": "arch-tool-034",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "抽出用のツールに strict: true を付けた。スキーマに必要な条件として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "追加のプロパティを許さない指定と、必須フィールドの指定がある",
+    "why": "strict の利用には、スキーマの条件がある。"
+   },
+   {
+    "id": "b",
+    "text": "条件はなく、どんなスキーマでもよい",
+    "why": "条件がある。"
+   },
+   {
+    "id": "c",
+    "text": "フィールドは、1 つだけでなければならない",
+    "why": "そのような条件ではない。"
+   },
+   {
+    "id": "d",
+    "text": "説明を、書いてはならない",
+    "why": "説明は書ける。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "strict は、スキーマに沿った引数を保証します。任意の値は、null を許す型として表します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+  ]
+ },
+ {
+  "id": "arch-tool-035",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "抽出の途中で、別のツールの結果を受け取って続ける、複数回の往復が必要な処理がある。これを Message Batches API で実行するときの注意点はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "バッチの 1 件は、1 回のリクエストである。往復が必要な処理は、1 件の中では完結しない",
+    "why": "往復には、結果を受けて次のリクエストを送る必要がある。"
+   },
+   {
+    "id": "b",
+    "text": "バッチは、往復を自動で行う",
+    "why": "行わない。"
+   },
+   {
+    "id": "c",
+    "text": "バッチでは、ツールを定義できない",
+    "why": "定義はできる。"
+   },
+   {
+    "id": "d",
+    "text": "注意点はない",
+    "why": "ある。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "バッチは、独立した 1 回のリクエストの集まりです。ツールの結果を返して続ける処理には、通常の API を使うか、段階ごとにバッチを分けます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ]
+ },
+ {
+  "id": "arch-tool-036",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "ツール呼び出しで抽出結果を受け取る処理で、引数の JSON が途中で切れていた。コードで確認すべきものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "stop_reason が \"max_tokens\" になっていないか",
+    "why": "上限に達すると、引数が途中で切れる。"
+   },
+   {
+    "id": "b",
+    "text": "ツールの名前の長さ",
+    "why": "関係がない。"
+   },
+   {
+    "id": "c",
+    "text": "文書のファイル名",
+    "why": "関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "API キーの有効期限",
+    "why": "関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールの引数を使う前に、stop_reason を確認します。打ち切りの場合は、上限を上げるか、抽出を分割します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+  ]
  }
 ]

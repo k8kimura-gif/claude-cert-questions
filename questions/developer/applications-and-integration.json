@@ -673,5 +673,1648 @@
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/models/overview"
   ]
+ },
+ {
+  "id": "dev-app-019",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "messages 配列の構成として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "最初のメッセージは user ロールで始める",
+    "why": "会話は user の発言から始まる。"
+   },
+   {
+    "id": "b",
+    "text": "最初のメッセージは assistant ロールで始める",
+    "why": "最初は user ロールである。"
+   },
+   {
+    "id": "c",
+    "text": "user と assistant のどちらから始めてもよく、順序に意味はない",
+    "why": "順序は会話の流れを表し、意味を持つ。"
+   },
+   {
+    "id": "d",
+    "text": "messages は必ず 1 件だけでなければならない",
+    "why": "複数ターンの履歴を入れられる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "messages は user と assistant の発言を時系列に並べたものです。最初は user の発言で、以後は会話の流れに沿って積み上げます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/messages"
+  ]
+ },
+ {
+  "id": "dev-app-020",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ツールを使う会話で、Claude の応答を履歴に追加する。正しい方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "応答の content 配列全体(テキスト、tool_use などの全ブロック)をそのまま assistant メッセージとして追加する",
+    "why": "tool_use ブロックが欠けると、後続の tool_result と対応が取れなくなる。"
+   },
+   {
+    "id": "b",
+    "text": "テキスト部分だけを取り出して追加する",
+    "why": "tool_use などのブロックが失われ、次のリクエストが不正になる。"
+   },
+   {
+    "id": "c",
+    "text": "最後のブロックだけを追加する",
+    "why": "途中のブロックが失われる。"
+   },
+   {
+    "id": "d",
+    "text": "応答は追加せず、tool_result だけを送る",
+    "why": "対応する tool_use がないため不正になる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "応答の content はブロックの配列です。テキスト以外に tool_use や thinking のブロックが含まれることがあり、これらを保ったまま履歴に戻します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+   "https://platform.claude.com/docs/en/api/messages"
+  ]
+ },
+ {
+  "id": "dev-app-021",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "stop_sequences に \"###\" を指定してリクエストした。Claude が \"###\" を生成しようとした時点で起こることはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "生成が止まり、stop_reason が \"stop_sequence\" になる",
+    "why": "指定した文字列に達すると停止し、その理由が示される。"
+   },
+   {
+    "id": "b",
+    "text": "エラーが返る",
+    "why": "正常な停止として扱われる。"
+   },
+   {
+    "id": "c",
+    "text": "\"###\" を無視して生成を続ける",
+    "why": "停止シーケンスで生成は止まる。"
+   },
+   {
+    "id": "d",
+    "text": "stop_reason が \"max_tokens\" になる",
+    "why": "それはトークン上限に達した場合である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "stop_sequences は、指定した文字列が現れたら生成を止める仕組みです。どの文字列で止まったかは、応答の stop_sequence フィールドで分かります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+   "https://platform.claude.com/docs/en/api/messages"
+  ]
+ },
+ {
+  "id": "dev-app-022",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "stop_reason が \"end_turn\" のとき、何が起きたと判断できるか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude が応答を自然に終えた",
+    "why": "通常の完了を表す。"
+   },
+   {
+    "id": "b",
+    "text": "トークン上限で打ち切られた",
+    "why": "それは \"max_tokens\" である。"
+   },
+   {
+    "id": "c",
+    "text": "ツールの結果を待っている",
+    "why": "それは \"tool_use\" である。"
+   },
+   {
+    "id": "d",
+    "text": "レート制限に達した",
+    "why": "それは HTTP 429 のエラーで、stop_reason ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "stop_reason の主な値は、end_turn(自然な完了)、max_tokens(上限到達)、stop_sequence(停止文字列)、tool_use(ツール呼び出し)、pause_turn、refusal です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ]
+ },
+ {
+  "id": "dev-app-023",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "HTTP 200 の応答で、stop_reason が \"refusal\" だった。アプリケーションの扱いとして適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "本文を通常の回答として扱わず、拒否されたことを利用者に伝えるなどの専用の処理に分岐する",
+    "why": "安全上の理由で応答が辞退された状態で、通常の回答とは区別して扱う。"
+   },
+   {
+    "id": "b",
+    "text": "HTTP 200 なので、content をそのまま回答として表示する",
+    "why": "ステータスコードだけでは判断できない。stop_reason を確認する。"
+   },
+   {
+    "id": "c",
+    "text": "同じリクエストを成功するまで繰り返す",
+    "why": "同じ内容は同じ理由で辞退される可能性が高い。"
+   },
+   {
+    "id": "d",
+    "text": "max_tokens を増やして再送する",
+    "why": "上限の問題ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "拒否は HTTP エラーではなく、正常な応答の stop_reason として返ります。本文を使う前に stop_reason を必ず確認します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ]
+ },
+ {
+  "id": "dev-app-024",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "サーバー側で実行されるツール(Web 検索など)を使ったリクエストで、stop_reason が \"pause_turn\" だった。適切な対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "応答の content をそのまま assistant メッセージとして履歴に追加し、続きのリクエストを送る",
+    "why": "長い処理が途中で区切られた状態で、そのまま送り返せば続きが生成される。"
+   },
+   {
+    "id": "b",
+    "text": "会話を終了する",
+    "why": "処理はまだ完了していない。"
+   },
+   {
+    "id": "c",
+    "text": "ツールをアプリケーション側で実行して結果を返す",
+    "why": "サーバー側のツールは Anthropic の基盤で実行される。"
+   },
+   {
+    "id": "d",
+    "text": "エラーとして利用者に通知する",
+    "why": "エラーではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "pause_turn は、サーバー側ツールを含む長いターンが一時停止したことを表します。応答を履歴に加えて再度リクエストすれば、Claude が続きを処理します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool"
+  ]
+ },
+ {
+  "id": "dev-app-025",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "リクエストごとの費用を記録したい。参照すべきものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "応答の usage フィールド(input_tokens、output_tokens、キャッシュ関連のトークン数)",
+    "why": "実際に課金されるトークン数が応答に含まれる。"
+   },
+   {
+    "id": "b",
+    "text": "応答の本文の文字数",
+    "why": "文字数とトークン数は一致しない。"
+   },
+   {
+    "id": "c",
+    "text": "リクエストの max_tokens の値",
+    "why": "上限であり、実際の消費量ではない。"
+   },
+   {
+    "id": "d",
+    "text": "HTTP 応答のサイズ(バイト数)",
+    "why": "トークン数とは対応しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "usage には、入力、出力、キャッシュの書き込みと読み出しのトークン数が入ります。これにモデルごとの単価を掛けて費用を計算します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/messages",
+   "https://platform.claude.com/docs/en/about-claude/pricing"
+  ]
+ },
+ {
+  "id": "dev-app-026",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "SDK を使わず、HTTP で直接 Messages API を呼び出す。認証のほかに必須のヘッダーはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "anthropic-version",
+    "why": "API のバージョンを指定する必須のヘッダーである。"
+   },
+   {
+    "id": "b",
+    "text": "anthropic-model",
+    "why": "モデルはリクエスト本文の model で指定する。"
+   },
+   {
+    "id": "c",
+    "text": "x-request-id",
+    "why": "リクエスト ID は応答に付くもので、送信は必須ではない。"
+   },
+   {
+    "id": "d",
+    "text": "anthropic-stream",
+    "why": "ストリーミングは本文の stream で指定する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "直接呼び出す場合は、x-api-key、anthropic-version、content-type の各ヘッダーを付けます。公式 SDK はこれらを自動で設定します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/versioning",
+   "https://platform.claude.com/docs/en/api/messages"
+  ]
+ },
+ {
+  "id": "dev-app-027",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "API から 401 authentication_error が返った。最初に確認すべき点はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "API キーが正しく設定されているか(値の誤り、無効化、環境変数の未設定)",
+    "why": "401 は認証の失敗を表す。"
+   },
+   {
+    "id": "b",
+    "text": "リクエストの JSON の形式",
+    "why": "形式の誤りは 400 である。"
+   },
+   {
+    "id": "c",
+    "text": "レート制限の残量",
+    "why": "レート制限は 429 である。"
+   },
+   {
+    "id": "d",
+    "text": "モデル ID の綴り",
+    "why": "存在しないモデルは 404 である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "401 は API キーに問題がある場合に返ります。403 は、キーは有効だが対象の資源を使う権限がない場合です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/errors"
+  ]
+ },
+ {
+  "id": "dev-app-028",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "model に指定した ID の綴りを誤っていた。返るエラーとして最も可能性が高いものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "404 not_found_error",
+    "why": "指定した資源(モデル)が見つからない。"
+   },
+   {
+    "id": "b",
+    "text": "429 rate_limit_error",
+    "why": "レート制限とは関係がない。"
+   },
+   {
+    "id": "c",
+    "text": "529 overloaded_error",
+    "why": "過負荷とは関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "401 authentication_error",
+    "why": "認証は成功している。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "利用できるモデルの一覧は Models API で取得できます。モデル ID は推測せず、公式の一覧にあるものを使います。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/errors",
+   "https://platform.claude.com/docs/en/about-claude/models/overview"
+  ]
+ },
+ {
+  "id": "dev-app-029",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "大量の画像を 1 回のリクエストに詰め込んだところ、413 request_too_large が返った。原因はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "リクエスト全体のサイズが上限を超えた",
+    "why": "413 はリクエストの大きさの上限超過を表す。"
+   },
+   {
+    "id": "b",
+    "text": "レート制限を超えた",
+    "why": "それは 429 である。"
+   },
+   {
+    "id": "c",
+    "text": "画像の形式が不正だった",
+    "why": "形式の誤りは 400 である。"
+   },
+   {
+    "id": "d",
+    "text": "API が過負荷だった",
+    "why": "それは 529 である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "リクエストには大きさの上限があります。大きなファイルは Files API で先にアップロードして参照する、複数のリクエストに分ける、といった方法で対処します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/errors",
+   "https://platform.claude.com/docs/en/build-with-claude/files"
+  ]
+ },
+ {
+  "id": "dev-app-030",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "原因不明のエラーについて Anthropic のサポートに問い合わせる。調査を早めるために伝えるべき情報はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "応答の request-id ヘッダーの値",
+    "why": "リクエストを一意に特定でき、サーバー側の記録と照合できる。"
+   },
+   {
+    "id": "b",
+    "text": "API キーの全文",
+    "why": "秘密情報であり、共有してはならない。"
+   },
+   {
+    "id": "c",
+    "text": "使用している PC の機種",
+    "why": "調査に役立たない。"
+   },
+   {
+    "id": "d",
+    "text": "max_tokens の値だけ",
+    "why": "リクエストを特定できない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "すべての応答には、リクエストを識別する request-id ヘッダーが付きます。アプリケーションのログに記録しておくと、障害の調査に使えます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/errors"
+  ]
+ },
+ {
+  "id": "dev-app-031",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ストリーミング応答のエラーについて正しい記述はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "HTTP 200 で接続が始まった後でも、ストリームの途中でエラーのイベントが届くことがある",
+    "why": "応答の開始後に発生した問題は、イベントとして通知される。"
+   },
+   {
+    "id": "b",
+    "text": "200 が返った時点で、以後エラーは起こらない",
+    "why": "途中で過負荷などのエラーが発生しうる。"
+   },
+   {
+    "id": "c",
+    "text": "ストリーミングでは、エラーは一切通知されない",
+    "why": "error イベントで通知される。"
+   },
+   {
+    "id": "d",
+    "text": "エラーが起きると、それまでに受信したテキストは自動的に取り消される",
+    "why": "受信済みの内容は手元に残る。扱いはアプリケーションが決める。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ストリーミングでは、最初のステータスコードだけでなく、途中の error イベントも処理する必要があります。途中まで受信した内容をどう扱うかも設計しておきます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/streaming",
+   "https://platform.claude.com/docs/en/api/errors"
+  ]
+ },
+ {
+  "id": "dev-app-032",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ストリーミングでツール呼び出しの引数を受け取る。引数はどのように届くか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "input_json_delta として JSON の断片が順に届くので、連結してからパースする",
+    "why": "引数は部分的な JSON 文字列として分割されて届く。"
+   },
+   {
+    "id": "b",
+    "text": "完成した JSON オブジェクトが、最初のイベントで一度に届く",
+    "why": "断片として届く。"
+   },
+   {
+    "id": "c",
+    "text": "引数はストリーミングでは届かないため、別のリクエストで取得する",
+    "why": "同じストリームの中で届く。"
+   },
+   {
+    "id": "d",
+    "text": "各断片が、それぞれ単独でパースできる JSON になっている",
+    "why": "断片は連結して初めて有効な JSON になる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "tool_use ブロックの入力は、content_block_delta の input_json_delta で少しずつ届きます。content_block_stop の後に、連結した文字列をパースします。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/streaming"
+  ]
+ },
+ {
+  "id": "dev-app-033",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ストリーミング応答で、最終的な stop_reason と出力トークン数はどのイベントで分かるか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "message_delta",
+    "why": "メッセージ全体に関する更新(stop_reason、usage)を運ぶ。"
+   },
+   {
+    "id": "b",
+    "text": "content_block_start",
+    "why": "コンテンツブロックの開始を知らせる。"
+   },
+   {
+    "id": "c",
+    "text": "ping",
+    "why": "接続維持用である。"
+   },
+   {
+    "id": "d",
+    "text": "content_block_delta",
+    "why": "ブロックの内容の差分を運ぶ。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "message_start で入力側の usage が、message_delta で stop_reason と出力側の usage が届きます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/streaming"
+  ]
+ },
+ {
+  "id": "dev-app-034",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Message Batches API に投入したバッチの完了を知る方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "バッチを取得し、processing_status が \"ended\" になるまで定期的に確認する",
+    "why": "非同期処理なので、状態を確認して完了を待つ。"
+   },
+   {
+    "id": "b",
+    "text": "投入のリクエストが、全件の処理完了まで応答を返さない",
+    "why": "投入はすぐに返り、処理は裏で進む。"
+   },
+   {
+    "id": "c",
+    "text": "ストリーミングのイベントで、1 件ずつ結果が届く",
+    "why": "バッチの結果はストリーミングでは届かない。"
+   },
+   {
+    "id": "d",
+    "text": "完了するとメールが届くので、それを待つ",
+    "why": "API で状態を確認する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "バッチは投入後に非同期で処理されます。processing_status が ended になったら、結果を取得します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ]
+ },
+ {
+  "id": "dev-app-035",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "バッチの結果には、リクエストごとに種別が付く。次のうち、結果の種別として存在しないものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "retrying",
+    "why": "再試行中を表す種別はない。"
+   },
+   {
+    "id": "b",
+    "text": "succeeded",
+    "why": "成功した場合の種別である。"
+   },
+   {
+    "id": "c",
+    "text": "errored",
+    "why": "エラーになった場合の種別である。"
+   },
+   {
+    "id": "d",
+    "text": "expired",
+    "why": "期限内に処理されなかった場合の種別である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "結果の種別は succeeded、errored、canceled、expired です。24 時間以内に処理されなかったリクエストは expired になります。成功以外のリクエストには課金されません。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ]
+ },
+ {
+  "id": "dev-app-036",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "次のうち、Message Batches API に向かない用途はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "利用者が画面の前で回答を待っているチャット",
+    "why": "即時の応答が必要な用途には使えない。"
+   },
+   {
+    "id": "b",
+    "text": "夜間に行う大量の文書の分類",
+    "why": "急がない大量処理に向く。"
+   },
+   {
+    "id": "c",
+    "text": "評価用データセット全体に対するプロンプトの実行",
+    "why": "急がない大量処理に向く。"
+   },
+   {
+    "id": "d",
+    "text": "過去の記事の一括要約",
+    "why": "急がない大量処理に向く。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "バッチは、費用を抑える代わりに応答の即時性を手放す仕組みです。対話的な用途には通常の API とストリーミングを使います。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ]
+ },
+ {
+  "id": "dev-app-037",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Files API でアップロードした PNG 画像を、メッセージで参照する。正しい指定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "image ブロックの source に file_id を指定する",
+    "why": "ブロックの種類は、ファイルの種類に合わせる。"
+   },
+   {
+    "id": "b",
+    "text": "document ブロックの source に file_id を指定する",
+    "why": "document は PDF やテキスト向けで、画像には image を使う。"
+   },
+   {
+    "id": "c",
+    "text": "text ブロックに file_id を文字列として書く",
+    "why": "文字列として書いても、ファイルは読み込まれない。"
+   },
+   {
+    "id": "d",
+    "text": "system パラメータに file_id を書く",
+    "why": "ファイルの参照は、メッセージのコンテンツブロックで行う。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "コンテンツブロックの種類は、ファイルの MIME タイプと合っている必要があります。PDF やテキストは document、画像は image です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/files",
+   "https://platform.claude.com/docs/en/build-with-claude/vision"
+  ]
+ },
+ {
+  "id": "dev-app-038",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "数百ページある PDF を処理したいが、1 回のリクエストの上限を超える。適切な対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "PDF を複数の部分に分割し、部分ごとに処理する",
+    "why": "サイズやページ数の上限を超える文書は、分けて処理する。"
+   },
+   {
+    "id": "b",
+    "text": "PDF の後半を黙って切り捨てる",
+    "why": "情報が失われ、利用者にも気付かれない。"
+   },
+   {
+    "id": "c",
+    "text": "PDF を 1 枚の巨大な画像に変換して送る",
+    "why": "解像度が落ちて読めなくなり、上限の問題も解決しない。"
+   },
+   {
+    "id": "d",
+    "text": "max_tokens を増やす",
+    "why": "出力の上限であり、入力の上限とは関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "PDF には、リクエストのサイズとページ数の上限があります。上限を超える場合は、分割や要約の段階的な統合を検討します。入力を黙って切り詰めることは避けます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/pdf-support"
+  ]
+ },
+ {
+  "id": "dev-app-039",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "高解像度の写真を大量に送っており、入力トークンの費用が高い。画質の要件は高くない。適切な対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "送信前に、必要十分な大きさまで画像を縮小する",
+    "why": "画像のトークン数は大きさに応じて増える。"
+   },
+   {
+    "id": "b",
+    "text": "画像を base64 から URL 指定に変える",
+    "why": "渡し方を変えても、画像のトークン数は変わらない。"
+   },
+   {
+    "id": "c",
+    "text": "max_tokens を下げる",
+    "why": "出力の上限であり、入力の費用は変わらない。"
+   },
+   {
+    "id": "d",
+    "text": "画像を PDF に埋め込んで送る",
+    "why": "ページは画像としても処理されるため、減らない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "画像は大きさに応じたトークンを消費します。非常に大きな画像は自動的に縮小されますが、あらかじめ適切な大きさにしておくと、費用と応答時間を抑えられます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/vision"
+  ]
+ },
+ {
+  "id": "dev-app-040",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude の画像理解の制約として、正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "画像に写っている実在の人物を、顔の特徴から特定することはしない",
+    "why": "人物の識別は行わない設計になっている。"
+   },
+   {
+    "id": "b",
+    "text": "画像内の文字は読めない",
+    "why": "文字の読み取りはできる。"
+   },
+   {
+    "id": "c",
+    "text": "グラフや図表は解釈できない",
+    "why": "解釈できる。"
+   },
+   {
+    "id": "d",
+    "text": "1 回のリクエストで 1 枚しか扱えない",
+    "why": "複数の画像を扱える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Claude は図表、文書、写真の内容を解釈できますが、顔による人物の特定は行いません。細かな空間的推論や、不鮮明な画像の読み取りには誤りが出ることがあります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/vision"
+  ]
+ },
+ {
+  "id": "dev-app-041",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Citations を有効にして PDF を渡した。回答に付く引用情報に含まれるものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "引用した文言と、その位置を示すページ番号",
+    "why": "PDF ではページ単位の位置情報が付く。"
+   },
+   {
+    "id": "b",
+    "text": "引用元の Web サイトの URL",
+    "why": "渡した文書に対する引用であり、Web の URL ではない。"
+   },
+   {
+    "id": "c",
+    "text": "引用の信頼度を表す 0 から 1 の数値",
+    "why": "そのような数値は含まれない。"
+   },
+   {
+    "id": "d",
+    "text": "文書の著者の連絡先",
+    "why": "含まれない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "引用には、引用した文言、文書の番号と題名、位置情報が含まれます。位置情報は、プレーンテキストでは文字位置、PDF ではページ番号です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/citations"
+  ]
+ },
+ {
+  "id": "dev-app-042",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "構造化出力を使っているのに、返ってきた JSON が途中で終わっていてパースできない。最も可能性が高い原因はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "max_tokens に達して出力が打ち切られた",
+    "why": "スキーマの制約があっても、上限に達すれば出力は途中で止まる。"
+   },
+   {
+    "id": "b",
+    "text": "構造化出力は、JSON の正しさを保証しない",
+    "why": "完了した出力はスキーマに適合する。"
+   },
+   {
+    "id": "c",
+    "text": "スキーマにフィールドが多すぎた",
+    "why": "フィールドの数だけでは、出力は途中で切れない。"
+   },
+   {
+    "id": "d",
+    "text": "ストリーミングを使わなかった",
+    "why": "打ち切りとは関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "構造化出力でも、stop_reason が max_tokens や refusal の場合は、スキーマに適合した完全な出力は得られません。パースの前に stop_reason を確認します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ]
+ },
+ {
+  "id": "dev-app-043",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "構造化出力(output_config.format)と、ツール定義の strict: true の使い分けとして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "前者は Claude の最終的な応答の形式を、後者はツール呼び出しの引数の形式を、スキーマに適合させる",
+    "why": "制約する対象が、応答か、ツールの入力かで異なる。"
+   },
+   {
+    "id": "b",
+    "text": "両者は同じ機能の別名である",
+    "why": "対象が異なる。"
+   },
+   {
+    "id": "c",
+    "text": "前者はストリーミング専用、後者は非ストリーミング専用である",
+    "why": "そのような区別はない。"
+   },
+   {
+    "id": "d",
+    "text": "後者を使うと、ツールが必ず呼び出される",
+    "why": "strict は引数の形式を保証するもので、呼び出しを強制するものではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "応答そのものを JSON で受け取りたいときは構造化出力を、ツールの引数を確実にスキーマどおりにしたいときは strict を使います。両方を併用することもできます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ },
+ {
+  "id": "dev-app-044",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "コンテキストウィンドウについて正しい記述はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "入力(システムプロンプト、履歴、ツール定義)と、生成される出力の合計が収まる必要がある",
+    "why": "ウィンドウは、入力と出力の両方を含む作業領域である。"
+   },
+   {
+    "id": "b",
+    "text": "入力だけが対象で、出力は別枠である",
+    "why": "出力もウィンドウに含まれる。"
+   },
+   {
+    "id": "c",
+    "text": "直近のメッセージ 1 件の大きさだけが対象である",
+    "why": "履歴全体が対象である。"
+   },
+   {
+    "id": "d",
+    "text": "ツール定義はウィンドウを消費しない",
+    "why": "ツール定義も入力トークンとして数えられる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "会話が長くなるほど、ウィンドウは履歴で埋まります。長い会話では、要約や古い内容の削除によって管理します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+  ]
+ },
+ {
+  "id": "dev-app-045",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "あるモデルのコンテキストウィンドウの大きさと出力の上限を、プログラムから確認したい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Models API でモデルの情報を取得する",
+    "why": "モデルごとの入力と出力の上限、対応機能を取得できる。"
+   },
+   {
+    "id": "b",
+    "text": "モデル ID の文字列から推測する",
+    "why": "ID に上限の情報は含まれない。"
+   },
+   {
+    "id": "c",
+    "text": "上限を超えるリクエストを送り、エラーメッセージから読み取る",
+    "why": "無駄なリクエストが発生し、確実でもない。"
+   },
+   {
+    "id": "d",
+    "text": "Claude 自身に質問する",
+    "why": "モデルは自身の仕様を正確に知っているとは限らない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Models API は、利用できるモデルの一覧と、各モデルの上限や対応機能を返します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/overview"
+  ]
+ },
+ {
+  "id": "dev-app-046",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "本番システムで、モデルの挙動が予告なく変わることを避けたい。モデルの指定方法として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "特定のバージョンを指すモデル ID を固定して使い、切り替えは評価を行ってから計画的に実施する",
+    "why": "バージョンを固定すれば、挙動が勝手に変わらない。"
+   },
+   {
+    "id": "b",
+    "text": "常に最新を指す別名を使う",
+    "why": "別名の指す先が変わると、挙動が変わる。"
+   },
+   {
+    "id": "c",
+    "text": "リクエストごとにモデルを無作為に選ぶ",
+    "why": "挙動が安定しない。"
+   },
+   {
+    "id": "d",
+    "text": "モデル ID を省略する",
+    "why": "model は必須である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "モデルには提供終了の予定があります。廃止の告知を確認し、評価セットで新しいモデルの挙動を確かめてから移行します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/overview",
+   "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ]
+ },
+ {
+  "id": "dev-app-047",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "利用中のモデルの提供終了が告知された。適切な対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "終了日までに後継モデルで評価を行い、必要ならプロンプトを調整して移行する",
+    "why": "終了日を過ぎるとリクエストは失敗する。"
+   },
+   {
+    "id": "b",
+    "text": "終了日以降も、自動的に後継モデルへ転送されるので何もしない",
+    "why": "自動で切り替わる前提にはできない。"
+   },
+   {
+    "id": "c",
+    "text": "同じモデル ID を使い続ければ、契約上は提供が続く",
+    "why": "提供終了後は使えない。"
+   },
+   {
+    "id": "d",
+    "text": "API キーを再発行すれば、古いモデルを使い続けられる",
+    "why": "キーとは関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "モデルの提供終了は事前に告知されます。新しいモデルでは挙動や推奨されるプロンプトが変わることがあるため、評価を伴う移行が必要です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ]
+ },
+ {
+  "id": "dev-app-048",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude API のレート制限について正しい記述はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "1 分あたりのリクエスト数、入力トークン数、出力トークン数などで測られ、組織の利用ティアとモデルごとに決まる",
+    "why": "複数の指標があり、どれか 1 つを超えても制限される。"
+   },
+   {
+    "id": "b",
+    "text": "1 日あたりのリクエスト数だけで決まる",
+    "why": "分単位の複数の指標がある。"
+   },
+   {
+    "id": "c",
+    "text": "API キーごとに別々で、キーを増やせば合計も増える",
+    "why": "制限は組織(およびワークスペース)の単位で適用される。"
+   },
+   {
+    "id": "d",
+    "text": "すべての利用者に同じ値が適用される",
+    "why": "利用ティアによって異なる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "レート制限は、リクエスト数、入力トークン数、出力トークン数といった指標で管理されます。利用実績に応じてティアが上がり、上限も上がります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/rate-limits"
+  ]
+ },
+ {
+  "id": "dev-app-049",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "レート制限にどれだけ余裕があるかを、リクエストのたびに把握したい。参照すべきものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "応答ヘッダーの anthropic-ratelimit-* (残りのリクエスト数、トークン数、リセット時刻)",
+    "why": "各応答に、現在の残量が含まれる。"
+   },
+   {
+    "id": "b",
+    "text": "応答本文の usage",
+    "why": "そのリクエストの消費量であり、残量ではない。"
+   },
+   {
+    "id": "c",
+    "text": "stop_reason",
+    "why": "停止の理由であり、残量ではない。"
+   },
+   {
+    "id": "d",
+    "text": "request-id",
+    "why": "リクエストの識別子である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "応答ヘッダーには、各指標の上限、残量、リセットまでの時間が含まれます。これを使って、送信の速度を自分で調整できます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/rate-limits"
+  ]
+ },
+ {
+  "id": "dev-app-050",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "開発、検証、本番で、利用量の上限と API キーを分けて管理したい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "環境ごとにワークスペースを分け、それぞれに API キーと上限を設定する",
+    "why": "ワークスペース単位で、キー、支出の上限、レート制限を分けられる。"
+   },
+   {
+    "id": "b",
+    "text": "1 つの API キーを全環境で共有する",
+    "why": "利用量を分けて管理できず、漏えい時の影響も大きい。"
+   },
+   {
+    "id": "c",
+    "text": "環境ごとに、別の組織を契約する",
+    "why": "管理が複雑になる。ワークスペースで足りる。"
+   },
+   {
+    "id": "d",
+    "text": "リクエストのヘッダーに、環境の名前を入れる",
+    "why": "それだけでは、上限もキーも分かれない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ワークスペースは、用途や環境ごとに API キー、支出の上限、レート制限を分ける仕組みです。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/workspaces"
+  ]
+ },
+ {
+  "id": "dev-app-051",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "思考(thinking)を有効にしたモデルで、ツールを使う会話を続ける。thinking ブロックの扱いとして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "応答に含まれる thinking ブロックを、改変せずにそのまま履歴に含めて送り返す",
+    "why": "推論の連続性を保つために、変更を加えずに返す。"
+   },
+   {
+    "id": "b",
+    "text": "thinking ブロックは、履歴から取り除いて送る",
+    "why": "ツール使用の途中で取り除くと、推論の連続性が失われる。"
+   },
+   {
+    "id": "c",
+    "text": "thinking ブロックの内容を要約して、書き換える",
+    "why": "改変したブロックは無効になる。"
+   },
+   {
+    "id": "d",
+    "text": "thinking ブロックを user メッセージに移す",
+    "why": "ロールを変えてはならない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "応答の content は、順序も内容も変えずに履歴へ戻すのが基本です。thinking ブロックには検証用の署名が付いており、改変すると受け付けられません。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/extended-thinking"
+  ]
+ },
+ {
+  "id": "dev-app-052",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "思考(thinking)に使われたトークンの課金について正しい記述はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "出力トークンとして課金される",
+    "why": "思考は、モデルが生成するトークンである。"
+   },
+   {
+    "id": "b",
+    "text": "無料である",
+    "why": "課金される。"
+   },
+   {
+    "id": "c",
+    "text": "入力トークンとして課金される",
+    "why": "生成されるものなので、出力として数える。"
+   },
+   {
+    "id": "d",
+    "text": "思考の内容を表示しない設定にすれば、課金されない",
+    "why": "表示の設定は、課金に影響しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "思考の深さは、費用と応答時間に直接影響します。単純な処理では労力の設定を下げ、難しい処理で上げると、費用対効果が良くなります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/extended-thinking",
+   "https://platform.claude.com/docs/en/build-with-claude/effort"
+  ]
+ },
+ {
+  "id": "dev-app-053",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Web 検索ツール(サーバー側ツール)と、自分で定義したツール(クライアント側ツール)の違いとして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "サーバー側ツールは Anthropic の基盤で実行され、結果が同じ応答の中に入る。クライアント側ツールは、アプリケーションが実行して結果を返す",
+    "why": "実行する主体が異なる。"
+   },
+   {
+    "id": "b",
+    "text": "どちらも、アプリケーションが実行する",
+    "why": "サーバー側ツールは、実行の往復が不要である。"
+   },
+   {
+    "id": "c",
+    "text": "どちらも、Anthropic の基盤で実行される",
+    "why": "クライアント側ツールは、自分で実行する。"
+   },
+   {
+    "id": "d",
+    "text": "サーバー側ツールは、tools に宣言しなくても使える",
+    "why": "使うツールは、tools に宣言する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "サーバー側ツールには、Web 検索、Web 取得、コード実行などがあります。宣言すれば、Claude が必要に応じて使い、結果は応答のコンテンツブロックとして返ります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+  ]
+ },
+ {
+  "id": "dev-app-054",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Web 検索ツールを使った回答について正しい記述はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "回答には、検索結果に基づく出典の情報が付く",
+    "why": "検索に基づく記述には、引用元が示される。"
+   },
+   {
+    "id": "b",
+    "text": "検索は、利用者のブラウザで実行される",
+    "why": "Anthropic の基盤で実行される。"
+   },
+   {
+    "id": "c",
+    "text": "検索の回数を制限する方法はない",
+    "why": "最大使用回数を指定できる。"
+   },
+   {
+    "id": "d",
+    "text": "検索先のドメインを制限する方法はない",
+    "why": "許可または禁止するドメインを指定できる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Web 検索ツールでは、使用回数の上限や、対象とするドメインの許可・禁止を設定できます。検索に基づく回答には出典が付きます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool"
+  ]
+ },
+ {
+  "id": "dev-app-055",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude にデータ分析のための Python コードを実行させたい。自前の実行環境は用意したくない。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "コード実行ツール(サーバー側ツール)を tools に宣言する",
+    "why": "Anthropic が用意する隔離された環境でコードが実行される。"
+   },
+   {
+    "id": "b",
+    "text": "生成されたコードを、自社の本番サーバーでそのまま eval する",
+    "why": "検証していないコードを本番環境で実行するのは危険である。"
+   },
+   {
+    "id": "c",
+    "text": "Claude に、実行結果を想像して答えさせる",
+    "why": "実際の計算ではなく、誤りが生じる。"
+   },
+   {
+    "id": "d",
+    "text": "Message Batches API を使う",
+    "why": "コードを実行する機能ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "コード実行ツールは、隔離された環境でコードを実行し、標準出力やエラーを結果として返します。実際の計算に基づく分析ができます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool"
+  ]
+ },
+ {
+  "id": "dev-app-056",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Messages API から、リモートの MCP サーバーのツールを使いたい。MCP クライアントを自前で実装しない方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "MCP コネクタを使い、リクエストに MCP サーバーの情報を指定する",
+    "why": "API 側が MCP サーバーに接続し、そのツールを使えるようにする。"
+   },
+   {
+    "id": "b",
+    "text": "MCP サーバーの URL を、システムプロンプトに書く",
+    "why": "書いただけでは接続されない。"
+   },
+   {
+    "id": "c",
+    "text": "MCP は Claude Code 専用で、API からは使えない",
+    "why": "API からも使える。"
+   },
+   {
+    "id": "d",
+    "text": "MCP サーバーの全ツールを、手作業でツール定義に書き写す",
+    "why": "それでは自分でクライアント側ツールとして実装することになる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "MCP コネクタは、リモートの MCP サーバーへの接続を API 側で行う機能です。利用にはベータ用のヘッダーが必要で、サーバーの指定とツールセットの指定を組み合わせます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector"
+  ]
+ },
+ {
+  "id": "dev-app-057",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "検索拡張生成(RAG)のために、文書の埋め込みベクトルを作りたい。Claude での一般的な構成はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "埋め込みは専用の埋め込みモデル(他社提供のものを含む)で作り、検索した文書を Claude に渡して回答を生成する",
+    "why": "Anthropic は独自の埋め込みモデルを提供していない。"
+   },
+   {
+    "id": "b",
+    "text": "Messages API に埋め込み用のパラメータを指定して、ベクトルを得る",
+    "why": "Messages API は埋め込みを返さない。"
+   },
+   {
+    "id": "c",
+    "text": "Claude に、文書を数値の列に変換するよう依頼する",
+    "why": "検索に使える埋め込みにはならない。"
+   },
+   {
+    "id": "d",
+    "text": "埋め込みは不要で、常に全文書をプロンプトに入れる",
+    "why": "文書が多いと、ウィンドウに収まらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "RAG では、埋め込みモデルで文書を検索できる形にし、質問に関連する部分だけを取り出して Claude に渡します。Anthropic の資料では、埋め込みの提供元として Voyage AI が紹介されています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/embeddings"
+  ]
+ },
+ {
+  "id": "dev-app-058",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "RAG で、文書を細かく分割すると、断片だけでは何の話か分からなくなり、検索の精度が落ちる。Anthropic が紹介している改善手法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各断片に、文書全体の中での位置づけを説明する短い文脈を付けてから、索引に登録する",
+    "why": "断片に文脈を補うと、検索で見つかりやすくなる。"
+   },
+   {
+    "id": "b",
+    "text": "断片をさらに短くする",
+    "why": "文脈がさらに失われる。"
+   },
+   {
+    "id": "c",
+    "text": "埋め込みをやめ、ファイル名だけで検索する",
+    "why": "内容に基づく検索ができなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "全断片を無作為に並べ替える",
+    "why": "精度は改善しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Contextual Retrieval は、断片ごとに文書全体を踏まえた説明文を生成して付加する手法です。埋め込み検索とキーワード検索(BM25)を併用し、再順位付けを加えると、さらに精度が上がります。",
+  "refs": [
+   "https://www.anthropic.com/news/contextual-retrieval"
+  ]
+ },
+ {
+  "id": "dev-app-059",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "画像とそれに関する質問を、1 つのメッセージで送る。推奨される並べ方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "画像を先に、質問のテキストを後に置く",
+    "why": "資料を先、質問を後に置くと、応答の質が上がる。"
+   },
+   {
+    "id": "b",
+    "text": "質問を先に、画像を後に置く",
+    "why": "動作はするが、推奨される順序ではない。"
+   },
+   {
+    "id": "c",
+    "text": "画像と質問を、別々のリクエストで送る",
+    "why": "リクエスト間で内容は引き継がれない。"
+   },
+   {
+    "id": "d",
+    "text": "画像を、システムプロンプトに入れる",
+    "why": "画像は、メッセージのコンテンツブロックで渡す。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "文書と同じく、画像も質問より前に置きます。複数の画像がある場合は、「画像 1:」のような見出しを添えると、区別して参照できます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/vision"
+  ]
+ },
+ {
+  "id": "dev-app-060",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "コンピュータ操作ツール(computer use)を使うエージェントを試す。実行環境として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "権限を最小限にした、専用の仮想マシンやコンテナ",
+    "why": "画面を操作するエージェントは、隔離された環境で動かす。"
+   },
+   {
+    "id": "b",
+    "text": "業務データに自由にアクセスできる、自分の普段使いの PC",
+    "why": "誤操作や、画面上の指示の注入による被害が大きくなる。"
+   },
+   {
+    "id": "c",
+    "text": "本番サーバーの管理者セッション",
+    "why": "危険が最も大きい。"
+   },
+   {
+    "id": "d",
+    "text": "環境は問わない。モデルが安全性を保証する",
+    "why": "実行環境での対策が必要である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "コンピュータ操作では、画面に表示された内容が指示として解釈される危険があります。隔離された環境、機密情報へのアクセスの制限、重要な操作での人の確認を組み合わせます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool"
+  ]
+ },
+ {
+  "id": "dev-app-061",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "利用者が日本語で質問しているのに、英語の参考資料を多く渡すと、回答が英語になることがある。確実に日本語で回答させる方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "システムプロンプトで、回答の言語を明示的に指定する",
+    "why": "期待する出力の言語を、はっきり伝える。"
+   },
+   {
+    "id": "b",
+    "text": "max_tokens を増やす",
+    "why": "言語とは関係がない。"
+   },
+   {
+    "id": "c",
+    "text": "資料をすべて削除する",
+    "why": "回答の根拠がなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "同じ質問を、2 回送る",
+    "why": "結果は安定しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Claude は通常、利用者の言語に合わせて応答しますが、入力に他の言語が多いと影響を受けることがあります。出力の言語は、明示すると確実です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/be-clear-and-direct",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/system-prompts"
+  ]
+ },
+ {
+  "id": "dev-app-062",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ツールを使うアプリケーションで、ネットワーク障害のために同じリクエストが再送された。注文の作成ツールが 2 回実行され、注文が重複した。設計上の対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールの処理を冪等にする(同じ識別子の操作は、1 回だけ実行する)",
+    "why": "再試行が起きても、副作用が重複しない。"
+   },
+   {
+    "id": "b",
+    "text": "再試行を、すべて無効にする",
+    "why": "一時的な障害から回復できなくなる。"
+   },
+   {
+    "id": "c",
+    "text": "max_tokens を下げる",
+    "why": "関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "注文ツールの説明に、「1 回だけ呼ぶこと」と書く",
+    "why": "再送による重複は、モデルの判断では防げない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "再試行は、信頼性のために必要ですが、副作用のある操作を重複させる危険があります。冪等性キーなどを使って、ツール側で重複を防ぎます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents",
+   "https://platform.claude.com/docs/en/api/errors"
+  ]
  }
 ]

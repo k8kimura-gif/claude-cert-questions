@@ -186,5 +186,419 @@
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak"
   ]
+ },
+ {
+  "id": "dev-sec-006",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "利用者がアップロードした文書を要約する機能で、文書中の指示に Claude が従ってしまうことがある。プロンプト側の対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "文書をタグで囲み、タグ内の内容は要約の対象となるデータであり、指示としては扱わないことを明示する",
+    "why": "指示とデータの境界を、はっきりさせる。"
+   },
+   {
+    "id": "b",
+    "text": "文書を、システムプロンプトに入れる",
+    "why": "文書の内容が、指示として扱われやすくなる。"
+   },
+   {
+    "id": "c",
+    "text": "文書を、区切りなく指示の途中に埋め込む",
+    "why": "境界が曖昧になる。"
+   },
+   {
+    "id": "d",
+    "text": "要約をやめる",
+    "why": "機能がなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "外部のコンテンツは、明確に区切って、データとして扱います。これだけで完全には防げないため、権限の制限や出力の検査も併用します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/use-xml-tags"
+  ]
+ },
+ {
+  "id": "dev-sec-007",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "API キーが、公開リポジトリに誤ってコミットされた。最初に行うべきことはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "そのキーを無効化し、新しいキーを発行する",
+    "why": "公開された時点で、漏えいしたものとして扱う。"
+   },
+   {
+    "id": "b",
+    "text": "コミットを削除して、様子を見る",
+    "why": "履歴や複製に残っており、すでに取得された可能性がある。"
+   },
+   {
+    "id": "c",
+    "text": "リポジトリを、非公開に変えるだけにする",
+    "why": "すでに取得された可能性がある。"
+   },
+   {
+    "id": "d",
+    "text": "キーの値を、少しだけ書き換えて再コミットする",
+    "why": "無効な対処である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "漏えいしたキーは、すぐに無効化します。そのうえで、利用履歴を確認し、秘密情報を検出する仕組みを導入して、再発を防ぎます。",
+  "refs": [
+   "https://support.claude.com/en/articles/9767949-api-key-best-practices-keeping-your-keys-safe-and-secure"
+  ]
+ },
+ {
+  "id": "dev-sec-008",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude が生成した SQL を、データベースで実行する機能を作る。安全な設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "読み取り専用の権限で接続し、実行前に、許可した種類の文かどうかを検査する",
+    "why": "モデルの出力は検証し、権限で被害を限定する。"
+   },
+   {
+    "id": "b",
+    "text": "生成された SQL を、管理者権限でそのまま実行する",
+    "why": "誤りや注入によって、データを破壊しうる。"
+   },
+   {
+    "id": "c",
+    "text": "「危険な SQL を書かないこと」と指示するだけにする",
+    "why": "指示だけでは、保証にならない。"
+   },
+   {
+    "id": "d",
+    "text": "実行結果を、確認しない",
+    "why": "問題に気付けない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "モデルが生成したコードやクエリは、信頼できない入力として扱います。権限の最小化、検査、隔離された実行環境を組み合わせます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks"
+  ]
+ },
+ {
+  "id": "dev-sec-009",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "顧客の問い合わせ文を Claude に送って分類する。個人情報の扱いとして適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "分類に不要な個人情報は、送信前に取り除くか、置き換える",
+    "why": "必要最小限のデータだけを扱う。"
+   },
+   {
+    "id": "b",
+    "text": "念のため、顧客の全属性を一緒に送る",
+    "why": "不要な個人情報を、扱うことになる。"
+   },
+   {
+    "id": "c",
+    "text": "個人情報を、システムプロンプトに固定で入れておく",
+    "why": "不要に広く扱うことになる。"
+   },
+   {
+    "id": "d",
+    "text": "個人情報の扱いは、考えなくてよい",
+    "why": "法令や社内の規程に従う必要がある。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "データの最小化は、基本的な原則です。処理に必要な情報だけを送り、ログに残す内容にも配慮します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak"
+  ]
+ },
+ {
+  "id": "dev-sec-010",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude が生成したコードを実行する環境の設計として、適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ネットワークとファイルへのアクセスを制限した、隔離環境で実行する",
+    "why": "想定外の動作による被害を、封じ込める。"
+   },
+   {
+    "id": "b",
+    "text": "本番のアプリケーションと同じプロセスで実行する",
+    "why": "障害や情報の漏えいが、直接及ぶ。"
+   },
+   {
+    "id": "c",
+    "text": "開発者の PC で、管理者権限で実行する",
+    "why": "被害の範囲が大きい。"
+   },
+   {
+    "id": "d",
+    "text": "実行環境の制限は、不要である",
+    "why": "必要である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "生成されたコードの実行は、隔離が基本です。外部への通信先を許可した範囲に限定すると、情報の持ち出しも防げます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool",
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-sec-011",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェントのツールが、「利用者 ID」を引数として受け取り、その利用者のデータを返す。この ID を、モデルが自由に指定できる。問題点と対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "他人の ID を指定させる攻撃が成り立つ。認証済みのセッションから、サーバー側で利用者を特定し、モデルの指定には頼らない",
+    "why": "アクセス制御は、モデルの外で行う。"
+   },
+   {
+    "id": "b",
+    "text": "問題はない。システムプロンプトに、本人のデータだけ扱うよう書けばよい",
+    "why": "指示は、回避されうる。"
+   },
+   {
+    "id": "c",
+    "text": "ID を、長くすれば安全である",
+    "why": "推測されにくくなるだけで、制御にはならない。"
+   },
+   {
+    "id": "d",
+    "text": "ツールの説明に、「他人の ID は禁止」と書く",
+    "why": "強制力がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "認可は、アプリケーションの側で強制します。モデルの出力を、権限の根拠にしてはいけません。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "dev-sec-012",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "不正な入力を繰り返す利用者に対処するために、アプリケーション側で備えるべきものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "利用者ごとの利用状況の記録と監視、利用回数の制限、違反が続く場合の利用停止",
+    "why": "継続的な悪用を、検知して止める。"
+   },
+   {
+    "id": "b",
+    "text": "全利用者の利用を、止める",
+    "why": "正当な利用者まで、影響を受ける。"
+   },
+   {
+    "id": "c",
+    "text": "何も記録しない",
+    "why": "検知できない。"
+   },
+   {
+    "id": "d",
+    "text": "不正な入力にも、常に丁寧に応じ続ける",
+    "why": "悪用が続く。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "悪用への対策は、入力の審査だけでなく、利用の監視と段階的な対応(警告、制限、停止)を含みます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks"
+  ]
+ },
+ {
+  "id": "dev-sec-013",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "医療や金融のように、誤った回答の影響が大きい用途で Claude を使う。適切な設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "回答の根拠を資料に基づかせ、出典を示し、重要な判断は専門家が確認する流れにする",
+    "why": "誤りを減らし、検知できるようにし、最終判断に人を置く。"
+   },
+   {
+    "id": "b",
+    "text": "Claude の回答を、確認せずに確定とする",
+    "why": "誤りが、そのまま影響する。"
+   },
+   {
+    "id": "c",
+    "text": "根拠は示させない",
+    "why": "検証できない。"
+   },
+   {
+    "id": "d",
+    "text": "誤りの可能性は、利用者に伝えない",
+    "why": "適切な利用を、妨げる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "影響の大きい用途では、根拠の提示、検証の手順、人による確認を組み込みます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+   "https://platform.claude.com/docs/en/build-with-claude/citations"
+  ]
+ },
+ {
+  "id": "dev-sec-014",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "利用者の投稿が規約に反していないかを、Claude で自動審査する。精度と費用を両立させる構成はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "明確な分類基準と例を与えた小型モデルで一次審査を行い、判断の難しいものだけを人や上位モデルに回す",
+    "why": "大半を安く処理し、難しいものに労力を集中する。"
+   },
+   {
+    "id": "b",
+    "text": "すべてを、人が審査する",
+    "why": "規模を広げられない。"
+   },
+   {
+    "id": "c",
+    "text": "基準を与えず、モデルの感覚に任せる",
+    "why": "判定がぶれる。"
+   },
+   {
+    "id": "d",
+    "text": "すべてを、最上位モデルで審査する",
+    "why": "費用が高い。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "コンテンツの審査では、具体的な基準、例示、出力の形式の固定が精度を支えます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+   "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+  ]
+ },
+ {
+  "id": "dev-sec-015",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ツールの実行結果に、データベースの接続文字列やトークンが含まれていた。問題点と対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "モデルのコンテキストに入った秘密情報は、出力やログを通じて漏れうる。ツールの側で、秘密情報を結果から除く",
+    "why": "モデルに、不要な秘密情報を見せない。"
+   },
+   {
+    "id": "b",
+    "text": "問題はない。モデルは、秘密を守る",
+    "why": "保証はできない。"
+   },
+   {
+    "id": "c",
+    "text": "システムプロンプトに、「秘密を出力するな」と書けば十分である",
+    "why": "完全には防げない。"
+   },
+   {
+    "id": "d",
+    "text": "結果を、大文字に変換する",
+    "why": "対策にならない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "認証情報は、ツールの実装の内側で使い、モデルには渡しません。結果に含まれうる場合は、返す前に取り除きます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak",
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "dev-sec-016",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェントの動作を記録する目的として、適切でないものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "記録があれば、権限の制限や承認の仕組みが不要になる",
+    "why": "記録は、事後の検知と調査のためのもので、予防の代わりにはならない。"
+   },
+   {
+    "id": "b",
+    "text": "問題が起きたときに、原因を調査する",
+    "why": "記録の主な目的である。"
+   },
+   {
+    "id": "c",
+    "text": "不審な操作を、検知する",
+    "why": "記録の主な目的である。"
+   },
+   {
+    "id": "d",
+    "text": "評価やプロンプトの改善に、役立てる",
+    "why": "記録の活用例である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "安全性は、予防(権限、隔離、承認)と、検知(記録、監視)の両方で確保します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
  }
 ]
