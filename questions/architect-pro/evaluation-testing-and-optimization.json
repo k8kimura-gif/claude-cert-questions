@@ -70,7 +70,7 @@
   ],
   "explanation": "良い成功基準は、具体的、測定可能、達成可能、関連性があるの 4 つを満たす。曖昧な「良い性能」ではなく「正確な感情分類」のように具体化し、数値などで測り、現実的な目標を置く。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/define-success"
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
   ]
  },
  {
@@ -107,7 +107,7 @@
   ],
   "explanation": "出典は、ほとんどの用途で複数の成功基準にまたがる多面的な評価が必要だと述べる。一般的な基準には、タスクの忠実度、一貫性、関連性、トーンとスタイル、プライバシー、文脈の活用、レイテンシ、価格が挙げられている。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/define-success"
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
   ]
  },
  {

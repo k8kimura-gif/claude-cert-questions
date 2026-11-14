@@ -33,7 +33,7 @@
   ],
   "explanation": "出典は、入力を分類して専門的な後続処理へ渡す構成をルーティングと呼び、カテゴリが明確に分かれて別々に扱うほうがよい場合に向くとする。種類ごとにプロンプトやツールを最適化できる点が利点である。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
   ]
  },
  {
@@ -70,7 +70,7 @@
   ],
   "explanation": "出典は、可能な限り単純な解決策を探し、必要になったときにだけ複雑さを増やすよう勧める。手順が固定で各段階を分けられるなら、モデルが経路を決めるエージェントより、プロンプトチェーンのほうが適する。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
   ]
  },
  {
@@ -107,7 +107,7 @@
   ],
   "explanation": "出典は、オーケストレーター・ワーカーを、中央の LLM がタスクを動的に分解してワーカーに委任し結果を統合する構成と説明し、サブタスクを事前に予測できない場合に向くとする。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
   ]
  },
  {
@@ -144,7 +144,7 @@
   ],
   "explanation": "評価者・最適化者は、明確な評価基準があり、人間のように反復的に改善することで出力が測定できるほど良くなる場合に有効である、と出典は述べる。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
   ]
  },
  {
@@ -181,7 +181,7 @@
   ],
   "explanation": "出典は、開発者はまず LLM API を直接使うことから始めるよう提案し、フレームワークを使う場合はその基盤のコードを理解しておくよう勧める。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
   ]
  }
 ]
