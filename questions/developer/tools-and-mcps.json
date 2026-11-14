@@ -1,0 +1,226 @@
+[
+ {
+  "id": "dev-tool-001",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude が用意したツールを適切な場面で呼び出してくれない。最初に見直すべき点はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールの description。何をするツールか、いつ使うか、各パラメータの意味と制約を詳しく書く",
+    "why": "ツールの説明は、ツール選択の精度に最も大きく影響する。"
+   },
+   {
+    "id": "b",
+    "text": "ツール名を短くする",
+    "why": "名前は分かりやすさが重要で、短さ自体に効果はない。"
+   },
+   {
+    "id": "c",
+    "text": "max_tokens を増やす",
+    "why": "出力の上限はツール選択に関係しない。"
+   },
+   {
+    "id": "d",
+    "text": "ツールの定義順を逆にする",
+    "why": "順序よりも説明の内容が重要である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールの説明には、機能、使うべき場面と使うべきでない場面、各パラメータの意味、制約や注意点を書きます。似たツールが複数ある場合は、使い分けが分かるように書きます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "dev-tool-002",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ツールの実行結果を Claude に返すときの正しい形式はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "直後の user メッセージに tool_result ブロックを入れ、対応する tool_use_id を指定する",
+    "why": "結果は、要求された呼び出しの ID と対応付けて user ロールで返す。"
+   },
+   {
+    "id": "b",
+    "text": "assistant メッセージに結果のテキストを追記する",
+    "why": "assistant ロールは Claude の発言で、結果を返す場所ではない。"
+   },
+   {
+    "id": "c",
+    "text": "次のリクエストの system パラメータに結果を書く",
+    "why": "システムプロンプトは結果の受け渡しに使わない。"
+   },
+   {
+    "id": "d",
+    "text": "role: \"tool\" のメッセージを追加する",
+    "why": "Messages API に tool ロールはない。結果は user メッセージのコンテンツブロックで返す。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "tool_use ブロックを含む assistant メッセージの直後に、tool_result ブロックを含む user メッセージを置きます。各 tool_result は tool_use_id で呼び出しと対応付けます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+  ]
+ },
+ {
+  "id": "dev-tool-003",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude が 1 つの応答で 3 つのツール呼び出しを同時に要求した。結果の返し方として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "3 つの tool_result を 1 つの user メッセージにまとめて返す",
+    "why": "並列の呼び出しに対する結果は、単一のメッセージで全部返す。"
+   },
+   {
+    "id": "b",
+    "text": "tool_result を 1 つずつ、別々の user メッセージで順に返す",
+    "why": "形式として不適切で、以後 Claude が並列呼び出しをしなくなる原因にもなる。"
+   },
+   {
+    "id": "c",
+    "text": "最初の 1 つだけ実行して返し、残りは無視する",
+    "why": "すべての tool_use に対応する tool_result が必要である。"
+   },
+   {
+    "id": "d",
+    "text": "3 つの結果を 1 つの文字列に連結し、1 つの tool_result で返す",
+    "why": "結果は呼び出しごとに、それぞれの tool_use_id を付けて返す。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "並列ツール呼び出しは既定で有効です。アプリケーションは複数の呼び出しを並行して実行し、すべての結果を 1 つの user メッセージで返します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+  ]
+ },
+ {
+  "id": "dev-tool-004",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ツールの実行中に外部 API がタイムアウトした。Claude への返し方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "tool_result に is_error: true を付け、何が起きたかを説明する内容を返す",
+    "why": "エラーを伝えれば、Claude は再試行、別の手段、ユーザーへの報告を判断できる。"
+   },
+   {
+    "id": "b",
+    "text": "その tool_use を履歴から削除して会話を続ける",
+    "why": "対応する結果のない tool_use が残るとリクエストが不正になる。経過も失われる。"
+   },
+   {
+    "id": "c",
+    "text": "空文字列を成功として返す",
+    "why": "成功したと誤解され、誤った前提で処理が進む。"
+   },
+   {
+    "id": "d",
+    "text": "例外を送出してアプリケーション全体を停止する",
+    "why": "回復できる失敗まで致命的な扱いになる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールの失敗は、is_error を付けた tool_result で返します。エラーメッセージには、原因と、次に取れる行動の手がかりを含めます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+  ]
+ },
+ {
+  "id": "dev-tool-005",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Model Context Protocol (MCP) のサーバーが提供できる主な機能の組み合わせとして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツール、リソース、プロンプト",
+    "why": "サーバーは、実行できる操作、読み取れるデータ、再利用できるプロンプトのひな形を公開する。"
+   },
+   {
+    "id": "b",
+    "text": "モデル、埋め込み、ファインチューニング",
+    "why": "これらはモデル提供者の機能で、MCP サーバーの役割ではない。"
+   },
+   {
+    "id": "c",
+    "text": "認証、課金、レート制限",
+    "why": "これらは MCP の機能の分類ではない。"
+   },
+   {
+    "id": "d",
+    "text": "ホスト、クライアント、トランスポート",
+    "why": "これらは MCP の構成要素で、サーバーが公開する機能ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "MCP は、AI アプリケーションを外部のデータやツールにつなぐための公開規格です。ホスト(AI アプリケーション)の中のクライアントが、サーバーと 1 対 1 で接続します。サーバーはツール、リソース、プロンプトを公開します。",
+  "refs": [
+   "https://modelcontextprotocol.io/docs/learn/architecture"
+  ]
+ },
+ {
+  "id": "dev-tool-006",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "MCP のトランスポートの使い分けとして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "同じマシン上のローカルプロセスには stdio、ネットワーク越しのリモートサーバーには Streamable HTTP を使う",
+    "why": "stdio は標準入出力による通信、Streamable HTTP は HTTP による通信である。"
+   },
+   {
+    "id": "b",
+    "text": "どちらの場合も stdio しか使えない",
+    "why": "リモート接続には HTTP ベースのトランスポートを使う。"
+   },
+   {
+    "id": "c",
+    "text": "リモートには FTP、ローカルには共有メモリを使う",
+    "why": "どちらも MCP の標準トランスポートではない。"
+   },
+   {
+    "id": "d",
+    "text": "トランスポートはサーバーが実行時に自動で決めるので、設定は不要である",
+    "why": "接続方法は設定で指定する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "MCP の標準トランスポートは stdio と Streamable HTTP です。stdio はクライアントがサーバーを子プロセスとして起動する形で、ローカルのツールに向きます。Streamable HTTP は複数のクライアントから接続されるリモートサーバーに向き、認証には OAuth などを使います。",
+  "refs": [
+   "https://modelcontextprotocol.io/docs/learn/architecture",
+   "https://modelcontextprotocol.io/specification/latest"
+  ]
+ }
+]

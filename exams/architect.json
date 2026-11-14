@@ -1,0 +1,18 @@
+{
+  "id": "architect",
+  "code": "CCAR-F",
+  "name": "Architect – Foundations",
+  "examDate": "2026-12-05",
+  "questions": 60,
+  "minutes": 120,
+  "passGuidePercent": 75,
+  "scenarioBased": true,
+  "scenariosPerExam": 4,
+  "domains": [
+    { "id": "agentic-architecture-and-orchestration", "name": "Agentic Architecture and Orchestration", "ja": "エージェント設計とオーケストレーション", "weight": 27, "mockCount": 16 },
+    { "id": "claude-code-configuration-and-workflows", "name": "Claude Code Configuration and Workflows", "ja": "Claude Code の設定とワークフロー", "weight": 20, "mockCount": 12 },
+    { "id": "prompt-engineering-and-structured-output", "name": "Prompt Engineering and Structured Output", "ja": "プロンプト設計と構造化出力", "weight": 20, "mockCount": 12 },
+    { "id": "tool-design-and-mcp-integration", "name": "Tool Design and MCP Integration", "ja": "ツール設計と MCP 統合", "weight": 18, "mockCount": 11 },
+    { "id": "context-management-and-reliability", "name": "Context Management and Reliability", "ja": "コンテキスト管理と信頼性", "weight": 15, "mockCount": 9 }
+  ]
+}

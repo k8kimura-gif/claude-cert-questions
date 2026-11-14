@@ -1,0 +1,301 @@
+[
+ {
+  "id": "dev-agent-001",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Anthropic の「Building effective agents」における、ワークフローとエージェントの区別として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ワークフローはあらかじめ決めたコードの経路で LLM とツールを動かす。エージェントは LLM 自身が手順とツールの使い方を動的に決める",
+    "why": "制御の主体がコードか LLM かが違いである。"
+   },
+   {
+    "id": "b",
+    "text": "ワークフローはツールを使わず、エージェントはツールを使う",
+    "why": "どちらもツールを使いうる。"
+   },
+   {
+    "id": "c",
+    "text": "ワークフローは 1 回の呼び出しで、エージェントは 2 回以上の呼び出しである",
+    "why": "呼び出し回数では区別しない。"
+   },
+   {
+    "id": "d",
+    "text": "ワークフローは小型モデル、エージェントは大型モデルを使う",
+    "why": "モデルの大きさは区別の基準ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ワークフローは予測可能で一貫した動作が得られ、手順が明確なタスクに向きます。エージェントは柔軟性が必要で、手順を事前に決められないタスクに向きます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-002",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "新しい LLM 機能の設計を始める。最初に検討すべき構成はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "検索や例示で強化した 1 回の LLM 呼び出しで足りるかどうかを確かめ、足りない場合だけ複雑にする",
+    "why": "最も単純な構成から始め、必要が示されたときだけ複雑さを足すのが原則である。"
+   },
+   {
+    "id": "b",
+    "text": "将来の拡張に備えて、最初からマルチエージェント構成にする",
+    "why": "費用、遅延、デバッグの難しさが増える。効果が確認できてから導入する。"
+   },
+   {
+    "id": "c",
+    "text": "抽象度の高いフレームワークを導入し、内部の動作は気にしない",
+    "why": "内部のプロンプトと応答が見えなくなり、デバッグが難しくなる。"
+   },
+   {
+    "id": "d",
+    "text": "すべての処理を自律エージェントに任せる",
+    "why": "手順が決まっている処理には過剰で、予測可能性が下がる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エージェント的な構成は、遅延と費用を払ってタスクの成績を上げるものです。多くの用途では、1 回の呼び出しを最適化するだけで足ります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-003",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "マーケティング文を作成し、その後で別の言語に翻訳する処理がある。各段階の出力を確認してから次に進めたい。適したパターンはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プロンプトチェーン",
+    "why": "固定の順序で段階に分け、各段階の出力を次の入力にする。段階の間に検査を挟める。"
+   },
+   {
+    "id": "b",
+    "text": "ルーティング",
+    "why": "入力を分類して別々の処理に振り分けるパターンで、順次処理とは目的が異なる。"
+   },
+   {
+    "id": "c",
+    "text": "オーケストレーターとワーカー",
+    "why": "サブタスクを事前に決められない場合のパターンである。"
+   },
+   {
+    "id": "d",
+    "text": "並列化(投票)",
+    "why": "同じタスクを複数回実行して多様な結果を得るパターンである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "プロンプトチェーンは、タスクをきれいに固定のサブタスクへ分解できる場合に向きます。1 回の呼び出しを簡単にすることで、遅延と引き換えに精度を上げます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts"
+  ]
+ },
+ {
+  "id": "dev-agent-004",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "カスタマーサポートで、一般的な質問、返金依頼、技術的な問い合わせを、それぞれ専用のプロンプトとツールで処理したい。適したパターンはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ルーティング",
+    "why": "入力を分類し、種類ごとに特化した後続処理に振り分ける。"
+   },
+   {
+    "id": "b",
+    "text": "評価者と最適化器",
+    "why": "生成と評価を繰り返して出力を磨くパターンである。"
+   },
+   {
+    "id": "c",
+    "text": "プロンプトチェーン",
+    "why": "全入力が同じ順序の段階を通るパターンである。"
+   },
+   {
+    "id": "d",
+    "text": "並列化(分割)",
+    "why": "1 つのタスクを独立した部分に分けて同時に処理するパターンである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ルーティングは、入力に明確な種類があり、種類ごとに別の扱いをした方がよい場合に向きます。簡単な質問を小型モデルに、難しい質問を上位モデルに振り分ける使い方もできます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-005",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "コードの脆弱性レビューで、同じコードを観点の異なる複数のプロンプトで同時に審査し、いずれかが問題を見つけたら報告したい。適したパターンはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "並列化(投票)",
+    "why": "同じタスクを複数回実行し、複数の視点から結果を得る。"
+   },
+   {
+    "id": "b",
+    "text": "プロンプトチェーン",
+    "why": "段階を順番に実行するパターンで、同時の審査にはならない。"
+   },
+   {
+    "id": "c",
+    "text": "ルーティング",
+    "why": "入力を 1 つの経路に振り分けるパターンである。"
+   },
+   {
+    "id": "d",
+    "text": "評価者と最適化器",
+    "why": "1 つの出力を繰り返し改善するパターンである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "並列化には、タスクを独立した部分に分ける「分割」と、同じタスクを複数回実行する「投票」があります。複数の観点が必要な判定や、信頼性を高めたい判定に投票が向きます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-006",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "複数ファイルにまたがるコード変更で、どのファイルをどう変更するかは依頼内容を見るまで分からない。適したパターンはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "オーケストレーターとワーカー",
+    "why": "中心の LLM がタスクを動的に分解してワーカーに割り振り、結果を統合する。"
+   },
+   {
+    "id": "b",
+    "text": "並列化(分割)",
+    "why": "サブタスクが事前に決まっている場合のパターンである。"
+   },
+   {
+    "id": "c",
+    "text": "プロンプトチェーン",
+    "why": "段階が固定されている場合のパターンである。"
+   },
+   {
+    "id": "d",
+    "text": "ルーティング",
+    "why": "入力を既知の種類に振り分けるパターンである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "オーケストレーターとワーカーは形の上では並列化に似ていますが、サブタスクがあらかじめ定義されておらず、入力に応じてオーケストレーターが決める点が異なります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-007",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "文学作品の翻訳で、訳文に対する批評をもとに訳し直すと品質が明らかに上がることが分かっている。適したパターンはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "評価者と最適化器",
+    "why": "一方が生成し、もう一方が評価とフィードバックを返す、という反復を行う。"
+   },
+   {
+    "id": "b",
+    "text": "ルーティング",
+    "why": "入力を振り分けるパターンで、反復的な改善は行わない。"
+   },
+   {
+    "id": "c",
+    "text": "並列化(分割)",
+    "why": "独立した部分を同時に処理するパターンである。"
+   },
+   {
+    "id": "d",
+    "text": "1 回の呼び出しで temperature を上げる",
+    "why": "出力が多様になるだけで、評価に基づく改善にはならない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "評価者と最適化器は、明確な評価基準があり、反復による改善に測定可能な価値がある場合に有効です。人が具体的な指摘をすれば出力が良くなる、という状況が目安になります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-agent-008",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "自律エージェントのループを自前で実装する。設計として適切なものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "stop_reason が \"tool_use\" の間はツールを実行して結果を返し、\"end_turn\" になったら終了する",
+    "why": "エージェントループの基本形である。"
+   },
+   {
+    "id": "b",
+    "text": "最大反復回数などの停止条件を設け、暴走や費用の膨張を防ぐ",
+    "why": "自律的な処理には上限を設けて制御を保つ。"
+   },
+   {
+    "id": "c",
+    "text": "ツールの実行に失敗したら、結果を返さずに次のターンへ進む",
+    "why": "失敗も tool_result(is_error: true)として返す。返さないとリクエストが不正になる。"
+   },
+   {
+    "id": "d",
+    "text": "各ターンでは直前のメッセージだけを送り、履歴は省略する",
+    "why": "API はステートレスで、履歴がないと Claude は経過を把握できない。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "エージェントは、環境からの結果(ツールの実行結果)を各ステップで受け取りながら進みます。停止条件、人による確認の機会、サンドボックスでのテストを用意して、自律性に伴う費用と誤りの連鎖に備えます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+  ]
+ }
+]

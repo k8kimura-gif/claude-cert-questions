@@ -1,0 +1,151 @@
+[
+ {
+  "id": "dev-eval-001",
+  "cert": "developer",
+  "domain": "eval-testing-and-debugging",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "プロンプトの改良を始める。最初に行うべきことはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "成功の基準を具体的に定め、それを測るテストケース(評価)を用意する",
+    "why": "基準と評価がなければ、変更が改善なのか悪化なのかを判断できない。"
+   },
+   {
+    "id": "b",
+    "text": "思いつく限りのプロンプト技法をすべて適用する",
+    "why": "効果を測れないまま複雑になる。"
+   },
+   {
+    "id": "c",
+    "text": "いくつかの入力を手で試し、良さそうならそのまま本番に出す",
+    "why": "少数の手動確認では、退行や境界事例を見逃す。"
+   },
+   {
+    "id": "d",
+    "text": "最上位モデルに切り替える",
+    "why": "基準がなければ、切り替えの効果も判断できない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "成功の基準は、具体的で、測定でき、達成可能で、用途に関連するものにします。評価は実際の入力の分布を反映させ、境界事例も含めます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/define-success",
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ },
+ {
+  "id": "dev-eval-002",
+  "cert": "developer",
+  "domain": "eval-testing-and-debugging",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "評価の採点方法を選ぶ。推奨される考え方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "完全一致などコードで採点できるものはコードで行い、微妙な判断が必要なものは LLM による採点を使い、人手の採点は最小限にする",
+    "why": "コードによる採点が最も速く確実で、LLM による採点は柔軟、人手は遅く高価である。"
+   },
+   {
+    "id": "b",
+    "text": "正確さを重視し、すべてを人が採点する",
+    "why": "規模を広げられず、評価の頻度が下がる。"
+   },
+   {
+    "id": "c",
+    "text": "すべてを LLM に採点させ、コードによる採点は使わない",
+    "why": "機械的に判定できるものまで LLM に任せると、費用と不確実さが増える。"
+   },
+   {
+    "id": "d",
+    "text": "採点はせず、出力を眺めて印象で判断する",
+    "why": "再現性がなく、変更の前後を比較できない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "評価は、量を優先して自動化します。LLM による採点を使う場合は、詳細な採点基準を与え、判定の前に理由を書かせると信頼性が上がります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ },
+ {
+  "id": "dev-eval-003",
+  "cert": "developer",
+  "domain": "eval-testing-and-debugging",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "LLM に採点させる評価(LLM ジャッジ)の信頼性を上げる方法として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "具体的な採点基準を与え、判定を出す前に理由を書かせ、人の採点と突き合わせて確認する",
+    "why": "基準の明確化、推論の先行、人の判断との照合が信頼性を支える。"
+   },
+   {
+    "id": "b",
+    "text": "「良いか悪いかを答えよ」とだけ指示する",
+    "why": "基準が曖昧で、判定がぶれる。"
+   },
+   {
+    "id": "c",
+    "text": "採点用のプロンプトを毎回変える",
+    "why": "結果を比較できなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "採点結果は確認せずに信頼する",
+    "why": "採点者自身の誤りに気付けない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "採点基準は「〜に言及していれば正解」のように具体的に書きます。出力は「正解/不正解」や段階評価のように機械的に集計できる形にします。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ },
+ {
+  "id": "dev-eval-004",
+  "cert": "developer",
+  "domain": "eval-testing-and-debugging",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "プロンプトを修正したところ、狙った入力では改善したが、別の種類の入力で品質が落ちていたことが後から分かった。これを防ぐ運用はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "修正のたびに評価セット全体を実行し、変更前の結果と比較する",
+    "why": "全体を再実行すれば、意図しない退行を検知できる。"
+   },
+   {
+    "id": "b",
+    "text": "修正した箇所に関係する入力だけを確認する",
+    "why": "関係がないと思っていた入力での退行を見逃す。"
+   },
+   {
+    "id": "c",
+    "text": "プロンプトの変更を禁止する",
+    "why": "改善ができなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "問題が報告されてから直す",
+    "why": "利用者に影響が出てからの対応になる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "プロンプトの変更はコードの変更と同じように扱い、版を管理して、評価セットによる回帰テストを行います。評価セットには、過去に見つかった失敗例を追加していきます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ }
+]

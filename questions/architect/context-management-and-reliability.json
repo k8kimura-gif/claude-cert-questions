@@ -1,0 +1,269 @@
+[
+ {
+  "id": "arch-ctx-001",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "長いやり取りの途中で履歴を要約したところ、エージェントが返金額や注文番号を取り違えるようになった。対策として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "金額、日付、注文番号、状態といった取引の事実を要約の対象から外し、構造化した「案件の事実」ブロックとして毎回のプロンプトに含める",
+    "why": "要約は数値や識別子を曖昧な表現に置き換えやすい。重要な事実は別に保持する。"
+   },
+   {
+    "id": "b",
+    "text": "履歴の要約をより短くする",
+    "why": "失われる情報がさらに増える。"
+   },
+   {
+    "id": "c",
+    "text": "要約をやめ、コンテキストがあふれるまで全履歴を送る",
+    "why": "長い会話では上限に達し、途中の情報が見落とされやすくなる。"
+   },
+   {
+    "id": "d",
+    "text": "顧客に、番号と金額を毎回書いてもらう",
+    "why": "顧客に負担をかけ、初回解決の目標にも反する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "段階的な要約には、数値、割合、日付、顧客が述べた期待値を曖昧にする危険があります。確定した事実は構造化して別に持ち、要約とは独立に引き継ぎます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/compaction"
+  ]
+ },
+ {
+  "id": "arch-ctx-002",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "人の担当者に案件を引き継ぐ。担当者は会話の記録を見られない。引き継ぎの内容として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "顧客 ID、問題の原因、これまでに行った対応、推奨する次の対応を構造化した要約",
+    "why": "担当者が記録なしで状況を把握し、すぐ対応を始められる。"
+   },
+   {
+    "id": "b",
+    "text": "「顧客が困っています」という一文",
+    "why": "担当者が最初から聞き直すことになる。"
+   },
+   {
+    "id": "c",
+    "text": "ツール呼び出しの生ログ全体",
+    "why": "必要な情報を探すのに時間がかかる。"
+   },
+   {
+    "id": "d",
+    "text": "顧客の最後のメッセージだけ",
+    "why": "それまでの経緯と対応が伝わらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "引き継ぎでは、受け手が持っていない文脈を補います。構造化した要約により、顧客が同じ説明を繰り返す必要がなくなります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "arch-ctx-003",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "multi",
+  "scenarioId": "codegen",
+  "stem": "長時間の調査セッションの後半で、Claude が前半に見つけた具体的なクラス名ではなく「一般的なパターンでは」という曖昧な説明をするようになった。対策として適切なものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "重要な発見をメモ用のファイルに書き出させ、以後はそれを参照させる",
+    "why": "コンテキストの外に記録すれば、要約や圧縮を経ても事実が残る。"
+   },
+   {
+    "id": "b",
+    "text": "区切りのよいところで要約を引き継いで新しいセッションを始めるか、/compact でコンテキストを整理する",
+    "why": "埋まったコンテキストを整理すると、応答の質が戻る。"
+   },
+   {
+    "id": "c",
+    "text": "同じ質問を何度も繰り返す",
+    "why": "コンテキストがさらに埋まる。"
+   },
+   {
+    "id": "d",
+    "text": "すべてのファイルを最初から読み直させる",
+    "why": "コンテキストの消費が増え、劣化が進む。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "長いセッションではコンテキストが劣化します。対策は、発見を外部のメモに残す、サブエージェントに調査を任せる、構造化した要約で新しいセッションに引き継ぐ、/compact を使う、といったものです。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-ctx-004",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "最終レポートで、どの主張がどの出典に基づくのかが分からなくなっている。統合の過程で出典の情報が失われていた。対策として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各サブエージェントに、主張と出典(URL、文書名、該当箇所、公開日)の対応を構造化して出力させ、統合の段階でも保持させる",
+    "why": "主張と出典を対にして持ち回れば、要約を経ても帰属が保たれる。"
+   },
+   {
+    "id": "b",
+    "text": "レポートの末尾に、参照した URL を一覧でまとめて載せる",
+    "why": "個々の主張との対応が分からない。"
+   },
+   {
+    "id": "c",
+    "text": "統合の後で、主張に合いそうな出典を検索し直す",
+    "why": "元の出典と一致する保証がない。"
+   },
+   {
+    "id": "d",
+    "text": "出典の記載をやめる",
+    "why": "レポートの要件に反する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "要約の段階では、出典の帰属が失われやすくなります。主張と出典の対応を構造化したまま下流に渡します。信頼できる出典どうしで数値が食い違う場合は、一方を恣意的に選ばず、両方を出典付きで示します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "https://platform.claude.com/docs/en/build-with-claude/citations"
+  ]
+ },
+ {
+  "id": "arch-ctx-005",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "Web 検索のサブエージェントがタイムアウトした。コーディネーターへの報告として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "失敗の種類、試した検索語、得られた部分的な結果、代替案を構造化して返す",
+    "why": "コーディネーターが、再試行、別の手段、欠落を明記した続行のいずれかを判断できる。"
+   },
+   {
+    "id": "b",
+    "text": "空の結果を、成功として返す",
+    "why": "「該当する情報がない」と区別できず、レポートに黙って穴が開く。"
+   },
+   {
+    "id": "c",
+    "text": "「検索できませんでした」とだけ返す",
+    "why": "回復の判断に必要な情報がない。"
+   },
+   {
+    "id": "d",
+    "text": "例外を送出し、調査全体を終了させる",
+    "why": "他のサブエージェントの成果まで失われる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エラーは握りつぶさず、回復に使える文脈を付けて伝えます。アクセスの失敗(再試行の判断が必要)と、有効な空の結果(該当なし)は区別します。最終レポートには、調査できなかった範囲を明記します。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "arch-ctx-006",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "複数の観点(認証、課金、通知)から大規模なコードベースを調査する。メインのエージェントのコンテキストを保つ構成として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "観点ごとにサブエージェントに調査させ、メインのエージェントは要約を受け取って全体を調整する",
+    "why": "冗長な探索の出力がサブエージェントの側にとどまり、メインは高い水準の調整に集中できる。"
+   },
+   {
+    "id": "b",
+    "text": "メインのエージェントがすべてのファイルを順に読む",
+    "why": "コンテキストが探索結果で埋まる。"
+   },
+   {
+    "id": "c",
+    "text": "調査結果をすべてシステムプロンプトに追記していく",
+    "why": "コンテキストが増え続ける。"
+   },
+   {
+    "id": "d",
+    "text": "コンテキストがあふれたら、古いメッセージを無作為に削除する",
+    "why": "重要な情報が失われる可能性がある。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "サブエージェントは、独立したコンテキストで詳細な調査を行い、圧縮した結果だけを返します。調査の各段階の要点を要約して次の段階の入力にすると、長い調査でも文脈を保てます。",
+  "refs": [
+   "https://code.claude.com/docs/en/sub-agents",
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "arch-ctx-007",
+  "cert": "architect",
+  "domain": "context-management-and-reliability",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "全体の抽出精度は 97% である。信頼度の高い抽出について、人による確認を省略したい。省略の前に確認すべきことはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "文書の種別ごと、フィールドごとに精度を測り、特定の区分で精度が低くなっていないかを確かめる",
+    "why": "全体の数値が高くても、特定の種別やフィールドに誤りが集中していることがある。"
+   },
+   {
+    "id": "b",
+    "text": "全体で 97% なので、すぐに省略する",
+    "why": "誤りの偏りを見逃す。"
+   },
+   {
+    "id": "c",
+    "text": "モデルが自己申告する信頼度を、検証せずに使う",
+    "why": "正解付きのデータで較正していない信頼度は、当てにならない。"
+   },
+   {
+    "id": "d",
+    "text": "確認をすべてやめ、苦情が来たら対応する",
+    "why": "誤りが下流の業務に広がる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "集計した精度は、区分ごとの弱点を隠すことがあります。信頼度の高い抽出からも層別に無作為抽出して誤り率を測り続けると、新しい誤りの傾向を検出できます。フィールド単位の信頼度は、正解付きの検証データで較正します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+   "https://platform.claude.com/docs/en/test-and-evaluate/define-success"
+  ]
+ }
+]

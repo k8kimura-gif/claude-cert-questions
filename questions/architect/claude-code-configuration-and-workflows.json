@@ -1,0 +1,380 @@
+[
+ {
+  "id": "arch-cc-001",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "新しく加わったメンバーの Claude Code だけが、チームの命名規約に従わない。調べると、規約はベテランのメンバーの ~/.claude/CLAUDE.md に書かれていた。適切な対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "規約をプロジェクトの CLAUDE.md に移し、リポジトリにコミットする",
+    "why": "ユーザーレベルの設定は本人の環境にしかなく、バージョン管理で共有されない。"
+   },
+   {
+    "id": "b",
+    "text": "新メンバーにベテランのファイルをコピーしてもらう",
+    "why": "以後の変更が同期されず、同じ問題が再発する。"
+   },
+   {
+    "id": "c",
+    "text": "新メンバーが毎回プロンプトで規約を伝える",
+    "why": "手間がかかり、漏れが出る。"
+   },
+   {
+    "id": "d",
+    "text": "規約を README.md に書く",
+    "why": "README は指示として自動的には読み込まれない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "CLAUDE.md は置き場所によって適用範囲が変わります。ユーザーレベル(~/.claude/CLAUDE.md)は個人用、プロジェクトレベルはチームで共有されます。チームの規約はプロジェクトレベルに置きます。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory"
+  ]
+ },
+ {
+  "id": "arch-cc-002",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "テストファイルはコードベースの各所に散らばっている(例: Button.test.tsx がコンポーネントの隣にある)。すべてのテストファイルに同じ規約を、テストファイルを編集するときだけ適用したい。最も保守しやすい方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": ".claude/rules/ にルールファイルを作り、フロントマターの paths に **/*.test.tsx のような glob パターンを指定する",
+    "why": "パスを条件にしたルールは、場所に関係なくパターンに合うファイルを扱うときだけ読み込まれる。"
+   },
+   {
+    "id": "b",
+    "text": "テストのある各ディレクトリに CLAUDE.md を置く",
+    "why": "ファイル数が多くなり、内容の同期が難しい。"
+   },
+   {
+    "id": "c",
+    "text": "ルートの CLAUDE.md にすべての規約を書く",
+    "why": "常に読み込まれるため、関係のない作業でもコンテキストを消費する。"
+   },
+   {
+    "id": "d",
+    "text": "スキルにして、テストを編集するたびに手動で呼び出す",
+    "why": "呼び出しを忘れると適用されない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ディレクトリ単位の CLAUDE.md はそのディレクトリに結び付きます。複数のディレクトリにまたがる種類のファイルには、glob パターンで適用範囲を決めるルールが向きます。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory"
+  ]
+ },
+ {
+  "id": "arch-cc-003",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "チーム全員が使う /review コマンドを用意したい。リポジトリをクローンまたはプルすれば、誰でも使える状態にする。定義ファイルの置き場所として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プロジェクトの .claude/ 配下(commands または skills のディレクトリ)に置き、コミットする",
+    "why": "プロジェクトの .claude/ 配下はリポジトリで共有される。"
+   },
+   {
+    "id": "b",
+    "text": "各自の ~/.claude/commands/ に置く",
+    "why": "個人用の場所で、チームには共有されない。"
+   },
+   {
+    "id": "c",
+    "text": "CLAUDE.md にコマンドの内容を書く",
+    "why": "CLAUDE.md は常に読み込まれる指示で、呼び出し可能なコマンドの定義ではない。"
+   },
+   {
+    "id": "d",
+    "text": ".git/hooks/ に置く",
+    "why": "Git のフックで、Claude Code のコマンドではない。バージョン管理の対象でもない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "カスタムコマンドとスキルには、プロジェクト用(.claude/ 配下、チームで共有)と個人用(~/.claude/ 配下)があります。",
+  "refs": [
+   "https://code.claude.com/docs/en/slash-commands",
+   "https://code.claude.com/docs/en/skills"
+  ]
+ },
+ {
+  "id": "arch-cc-004",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "モノリスをマイクロサービスに分割する作業を依頼する。数十のファイルに影響し、サービスの境界について複数の方針が考えられる。進め方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プランモードでコードベースを調査させ、方針を比較してから実装に入る",
+    "why": "影響が大きく、設計上の判断を伴う作業は、変更の前に計画を固めると手戻りを防げる。"
+   },
+   {
+    "id": "b",
+    "text": "すぐに実装を始め、問題が出たら直す",
+    "why": "方針の誤りに後で気付くと、大きな手戻りになる。"
+   },
+   {
+    "id": "c",
+    "text": "ファイルを 1 つずつ、別々のセッションで依頼する",
+    "why": "ファイル間の依存関係を踏まえた設計ができない。"
+   },
+   {
+    "id": "d",
+    "text": "依頼文を短くして、Claude の裁量に任せる",
+    "why": "設計上の判断が確認されないまま進む。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "プランモードは、大規模な変更、複数の有効な方針がある作業、設計判断を伴う作業に向きます。スタックトレースが明確な 1 ファイルのバグ修正のような、範囲のはっきりした作業は直接実行で足ります。",
+  "refs": [
+   "https://code.claude.com/docs/en/common-workflows",
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-cc-005",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "コードベース全体を調べて報告するスキルを実行すると、大量の探索結果がメインの会話に流れ込み、その後の作業の質が落ちる。対策として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "探索をサブエージェントの独立したコンテキストで実行させ、メインの会話には要約だけを返す",
+    "why": "サブエージェントは独自のコンテキストを持つため、冗長な出力がメインの会話を圧迫しない。"
+   },
+   {
+    "id": "b",
+    "text": "スキルの出力をすべて CLAUDE.md に追記する",
+    "why": "以後のすべてのセッションでコンテキストを消費する。"
+   },
+   {
+    "id": "c",
+    "text": "探索の範囲を 1 ファイルに制限する",
+    "why": "必要な調査ができなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "より上位のモデルに切り替える",
+    "why": "コンテキストが埋まる問題は解決しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "冗長な探索はサブエージェントに任せ、メインのエージェントは全体の調整に集中させます。スキルもサブエージェントとして分離実行するよう設定できます。",
+  "refs": [
+   "https://code.claude.com/docs/en/sub-agents",
+   "https://code.claude.com/docs/en/skills"
+  ]
+ },
+ {
+  "id": "arch-cc-006",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "コードベースの調査を終えた時点から、2 つの異なるリファクタリング方針をそれぞれ試して比較したい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "調査済みのセッションをフォーク(分岐)し、共通の出発点から 2 つの方針を別々に進める",
+    "why": "分岐すれば、調査の文脈を共有したまま、互いに影響しない形で試せる。"
+   },
+   {
+    "id": "b",
+    "text": "1 つのセッションの中で、2 つの方針を交互に進める",
+    "why": "2 つの方針の変更と議論が混ざる。"
+   },
+   {
+    "id": "c",
+    "text": "方針ごとに、調査を最初からやり直す",
+    "why": "同じ調査を 2 回行うことになる。"
+   },
+   {
+    "id": "d",
+    "text": "片方だけを試し、もう片方は想像で比較する",
+    "why": "比較の根拠がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "セッションのフォークは、共通の分析結果を出発点にして、異なる方針を独立して試すための機能です。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview",
+   "https://code.claude.com/docs/en/cli-reference"
+  ]
+ },
+ {
+  "id": "arch-cc-007",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "パイプラインで claude \"このプルリクエストをレビューして\" を実行したところ、ジョブが入力待ちのまま止まった。原因と対策として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "対話モードで起動している。-p(--print)フラグを付けて非対話で実行する",
+    "why": "-p を付けると、プロンプトを処理して結果を出力し、終了する。"
+   },
+   {
+    "id": "b",
+    "text": "CI では Claude Code を実行できない。別のツールに切り替える",
+    "why": "-p による非対話実行が用意されている。"
+   },
+   {
+    "id": "c",
+    "text": "標準入力に /dev/null をつなぐだけで解決する",
+    "why": "正式な方法ではなく、非対話用の出力制御も使えない。"
+   },
+   {
+    "id": "d",
+    "text": "環境変数 CLAUDE_HEADLESS=true を設定する",
+    "why": "そのような環境変数ではなく、-p フラグを使う。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "-p フラグは、Claude Code を非対話(ヘッドレス)で実行します。CI や各種スクリプトからの利用では、これを使います。",
+  "refs": [
+   "https://code.claude.com/docs/en/headless",
+   "https://code.claude.com/docs/en/cli-reference"
+  ]
+ },
+ {
+  "id": "arch-cc-008",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "レビューの指摘を、プルリクエストの該当行へのコメントとして自動投稿したい。指摘を機械的に処理できる形で受け取る方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "--output-format json と JSON スキーマの指定を使い、構造化された出力を得る",
+    "why": "スキーマに沿った JSON なら、ファイルパスや行番号を確実に取り出せる。"
+   },
+   {
+    "id": "b",
+    "text": "自由記述の出力を正規表現で解析する",
+    "why": "出力の揺れで壊れやすい。"
+   },
+   {
+    "id": "c",
+    "text": "「JSON っぽく書いて」とプロンプトで依頼する",
+    "why": "形式が保証されない。"
+   },
+   {
+    "id": "d",
+    "text": "出力をそのまま 1 つのコメントとして投稿する",
+    "why": "行ごとのコメントにできない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ヘッドレス実行では、出力形式を JSON にし、スキーマを指定して構造化された結果を受け取れます。CI ではこの出力を解析してコメントを投稿します。",
+  "refs": [
+   "https://code.claude.com/docs/en/headless",
+   "https://code.claude.com/docs/en/cli-reference"
+  ]
+ },
+ {
+  "id": "arch-cc-009",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "CI で実行する Claude Code が、チームのテスト規約(使うフィクスチャ、命名、価値のあるテストの基準)に沿わないテストを生成する。対策として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "リポジトリの CLAUDE.md にテスト規約と利用できるフィクスチャを書く",
+    "why": "CI で起動した Claude Code も、プロジェクトの CLAUDE.md を読み込む。"
+   },
+   {
+    "id": "b",
+    "text": "CI 担当者のローカル環境の ~/.claude/CLAUDE.md に書く",
+    "why": "CI の実行環境には存在しない。"
+   },
+   {
+    "id": "c",
+    "text": "生成されたテストを毎回、人が書き直す",
+    "why": "自動化の意味がなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "テスト生成を週 1 回に減らす",
+    "why": "品質の問題は解決しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "CLAUDE.md は、CI で動く Claude Code にプロジェクトの文脈を伝える手段でもあります。テストの基準、フィクスチャ、レビューの観点を書いておきます。既存のテストファイルを文脈として渡すと、重複したテストの提案も減ります。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory",
+   "https://code.claude.com/docs/en/headless"
+  ]
+ },
+ {
+  "id": "arch-cc-010",
+  "cert": "architect",
+  "domain": "claude-code-configuration-and-workflows",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "CI のレビュー用ジョブでは、Claude Code にファイルの読み取りと検索だけを行わせ、ファイルの変更や任意のコマンド実行はさせたくない。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "許可するツールを読み取りと検索に限定して起動する(--allowedTools や権限設定を使う)",
+    "why": "使えるツール自体を絞れば、変更や実行が起こらない。"
+   },
+   {
+    "id": "b",
+    "text": "プロンプトに「ファイルを変更しないこと」と書く",
+    "why": "指示だけでは保証にならない。"
+   },
+   {
+    "id": "c",
+    "text": "すべての権限確認を省略するオプションを付けて実行する",
+    "why": "逆にすべての操作を許可することになる。"
+   },
+   {
+    "id": "d",
+    "text": "ジョブの実行時間を短く制限する",
+    "why": "時間内なら変更も実行もできてしまう。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "自動実行では最小権限を原則とします。必要なツールだけを許可し、認証情報の権限も用途に合わせて絞ります。",
+  "refs": [
+   "https://code.claude.com/docs/en/permissions",
+   "https://code.claude.com/docs/en/cli-reference"
+  ]
+ }
+]

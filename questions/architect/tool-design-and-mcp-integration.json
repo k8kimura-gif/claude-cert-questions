@@ -1,0 +1,304 @@
+[
+ {
+  "id": "arch-tool-001",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "注文に関する質問に対して、エージェントが lookup_order ではなく get_customer を頻繁に呼び出す。両ツールの説明は「顧客情報を取得する」「注文情報を取得する」の 1 行だけである。最初に行うべき改善はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各ツールの説明に、受け取る入力の形式、返す内容、使うべき場面と使うべきでない場面を書き足す",
+    "why": "ツール選択の主な手がかりは説明であり、最小限の説明では使い分けができない。"
+   },
+   {
+    "id": "b",
+    "text": "2 つのツールを 1 つに統合する",
+    "why": "有効な場合もあるが、説明の改善より大きな変更で、最初の一手ではない。"
+   },
+   {
+    "id": "c",
+    "text": "システムプロンプトに、キーワードごとの振り分け規則を列挙する",
+    "why": "保守が難しく、規則にない言い回しに対応できない。"
+   },
+   {
+    "id": "d",
+    "text": "ツール選択の誤りを検出するために、検証用のエージェントを追加する",
+    "why": "原因を直さずに工程を増やすことになる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールの説明は、モデルがツールを選ぶときの主な情報源です。似た機能のツールがあるときは、境界が分かるように説明を書きます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+  ]
+ },
+ {
+  "id": "arch-tool-002",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "lookup_order が失敗すると、ツールは常に「操作に失敗しました」という文字列だけを返す。エージェントは原因が分からず、無意味な再試行を繰り返す。ツールのエラー応答の設計として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "エラーの種類(一時的な障害、入力の誤り、権限不足など)、再試行できるかどうか、内容の説明を構造化して返す",
+    "why": "種類と再試行の可否が分かれば、エージェントは適切な回復手段を選べる。"
+   },
+   {
+    "id": "b",
+    "text": "失敗時は空の結果を成功として返す",
+    "why": "「該当なし」と区別できなくなり、誤った回答につながる。"
+   },
+   {
+    "id": "c",
+    "text": "失敗したらエージェントのセッションを終了する",
+    "why": "回復できる失敗まで致命的な扱いになる。"
+   },
+   {
+    "id": "d",
+    "text": "エラーの詳細は伏せ、ツール内部で無制限に再試行する",
+    "why": "入力の誤りのように再試行しても直らない失敗で、応答が返らなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "MCP ツールは isError で失敗を伝えます。一時的な障害、検証エラー、業務上の制約、権限の問題を区別し、再試行できるかどうかを含めると、エージェントの回復行動が適切になります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents",
+   "https://modelcontextprotocol.io/docs/learn/architecture"
+  ]
+ },
+ {
+  "id": "arch-tool-003",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "統合のサブエージェントには 18 個のツール(Web 検索を含む)を与えている。このエージェントは、渡された調査結果を統合する代わりに、自分で Web 検索をやり直すことが多い。対策として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各サブエージェントに渡すツールを、その役割に必要なものだけに絞る",
+    "why": "ツールが多すぎると選択の精度が落ち、役割外のツールを使う誤用も起こる。"
+   },
+   {
+    "id": "b",
+    "text": "ツールをさらに追加し、選択肢を増やす",
+    "why": "選択がさらに難しくなる。"
+   },
+   {
+    "id": "c",
+    "text": "すべてのサブエージェントに同じ全ツールを与え、プロンプトで使い分けを指示する",
+    "why": "指示だけでは誤用が残る。"
+   },
+   {
+    "id": "d",
+    "text": "統合のサブエージェントを廃止する",
+    "why": "統合という役割が失われる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "エージェントに与えるツールは、役割に合わせて少数に絞ります。4〜5 個程度なら選択が安定しますが、18 個のように多いと判断の質が下がります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents",
+   "https://www.anthropic.com/engineering/multi-agent-research-system"
+  ]
+ },
+ {
+  "id": "arch-tool-004",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "リファクタリングの前に、関数 calculateTax を呼び出しているファイルをコードベース全体から探したい。使うべき組み込みツールはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Grep",
+    "why": "ファイルの中身を検索するツールで、関数名や呼び出し箇所を探すのに使う。"
+   },
+   {
+    "id": "b",
+    "text": "Glob",
+    "why": "ファイル名やパスのパターンでファイルを探すツールで、中身は検索しない。"
+   },
+   {
+    "id": "c",
+    "text": "Edit",
+    "why": "既存ファイルの一部を書き換えるツールである。"
+   },
+   {
+    "id": "d",
+    "text": "Write",
+    "why": "ファイルを作成または上書きするツールである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Grep はファイルの内容を検索し、Glob はファイルのパスをパターンで探します(例: **/*.test.tsx)。目的に応じて使い分けます。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/overview"
+  ]
+ },
+ {
+  "id": "arch-tool-005",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "チームで共有する .mcp.json に、GitHub の MCP サーバーを定義する。サーバーにはアクセストークンが必要である。適切な設定方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "${GITHUB_TOKEN} のような環境変数の展開を使い、トークンの値はファイルに書かない",
+    "why": "設定を共有しつつ、秘密情報はリポジトリに含めずに済む。"
+   },
+   {
+    "id": "b",
+    "text": "トークンを .mcp.json に直接書いてコミットする",
+    "why": "秘密情報がリポジトリの履歴に残る。"
+   },
+   {
+    "id": "c",
+    "text": "トークンを CLAUDE.md に書く",
+    "why": "CLAUDE.md もリポジトリで共有される。接続設定のファイルでもない。"
+   },
+   {
+    "id": "d",
+    "text": "全員が同じ個人トークンを使えるよう、チャットで共有する",
+    "why": "漏えいの危険が高く、操作した人も特定できなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "プロジェクトスコープの MCP 設定(.mcp.json)はバージョン管理で共有します。認証情報は環境変数の展開で渡します。個人的に試すサーバーは、ユーザースコープに設定します。",
+  "refs": [
+   "https://code.claude.com/docs/en/mcp"
+  ]
+ },
+ {
+  "id": "arch-tool-006",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "社内のコード検索用 MCP ツールは、組み込みの Grep より高機能(シンボルの参照関係を返す)だが、エージェントはほとんど使わず Grep ばかり使う。対策として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "MCP ツールの説明に、できること、返す内容、Grep より適している場面を具体的に書く",
+    "why": "説明が乏しいと、エージェントは使い慣れた組み込みツールを選ぶ。"
+   },
+   {
+    "id": "b",
+    "text": "Grep を使えなくする",
+    "why": "単純な文字列検索まで不便になる。"
+   },
+   {
+    "id": "c",
+    "text": "MCP ツールの名前を search_v2 に変える",
+    "why": "名前を変えても、使う理由は伝わらない。"
+   },
+   {
+    "id": "d",
+    "text": "MCP サーバーを複数台に増やす",
+    "why": "選択の問題は解決しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "MCP ツールの説明には、機能と出力、適した場面を詳しく書きます。課題管理のような標準的な連携は既存の MCP サーバーを使い、自作のサーバーはチーム固有の業務に限ると保守が楽になります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/writing-tools-for-agents",
+   "https://code.claude.com/docs/en/mcp"
+  ]
+ },
+ {
+  "id": "arch-tool-007",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "レビュー用のジョブに、プルリクエストへコメントを投稿するための GitHub 連携を与える。認証情報の設計として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "対象リポジトリでコメント投稿に必要な権限だけを持つトークンを、CI のシークレットから環境変数で渡す",
+    "why": "権限を必要最小限に絞り、秘密情報をリポジトリに含めない。"
+   },
+   {
+    "id": "b",
+    "text": "組織全体の管理者権限を持つ個人トークンを使う",
+    "why": "権限が過大で、漏えいや誤操作の影響が大きい。"
+   },
+   {
+    "id": "c",
+    "text": "トークンをワークフローのファイルに直接書く",
+    "why": "リポジトリを読める全員に露出する。"
+   },
+   {
+    "id": "d",
+    "text": "認証を省略できるよう、リポジトリの保護設定を無効にする",
+    "why": "保護そのものが失われる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "自動化されたエージェントに渡す認証情報は、最小権限で、対象を限定し、シークレット管理の仕組みから注入します。",
+  "refs": [
+   "https://code.claude.com/docs/en/mcp",
+   "https://code.claude.com/docs/en/headless"
+  ]
+ },
+ {
+  "id": "arch-tool-008",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "文書の種別ごとに別の抽出ツール(extract_invoice、extract_contract など)を定義している。種別が不明な文書に対して、Claude がツールを呼ばずに文章で答えてしまうことがある。tool_choice の設定として、従来から用いられてきたものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "tool_choice を \"any\" にし、いずれかのツールの呼び出しを必須にする",
+    "why": "\"any\" は、どのツールかを Claude に選ばせつつ、ツール呼び出し自体を必ず行わせる。"
+   },
+   {
+    "id": "b",
+    "text": "tool_choice を \"auto\" にする",
+    "why": "\"auto\" では、ツールを呼ばずに文章で答える選択が残る。"
+   },
+   {
+    "id": "c",
+    "text": "tool_choice を \"none\" にする",
+    "why": "ツールが呼ばれなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "tool_choice で extract_invoice を固定する",
+    "why": "種別が不明な文書まで、請求書として抽出される。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "tool_choice には、\"auto\"(呼ぶかどうかを任せる)、\"any\"(いずれかを必ず呼ぶ)、特定のツールの指定、\"none\" があります。ただし、一部の新しいモデルでは \"any\" と特定ツールの強制指定が使えません。その場合は \"auto\" と strict: true を組み合わせるか、構造化出力を使います。利用するモデルの対応状況を確認してください。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ }
+]

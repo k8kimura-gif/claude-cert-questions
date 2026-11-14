@@ -1,0 +1,150 @@
+[
+ {
+  "id": "dev-cc-001",
+  "cert": "developer",
+  "domain": "claude-code",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Code で、チーム全員に共通のビルド手順やコーディング規約を毎回のセッションで読み込ませたい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プロジェクトの CLAUDE.md に書き、リポジトリにコミットする",
+    "why": "プロジェクトの CLAUDE.md はセッション開始時に読み込まれ、リポジトリ経由でチームに共有される。"
+   },
+   {
+    "id": "b",
+    "text": "各メンバーが毎回、最初のメッセージに貼り付ける",
+    "why": "手間がかかり、内容がばらつく。"
+   },
+   {
+    "id": "c",
+    "text": "ホームディレクトリの ~/.claude/CLAUDE.md に書く",
+    "why": "それは個人の全プロジェクト向けの設定で、チームには共有されない。"
+   },
+   {
+    "id": "d",
+    "text": "README.md に書いておけば、自動的に指示として読み込まれる",
+    "why": "README は自動では指示として読み込まれない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "CLAUDE.md には階層があります。プロジェクトのもの(チームで共有)、ユーザーのもの(個人の全プロジェクトに適用)、組織で管理するものなどです。内容は簡潔に保ち、Claude が毎回知っておくべきことに絞ります。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory"
+  ]
+ },
+ {
+  "id": "dev-cc-002",
+  "cert": "developer",
+  "domain": "claude-code",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "CI のパイプラインから Claude Code を対話なしで実行したい。使うべきものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "claude -p(ヘッドレスモード)でプロンプトを渡して実行する",
+    "why": "-p は非対話で実行し、結果を標準出力に返す。"
+   },
+   {
+    "id": "b",
+    "text": "対話モードを起動し、キー入力を自動化するスクリプトを書く",
+    "why": "不安定で、想定された使い方ではない。"
+   },
+   {
+    "id": "c",
+    "text": "CLAUDE.md に CI 用のコマンドを書いておけば、自動的に実行される",
+    "why": "CLAUDE.md は指示を与えるファイルで、実行のきっかけにはならない。"
+   },
+   {
+    "id": "d",
+    "text": "MCP サーバーとして起動する",
+    "why": "それは他のクライアントに Claude Code のツールを提供する方法で、CI での実行手段ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ヘッドレスモードは、スクリプトや CI からの利用を想定しています。出力形式を JSON にしたり、使えるツールを制限したりできます。",
+  "refs": [
+   "https://code.claude.com/docs/en/headless"
+  ]
+ },
+ {
+  "id": "dev-cc-003",
+  "cert": "developer",
+  "domain": "claude-code",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Code で、チーム全員が同じ MCP サーバーを使えるようにしたい。適切な設定場所はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プロジェクトのルートにある .mcp.json(プロジェクトスコープ)に定義し、リポジトリにコミットする",
+    "why": "プロジェクトスコープの設定はリポジトリで共有される。"
+   },
+   {
+    "id": "b",
+    "text": "各自のローカルスコープに登録してもらう",
+    "why": "ローカルスコープは個人用で、共有されない。"
+   },
+   {
+    "id": "c",
+    "text": "CLAUDE.md に MCP サーバーの URL を書く",
+    "why": "CLAUDE.md は接続設定のファイルではない。"
+   },
+   {
+    "id": "d",
+    "text": "環境変数 MCP_SERVERS に JSON を設定する",
+    "why": "そのような設定方法ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "MCP サーバーの設定にはスコープがあります。ローカル(自分だけ、そのプロジェクトだけ)、プロジェクト(.mcp.json で共有)、ユーザー(自分の全プロジェクト)です。秘密情報は .mcp.json に直接書かず、環境変数の展開を使います。",
+  "refs": [
+   "https://code.claude.com/docs/en/mcp"
+  ]
+ },
+ {
+  "id": "dev-cc-004",
+  "cert": "developer",
+  "domain": "claude-code",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Code で「ファイルを編集したら必ずフォーマッターを実行する」ことを確実に行わせたい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "フック(編集ツールの実行後に走る PostToolUse フック)でフォーマッターを実行する",
+    "why": "フックはハーネスが実行するため、モデルの判断に左右されず確実に動く。"
+   },
+   {
+    "id": "b",
+    "text": "CLAUDE.md に「編集後は必ずフォーマッターを実行すること」と書く",
+    "why": "モデルへの指示なので、実行されないことがありうる。"
+   },
+   {
+    "id": "c",
+    "text": "毎回のプロンプトで依頼する",
+    "why": "手間がかかり、忘れる可能性がある。"
+   },
+   {
+    "id": "d",
+    "text": "モデルを上位のものに替える",
+    "why": "確実性はモデルの能力ではなく、仕組みで確保する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "CLAUDE.md の内容は Claude への助言で、守られる保証はありません。必ず実行したい処理は、フックのように決定的に動く仕組みで実現します。フックは settings.json に定義します。",
+  "refs": [
+   "https://code.claude.com/docs/en/hooks"
+  ]
+ }
+]

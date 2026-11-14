@@ -1,0 +1,419 @@
+[
+ {
+  "id": "arch-prompt-001",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "エージェントは、簡単に解決できる案件を人に引き継ぐ一方で、規程に定めのない例外的な要求を自分で処理しようとする。引き継ぎの判断を改善する最初の一手として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "引き継ぐ条件(顧客が人を希望した、規程に定めがない、手続きを進められない)を明示し、判断の例を few-shot で示す",
+    "why": "問題は判断基準の不明確さなので、基準と具体例を与えるのが最も直接的である。"
+   },
+   {
+    "id": "b",
+    "text": "エージェントに自信の度合いを 10 段階で自己申告させ、低いときに引き継ぐ",
+    "why": "自己申告の自信は実際の正しさと一致しないことが多い。"
+   },
+   {
+    "id": "c",
+    "text": "顧客の感情を分析し、否定的な場合に引き継ぐ",
+    "why": "感情は案件の難しさを表さない。"
+   },
+   {
+    "id": "d",
+    "text": "過去の対応履歴で引き継ぎ判定用のモデルを別に学習する",
+    "why": "基準を明示する簡単な手段を試す前に行うには、過剰である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "曖昧な判断には、明確な基準と、境界上の事例を含む具体例が有効です。顧客が明示的に人の対応を求めた場合は、調査を続けずにすぐ引き継ぎます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ]
+ },
+ {
+  "id": "arch-prompt-002",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "codegen",
+  "stem": "「日付の表記を統一して」と文章で指示しても、変換結果が毎回少しずつ違う。指示を改善する方法として最も効果的なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "変換前と変換後の具体例を 2〜3 組示す",
+    "why": "文章の説明が複数の解釈を許す場合、具体例が期待する変換を一意に伝える。"
+   },
+   {
+    "id": "b",
+    "text": "同じ指示を繰り返し、強い言葉で強調する",
+    "why": "解釈の幅は狭まらない。"
+   },
+   {
+    "id": "c",
+    "text": "指示をさらに抽象的にする",
+    "why": "解釈の幅が広がる。"
+   },
+   {
+    "id": "d",
+    "text": "セッションをやり直す",
+    "why": "指示が同じなら結果も同じようにばらつく。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "文章による説明で結果が安定しないときは、入力と出力の具体例を示します。複数の問題が互いに関係している場合は 1 つのメッセージでまとめて伝え、独立している場合は順に直します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting",
+   "https://www.anthropic.com/engineering/claude-code-best-practices"
+  ]
+ },
+ {
+  "id": "arch-prompt-003",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "コーディネーターがサブエージェントに渡す指示の書き方として、最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "調査の目的、期待する出力の形式、対象範囲、完了の基準を明示する",
+    "why": "目的と基準が分かれば、サブエージェントは状況に応じて手段を選べる。"
+   },
+   {
+    "id": "b",
+    "text": "「AI について調べて」のように短く伝える",
+    "why": "範囲が曖昧で、重複や抜けが生じる。"
+   },
+   {
+    "id": "c",
+    "text": "実行すべき検索語を 1 語ずつすべて指定する",
+    "why": "結果を見て方針を変える余地がなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "コーディネーターの会話履歴全体を貼り付ける",
+    "why": "無関係な情報が多く、サブエージェントの注意が分散する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "委任の指示が曖昧だと、サブエージェントは作業を重複させたり、範囲を取り違えたりします。目的、出力形式、使うべき情報源、作業の境界を伝えます。",
+  "refs": [
+   "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ]
+ },
+ {
+  "id": "arch-prompt-004",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "不慣れな業務領域(税額計算)の機能を実装させる。実装の前に、見落としている考慮事項を洗い出したい。効果的な進め方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "実装に入る前に、Claude から要件や境界条件について質問させ、その回答を踏まえて方針を固める",
+    "why": "質問を通じて、依頼者が想定していなかった論点が表に出る。"
+   },
+   {
+    "id": "b",
+    "text": "「良い感じに実装して」と依頼し、結果を見て考える",
+    "why": "前提の食い違いに、実装が終わってから気付くことになる。"
+   },
+   {
+    "id": "c",
+    "text": "思いつく要件をすべて大文字で列挙する",
+    "why": "強調しても、思いついていない論点は補われない。"
+   },
+   {
+    "id": "d",
+    "text": "すぐ実装させ、すべてのテストを後回しにする",
+    "why": "誤りの発見が遅れる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "不慣れな領域では、実装の前に Claude に質問させると、キャッシュの無効化や障害時の挙動のような、依頼者が予期していなかった設計上の論点が見つかります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/claude-code-best-practices",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ]
+ },
+ {
+  "id": "arch-prompt-005",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "自動レビューの指摘の多くが、些細な書式の好みや根拠の薄い推測で、開発者が指摘を読まなくなっている。プロンプトの改善として最も効果的なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "報告する対象(バグ、セキュリティの問題)と報告しない対象(書式の好み、ローカルな慣習)を、具体的な基準として明記する",
+    "why": "何を報告し何を省くかが明確になり、精度が上がる。"
+   },
+   {
+    "id": "b",
+    "text": "「控えめに」「確信が高いものだけ」と指示する",
+    "why": "曖昧で、モデルの判断が安定しない。"
+   },
+   {
+    "id": "c",
+    "text": "指摘の件数に上限を設ける",
+    "why": "重要な指摘が切り捨てられる可能性がある。"
+   },
+   {
+    "id": "d",
+    "text": "指摘ごとに自信の度合いを数値で自己申告させ、低いものを除外する",
+    "why": "自己申告の数値は、実際の正しさと対応しないことが多い。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "誤検知が多い分類は、一時的に無効にして信頼を回復しつつ、その分類の基準を改善します。「慎重に」のような一般的な指示より、具体的な分類基準が効果を持ちます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ]
+ },
+ {
+  "id": "arch-prompt-006",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "cicd",
+  "stem": "同じ種類の問題でも、レビューのたびに重大度(critical / major / minor)の判定が変わる。判定を安定させる方法として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "重大度ごとに具体的なコード例と判定理由を示す",
+    "why": "境界となる事例を示すと、判定の基準が共有される。"
+   },
+   {
+    "id": "b",
+    "text": "重大度の定義を 1 行で書く",
+    "why": "境界が曖昧なままになる。"
+   },
+   {
+    "id": "c",
+    "text": "重大度の分類をやめる",
+    "why": "優先順位を付けられなくなる。"
+   },
+   {
+    "id": "d",
+    "text": "レビューを 3 回実行し、多数決で決める",
+    "why": "費用が 3 倍になり、基準の曖昧さは残る。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "few-shot の例は、曖昧な事例に対する判断の仕方を伝えます。なぜその判定になるのかという理由を添えると、例にない事例にも適切に一般化されます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency"
+  ]
+ },
+ {
+  "id": "arch-prompt-007",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "抽出結果が JSON として壊れている(括弧の閉じ忘れ、必須フィールドの欠落)ことがあり、下流の取り込みが失敗する。最も確実な対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "JSON スキーマを指定した構造化出力、またはスキーマを定義したツール呼び出しで結果を受け取る",
+    "why": "スキーマに適合した出力が得られ、構文の誤りがなくなる。"
+   },
+   {
+    "id": "b",
+    "text": "プロンプトに「正しい JSON を出力すること」と書く",
+    "why": "改善はするが、保証はない。"
+   },
+   {
+    "id": "c",
+    "text": "壊れた JSON を修復するライブラリを後段に入れる",
+    "why": "欠落したフィールドは補えず、誤った修復の危険もある。"
+   },
+   {
+    "id": "d",
+    "text": "出力を YAML に変える",
+    "why": "形式を変えても、保証がない点は同じである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "スキーマによる制約は、構文の誤りをなくします。ただし、値を別のフィールドに入れる、明細の合計が総額と合わない、といった意味上の誤りは防げないため、別の検証が必要です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+  ]
+ },
+ {
+  "id": "arch-prompt-008",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "原本に支払期日の記載がない請求書でも、抽出結果にもっともらしい日付が入っている。スキーマでは payment_due_date が必須になっている。対策として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "原本にない可能性のあるフィールドを null 許容(任意)にし、記載がなければ null を返すよう指示する",
+    "why": "必須にすると、モデルは値を埋めようとして作り出してしまう。"
+   },
+   {
+    "id": "b",
+    "text": "「日付を作らないこと」と強調するだけにする",
+    "why": "スキーマが値を要求している限り、作り出す圧力が残る。"
+   },
+   {
+    "id": "c",
+    "text": "記載がないときは、請求日の 30 日後を入れさせる",
+    "why": "推測による値が、事実として下流に渡る。"
+   },
+   {
+    "id": "d",
+    "text": "支払期日のフィールドを削除する",
+    "why": "記載がある文書の情報まで失われる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "スキーマの設計は、ハルシネーションに影響します。原本に存在しない可能性がある情報は任意のフィールドにし、「記載なし」を表現できるようにします。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ },
+ {
+  "id": "arch-prompt-009",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "文書の種別を enum(invoice / contract / receipt)で分類させているが、どれにも当てはまらない文書が、無理にいずれかに分類されている。スキーマの改善として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "\"other\" の値を追加し、その内容を説明する自由記述のフィールドを併せて設ける",
+    "why": "当てはまらない場合の逃げ道があれば、誤った分類を強制しない。"
+   },
+   {
+    "id": "b",
+    "text": "enum をやめ、すべて自由記述にする",
+    "why": "下流での集計や分岐が難しくなる。"
+   },
+   {
+    "id": "c",
+    "text": "enum に、思いつく限りの種別を 100 個追加する",
+    "why": "保守が難しく、それでも漏れが出る。"
+   },
+   {
+    "id": "d",
+    "text": "当てはまらない文書は、エラーにして破棄する",
+    "why": "処理すべき文書が失われる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "拡張できる分類には、enum に \"other\" と詳細の文字列を組み合わせる設計が有効です。判断が付かない場合のために \"unclear\" を用意する方法もあります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ]
+ },
+ {
+  "id": "arch-prompt-010",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "抽出した明細の合計が、請求書の総額と一致しないことを検証で検出した。再抽出のリクエストとして最も効果的なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "原本、失敗した抽出結果、検証で検出した具体的な不一致の内容を渡して、修正させる",
+    "why": "何が誤っているかが分かれば、モデルは該当箇所を見直せる。"
+   },
+   {
+    "id": "b",
+    "text": "同じプロンプトで、もう一度実行する",
+    "why": "誤りの情報がないため、同じ誤りを繰り返しやすい。"
+   },
+   {
+    "id": "c",
+    "text": "「もっと正確に」とだけ追記する",
+    "why": "どこを直すべきかが伝わらない。"
+   },
+   {
+    "id": "d",
+    "text": "原本を渡さず、失敗した抽出結果だけを渡して直させる",
+    "why": "原本がないと、正しい値を確認できない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "検証の失敗を受けた再試行では、具体的なエラーをフィードバックします。抽出結果に「記載された総額」と「計算した合計」の両方を持たせると、不一致を検出しやすくなります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency"
+  ]
+ },
+ {
+  "id": "arch-prompt-011",
+  "cert": "architect",
+  "domain": "prompt-engineering-and-structured-output",
+  "type": "single",
+  "scenarioId": "extract",
+  "stem": "検証に失敗した抽出をエラー内容付きで再試行する仕組みがある。再試行しても改善が見込めないのは、次のうちどの場合か。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "必要な情報が、渡した文書のどこにも書かれていない場合",
+    "why": "原本にない情報は、何度試しても抽出できない。"
+   },
+   {
+    "id": "b",
+    "text": "日付の形式が、スキーマの指定と違っていた場合",
+    "why": "形式の誤りは、指摘すれば直せる。"
+   },
+   {
+    "id": "c",
+    "text": "値を、隣のフィールドに入れ違えていた場合",
+    "why": "配置の誤りは、指摘すれば直せる。"
+   },
+   {
+    "id": "d",
+    "text": "明細の 1 行を読み落としていた場合",
+    "why": "指摘して見直させれば、拾える。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "再試行は、形式や構造の誤りには有効です。情報が原本に存在しない場合は効果がないため、null を返すか、別の文書の取得や人による確認に回します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ }
+]

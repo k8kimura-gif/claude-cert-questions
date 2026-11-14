@@ -1,0 +1,20 @@
+{
+  "id": "developer",
+  "code": "CCDV-F",
+  "name": "Developer – Foundations",
+  "examDate": "2026-12-05",
+  "questions": 53,
+  "minutes": 120,
+  "passGuidePercent": 75,
+  "scenarioBased": false,
+  "domains": [
+    { "id": "applications-and-integration", "name": "Applications and Integration", "ja": "アプリケーションと統合", "weight": 33.1, "mockCount": 18 },
+    { "id": "model-selection-and-optimization", "name": "Model Selection and Optimization", "ja": "モデル選択と最適化", "weight": 16.8, "mockCount": 9 },
+    { "id": "agents-and-workflows", "name": "Agents and Workflows", "ja": "エージェントとワークフロー", "weight": 14.7, "mockCount": 8 },
+    { "id": "prompt-and-context-engineering", "name": "Prompt and Context Engineering", "ja": "プロンプトとコンテキスト設計", "weight": 11.0, "mockCount": 6 },
+    { "id": "tools-and-mcps", "name": "Tools and MCPs", "ja": "ツールと MCP", "weight": 10.6, "mockCount": 6 },
+    { "id": "security-and-safety", "name": "Security and Safety", "ja": "セキュリティと安全性", "weight": 8.1, "mockCount": 4 },
+    { "id": "claude-code", "name": "Claude Code", "ja": "Claude Code", "weight": 3.1, "mockCount": 1 },
+    { "id": "eval-testing-and-debugging", "name": "Eval, Testing, and Debugging", "ja": "評価・テスト・デバッグ", "weight": 2.6, "mockCount": 1 }
+  ]
+}

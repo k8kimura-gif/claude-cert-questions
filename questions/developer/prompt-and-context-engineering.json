@@ -1,0 +1,227 @@
+[
+ {
+  "id": "dev-prompt-001",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "1 つのプロンプトに、指示、参考文書、出力例が混在している。Claude がそれぞれを取り違えないようにする方法として推奨されるものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "<instructions> や <document> のような XML タグで各部分を囲む",
+    "why": "タグで区切ると、指示と資料の境界が明確になる。"
+   },
+   {
+    "id": "b",
+    "text": "すべてを大文字で書く",
+    "why": "強調にはなるが、部分の区別にはならない。過剰な強調は逆効果になることもある。"
+   },
+   {
+    "id": "c",
+    "text": "各部分の間に空行を 3 行入れる",
+    "why": "区切りとして弱く、どの部分が何であるかが伝わらない。"
+   },
+   {
+    "id": "d",
+    "text": "それぞれを別々の API リクエストで送る",
+    "why": "文脈が分断され、資料を踏まえた回答ができなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "XML タグは、プロンプトの各部分を明確に分けるのに有効です。決まったタグ名があるわけではなく、内容を表す一貫した名前を付けます。出力をタグで囲むよう求めれば、後処理での抽出も容易になります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/use-xml-tags"
+  ]
+ },
+ {
+  "id": "dev-prompt-002",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "出力の形式と文体を安定させるために例を示す。推奨される示し方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "関連性が高く多様な例を 3〜5 件、<example> タグで囲んで示す",
+    "why": "複数の多様な例によって、Claude が意図しない共通点を拾うことを防げる。"
+   },
+   {
+    "id": "b",
+    "text": "よく似た例を 1 件だけ示す",
+    "why": "1 件だけだと、その例の細部まで模倣されやすい。"
+   },
+   {
+    "id": "c",
+    "text": "例は示さず、形式を長い文章で説明する",
+    "why": "説明だけでは細かな形式や文体が伝わりにくい。"
+   },
+   {
+    "id": "d",
+    "text": "例を 100 件以上入れる",
+    "why": "トークンを大量に消費する。数件の良い例で十分なことが多い。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "例示(マルチショット)は、出力の精度、一貫性、品質を上げる確実な方法です。例は実際の用途に近く、偏りのないものを選び、タグで囲んで指示と区別します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+  ]
+ },
+ {
+  "id": "dev-prompt-003",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "数万トークンの文書を渡して質問する。推奨されるプロンプトの構成はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "長い文書をプロンプトの上部に置き、質問と指示を末尾に置く",
+    "why": "質問を最後に置くと応答の質が上がる。"
+   },
+   {
+    "id": "b",
+    "text": "質問を冒頭に置き、文書をその後に置く",
+    "why": "長文では、質問を末尾に置く方が良い結果になる。"
+   },
+   {
+    "id": "c",
+    "text": "文書を 10 分割し、別々のリクエストで順に送る",
+    "why": "リクエスト間で内容は引き継がれない。"
+   },
+   {
+    "id": "d",
+    "text": "文書の前半を削って短くする",
+    "why": "必要な情報が失われる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "長文を扱うときは、文書を上、質問を下に置きます。複数の文書はそれぞれタグで囲み、出典などのメタデータを添えます。回答の前に関連箇所を引用させると、無関係な部分に惑わされにくくなります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips"
+  ]
+ },
+ {
+  "id": "dev-prompt-004",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude が指示に従いすぎて不自然な応答になる。システムプロンプトには「絶対に〜するな」「必ず〜せよ」という強い命令が大文字で多数並んでいる。改善策として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "強調を弱め、なぜそうしてほしいのかという理由と背景を平易な文で説明する",
+    "why": "現行モデルは指示への反応が良いため、過剰な強調は過剰適用を招く。理由を伝えると適切に一般化される。"
+   },
+   {
+    "id": "b",
+    "text": "同じ命令をさらに繰り返して徹底させる",
+    "why": "過剰適用が悪化する。"
+   },
+   {
+    "id": "c",
+    "text": "すべての指示を削除する",
+    "why": "必要な指示まで失われる。"
+   },
+   {
+    "id": "d",
+    "text": "temperature を上げる",
+    "why": "ばらつきが増えるだけで、指示の解釈は改善しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "プロンプトは、背景を知らない優秀な同僚に説明するつもりで、明確かつ直接に書きます。目的、対象読者、成功の基準を伝えると、Claude は状況に合った判断ができます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ]
+ },
+ {
+  "id": "dev-prompt-005",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "長時間動くエージェントで、コンテキストが古いツール結果で埋まり、応答の質が落ちてきた。コンテキスト設計の考え方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "コンテキストは有限の資源と考え、目的に必要な情報だけが残るよう、要約や古い結果の削除を行う",
+    "why": "情報が増えるほど個々の情報への注意が薄れるため、必要なものに絞る。"
+   },
+   {
+    "id": "b",
+    "text": "コンテキストウィンドウが大きいモデルに替えれば、整理は不要になる",
+    "why": "容量が増えても、不要な情報が多いほど精度は落ちる。"
+   },
+   {
+    "id": "c",
+    "text": "すべてのツール結果を毎ターン複製して強調する",
+    "why": "不要な情報がさらに増える。"
+   },
+   {
+    "id": "d",
+    "text": "システムプロンプトを削除して容量を空ける",
+    "why": "必要な指示が失われる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "コンテキストエンジニアリングは、望む結果が得られる可能性を最大にする、最小限で情報価値の高いトークンの集合を見つける作業です。手段には、会話の要約(コンパクション)、古いツール結果の消去、コンテキストの外へのメモの保存、サブエージェントへの分担があります。",
+  "refs": [
+   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/compaction"
+  ]
+ },
+ {
+  "id": "dev-prompt-006",
+  "cert": "developer",
+  "domain": "prompt-and-context-engineering",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "社内規程に関する質問に答える機能で、規程に書かれていない内容を Claude がもっともらしく答えてしまう。対策として有効なものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "資料に答えがない場合は「分からない」と答えてよいと明示する",
+    "why": "答えない選択肢を与えると、推測による回答が減る。"
+   },
+   {
+    "id": "b",
+    "text": "先に根拠となる箇所を資料から引用させ、その引用に基づいて回答させる",
+    "why": "回答が資料に結び付き、根拠のない主張を取り除きやすくなる。"
+   },
+   {
+    "id": "c",
+    "text": "max_tokens を増やす",
+    "why": "出力の長さは正確さに関係しない。"
+   },
+   {
+    "id": "d",
+    "text": "「必ず何か答えること」と指示する",
+    "why": "推測による回答を助長する。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "ハルシネーションを減らす基本は、分からないと言える余地を与えること、回答を直接の引用に基づかせること、主張ごとに根拠を示させることです。Citations 機能を使えば、引用元の位置も確認できます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+   "https://platform.claude.com/docs/en/build-with-claude/citations"
+  ]
+ }
+]

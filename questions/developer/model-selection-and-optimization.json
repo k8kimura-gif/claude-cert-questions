@@ -1,0 +1,339 @@
+[
+ {
+  "id": "dev-model-001",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "問い合わせメールを 5 種類のカテゴリに分類する処理を、1 日 100 万件実行する。精度の要件は小型モデルで満たせることを評価で確認済みである。モデル選択として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "最も小型で高速なモデル(Haiku 系)を使う",
+    "why": "要件を満たす最小のモデルが、費用と速度の両面で有利になる。"
+   },
+   {
+    "id": "b",
+    "text": "念のため最上位のモデルを使う",
+    "why": "品質要件を満たしている以上、費用と遅延が増えるだけになる。"
+   },
+   {
+    "id": "c",
+    "text": "中位モデルと最上位モデルの両方に送り、結果が一致したものだけ採用する",
+    "why": "単純な分類に対して費用が何倍にもなる。"
+   },
+   {
+    "id": "d",
+    "text": "モデルを毎回ランダムに選び、負荷を分散する",
+    "why": "品質と費用が安定しなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "モデル選択は、能力、速度、費用の兼ね合いで決めます。大量で単純な処理は小型モデルが向いています。判断は推測ではなく、実際のデータでの評価に基づいて行います。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+  ]
+ },
+ {
+  "id": "dev-model-002",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "大規模なコードベースを自律的に調査して修正するエージェントを作る。モデル選択の考え方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "複雑な推論と長い作業が必要なので能力の高いモデルを使い、単純な下請け作業だけ小型モデルに回す",
+    "why": "難しい判断は上位モデル、定型的なサブタスクは小型モデル、という分担が費用対効果に優れる。"
+   },
+   {
+    "id": "b",
+    "text": "エージェントは呼び出し回数が多いので、すべて最小のモデルにする",
+    "why": "判断の誤りが積み重なり、やり直しでかえって費用が増えることがある。"
+   },
+   {
+    "id": "c",
+    "text": "モデルの違いは速度だけなので、最も速いモデルを選ぶ",
+    "why": "モデルによって推論能力に差がある。"
+   },
+   {
+    "id": "d",
+    "text": "1 ターンごとにモデルを切り替えて平均的な品質を得る",
+    "why": "プロンプトキャッシュが効かなくなり、挙動も安定しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "費用はリクエスト単価ではなく、タスクを完了するまでの合計で評価します。安いモデルでもターン数や再試行が増えれば、合計では高くつくことがあります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
+   "https://www.anthropic.com/engineering/building-effective-agents"
+  ]
+ },
+ {
+  "id": "dev-model-003",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "プロンプトキャッシュを最大限に効かせるため、リクエストの内容をどう並べるべきか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "変化しない内容(ツール定義、システムプロンプト、固定の資料)を前に、リクエストごとに変わる内容を後ろに置く",
+    "why": "キャッシュは先頭からの一致で判定されるため、安定した部分を前に固める。"
+   },
+   {
+    "id": "b",
+    "text": "変わる内容を先頭に置き、固定の内容を後ろに置く",
+    "why": "先頭が変わると、それ以降はすべてキャッシュに当たらなくなる。"
+   },
+   {
+    "id": "c",
+    "text": "並び順は関係ない。内容が同じならキャッシュされる",
+    "why": "一致は先頭からの連続した範囲で判定される。"
+   },
+   {
+    "id": "d",
+    "text": "すべての内容を 1 つの巨大な user メッセージにまとめる",
+    "why": "変わる部分と固定部分が混ざり、キャッシュの境界を置けなくなる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "キャッシュは tools、system、messages の順に並んだ内容の先頭部分に対して働きます。途中に 1 バイトでも違いがあると、そこから後ろは再利用されません。cache_control で区切り(ブレークポイント)を指定します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "dev-model-004",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "プロンプトキャッシュの料金について正しい記述はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "キャッシュへの書き込みは通常の入力より割高で、キャッシュからの読み出しは大幅に安い",
+    "why": "書き込みに上乗せがあり、読み出しは通常入力の 1 割程度になる。"
+   },
+   {
+    "id": "b",
+    "text": "書き込みも読み出しも無料である",
+    "why": "どちらも課金される。"
+   },
+   {
+    "id": "c",
+    "text": "読み出しは通常の入力と同じ料金で、速度だけが改善する",
+    "why": "読み出しは料金も大幅に下がる。"
+   },
+   {
+    "id": "d",
+    "text": "キャッシュを使うと出力トークンの料金が半額になる",
+    "why": "キャッシュは入力トークンに対する仕組みである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "既定の有効期間(5 分)では、書き込みは通常入力の 1.25 倍、読み出しは 0.1 倍です。同じ接頭部分を繰り返し使うほど得になり、1 回しか使わない内容をキャッシュすると損になります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+   "https://platform.claude.com/docs/en/about-claude/pricing"
+  ]
+ },
+ {
+  "id": "dev-model-005",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "長いシステムプロンプトに cache_control を付けたが、usage の cache_read_input_tokens が毎回 0 のままである。原因として最も可能性が高いものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "システムプロンプトの中に、現在時刻のようなリクエストごとに変わる値が入っている",
+    "why": "先頭部分が毎回変わると、キャッシュに一度も当たらない。"
+   },
+   {
+    "id": "b",
+    "text": "max_tokens が小さすぎる",
+    "why": "出力の上限は入力のキャッシュに影響しない。"
+   },
+   {
+    "id": "c",
+    "text": "ストリーミングを使っている",
+    "why": "ストリーミングでもキャッシュは働く。"
+   },
+   {
+    "id": "d",
+    "text": "同じ API キーで別のモデルも呼び出している",
+    "why": "他のリクエストの存在は、このリクエストのキャッシュ判定に影響しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "キャッシュが効いているかどうかは usage の cache_creation_input_tokens と cache_read_input_tokens で確認します。読み出しが 0 のまま続く場合は、タイムスタンプ、リクエスト ID、順序の定まらない JSON、ツール一覧の変動など、接頭部分を変えている要因を探します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "dev-model-006",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "既定のプロンプトキャッシュの有効期間について正しい記述はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "5 分間で、その間に読み出されるたびに延長される",
+    "why": "既定は 5 分で、利用されると期間が更新される。追加料金で 1 時間の指定もできる。"
+   },
+   {
+    "id": "b",
+    "text": "24 時間で固定されており、延長されない",
+    "why": "既定は 5 分である。"
+   },
+   {
+    "id": "c",
+    "text": "明示的に削除するまで無期限に残る",
+    "why": "有効期間が切れると自動的に失効する。"
+   },
+   {
+    "id": "d",
+    "text": "同じ会話の中だけ有効で、会話が終わると即座に消える",
+    "why": "有効期間は時間で決まる。同じ接頭部分を持つ別のリクエストからも読み出せる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "既定の有効期間は 5 分です。リクエストの間隔が 5 分を超える用途では、1 時間の有効期間を指定する選択肢があります(書き込みの料金は高くなります)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "dev-model-007",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "夜間に実行する大量の文書分類で、費用を最も下げられる組み合わせはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Message Batches API を使い、共通の指示部分にプロンプトキャッシュを併用する",
+    "why": "バッチの割引とキャッシュの割引は併用できる。"
+   },
+   {
+    "id": "b",
+    "text": "通常の API をストリーミングで呼び出す",
+    "why": "ストリーミングは体感速度のための機能で、料金は変わらない。"
+   },
+   {
+    "id": "c",
+    "text": "最上位モデルに切り替え、1 回で確実に正解させる",
+    "why": "分類のような単純な処理では費用が増えるだけである。"
+   },
+   {
+    "id": "d",
+    "text": "max_tokens を最大値に設定する",
+    "why": "上限を上げても費用は下がらない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "即時の応答が不要な処理は Message Batches API で 50% 引きになります。全リクエストに共通する指示や資料があるなら、プロンプトキャッシュを併用して入力費用をさらに下げられます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "dev-model-008",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "チャット UI で「応答が遅い」という声が多い。回答の内容を変えずに体感速度を改善する方法として最も効果的なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ストリーミングを有効にし、生成された部分から順に表示する",
+    "why": "最初の文字が表示されるまでの時間が短くなり、待たされている感覚が減る。"
+   },
+   {
+    "id": "b",
+    "text": "max_tokens を 2 倍にする",
+    "why": "上限を上げても生成速度は変わらない。"
+   },
+   {
+    "id": "c",
+    "text": "同じ質問を 2 回送り、長い方の回答を表示する",
+    "why": "遅延と費用が増える。"
+   },
+   {
+    "id": "d",
+    "text": "Message Batches API に切り替える",
+    "why": "バッチは非同期処理で、対話には向かない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "遅延を減らす方法には、より小型のモデルを選ぶ、出力を短くする、プロンプトキャッシュを使う、ストリーミングで体感を改善する、といった選択肢があります。ストリーミングは合計時間を変えずに、最初の表示までの時間を短縮します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency",
+   "https://platform.claude.com/docs/en/build-with-claude/streaming"
+  ]
+ },
+ {
+  "id": "dev-model-009",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "effort パラメータの役割として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "思考の深さと全体のトークン消費量を調整する。単純な処理は低く、難しい処理は高く設定する",
+    "why": "effort は応答にかける労力を段階で指定し、品質と費用・速度の兼ね合いを調整する。"
+   },
+   {
+    "id": "b",
+    "text": "再試行の回数を指定する",
+    "why": "再試行はクライアント側の設定である。"
+   },
+   {
+    "id": "c",
+    "text": "出力の最大トークン数を指定する",
+    "why": "それは max_tokens の役割である。"
+   },
+   {
+    "id": "d",
+    "text": "レート制限の優先度を上げる",
+    "why": "レート制限とは関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "effort は output_config の中で指定します。分類や短い応答のような処理は低い設定で十分なことが多く、コーディングや長い自律作業は高い設定が効果を発揮します。既定値はモデルによって異なるため、用途ごとに実データで測って決めます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/effort"
+  ]
+ }
+]
