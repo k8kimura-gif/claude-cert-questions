@@ -1,6 +1,6 @@
 // 選択肢の長さから正解を推測できるかを測る。使い方: node scripts/length-bias.mjs
 import { loadAll } from './patch-lib.mjs';
-for (const cert of ['developer', 'architect']) {
+for (const cert of ['developer', 'architect', 'architect-pro']) {
   const rank = [0, 0, 0, 0]; let n = 0;
   for (const f of loadAll().filter((f) => f.path.includes(cert))) for (const q of f.qs) {
     if (q.type !== 'single') continue;

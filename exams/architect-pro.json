@@ -1,0 +1,61 @@
+{
+ "id": "architect-pro",
+ "code": "CCAR-P",
+ "name": "Architect – Professional",
+ "examDate": "2026-12-05",
+ "questions": 63,
+ "minutes": 120,
+ "passGuidePercent": 72,
+ "scenarioBased": false,
+ "domains": [
+  {
+   "id": "solution-design-and-architecture",
+   "name": "Solution Design and Architecture",
+   "ja": "ソリューション設計とアーキテクチャ",
+   "weight": 17,
+   "mockCount": 11
+  },
+  {
+   "id": "models-prompting-and-context-engineering",
+   "name": "Claude Models, Prompting and Context Engineering",
+   "ja": "モデル・プロンプト・コンテキスト設計",
+   "weight": 13,
+   "mockCount": 8
+  },
+  {
+   "id": "integration",
+   "name": "Integration",
+   "ja": "統合",
+   "weight": 19,
+   "mockCount": 12
+  },
+  {
+   "id": "evaluation-testing-and-optimization",
+   "name": "Evaluation, Testing and Optimization",
+   "ja": "評価・テスト・最適化",
+   "weight": 16,
+   "mockCount": 10
+  },
+  {
+   "id": "governance-safety-and-risk",
+   "name": "Governance, Safety and Risk Management",
+   "ja": "ガバナンス・安全性・リスク管理",
+   "weight": 14,
+   "mockCount": 9
+  },
+  {
+   "id": "stakeholder-communication-and-lifecycle",
+   "name": "Stakeholder Communication and Lifecycle Management",
+   "ja": "ステークホルダー対応とライフサイクル管理",
+   "weight": 14,
+   "mockCount": 9
+  },
+  {
+   "id": "developer-productivity-and-operational-enablement",
+   "name": "Developer Productivity and Operational Enablement",
+   "ja": "開発者の生産性と運用の整備",
+   "weight": 7,
+   "mockCount": 4
+  }
+ ]
+}
