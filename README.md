@@ -37,6 +37,12 @@ python3 -m http.server 8765
 node scripts/validate.mjs
 ```
 
+選択肢の長さから正解を推測できないかは、次で測れる。
+
+```bash
+node scripts/length-bias.mjs
+```
+
 main に push すると、検証を通ったものが GitHub Pages に公開される。
 
 ## 問題について
