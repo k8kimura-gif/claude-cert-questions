@@ -1,1 +1,187 @@
-[]
+[
+ {
+  "id": "arp-int-001",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "エージェントのループが、1 回の応答で 2 つのツールを呼び出す tool_use を受け取った。結果を返すユーザーメッセージの組み立て方として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各 tool_result を別々のユーザーメッセージに分け、間にアシスタントの短い確認メッセージを挟む。それぞれの結果を別のメッセージに分け、間に確認の発話を挟んで返す",
+    "why": "tool_result は対応する tool_use の直後のメッセージに置く必要があり、間にメッセージを挟むことはできない。"
+   },
+   {
+    "id": "b",
+    "text": "先に結果を説明するテキストブロックを置き、その後ろに tool_result を並べる。",
+    "why": "tool_result が content 配列の先頭に来る必要がある。テキストを前に置くと 400 エラーになる。"
+   },
+   {
+    "id": "c",
+    "text": "1 つ目の結果だけを返し、2 つ目はモデルが再度要求するまで保留する。",
+    "why": "同じターンの tool_use に対する結果をそろえて返すのが前提である。片方を保留すると、対応する tool_result が見つからないエラーの原因になる。"
+   },
+   {
+    "id": "d",
+    "text": "tool_result を、それぞれの tool_use_id を付けて 1 つのユーザーメッセージの先頭に並べ、テキストがあれば後ろに置く。",
+    "why": "正しい。出典は、tool_result がユーザーメッセージの content 配列の先頭に来る必要があり、テキストはすべての結果の後に置くよう述べる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "tool_result は対応する tool_use の直後のユーザーメッセージに置き、content 配列の先頭に並べる。テキストはその後ろに置く。順序を誤ると、tool_use の ID に結果が見つからないという 400 エラーになる。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls"
+  ]
+ },
+ {
+  "id": "arp-int-002",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "天気 API を呼ぶクライアントツールが、接続エラー(HTTP 500)で失敗した。エージェントがユーザーに適切に説明し、可能なら回復できるようにしたい。ツール結果の返し方として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "is_error を true にし、content に何が起きたかと次に試すべきことが分かる具体的なメッセージを入れる。",
+    "why": "正しい。出典は、ツール実行のエラーは content に内容を入れて is_error を true で返すよう示し、「failed」のような汎用的な文言でなく、原因と次の手を含めるよう勧める。"
+   },
+   {
+    "id": "b",
+    "text": "エラーを握りつぶして空の tool_result を返し、モデルが自力で原因を推測するのに任せる。エラーは握りつぶして空の結果を返し、モデルの推測に任せる",
+    "why": "空の結果はエラーを伝えない。成功と区別できず、モデルが誤った前提で回答を作る可能性がある。"
+   },
+   {
+    "id": "c",
+    "text": "会話全体をいったん破棄し、ユーザーに最初から入力し直してもらう。会話全体を破棄し、利用者に最初から入力し直してもらう",
+    "why": "一時的な障害のたびに会話を破棄するのは過剰である。エラーを結果として返せば、モデルが対応を判断できる。"
+   },
+   {
+    "id": "d",
+    "text": "is_error を付けず、成功した結果の形式で「failed」とだけ書いた文字列を返す。",
+    "why": "エラーであることを is_error で示さず、原因も書かないので、モデルは回復のための情報を得られない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツール実行が失敗したときは、is_error を true にして内容を返す。出典は、汎用的な「failed」ではなく、何が起きたか、モデルが次に何を試すべきかを含む、指示的なメッセージを書くよう勧める。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls"
+  ]
+ },
+ {
+  "id": "arp-int-003",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "夜間バッチ処理が 429 を返した。ログには rate_limit_error があり、error.details.error_code は enforced_spend_limit_reached で、retry-after ヘッダーはない。対応として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "retry-after がないので、指数バックオフで再試行を続ければ、数分で回復する。retry-after がないので、指数バックオフで再試行を続ければ回復すると考える",
+    "why": "月次の支出上限に達した場合の 429 であり、再試行は SDK の自動再試行を含めて、アクセスが再開するまで失敗し続ける。"
+   },
+   {
+    "id": "b",
+    "text": "同じ組織の別のモデルに切り替えれば、上限をまたいで処理を続けられる。別のモデルに切り替えれば、上限をまたいで処理を続けられると考える",
+    "why": "支出上限は組織の月次の上限であり、モデルを切り替えても回避できない。"
+   },
+   {
+    "id": "c",
+    "text": "リクエストのレートを下げ、ランプ制限に合わせて 1 分に 1 ステップずつ増やす。レートを下げ、ランプ制限に合わせて 1 分に 1 ステップずつ増やす",
+    "why": "ランプ制限の 429 は error_code が ramp_limit_exceeded で、retry-after も付く。今回のコードは別の原因を示す。"
+   },
+   {
+    "id": "d",
+    "text": "月次の支出上限に達している。上限の引き上げか翌月 0:00 UTC の再開を待つ必要があり、再試行では解決しない。",
+    "why": "正しい。出典は、支出上限に達すると使用が翌月初日の 0:00 UTC まで止まり、同じ rate_limit_error でも retry-after はなく、error_code で区別できるとする。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "支出上限の 429 は rate_limit_error でも retry-after がなく、error_code が enforced_spend_limit_reached になる。再試行は無駄で、上限の引き上げ依頼か翌月の再開を待つ。レート制限やランプ制限の 429 とはコードで区別できる。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/rate-limits"
+  ]
+ },
+ {
+  "id": "arp-int-004",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "社内ナレッジ検索が、毎回 150,000 トークンの同一文書群をプロンプトの先頭に置いている。Start 層の ITPM(入力トークン毎分)の上限に頻繁に達する。スループットを上げる最も直接的な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "max_tokens を小さくして、OTPM の消費を減らす。",
+    "why": "OTPM は実際に生成されたトークンだけを数え、max_tokens は計算に入らない。ITPM の問題には効かない。"
+   },
+   {
+    "id": "b",
+    "text": "文書群をキャッシュ対象にする。cache_read_input_tokens は ITPM に数えられないので、実効的なスループットが上がる。",
+    "why": "正しい。出典は、既定の ITPM が未キャッシュの入力だけを数え、cache_read_input_tokens は数えないので、キャッシュで実効スループットを上げられると述べる。"
+   },
+   {
+    "id": "c",
+    "text": "リクエストを複数の API キーに分散させる。キーごとに別の上限が適用される。",
+    "why": "上限は組織レベルで適用される。キーを分けても、組織全体の上限は変わらない。"
+   },
+   {
+    "id": "d",
+    "text": "キャッシュに書き込むと入力として数えられるため、キャッシュは使わないほうがよい。",
+    "why": "書き込みは ITPM に数えられるが、以降の読み出しは数えられない。繰り返し使う固定プレフィックスでは、キャッシュのほうが有利である。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "ITPM に数えられるのは input_tokens と cache_creation_input_tokens で、cache_read_input_tokens は数えられない。繰り返し使う大きなプレフィックスをキャッシュすれば、同じ上限で処理できる入力が増える。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/rate-limits"
+  ]
+ },
+ {
+  "id": "arp-int-005",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "毎晩 250,000 件の文書を要約する。結果は翌朝までに得られればよく、コストを抑えたい。Message Batches API の仕様に照らして正しい設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "1 つのバッチに 250,000 件すべてを入れ、サイズの制限は気にせず送信する。サイズの制限は気にせず、250,000 件を 1 つのバッチに入れて送る",
+    "why": "1 バッチの上限は 100,000 リクエストまたは 256 MB のどちらか早いほうである。250,000 件は 1 バッチに入らない。"
+   },
+   {
+    "id": "b",
+    "text": "通常の Messages API で同期的に処理する。バッチは待ち時間が不確定で、料金も同じだからである。",
+    "why": "バッチは通常より料金が 50% 低く、即時の応答が不要な大量処理に向く。料金が同じという前提が誤りである。"
+   },
+   {
+    "id": "c",
+    "text": "リクエストを 100,000 件以下のバッチに分けて送り、処理の完了後に結果を取得する。結果は作成から 29 日間利用できる。",
+    "why": "正しい。出典は、1 バッチの上限が 100,000 件または 256 MB、処理は 24 時間以内に完了しなければ期限切れ、結果は 29 日間取得できると述べる。"
+   },
+   {
+    "id": "d",
+    "text": "バッチは即時に完了するので、送信した直後に結果を取得して後続の処理を始める。",
+    "why": "ほとんどは 1 時間以内に終わるが、非同期の処理であり、完了前に結果は取得できない。完了を確認してから取得する。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Message Batches API は料金が 50% 低く、1 バッチは 100,000 リクエストまたは 256 MB まで。多くは 1 時間以内に完了するが、24 時間で期限切れになる。結果は作成から 29 日間取得できる。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ]
+ }
+]

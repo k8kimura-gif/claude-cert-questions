@@ -1,1 +1,187 @@
-[]
+[
+ {
+  "id": "arp-stk-001",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "経営層への報告で、利用中のモデルが「Deprecated」になったと伝える必要がある。ドキュメントの定義に沿った説明として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "モデルはすでに利用できなくなっており、リクエストは失敗する。",
+    "why": "これは Retired(廃止済み)の説明である。Deprecated のモデルは引き続き機能する。"
+   },
+   {
+    "id": "b",
+    "text": "モデルは引き続き機能するが推奨されず、推奨される代替モデルと廃止の期日が割り当てられている。",
+    "why": "正しい。出典は、Deprecated を、まだ機能するが推奨されず、Anthropic が推奨の代替モデルを示して廃止日を設定する状態と定義する。"
+   },
+   {
+    "id": "c",
+    "text": "モデルは完全にサポートされ、利用が推奨される。更新だけが止まる。",
+    "why": "これは Active の説明である。更新が止まる Legacy とも異なる。"
+   },
+   {
+    "id": "d",
+    "text": "モデルは更新を受けなくなり、将来 Deprecated になる可能性がある。",
+    "why": "これは Legacy の説明である。Deprecated はすでに推奨されず、廃止日が決まっている。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "出典の状態は、Active(完全にサポートされ推奨)、Legacy(更新なし、将来 Deprecated の可能性)、Deprecated(機能するが推奨されず、代替と廃止日がある)、Retired(利用不可でリクエストは失敗)の 4 つである。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ]
+ },
+ {
+  "id": "arp-stk-002",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "契約上、モデルの廃止前に移行計画を立てる期間を顧客に説明する必要がある。公開リリースされたモデルについて、ドキュメントが示す通知の約束はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "廃止の 24 時間前に、ドキュメントだけで告知する。廃止の 24 時間前に、ドキュメントだけで告知する",
+    "why": "24 時間という期間は出典にない。出典は、メールとドキュメントでの通知と、少なくとも 60 日前の通知を述べる。"
+   },
+   {
+    "id": "b",
+    "text": "廃止の 30 日前に、ダッシュボードの表示だけで告知する。",
+    "why": "30 日ではなく、少なくとも 60 日前である。通知は、有効なデプロイをもつ顧客へのメールでも行われる。"
+   },
+   {
+    "id": "c",
+    "text": "廃止の日に通知し、翌日からリクエストが失敗する。",
+    "why": "当日の通知ではない。事前に通知があり、廃止日以降にリクエストが失敗する。"
+   },
+   {
+    "id": "d",
+    "text": "有効なデプロイがある顧客には、公開リリースされたモデルの廃止の少なくとも 60 日前に通知する。",
+    "why": "正しい。出典は、有効なデプロイをもつ顧客に、公開リリースされたモデルの廃止の少なくとも 60 日前に通知すると述べる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "出典は、廃止予定のモデルを有効なデプロイで使っている顧客に、公開リリースされたモデルの廃止の少なくとも 60 日前に通知すると述べる。影響を受ける顧客には、メールとドキュメントで知らせる。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ]
+ },
+ {
+  "id": "arp-stk-003",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "複数のチームが共有の組織で API キーを使っており、どのチームが廃止予定のモデルをまだ呼んでいるか分からない。ドキュメントが示す、利用状況の確認方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude Console の Usage ページで Export を実行し、API キーとモデルの別に集計された CSV を確認する。",
+    "why": "正しい。出典は、Usage ページの Export で、API キーとモデルの別に利用状況を分けた CSV を確認し、廃止予定のモデルの利用箇所を見つける手順を示す。"
+   },
+   {
+    "id": "b",
+    "text": "各チームに自己申告を依頼し、申告がなければ問題なしとみなす。各チームに自己申告を依頼し、申告がなければ問題なしとみなす",
+    "why": "出典に示された方法は Console の利用状況の監査である。申告に頼ると見落としが出る。"
+   },
+   {
+    "id": "c",
+    "text": "モデルの廃止日を待ち、リクエストが失敗したチームから連絡を受ける。廃止日を待ち、リクエストが失敗したチームから連絡を受ける",
+    "why": "廃止後に失敗してから対処するのでは、業務が止まる。出典は、期日前の移行を勧める。"
+   },
+   {
+    "id": "d",
+    "text": "リクエストのレスポンスヘッダーに、廃止予定かどうかのフラグが付くのを確認する。",
+    "why": "出典はそのようなフラグを述べていない。確認の方法は Console の利用状況の書き出しである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Claude Console の Usage ページから Export を実行すると、API キーとモデルの別に集計された CSV が得られる。廃止予定のモデルを使っている箇所を見つけ、期日前に移行を優先付けできる。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ]
+ },
+ {
+  "id": "arp-stk-004",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "同じ Claude モデルを Anthropic の API と Amazon Bedrock の両方で運用している。モデルのライフサイクルの管理について、正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "どのプラットフォームでも、廃止の状態と日付はすべて同一である。どのプラットフォームでも、廃止の状態と日付はすべて同一である",
+    "why": "出典は、ドキュメントの日付が Anthropic が運用するプラットフォームに適用されるとし、パートナー運用のプラットフォームでは異なりうると述べる。"
+   },
+   {
+    "id": "b",
+    "text": "Bedrock は Anthropic の日付に従うが、通知だけは Bedrock から届く。Bedrock は Anthropic の日付に従い、通知だけが Bedrock から届く",
+    "why": "出典は、Bedrock が独自の廃止スケジュールを設定すると述べている。日付が従う前提が誤りである。"
+   },
+   {
+    "id": "c",
+    "text": "ドキュメントの日付は Anthropic 運用のプラットフォームに適用される。Bedrock などパートナー運用のものは独自のスケジュールで、状態や日付が異なりうる。",
+    "why": "正しい。出典は、Amazon Bedrock と Google 運用の Claude on Google Cloud が独自の廃止スケジュールを設定するため、状態と日付が異なりうると述べる。"
+   },
+   {
+    "id": "d",
+    "text": "パートナー運用のプラットフォームでは、モデルは廃止されず、無期限に使える。パートナー運用のプラットフォームでは、モデルは廃止されず無期限に使える",
+    "why": "無期限という記述は出典にない。独自のスケジュールで廃止されうる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "出典は、廃止の日付が Anthropic 運用のプラットフォーム(Claude API など)に適用されるとし、Amazon Bedrock などパートナー運用のプラットフォームは独自の廃止スケジュールをもつため、状態や日付が異なりうると述べる。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ]
+ },
+ {
+  "id": "arp-stk-005",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Code が使う API バージョンを 2026-10-21 に上げる移行を計画している。既存のコードはリクエストに temperature を指定している。何が起きるか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "temperature は無視され、既定値で処理される。警告も出ない。",
+    "why": "API バージョン 2026-10-21 では、これらのパラメータは削除され、指定すると 400 のエラーになる。無視はされない。"
+   },
+   {
+    "id": "b",
+    "text": "temperature は引き続き有効だが、指定できる範囲が狭くなる。",
+    "why": "範囲の変更ではなく、パラメータ自体が削除されている。"
+   },
+   {
+    "id": "c",
+    "text": "temperature の指定は 400 のエラーになる。パラメータを省き、挙動はプロンプトで調整する。",
+    "why": "正しい。出典は、temperature、top_p、top_k が API バージョン 2026-10-21 で削除され 400 を返すとし、省いてプロンプティングで調整するよう勧める。"
+   },
+   {
+    "id": "d",
+    "text": "temperature は有料の機能に変わり、組織の設定で有効にすれば使える。",
+    "why": "有料の機能という記述はなく、設定で有効にもできない。削除されたパラメータである。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "temperature、top_p、top_k は API バージョン 2026-10-21 で削除され、指定すると 400 を返す。省略し、挙動の調整はプロンプトで行う。古いバージョンでも Claude 4.7 以降では、既定値以外を指定すると返される。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ]
+ }
+]
