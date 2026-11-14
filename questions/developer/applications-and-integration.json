@@ -2311,9 +2311,8 @@
   "answer": [
    "a"
   ],
-  "explanation": "再試行は、信頼性のために必要ですが、副作用のある操作を重複させる危険があります。冪等性キーなどを使って、ツール側で重複を防ぎます。",
+  "explanation": "再試行は信頼性のために必要ですが、副作用のある操作を重複させる危険があります。冪等性キーなどを使って、ツール側で重複を防ぎます。これは API 一般の設計上の定石で、公式 SDK が既定で自動再試行を行うことを踏まえた対策です。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents",
    "https://platform.claude.com/docs/en/api/errors"
   ]
  }

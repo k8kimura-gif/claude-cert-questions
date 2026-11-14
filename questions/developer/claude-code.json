@@ -331,7 +331,7 @@
   ],
   "explanation": "コンテキストは、作業ごとに整理します。同じ作業を続ける場合は /compact、別の作業に移る場合は /clear が向きます。",
   "refs": [
-   "https://www.anthropic.com/engineering/claude-code-best-practices",
+   "https://code.claude.com/docs/en/best-practices",
    "https://code.claude.com/docs/en/slash-commands"
   ]
  }

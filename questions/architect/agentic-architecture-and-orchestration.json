@@ -147,7 +147,7 @@
   ],
   "explanation": "生成と評価は分けると効果的です。独立したレビュー用のインスタンスは、生成時の推論を持たないため、見落としを発見しやすくなります。",
   "refs": [
-   "https://www.anthropic.com/engineering/claude-code-best-practices",
+   "https://code.claude.com/docs/en/best-practices",
    "https://www.anthropic.com/engineering/building-effective-agents"
   ]
  },
@@ -863,7 +863,7 @@
   "explanation": "大量の定型作業は、分割して扇状に展開します。少数で試してプロンプトを直してから、全体に適用します。",
   "refs": [
    "https://code.claude.com/docs/en/headless",
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {
@@ -938,7 +938,7 @@
   ],
   "explanation": "生成と検証の役割を分けると、品質が上がります。レビュー側には、成果物と基準だけを渡します。",
   "refs": [
-   "https://www.anthropic.com/engineering/claude-code-best-practices",
+   "https://code.claude.com/docs/en/best-practices",
    "https://code.claude.com/docs/en/sub-agents"
   ]
  },
@@ -1618,7 +1618,7 @@
   "explanation": "エージェントは、環境からのフィードバックで自分の成果を直せます。検査の結果を、そのまま返します。",
   "refs": [
    "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {
@@ -1656,7 +1656,7 @@
   "explanation": "検証の段階を分けると、精度が上がります。検証の側には、指摘と該当のコードだけを渡します。",
   "refs": [
    "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {
@@ -1995,7 +1995,7 @@
   "explanation": "生成と検証は、分けると効果的です。検証は、原本との突き合わせに集中させます。",
   "refs": [
    "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {

@@ -72,7 +72,7 @@
   "explanation": "文章による説明で結果が安定しないときは、入力と出力の具体例を示します。複数の問題が互いに関係している場合は 1 つのメッセージでまとめて伝え、独立している場合は順に直します。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting",
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {
@@ -147,7 +147,7 @@
   ],
   "explanation": "不慣れな領域では、実装の前に Claude に質問させると、キャッシュの無効化や障害時の挙動のような、依頼者が予期していなかった設計上の論点が見つかります。",
   "refs": [
-   "https://www.anthropic.com/engineering/claude-code-best-practices",
+   "https://code.claude.com/docs/en/best-practices",
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
   ]
  },
@@ -563,7 +563,7 @@
   ],
   "explanation": "テスト駆動の反復では、Claude が自分で結果を確かめながら直せます。",
   "refs": [
-   "https://www.anthropic.com/engineering/claude-code-best-practices",
+   "https://code.claude.com/docs/en/best-practices",
    "https://code.claude.com/docs/en/common-workflows"
   ]
  },
@@ -601,7 +601,7 @@
   ],
   "explanation": "関係し合う問題は、まとめて伝えます。独立した問題は、1 つずつ順に直す方が確実です。",
   "refs": [
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {
@@ -638,7 +638,7 @@
   ],
   "explanation": "コードベースにある良い例は、文章の説明より確実な手本です。",
   "refs": [
-   "https://www.anthropic.com/engineering/claude-code-best-practices",
+   "https://code.claude.com/docs/en/best-practices",
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
   ]
  },
@@ -676,7 +676,7 @@
   ],
   "explanation": "検証の手段を与えることは、成果の質を上げる最も効果的な方法の 1 つです。",
   "refs": [
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {
@@ -863,7 +863,7 @@
   "explanation": "生成の質は、手本の質に左右されます。良い例を、1 つか 2 つ示します。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting",
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {
@@ -1128,7 +1128,7 @@
   "explanation": "機械的に判定できる検査は、専用のツールに任せます。Claude には、判断の必要な問題を任せます。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {

@@ -107,7 +107,7 @@
   "answer": [
    "a"
   ],
-  "explanation": "エージェントに与えるツールは、役割に合わせて少数に絞ります。4〜5 個程度なら選択が安定しますが、18 個のように多いと判断の質が下がります。",
+  "explanation": "エージェントに与えるツールは、役割に合わせて少数に絞ります。ツールが多すぎたり、役割が重なっていたりすると、選択の精度が下がります。公式の資料は具体的な上限の数を示していませんが、「ツールが多いほど良い結果になるわけではない」と述べています。",
   "refs": [
    "https://www.anthropic.com/engineering/writing-tools-for-agents",
    "https://www.anthropic.com/engineering/multi-agent-research-system"
@@ -1247,7 +1247,7 @@
   "choices": [
    {
     "id": "a",
-    "text": "追加のプロパティを許さない指定と、必須フィールドの指定がある",
+    "text": "オブジェクトに、追加のプロパティを許さない指定(additionalProperties: false)がある",
     "why": "strict の利用には、スキーマの条件がある。"
    },
    {
@@ -1269,7 +1269,7 @@
   "answer": [
    "a"
   ],
-  "explanation": "strict は、スキーマに沿った引数を保証します。任意の値は、null を許す型として表します。",
+  "explanation": "strict は、スキーマに沿った引数を保証します。オブジェクトには additionalProperties: false が必要です。数値の範囲の制約や再帰的なスキーマなど、使えない機能もあります。任意の値は、null を許す型として表します。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"

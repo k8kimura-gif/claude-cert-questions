@@ -111,7 +111,7 @@
   "explanation": "長いセッションではコンテキストが劣化します。対策は、発見を外部のメモに残す、サブエージェントに調査を任せる、構造化した要約で新しいセッションに引き継ぐ、/compact を使う、といったものです。",
   "refs": [
    "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {
@@ -336,7 +336,7 @@
   "answer": [
    "a"
   ],
-  "explanation": "長い入力では、先頭と末尾の内容が確実に処理され、中ほどは抜けやすい傾向があります。重要な内容は先頭にまとめます。",
+  "explanation": "長い入力では、中ほどに置いた情報が見落とされやすい傾向が知られています。公式のドキュメントは、長い資料をプロンプトの上部に、質問や指示を末尾に置くことを勧めています。重要な内容は、先頭にまとめて示します。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips",
    "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
@@ -681,7 +681,7 @@
   "explanation": "コンテキストにあるファイルの内容は、読んだ時点のものです。外部で変更があったときは、読み直させます。",
   "refs": [
    "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {
@@ -867,7 +867,7 @@
   "answer": [
    "a"
   ],
-  "explanation": "長い入力では、中ほどの情報が抜けやすくなります。要点を先頭にまとめます。",
+  "explanation": "長い入力では、中ほどに置いた情報が見落とされやすい傾向が知られています。公式のドキュメントは、長い資料をプロンプトの上部に、質問や指示を末尾に置くことを勧めています。重要な内容は、先頭にまとめて示します。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips",
    "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"

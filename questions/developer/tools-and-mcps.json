@@ -440,7 +440,7 @@
   "answer": [
    "a"
   ],
-  "explanation": "strict は、ツール定義の最上位に指定します。スキーマには、追加のプロパティを許さない指定と、必須フィールドの指定が必要です。",
+  "explanation": "strict は、ツール定義の最上位に指定します。スキーマのオブジェクトには、追加のプロパティを許さない指定(additionalProperties: false)が必要です。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"

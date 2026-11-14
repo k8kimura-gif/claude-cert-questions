@@ -146,7 +146,7 @@
   "explanation": "プランモードは、大規模な変更、複数の有効な方針がある作業、設計判断を伴う作業に向きます。スタックトレースが明確な 1 ファイルのバグ修正のような、範囲のはっきりした作業は直接実行で足ります。",
   "refs": [
    "https://code.claude.com/docs/en/common-workflows",
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {
@@ -710,7 +710,7 @@
   "explanation": "プランモードは、影響が広い変更や、方針の選択がある作業に使います。範囲のはっきりした修正は、直接実行します。",
   "refs": [
    "https://code.claude.com/docs/en/common-workflows",
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {
@@ -935,7 +935,7 @@
   "explanation": "/compact は、経緯を保ちながらコンテキストを整理します。残したい点を、指示として添えることもできます。",
   "refs": [
    "https://code.claude.com/docs/en/slash-commands",
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {
@@ -1047,7 +1047,7 @@
   ],
   "explanation": "生成したセッションは、自分の判断の前提を引き継いでいます。レビューは、成果物だけを見る独立した実行に任せます。",
   "refs": [
-   "https://www.anthropic.com/engineering/claude-code-best-practices",
+   "https://code.claude.com/docs/en/best-practices",
    "https://code.claude.com/docs/en/headless"
   ]
  },
@@ -1086,7 +1086,7 @@
   "explanation": "再レビューでは、以前の結果を文脈として渡します。対応済みの指摘を繰り返さないことが、開発者の信頼につながります。",
   "refs": [
    "https://code.claude.com/docs/en/headless",
-   "https://www.anthropic.com/engineering/claude-code-best-practices"
+   "https://code.claude.com/docs/en/best-practices"
   ]
  },
  {
