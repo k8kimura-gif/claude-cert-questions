@@ -183,5 +183,116 @@
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/context-windows"
   ]
+ },
+ {
+  "id": "arp-mod-006",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "手動の拡張思考(thinking: {type: \"enabled\"} と budget_tokens)を使うリクエストを設計している。次の設定のうち、API が受け付けるものはどれか。ただし interleaved thinking は使わない。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "budget_tokens を 8,000、max_tokens を 16,000 にする。",
+    "why": "正しい。budget_tokens は 1,024 以上で、max_tokens 未満という条件を満たしている。"
+   },
+   {
+    "id": "b",
+    "text": "budget_tokens を 512、max_tokens を 4,096 にする。",
+    "why": "最小値は 1,024 トークンで、これより小さい値は API に拒否される。"
+   },
+   {
+    "id": "c",
+    "text": "budget_tokens を 4,000、max_tokens を 4,000 にする。",
+    "why": "thinking トークンは max_tokens に数えられるため、budget_tokens は max_tokens より小さくなければならない。同じ値は条件を満たさない。"
+   },
+   {
+    "id": "d",
+    "text": "budget_tokens を 20,000、max_tokens を 16,000 にする。",
+    "why": "budget_tokens が max_tokens を超えられるのは、手動モードの interleaved thinking の場合だけである。今回は使わないので拒否される。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "出典によると、budget_tokens は 1,024 トークン以上で、max_tokens 未満でなければならない。thinking トークンはそのターンの max_tokens に数えられるので、最終回答の分の余地を残す必要がある。例外は手動モードの interleaved thinking で、このとき budget_tokens は max_tokens を超えられる。また、予算は厳密な上限ではなく目標であり、max_tokens が総出力の上限として働く。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/extended-thinking"
+  ]
+ },
+ {
+  "id": "arp-mod-007",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "手動の拡張思考を使う多ターンのアプリで、メッセージ階層にキャッシュのブレークポイントを置いている。3 回目のリクエストで、budget_tokens を 4,000 から 8,000 に変更した。出典の説明に沿うのはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "思考の設定はキャッシュのキーに含まれないので、変更しても cache_read_input_tokens は前回と同じように計上され続ける。",
+    "why": "出典の例では、予算を変えた 3 回目のリクエストで cache_read_input_tokens が 0 になり、cache_creation_input_tokens が計上された。"
+   },
+   {
+    "id": "b",
+    "text": "予算を減らしたときだけキャッシュが外れる。増やしたときは、既存のキャッシュにそのまま追記される。",
+    "why": "出典は、増減の別ではなく、リクエスト間で予算が変わること自体が無効化の原因だと述べている。"
+   },
+   {
+    "id": "c",
+    "text": "メッセージ階層のブレークポイントは必ず外れ、キャッシュが作り直される。budget_tokens の値がプロンプトに反映されるためである。",
+    "why": "正しい。出典は、budget_tokens を変えるとキャッシュのブレークポイントが無効になり、メッセージ階層のブレークポイントは必ず外れると説明している。"
+   },
+   {
+    "id": "d",
+    "text": "システムプロンプトとツール定義の階層も、すべての場合で必ず外れる。",
+    "why": "必ず外れるのはメッセージ階層だけである。ツールやシステムプロンプトの階層が外れるかどうかは、ブレークポイントの位置によって決まる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "出典は、手動モードでは budget_tokens の値がプロンプトに反映されるため、リクエスト間で変更すると、思考モードの切り替えと同様にキャッシュのブレークポイントが無効になると説明する。メッセージ階層のブレークポイントは必ず外れ、ツールやシステムプロンプトの階層が外れるかどうかはブレークポイントの位置による。実際には、予算を 1 つ選び、キャッシュした会話の間は固定するよう勧めている。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/extended-thinking"
+  ]
+ },
+ {
+  "id": "arp-mod-008",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "下流の請求システムが、Claude の出力を必ずスキーマに適合した JSON として受け取る必要がある。形式の不一致があると、システムが停止する。出典の助言に最も沿った方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プロンプトで出力形式を JSON と指定し、キー名と型を詳細に書いて、必ずその形式を守るよう繰り返し強調して、指示をできるだけ明確にしておく。",
+    "why": "一般的な出力の一貫性を高める手法で、スキーマ適合の保証にはならない。出典は、保証が要る場合は Structured Outputs を使うよう述べている。"
+   },
+   {
+    "id": "b",
+    "text": "期待する JSON の例を複数、プロンプトに載せて、同じ形式で出力させる。",
+    "why": "例による制約も一貫性を高める手法である。例を示しても、スキーマに適合することは保証されない。"
+   },
+   {
+    "id": "c",
+    "text": "Structured Outputs(output_config の JSON スキーマ)を使い、スキーマへの適合を API 側で保証させる。",
+    "why": "正しい。出典は、常に有効でスキーマに適合した JSON が必要なら、プロンプトの工夫ではなく Structured Outputs を使うよう述べている。"
+   },
+   {
+    "id": "d",
+    "text": "出力を受け取ったあとに自前のコードで検証し、不正なら同じリクエストを再試行する。",
+    "why": "検証と再試行は安全網にはなるが、保証ではない。失敗のたびに遅延とコストが増え、保証が必要なら Structured Outputs を使う、という出典の助言に沿わない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "出典は、出力の一貫性を高める手法(出力形式の指定、例による制約、検索による文脈の固定、プロンプトの連鎖など)を紹介する冒頭で、常に有効でスキーマに適合した JSON が必要なら、これらのプロンプト手法の代わりに Structured Outputs を使うよう述べている。Structured Outputs はスキーマへの適合を保証するための機能であり、それ以外の手法は一般的な一貫性や、厳密な JSON スキーマ以外の柔軟さが必要な場合に使う。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency"
+  ]
  }
 ]
