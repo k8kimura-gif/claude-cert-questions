@@ -183,5 +183,190 @@
   "refs": [
    "https://code.claude.com/docs/en/costs"
   ]
+ },
+ {
+  "id": "arp-dev-006",
+  "cert": "architect-pro",
+  "domain": "developer-productivity-and-operational-enablement",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "CI で claude -p を実行しているが、開発者のマシンと CI で結果が食い違う。調べると、各開発者の ~/.claude にあるフックや、プロジェクトの .mcp.json の MCP サーバーが読み込まれていた。どの環境でも同じ結果にしたい。ドキュメントの助言に沿った対処はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "CI のイメージに、全開発者の ~/.claude の設定を複製して配り、環境を完全に揃える。",
+    "why": "設定を配って揃える運用は、設定が変わるたびに同期が必要になる。出典は、自動検出そのものを省く bare モードを、同じ結果を得る手段として示している。"
+   },
+   {
+    "id": "b",
+    "text": "--bare を付けて実行する。フック、スキル、サブエージェント、プラグイン、MCP サーバー、自動メモリ、CLAUDE.md の自動検出を省き、必要な文脈はフラグで明示的に渡す。",
+    "why": "正しい。出典は、bare モードを、どのマシンでも同じ結果が要る CI やスクリプト向けとし、スクリプトや SDK の呼び出しに勧めている。"
+   },
+   {
+    "id": "c",
+    "text": "CI のジョブの先頭で ~/.claude を削除し、プロジェクトの .mcp.json も外してから claude -p を実行する。ジョブごとに、読み込み対象を人手で空にして揃える。",
+    "why": "--allowedTools は、承認なしで使えるツールを指定するフラグである。フックや MCP サーバーの自動検出を止める効果はない。"
+   },
+   {
+    "id": "d",
+    "text": "claude -p は非対話なので、フックや MCP サーバーは読み込まれない。食い違いは別の原因を探す。",
+    "why": "出典は、--bare なしの -p は、対話セッションと同様に、作業ディレクトリや ~/.claude の設定を読み込むと述べている。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "出典によると、--bare を付けると、フック、スキル、カスタムコマンド、サブエージェント、プラグイン、MCP サーバー、自動メモリ、CLAUDE.md の自動検出を省いて起動する。付けない -p は、対話セッションと同じようにこれらを読み込む。bare モードでは、Anthropic API を使う場合に ANTHROPIC_API_KEY が必要で、サブスクリプションのログインは使えない。bare モードは、スクリプトや SDK の呼び出しに推奨されている。",
+  "refs": [
+   "https://code.claude.com/docs/en/headless"
+  ]
+ },
+ {
+  "id": "arp-dev-007",
+  "cert": "architect-pro",
+  "domain": "developer-productivity-and-operational-enablement",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "CI のスクリプトが claude -p の応答から、変更された関数名の配列を取り出して後続の処理に渡したい。応答の形式を JSON スキーマに沿わせる方法として、ドキュメントに沿うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "--output-format stream-json を指定し、各行のイベントの本文から、スクリプトが関数名の配列を正規表現で切り出す。",
+    "why": "stream-json は、生成中のトークンをイベントとして受け取る形式である。スキーマへの適合を求める機能ではなく、切り出しはスクリプト側の責任になる。"
+   },
+   {
+    "id": "b",
+    "text": "--output-format json だけを指定し、プロンプトに「配列だけを返すこと」と書いて、result の文字列を JSON として読む。",
+    "why": "プロンプトでの指示は、出力の形式を守らせる保証にならない。出典は、スキーマに沿った出力が必要なら --json-schema を使うとしている。"
+   },
+   {
+    "id": "c",
+    "text": "--json-schema にスキーマを渡し、スキーマの format キーワードで、各関数名の書式まで厳密に検証させる。",
+    "why": "出典は、format キーワードを含むスキーマは受け付けるが、format は注釈として扱われ、強制はされないと述べている。"
+   },
+   {
+    "id": "d",
+    "text": "--output-format json に --json-schema を組み合わせて渡す。スキーマに沿った結果は、レスポンスの structured_output フィールドに入る。",
+    "why": "正しい。出典は、この組み合わせでスキーマに沿った出力を得られ、セッション ID や使用量などのメタデータとともに structured_output に入ると述べている。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "出典は、--output-format json と --json-schema を併用すると、指定した JSON スキーマに沿った出力が得られ、セッション ID や使用量などのメタデータとともに、structured_output フィールドに入ると説明している。スキーマが不正な場合、claude は「Error: --json-schema is not a valid JSON Schema」で終了する。format キーワードは受け付けられるが、注釈として扱われ、強制されない。",
+  "refs": [
+   "https://code.claude.com/docs/en/headless"
+  ]
+ },
+ {
+  "id": "arp-dev-008",
+  "cert": "architect-pro",
+  "domain": "developer-productivity-and-operational-enablement",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "全社で Claude Code の利用状況を OpenTelemetry で集めたい。運用チームは、各リポジトリの .claude/settings.json に CLAUDE_CODE_ENABLE_TELEMETRY と OTEL_EXPORTER_OTLP_ENDPOINT を書いて配ろうとしている。ドキュメントに沿った指摘はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "リポジトリの設定にある OpenTelemetry のエクスポーター変数は、Claude Code に無視される。管理者は、managed settings で設定する。",
+    "why": "正しい。出典は、リポジトリの .claude/settings.json と settings.local.json の変数を無視し、managed settings での設定を管理者に勧めている。"
+   },
+   {
+    "id": "b",
+    "text": "リポジトリの設定が最優先で適用されるので、この方法でよい。各開発者の設定は上書きされる。",
+    "why": "出典は、リポジトリの設定ではテレメトリの有効化、送信先の選択、内容の取得ができないと述べている。"
+   },
+   {
+    "id": "c",
+    "text": "テレメトリは Claude Code の組み込み機能なので、環境変数を設定せず、管理画面で有効にするだけでよい。",
+    "why": "出典は、CLAUDE_CODE_ENABLE_TELEMETRY などの環境変数で有効にすると述べている。Cowork 用の管理画面の設定は、CLI や Code タブには効かない。"
+   },
+   {
+    "id": "d",
+    "text": "managed settings に OTEL_EXPORTER_OTLP_ENDPOINT を書いても、開発者が信号ごとのエンドポイントを自分で設定すれば、その設定が優先されて別の収集先に送られる。",
+    "why": "出典によると、managed settings に OTEL_EXPORTER_OTLP_ENDPOINT を設定すると、開発者が設定した信号ごとのエンドポイントは起動時に取り除かれる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "出典は、Claude Code が、リポジトリの .claude/settings.json と .claude/settings.local.json にある OpenTelemetry のエクスポーター変数を無視すると説明する。そのため、リポジトリからテレメトリを有効にしたり、送信先を選んだり、内容を取得したりはできない。管理者は managed settings に設定するか、各開発者がシェルまたは ~/.claude/settings.json に設定する。managed settings に OTEL_EXPORTER_OTLP_ENDPOINT を設定すると、開発者が設定した信号ごとのエンドポイントは取り除かれる。",
+  "refs": [
+   "https://code.claude.com/docs/en/monitoring-usage"
+  ]
+ },
+ {
+  "id": "arp-dev-009",
+  "cert": "architect-pro",
+  "domain": "developer-productivity-and-operational-enablement",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Bash ツールに 2 つの PreToolUse フックを登録した。1 つは実行するコマンドをログに追記して終了コード 0 で終わる。もう 1 つは、コマンドに rm -rf を含むときに終了コード 2 で終わる。Claude が rm -rf /tmp/build を実行しようとしたとき、ドキュメントの説明どおりの動作はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "1 つ目のフックが終了コード 0 で終わった時点で許可が確定するので、コマンドは実行される。",
+    "why": "終了コード 0 は、判断を報告しない意味である。許可の確定ではない。出典は、複数のフックの結果では、最も制限の強い判断が適用されると述べている。"
+   },
+   {
+    "id": "b",
+    "text": "登録順に実行され、1 つ目のフックが終了コード 0 で終わった時点で処理が打ち切られる。2 つ目のフックは実行されず、コマンドは通常どおり実行される。",
+    "why": "出典は、一致するフックは並行して実行されると述べている。2 つ目も実行され、その結果が deny として適用される。"
+   },
+   {
+    "id": "c",
+    "text": "2 つのフックが並行して実行される。ログには記録され、コマンドは拒否される。終了コード 2 は deny として扱われ、他のフックの結果より優先される。",
+    "why": "正しい。出典は、両方のフックが並行して実行され、ログは書かれたうえで、deny が優先されてコマンドがブロックされると説明している。"
+   },
+   {
+    "id": "d",
+    "text": "2 つのフックは並行して実行されるが、deny したフックがあると、ログのフックの書き込みは取り消される。",
+    "why": "出典の例では、ログのフックはすでに実行を終えているため、ログの記録は残る。deny は、ツール呼び出しの実行を止める働きである。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "出典によると、一致するフックは並行して実行され、終了後に Claude Code が出力を統合する。PreToolUse の許可の判断では、最も制限の強い答えが適用され、順序は deny、defer、ask、allow である。例では、ログのフックは終了コード 0 で判断を報告せず、ガードレールのフックが終了コード 2 で呼び出しを拒否する。deny が優先されるので、コマンドはブロックされ、ガードレールの stderr が Claude に示される。ログは、先に実行されたフックが書くので残る。",
+  "refs": [
+   "https://code.claude.com/docs/en/hooks-guide"
+  ]
+ },
+ {
+  "id": "arp-dev-010",
+  "cert": "architect-pro",
+  "domain": "developer-productivity-and-operational-enablement",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "開発チームが、テストの実行やドキュメントの取得のように、冗長な出力を出す作業を Claude Code にさせると、会話のコンテキストがすぐに埋まる。ドキュメントが示す対処として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "メインの会話で実行しつつ、CLAUDE.md に「出力は短く要約すること」と書いておき、出力の量を抑える。",
+    "why": "CLAUDE.md は、毎回の開始時に読み込まれる文脈にすぎない。ツールが返す冗長な出力は、メインの会話のコンテキストに入る。"
+   },
+   {
+    "id": "b",
+    "text": "その作業をサブエージェントに任せる。冗長な出力はサブエージェントのコンテキストに留まり、メインの会話には要約だけが返る。",
+    "why": "正しい。出典は、テストやドキュメントの取得、ログ処理のような出力の多い作業を、サブエージェントに任せることを勧めている。"
+   },
+   {
+    "id": "c",
+    "text": "作業ごとにサブエージェントを用意しても、出力はメインの会話に戻るので、使用量の節約にはならない。",
+    "why": "出典は、サブエージェントが独立したコンテキストウィンドウで動き、要約だけを返すと説明している。ただし、サブエージェント自身のリクエストも使用量に数えられる。"
+   },
+   {
+    "id": "d",
+    "text": "サブエージェントは必ず別のセッションとして使用量が別枠になるので、上限に達するまで制限なく使える。",
+    "why": "出典は、サブエージェントも自分のリクエストを送り、メインの会話と同じ使用量の上限に数えられると述べている。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "出典は、サブエージェントを、検索結果、ログ、ファイルの内容など、メインの会話に残す必要のない出力が多い副次的な作業に使うよう説明する。サブエージェントは、独自のシステムプロンプト、ツールのアクセス、独立した権限をもち、自分のコンテキストウィンドウで作業して、要約だけを返す。ただし、サブエージェントのリクエストもメインの会話と同じ使用量の上限に数えられる。",
+  "refs": [
+   "https://code.claude.com/docs/en/sub-agents"
+  ]
  }
 ]
