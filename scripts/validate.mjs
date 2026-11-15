@@ -6,7 +6,7 @@ const err = (m) => errors.push(m);
 const readJson = (p) => JSON.parse(readFileSync(p, 'utf8'));
 const ids = new Set();
 
-for (const cert of ['developer', 'architect', 'architect-pro']) {
+for (const cert of ['developer', 'architect', 'architect-pro', 'associate']) {
   const exam = readJson(`exams/${cert}.json`);
   const weight = exam.domains.reduce((s, d) => s + d.weight, 0);
   if (Math.abs(weight - 100) > 0.5) err(`${cert}: 配点の合計が ${weight}`);

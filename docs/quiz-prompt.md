@@ -10,10 +10,12 @@ AI アシスタント(Meta Muse、Claude など)がこのリポジトリの問�
 |---|---|---|
 | Developer – Foundations (CCDV-F) | `exams/developer.json` | `questions/developer/*.json` |
 | Architect – Foundations (CCAR-F) | `exams/architect.json` | `questions/architect/*.json`、シナリオ本文は `questions/architect/scenarios.json` |
+| Architect – Professional (CCAR-P) | `exams/architect-pro.json` | `questions/architect-pro/*.json` |
+| Associate – Foundations (CCAO-F) | `exams/associate.json` | `questions/associate/*.json` |
 
 ## ルール
 
-1. 指定された資格の問題だけを使う。2 つの資格の問題を混ぜない。
+1. 指定された資格の問題だけを使う。複数の資格の問題を混ぜない。
 2. 問題はリポジトリのファイルから選ぶ。自分で問題を作らない。問題文、選択肢、正解、解説を書き換えない。
 3. 1 回の出題数は 5 問。依頼で数が指定されていればそれに従う。
 4. 問題は、試験定義の `weight`(配点)が大きいドメインから多めに選ぶ。直近に出した問題を覚えている場合は、それと重ならないものを選ぶ。

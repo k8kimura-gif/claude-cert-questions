@@ -1,0 +1,61 @@
+{
+ "id": "associate",
+ "code": "CCAO-F",
+ "name": "Associate – Foundations",
+ "examDate": "2026-12-05",
+ "questions": 60,
+ "minutes": 120,
+ "passGuidePercent": 72,
+ "scenarioBased": false,
+ "domains": [
+  {
+   "id": "prompting-and-task-execution",
+   "name": "Prompting and Task Execution",
+   "ja": "プロンプトとタスクの実行",
+   "weight": 14,
+   "mockCount": 8
+  },
+  {
+   "id": "output-evaluation-and-validation",
+   "name": "Output Evaluation and Validation",
+   "ja": "出力の評価と検証",
+   "weight": 21,
+   "mockCount": 13
+  },
+  {
+   "id": "product-and-model-selection",
+   "name": "Product and Model Selection",
+   "ja": "製品とモデルの選択",
+   "weight": 12,
+   "mockCount": 7
+  },
+  {
+   "id": "workflow-integration-and-solution-design",
+   "name": "Workflow Integration and Solution Design",
+   "ja": "ワークフローへの統合とソリューション設計",
+   "weight": 16,
+   "mockCount": 10
+  },
+  {
+   "id": "configuration-and-knowledge-management",
+   "name": "Configuration and Knowledge Management",
+   "ja": "設定とナレッジ管理",
+   "weight": 12,
+   "mockCount": 7
+  },
+  {
+   "id": "governance-risk-and-responsible-use",
+   "name": "Governance, Risk, and Responsible Use",
+   "ja": "ガバナンス・リスク・責任ある利用",
+   "weight": 15,
+   "mockCount": 9
+  },
+  {
+   "id": "troubleshooting-and-optimization",
+   "name": "Troubleshooting and Optimization",
+   "ja": "トラブルシューティングと最適化",
+   "weight": 10,
+   "mockCount": 6
+  }
+ ]
+}

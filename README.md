@@ -1,6 +1,6 @@
 # Claude 資格対策
 
-Claude の認定資格 Developer – Foundations (CCDV-F)、Architect – Foundations (CCAR-F)、Architect – Professional (CCAR-P) の学習用アプリと問題バンク。
+Claude の認定資格 Developer – Foundations (CCDV-F)、Architect – Foundations (CCAR-F)、Architect – Professional (CCAR-P)、Associate – Foundations (CCAO-F) の学習用アプリと問題バンク。
 
 アプリ: https://k8kimura-gif.github.io/claude-cert-questions/
 

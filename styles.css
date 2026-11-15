@@ -4,6 +4,7 @@
 }
 :root[data-cert="architect"] { --accent: #7a4fd6; }
 :root[data-cert="architect-pro"] { --accent: #b3416b; }
+:root[data-cert="associate"] { --accent: #1f7f7a; }
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #171614; --card: #23211e; --text: #eeebe4; --muted: #a29e94; --line: #3a3732;
@@ -11,6 +12,7 @@
   }
   :root[data-cert="architect"] { --accent: #a98bf0; }
   :root[data-cert="architect-pro"] { --accent: #ee8aab; }
+  :root[data-cert="associate"] { --accent: #5cc6bf; }
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -31,7 +33,7 @@ h2 { font-size: 16px; margin: 20px 0 8px; }
 p { margin: 8px 0; }
 .muted { color: var(--muted); font-size: 14px; }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 12px 0; }
-.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.seg { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
 .seg button { border: 0; background: var(--card); color: var(--text); font: inherit; padding: 12px 8px; cursor: pointer; }
 .seg button small { display: block; color: var(--muted); font-size: 12px; }
 .seg button.on { background: var(--accent); color: #fff; font-weight: 700; }

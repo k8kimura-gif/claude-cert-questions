@@ -2,7 +2,7 @@
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 export function loadAll() {
   const files = [];
-  for (const cert of ['developer', 'architect', 'architect-pro'])
+  for (const cert of ['developer', 'architect', 'architect-pro', 'associate'])
     for (const f of readdirSync(`questions/${cert}`))
       if (f !== 'scenarios.json') { const path = `questions/${cert}/${f}`; files.push({ path, qs: JSON.parse(readFileSync(path, 'utf8')) }); }
   return files;

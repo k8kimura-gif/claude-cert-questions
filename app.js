@@ -2,8 +2,8 @@
 // Claude 資格対策アプリ。バックエンドなし。学習記録は端末の localStorage に資格ごとに保存する。
 
 const KEY = 'ccq:v1:';
-const CERTS = ['developer', 'architect', 'architect-pro'];
-const CERT_LABEL = { developer: ['Developer', 'Foundations'], architect: ['Architect', 'Foundations'], 'architect-pro': ['Architect', 'Professional'] };
+const CERTS = ['developer', 'architect', 'architect-pro', 'associate'];
+const CERT_LABEL = { developer: ['Developer', 'Foundations'], architect: ['Architect', 'Foundations'], 'architect-pro': ['Architect', 'Professional'], associate: ['Associate', 'Foundations'] };
 const INTERVALS = [1, 3, 7, 14]; // 連続正解数ごとの復習間隔(日)
 const RESERVE_DAYS = 2;          // 試験直前は新規問題を出さず、模試と復習に充てる
 const MIN_DAILY = 5;
@@ -481,9 +481,9 @@ routes.settings = (msg) => {
     msg && el('div', { class: 'notice' }, msg),
     el('div', { class: 'card' }, el('strong', {}, '試験日'),
       el('p', { class: 'muted' }, '試験日までに全問を一巡できるよう、毎日の出題量を決めます。'),
-      dateRow('developer', 'Developer (CCDV-F)'), dateRow('architect', 'Architect (CCAR-F)'), dateRow('architect-pro', 'Architect Professional (CCAR-P)')),
+      dateRow('developer', 'Developer (CCDV-F)'), dateRow('architect', 'Architect (CCAR-F)'), dateRow('architect-pro', 'Architect Professional (CCAR-P)'), dateRow('associate', 'Associate (CCAO-F)')),
     el('div', { class: 'card' }, el('strong', {}, '学習記録の書き出し・読み込み'),
-      el('p', { class: 'muted' }, '記録は端末ごとに保存されます。別の端末に移すときは、書き出した文字列をコピーして移行先で読み込みます。両資格の記録が対象です。'),
+      el('p', { class: 'muted' }, '記録は端末ごとに保存されます。別の端末に移すときは、書き出した文字列をコピーして移行先で読み込みます。すべての資格の記録が対象です。'),
       box,
       el('button', { class: 'btn small', onclick: () => {
         box.value = JSON.stringify({ app: 'ccq', v: 1, settings, progress: Object.fromEntries(CERTS.map((c) => [c, c === A.cert ? A.p : load('progress:' + c, emptyProgress())])) });
