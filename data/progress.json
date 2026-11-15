@@ -4,7 +4,7 @@
   "source": "muse-space:claudezi-ge-kuizu",
   "repo": "k8kimura-gif/claude-cert-questions",
   "path": "data/progress.json",
-  "exportedAt": "2026-11-15T06:56:55.694Z",
+  "exportedAt": "2026-11-15T06:57:05.298Z",
   "summary": {
     "answered": 45,
     "correct": 41,
@@ -21,14 +21,70 @@
         "completedSessionCount": 9,
         "lastAnsweredAt": "2026-11-15T06:50:58.607Z",
         "domains": [
-          { "id": "applications-and-integration", "ja": "アプリケーションと統合", "weight": 33.1, "answered": 18, "correct": 17, "accuracyPercent": 94 },
-          { "id": "model-selection-and-optimization", "ja": "モデル選択と最適化", "weight": 16.8, "answered": 9, "correct": 9, "accuracyPercent": 100 },
-          { "id": "agents-and-workflows", "ja": "エージェントとワークフロー", "weight": 14.7, "answered": 9, "correct": 7, "accuracyPercent": 78 },
-          { "id": "prompt-and-context-engineering", "ja": "プロンプトとコンテキスト設計", "weight": 11, "answered": 9, "correct": 8, "accuracyPercent": 89 },
-          { "id": "tools-and-mcps", "ja": "ツールと MCP", "weight": 10.6, "answered": 0, "correct": 0, "accuracyPercent": null },
-          { "id": "security-and-safety", "ja": "セキュリティと安全性", "weight": 8.1, "answered": 0, "correct": 0, "accuracyPercent": null },
-          { "id": "claude-code", "ja": "Claude Code", "weight": 3.1, "answered": 0, "correct": 0, "accuracyPercent": null },
-          { "id": "eval-testing-and-debugging", "ja": "評価・テスト・デバッグ", "weight": 2.6, "answered": 0, "correct": 0, "accuracyPercent": null }
+          {
+            "id": "applications-and-integration",
+            "ja": "アプリケーションと統合",
+            "weight": 33.1,
+            "answered": 18,
+            "correct": 17,
+            "accuracyPercent": 94
+          },
+          {
+            "id": "model-selection-and-optimization",
+            "ja": "モデル選択と最適化",
+            "weight": 16.8,
+            "answered": 9,
+            "correct": 9,
+            "accuracyPercent": 100
+          },
+          {
+            "id": "agents-and-workflows",
+            "ja": "エージェントとワークフロー",
+            "weight": 14.7,
+            "answered": 9,
+            "correct": 7,
+            "accuracyPercent": 78
+          },
+          {
+            "id": "prompt-and-context-engineering",
+            "ja": "プロンプトとコンテキスト設計",
+            "weight": 11,
+            "answered": 9,
+            "correct": 8,
+            "accuracyPercent": 89
+          },
+          {
+            "id": "tools-and-mcps",
+            "ja": "ツールと MCP",
+            "weight": 10.6,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "security-and-safety",
+            "ja": "セキュリティと安全性",
+            "weight": 8.1,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "claude-code",
+            "ja": "Claude Code",
+            "weight": 3.1,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "eval-testing-and-debugging",
+            "ja": "評価・テスト・デバッグ",
+            "weight": 2.6,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          }
         ]
       },
       "architect": {
@@ -42,11 +98,46 @@
         "completedSessionCount": 0,
         "lastAnsweredAt": null,
         "domains": [
-          { "id": "agentic-architecture-and-orchestration", "ja": "エージェント設計とオーケストレーション", "weight": 27, "answered": 0, "correct": 0, "accuracyPercent": null },
-          { "id": "claude-code-configuration-and-workflows", "ja": "Claude Code の設定とワークフロー", "weight": 20, "answered": 0, "correct": 0, "accuracyPercent": null },
-          { "id": "prompt-engineering-and-structured-output", "ja": "プロンプト設計と構造化出力", "weight": 20, "answered": 0, "correct": 0, "accuracyPercent": null },
-          { "id": "tool-design-and-mcp-integration", "ja": "ツール設計と MCP 統合", "weight": 18, "answered": 0, "correct": 0, "accuracyPercent": null },
-          { "id": "context-management-and-reliability", "ja": "コンテキスト管理と信頼性", "weight": 15, "answered": 0, "correct": 0, "accuracyPercent": null }
+          {
+            "id": "agentic-architecture-and-orchestration",
+            "ja": "エージェント設計とオーケストレーション",
+            "weight": 27,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "claude-code-configuration-and-workflows",
+            "ja": "Claude Code の設定とワークフロー",
+            "weight": 20,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "prompt-engineering-and-structured-output",
+            "ja": "プロンプト設計と構造化出力",
+            "weight": 20,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "tool-design-and-mcp-integration",
+            "ja": "ツール設計と MCP 統合",
+            "weight": 18,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "context-management-and-reliability",
+            "ja": "コンテキスト管理と信頼性",
+            "weight": 15,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          }
         ]
       }
     }
@@ -54,98 +145,548 @@
   "progress": {
     "developer": {
       "answers": {
-        "dev-agent-001": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-agent-003": { "n": 1, "correct": 0, "streak": 0, "last": "2026-11-15" },
-        "dev-agent-007": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-agent-009": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-agent-012": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-agent-015": { "n": 1, "correct": 0, "streak": 0, "last": "2026-11-15" },
-        "dev-agent-018": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-agent-019": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-agent-027": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-006": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-007": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-010": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-012": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-017": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-019": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-025": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-028": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-029": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-031": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-040": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-044": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-047": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-050": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-054": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-055": { "n": 1, "correct": 0, "streak": 0, "last": "2026-11-15" },
-        "dev-app-058": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-app-062": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-model-001": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-model-007": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-model-011": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-model-015": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-model-016": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-model-022": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-model-026": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-model-028": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-model-030": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-prompt-001": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-prompt-003": { "n": 1, "correct": 0, "streak": 0, "last": "2026-11-15" },
-        "dev-prompt-008": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-prompt-013": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-prompt-017": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-prompt-019": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-prompt-020": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-prompt-021": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" },
-        "dev-prompt-022": { "n": 1, "correct": 1, "streak": 1, "last": "2026-11-15" }
+        "dev-agent-001": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-agent-003": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "last": "2026-11-15"
+        },
+        "dev-agent-007": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-agent-009": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-agent-012": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-agent-015": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "last": "2026-11-15"
+        },
+        "dev-agent-018": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-agent-019": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-agent-027": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-006": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-007": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-010": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-012": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-017": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-019": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-025": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-028": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-029": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-031": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-040": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-044": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-047": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-050": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-054": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-055": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "last": "2026-11-15"
+        },
+        "dev-app-058": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-062": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-model-001": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-model-007": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-model-011": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-model-015": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-model-016": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-model-022": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-model-026": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-model-028": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-model-030": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-prompt-001": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-prompt-003": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "last": "2026-11-15"
+        },
+        "dev-prompt-008": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-prompt-013": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-prompt-017": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-prompt-019": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-prompt-020": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-prompt-021": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-prompt-022": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        }
       },
       "log": [
-        { "d": "2026-11-15", "q": "dev-app-062", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-prompt-021", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-model-022", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-agent-003", "ok": 0, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-006", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-044", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-prompt-003", "ok": 0, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-050", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-model-026", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-agent-027", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-010", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-prompt-001", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-agent-015", "ok": 0, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-model-030", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-040", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-029", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-agent-001", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-model-015", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-prompt-013", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-031", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-058", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-prompt-008", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-agent-018", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-model-028", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-055", "ok": 0, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-model-007", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-prompt-020", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-028", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-agent-007", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-025", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-model-001", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-agent-019", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-012", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-prompt-022", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-054", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-047", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-model-011", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-agent-009", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-prompt-017", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-017", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-007", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-app-019", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-agent-012", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-model-016", "ok": 1, "m": "space" },
-        { "d": "2026-11-15", "q": "dev-prompt-019", "ok": 1, "m": "space" }
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-062",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-prompt-021",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-model-022",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-agent-003",
+          "ok": 0,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-006",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-044",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-prompt-003",
+          "ok": 0,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-050",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-model-026",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-agent-027",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-010",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-prompt-001",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-agent-015",
+          "ok": 0,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-model-030",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-040",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-029",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-agent-001",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-model-015",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-prompt-013",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-031",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-058",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-prompt-008",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-agent-018",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-model-028",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-055",
+          "ok": 0,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-model-007",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-prompt-020",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-028",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-agent-007",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-025",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-model-001",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-agent-019",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-012",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-prompt-022",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-054",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-047",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-model-011",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-agent-009",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-prompt-017",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-017",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-007",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-019",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-agent-012",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-model-016",
+          "ok": 1,
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-prompt-019",
+          "ok": 1,
+          "m": "space"
+        }
       ],
       "mocks": [],
       "mock": null,
@@ -163,18 +704,98 @@
   },
   "sessions": {
     "developer": [
-      { "id": 1, "status": "completed", "createdAt": "2026-11-14T13:14:21.526Z", "completedAt": "2026-11-14T23:41:50.062Z", "totalQuestions": 5, "answered": 5, "correct": 4 },
-      { "id": 3, "status": "completed", "createdAt": "2026-11-14T23:45:42.112Z", "completedAt": "2026-11-14T23:58:13.156Z", "totalQuestions": 5, "answered": 5, "correct": 4 },
-      { "id": 4, "status": "completed", "createdAt": "2026-11-14T23:59:49.554Z", "completedAt": "2026-11-15T04:47:35.501Z", "totalQuestions": 5, "answered": 5, "correct": 4 },
-      { "id": 5, "status": "completed", "createdAt": "2026-11-15T04:47:50.113Z", "completedAt": "2026-11-15T05:26:52.034Z", "totalQuestions": 5, "answered": 5, "correct": 5 },
-      { "id": 6, "status": "completed", "createdAt": "2026-11-15T05:27:08.202Z", "completedAt": "2026-11-15T06:12:06.498Z", "totalQuestions": 5, "answered": 5, "correct": 4 },
-      { "id": 7, "status": "completed", "createdAt": "2026-11-15T06:31:39.012Z", "completedAt": "2026-11-15T06:34:21.314Z", "totalQuestions": 5, "answered": 5, "correct": 5 },
-      { "id": 8, "status": "completed", "createdAt": "2026-11-15T06:35:01.091Z", "completedAt": "2026-11-15T06:37:31.455Z", "totalQuestions": 5, "answered": 5, "correct": 5 },
-      { "id": 9, "status": "completed", "createdAt": "2026-11-15T06:37:40.093Z", "completedAt": "2026-11-15T06:41:54.945Z", "totalQuestions": 5, "answered": 5, "correct": 5 },
-      { "id": 10, "status": "completed", "createdAt": "2026-11-15T06:43:45.404Z", "completedAt": "2026-11-15T06:50:58.648Z", "totalQuestions": 5, "answered": 5, "correct": 5 }
+      {
+        "id": 1,
+        "status": "completed",
+        "createdAt": "2026-11-14T13:14:21.526Z",
+        "completedAt": "2026-11-14T23:41:50.062Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 4
+      },
+      {
+        "id": 3,
+        "status": "completed",
+        "createdAt": "2026-11-14T23:45:42.112Z",
+        "completedAt": "2026-11-14T23:58:13.156Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 4
+      },
+      {
+        "id": 4,
+        "status": "completed",
+        "createdAt": "2026-11-14T23:59:49.554Z",
+        "completedAt": "2026-11-15T04:47:35.501Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 4
+      },
+      {
+        "id": 5,
+        "status": "completed",
+        "createdAt": "2026-11-15T04:47:50.113Z",
+        "completedAt": "2026-11-15T05:26:52.034Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 6,
+        "status": "completed",
+        "createdAt": "2026-11-15T05:27:08.202Z",
+        "completedAt": "2026-11-15T06:12:06.498Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 4
+      },
+      {
+        "id": 7,
+        "status": "completed",
+        "createdAt": "2026-11-15T06:31:39.012Z",
+        "completedAt": "2026-11-15T06:34:21.314Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 8,
+        "status": "completed",
+        "createdAt": "2026-11-15T06:35:01.091Z",
+        "completedAt": "2026-11-15T06:37:31.455Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 9,
+        "status": "completed",
+        "createdAt": "2026-11-15T06:37:40.093Z",
+        "completedAt": "2026-11-15T06:41:54.945Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 10,
+        "status": "completed",
+        "createdAt": "2026-11-15T06:43:45.404Z",
+        "completedAt": "2026-11-15T06:50:58.648Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      }
     ],
     "architect": [
-      { "id": 2, "status": "in_progress", "createdAt": "2026-11-14T13:18:13.820Z", "completedAt": null, "totalQuestions": 5, "answered": 0, "correct": 0 }
+      {
+        "id": 2,
+        "status": "in_progress",
+        "createdAt": "2026-11-14T13:18:13.820Z",
+        "completedAt": null,
+        "totalQuestions": 5,
+        "answered": 0,
+        "correct": 0
+      }
     ]
   }
 }
