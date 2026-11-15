@@ -1,1 +1,455 @@
-[]
+[
+ {
+  "id": "asc-trb-001",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある人事担当者が、Claude に「この面談メモをまとめて」とだけ依頼したところ、毎回とても長く、読み手の役員が使いにくい形式の回答が返ってくる。この問題を改善する方法として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "effort を最高レベルに上げて、時間をかけてより丁寧に考えさせる",
+    "why": "effort は思考の深さを調整する設定で、出力の形式や長さを指定するものではない。"
+   },
+   {
+    "id": "b",
+    "text": "同じ依頼をそのまま何度か送り直し、ちょうどよい長さの回答が出るまで試す",
+    "why": "依頼が曖昧なままでは、毎回同じ傾向のずれが繰り返される。原因である指示を直していない。"
+   },
+   {
+    "id": "c",
+    "text": "読み手、形式(例: 箇条書き 5 点)、文字数の目安を依頼に具体的に書く",
+    "why": "出力の形式と制約を具体的に伝えるのが、公式が示す基本の対処である。"
+   },
+   {
+    "id": "d",
+    "text": "依頼文をさらに短くして、読み手に合う最適な形を Claude に判断させる",
+    "why": "背景が少ないほど、Claude は職場の慣習や読み手の事情を推測できない。短くしても改善しにくい。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "公式ガイドは、Claude を「職場の慣習や進め方を知らない、有能な新任の社員」にたとえ、求める内容を正確に説明するほど結果が良くなると述べている。出力の形式と制約を具体的に指定することが推奨されている。長すぎる、形式が合わないといった問題は、まず指示の曖昧さを疑い、条件を明示して直す。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://support.claude.com/en/articles/7996857-my-prompt-isn-t-giving-me-a-helpful-answer"
+  ]
+ },
+ {
+  "id": "asc-trb-002",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある広報担当者が「箇条書きを使わないで」と指示して下書きを頼んだが、回答には箇条書きが残ってしまう。公式ガイドが勧める直し方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「なめらかな文章の段落で書いて」と、望む形を肯定形で伝える",
+    "why": "してほしくないことより、してほしいことを伝えるほうが形式を誘導しやすいと、公式ガイドが勧めている。"
+   },
+   {
+    "id": "b",
+    "text": "「箇条書き禁止」という文言を、依頼の冒頭と末尾の両方に何度も繰り返し書く",
+    "why": "禁止の言い方のままでは、公式が勧める「何をするか」を伝える形になっていない。繰り返しても改善の保証はない。"
+   },
+   {
+    "id": "c",
+    "text": "effort のレベルを上げて、指示を読み取る力を高める",
+    "why": "effort は思考量の設定であり、書式の指示を言い換える代わりにはならない。"
+   },
+   {
+    "id": "d",
+    "text": "指示を英語に書き換えて送り直す",
+    "why": "言語を変えることは、書式の誘導方法として出典に示されていない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "公式ガイドは、書式を整える有効な方法の 1 つとして「してはいけないことではなく、すべきことを伝える」ことを挙げている。例として、「markdown を使わないで」の代わりに「なめらかな文章の段落で構成してください」と書く。プロンプト自体の書式を望む出力に近づけると、出力の書式にも影響することがある。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ]
+ },
+ {
+  "id": "asc-trb-003",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある営業担当者が、朝から Claude で資料作成を続け、Claude から「5-hour limit reached - resets」という通知が出た。この人は有料プランで、使用量クレジット(usage credits)を有効にしていない。この上限について正しい説明はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "新しいチャットを開始すれば、その会話の分の上限は新たに数え直される",
+    "why": "使用量の上限は個々の会話ではなく、期間内の利用全体に対するもの。新しいチャットでは解消しない。"
+   },
+   {
+    "id": "b",
+    "text": "claude.ai の利用だけが対象で、Claude Code や Claude Desktop の利用は別枠で数えられる",
+    "why": "claude.ai、Claude Code、Claude Desktop の利用は、同じ使用量の上限に合算される。"
+   },
+   {
+    "id": "c",
+    "text": "過去のチャットを削除すると、使用済みの量が戻る",
+    "why": "チャットを削除しても使用量は戻らない。出典にもそうした記述はない。"
+   },
+   {
+    "id": "d",
+    "text": "リセットを待つか、プランを上げるか、使用量クレジットを有効にして作業を続ける方法がある",
+    "why": "5 時間の上限はリセットを待てる。プランを上げれば新しい上限がすぐ適用され、クレジットを有効にすれば従量で継続できる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "使用量の上限(5 時間ごとのセッション上限と週間上限)は、一定期間にどれだけ Claude を使えるかを決めるもので、claude.ai、Claude Code、Claude Desktop の利用が合算される。上限に達した場合は、リセットを待つか、プランを上げるか、使用量クレジットを有効にして続けられる。クレジットを有効にしていれば、上限に達しても従量課金で作業が止まらない。",
+  "refs": [
+   "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work",
+   "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages"
+  ]
+ },
+ {
+  "id": "asc-trb-004",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある法務担当者が、数百ページの資料を 1 回目のメッセージにまとめて貼り付けたところ、「Your message will exceed the length limit for this chat.」と表示され、送信できなかった。対処として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "5 時間待って、セッション上限がリセットされてから同じメッセージをもう一度送り直す",
+    "why": "これは長さの上限(1 回の会話に入る量)の問題で、時間の経過による使用量上限のリセットとは別物。"
+   },
+   {
+    "id": "b",
+    "text": "内容を小さく分けて処理するか、重要部分を要約・抽出して送る",
+    "why": "長さの上限を超えたときの対処として、出典に挙がっている方法。"
+   },
+   {
+    "id": "c",
+    "text": "effort を最高レベルにして、長い入力を処理できるようにする",
+    "why": "effort は思考量の設定で、1 回に送れる入力の長さを増やさない。"
+   },
+   {
+    "id": "d",
+    "text": "同じメッセージで Web 検索をオンにして、資料の不足分を補わせる",
+    "why": "Web 検索は入力の長さの問題を解消せず、むしろツールは文脈を消費する。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "使用量の上限(期間あたりの総量)と長さの上限(1 回の会話に入る量)は別のもの。メッセージが長すぎる場合は、内容を小さな塊に分ける、重要な部分を要約・抽出してから送る、Claude にまず関連する部分を特定させる、新しい会話を始める、といった方法がある。",
+  "refs": [
+   "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages",
+   "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+  ]
+ },
+ {
+  "id": "asc-trb-005",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある企画担当者は、Claude に 12 個のコネクタを接続している。調べ物の途中で、会話が長さの上限に当たりやすいと感じている。Claude のツールアクセスの設定として、まず試すものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「On demand」にして、必要なコネクタだけを読み込ませる",
+    "why": "コネクタを事前にすべて読み込まないため、会話の余白が増える。10 個以上や、長さの上限に当たる場合に向く設定。"
+   },
+   {
+    "id": "b",
+    "text": "「Always available」にして、すべてのコネクタを会話の開始時から読み込んでおく",
+    "why": "いつでも使えるが、会話の最初から多くの余白を使う。10 個未満を常用する場合に向く設定で、この状況には逆効果。"
+   },
+   {
+    "id": "c",
+    "text": "プロジェクトの指示に、各コネクタの使い方を詳しく書き足す",
+    "why": "公式は、プロジェクトの指示は簡潔に保つよう勧めている。コネクタの読み込み量の対策にならない。"
+   },
+   {
+    "id": "d",
+    "text": "拡張思考(thinking)を常にオンにして、長い会話でも内容を保たせる",
+    "why": "拡張思考は応答の思考に関する設定で、コネクタの読み込み量を減らさない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "コネクタは 1 つずつ会話の余白を占めるため、数が増えるほど、資料や会話履歴に使える余白が減る。ツールアクセスの設定には Auto(既定)、Always available、On demand がある。会話が長さの上限に当たる場合や 10 個以上の場合は On demand が向く。ただし Claude が関連するコネクタを探す手順が 1 つ増える。",
+  "refs": [
+   "https://support.claude.com/en/articles/13730515-manage-claude-s-tool-access",
+   "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+  ]
+ },
+ {
+  "id": "asc-trb-006",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの組織で、オーナーが Slack コネクタを組織に追加した。ある一般メンバーが Claude で使おうとしたが、Slack の内容を取得できない。まず確認すべきことはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "オーナーが「Let members request connectors」をオンにしているか",
+    "why": "これはメンバーがコネクタの追加を依頼するための設定。すでに追加済みのコネクタを使えるかとは関係ない。"
+   },
+   {
+    "id": "b",
+    "text": "より上位のプランに切り替えているか",
+    "why": "出典に、コネクタの利用にプランの切り替えが必要だという記述はない。"
+   },
+   {
+    "id": "c",
+    "text": "本人が、そのコネクタで Slack に個別に認証(ログイン)しているか",
+    "why": "組織で有効にしても自動的にはアクセスが付与されず、各ユーザーが個別に認証する必要がある。"
+   },
+   {
+    "id": "d",
+    "text": "オーナーが組織への追加をもう一度行い、全員を再認証させたか",
+    "why": "追加し直しは不要。個々のユーザーは、自分で認証する。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Team と Enterprise では、オーナーがコネクタを組織で有効にしても、メンバーへアクセスが自動的に付与されるわけではない。各メンバーは、自分で認証して初めて使える(Enterprise-managed auth の場合は組織で一度承認すればよい)。使えないときは、本人の認証状況から確かめる。",
+  "refs": [
+   "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities"
+  ]
+ },
+ {
+  "id": "asc-trb-007",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "ある経理担当者が Google Drive のコネクタを接続したが、新しいチャットで Claude が特定のフォルダの内容を参照してくれない。原因として確認すべきものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "effort が Low になっているため、Drive の検索に必要な思考が行われていない",
+    "why": "effort は応答の思考量の設定で、コネクタが使われるかどうかを決めるものではない。"
+   },
+   {
+    "id": "b",
+    "text": "その会話で、「+」メニューの Connectors から Google Drive をオンにしているか",
+    "why": "接続していても、会話ごとに使うサービスをオンにして初めて Claude が使える。"
+   },
+   {
+    "id": "c",
+    "text": "プロジェクトの指示が短すぎるため、コネクタが読み込まれない",
+    "why": "指示の長さと、コネクタが読み込まれるかどうかに関係があるとは出典に書かれていない。"
+   },
+   {
+    "id": "d",
+    "text": "本人が、そのフォルダに Google Drive 上でアクセス権を持っているか",
+    "why": "コネクタは本人の権限を引き継ぐ。元のサービスで見られないファイルには、Claude も届かない。"
+   }
+  ],
+  "answer": [
+   "b",
+   "d"
+  ],
+  "explanation": "コネクタを使うには、会話ごとに「+」メニューから使うサービスをオンにする。また、Claude は各人が元のサービスで持つ権限を引き継ぐため、本人がアクセスできないファイルやフォルダは Claude からも参照できない。",
+  "refs": [
+   "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities"
+  ]
+ },
+ {
+  "id": "asc-trb-008",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある開発者が Claude Sonnet 5.5 のチャットで、システムの脆弱性を突くペネトレーションテストの手順を尋ねたところ、「モデルが Sonnet 5 に切り替わった」という通知が出て、そのチャットでは Sonnet 5 のままになった。Sonnet 5.5 に戻して続けるときの対処として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ページを再読み込みすれば、自動的に Sonnet 5.5 に戻る",
+    "why": "出典には、再読み込みで戻るという記述がない。切り替えたあとは、そのチャットでモデルピッカーが Sonnet 5 のままになる。"
+   },
+   {
+    "id": "b",
+    "text": "設定の「Switch models when a message is flagged」をオフにすれば、同じメッセージが Sonnet 5.5 で処理される",
+    "why": "オフにすると、フォールバックになる要求ではモデルを切り替えずにチャットが一時停止する。同じ要求が Sonnet 5.5 で処理されるわけではない。"
+   },
+   {
+    "id": "c",
+    "text": "effort を最高にして、安全性の確認をより丁寧に行わせる",
+    "why": "フォールバックは自動の分類器によるもので、effort の設定で変わるとは出典にない。"
+   },
+   {
+    "id": "d",
+    "text": "モデルピッカーで Sonnet 5.5 に戻し、切り替えの原因となった前のメッセージを編集してから再試行する",
+    "why": "戻したあとも元の要求が会話に残っていると同じ安全策で再び切り替わりうる。前のメッセージの編集が有効とされる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "Sonnet 5.5 は、攻撃的なサイバーセキュリティ(ペネトレーションテストなど)に当たる一部の要求を Sonnet 5 に切り替える。切り替えは通知とモデル名の表示で分かり、そのチャットのモデルピッカーは Sonnet 5 のままになる。戻すときはモデルピッカーで選び直すが、元の要求が会話に残っていると再び切り替わるおそれがあるので、前のメッセージを編集して再試行すると良い。",
+  "refs": [
+   "https://support.claude.com/en/articles/17161993-why-claude-switched-models-in-your-conversation-with-sonnet-5-5"
+  ]
+ },
+ {
+  "id": "asc-trb-009",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある編集者が、既存の記事の本文をそのまま長く書き起こさせようとして、「Output blocked by content filtering policy」というエラーが出た。このエラーの説明として、公式のヘルプが述べている内容に最も近いものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude が内容を不適切だと判断したため、依頼した本人の利用が規約違反と認定された",
+    "why": "ヘルプは、これらの拒否は内容の適切さについての Anthropic の判断を示すものではないと述べている。"
+   },
+   {
+    "id": "b",
+    "text": "既存の資料の再現を防ぐ仕組みによることが多いので、依頼を見直す",
+    "why": "ヘルプによると、Claude の目的は新しい内容の生成であり、既存の資料の再現を防ぐ取り組みから生じることが多い。"
+   },
+   {
+    "id": "c",
+    "text": "サービス全体の障害で、status.claude.com で復旧を待てば同じ依頼が通る",
+    "why": "このエラーの説明として、ヘルプは障害ではなく、再現を防ぐ取り組みに触れている。"
+   },
+   {
+    "id": "d",
+    "text": "使用量の上限に達したときの表示で、リセットを待てば解消する",
+    "why": "使用量の上限には、別のエラーメッセージ(「5-hour limit reached」など)が出る。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "このエラーは、Anthropic が Claude に既存の資料の再現(そのままの出力)をさせないよう取り組んでいることから、一般に生じる。内容の適切さについての判断ではない。意図せず当たることもあるため、既存の文章をそのまま出させる依頼になっていないかを見直す。",
+  "refs": [
+   "https://support.claude.com/en/articles/10023638-why-am-i-receiving-an-output-blocked-by-content-filtering-policy-error"
+  ]
+ },
+ {
+  "id": "asc-trb-010",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある営業企画の担当者は、毎週、同じ製品資料を Claude に添付し直し、同じトーンの指示も毎回書いている。そのため使用量が早く減る。効率を上げる方法として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "すべての週の作業を 1 つの長いチャットで続け、資料の添付を 1 回で済ませる",
+    "why": "会話が長いほど使用量に影響し、長さの上限にも近づく。資料の再利用なら、プロジェクトのほうが適している。"
+   },
+   {
+    "id": "b",
+    "text": "資料の全文を毎回メッセージ本文に貼り付け、添付の手間を減らす",
+    "why": "毎回新しい内容として数えられ、キャッシュの恩恵も受けられない。"
+   },
+   {
+    "id": "c",
+    "text": "プロジェクトに資料を入れ、トーンの指示も設定する",
+    "why": "プロジェクトの内容はキャッシュされ、再利用時の使用量が少なく済む。資料も指示も毎回書かずに済む。"
+   },
+   {
+    "id": "d",
+    "text": "毎回シークレットチャットで始め、過去のチャットを参照させないようにする",
+    "why": "シークレットチャットは履歴や記憶に残さないための機能で、資料や指示の再利用には役立たない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "プロジェクトに資料を入れておくと、その内容はキャッシュされ、再利用するときは新しい内容より使用量が少なく数えられる。繰り返し参照する資料は、プロジェクトの知識に入れるのが良い。トーンなどの一般的な指針はプロジェクトの指示に書き、個別の指示はチャットに書く。なお、キャッシュは一定期間使わないと切れる。",
+  "refs": [
+   "https://support.claude.com/en/articles/9797557-usage-limit-best-practices",
+   "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+  ]
+ },
+ {
+  "id": "asc-trb-011",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある総務担当者は、定型の案内メールの文面を整える作業のたびに、effort を最高レベルにして Claude を使っている。使用量が週の途中で尽きてしまう。この作業での設定の見直しとして適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Low か Medium に下げ、使用量を長く保つ",
+    "why": "公式は、Low と Medium は定型の作業に向いて、使用量を長く保てると述べている。"
+   },
+   {
+    "id": "b",
+    "text": "最高レベルのまま、1 通ずつ別々のチャットに分けて依頼する",
+    "why": "チャットを分けても、最高レベルで 1 回ごとに使う量は減らない。原因である設定が変わっていない。"
+   },
+   {
+    "id": "c",
+    "text": "拡張思考だけを常にオンにして、effort の設定は今のまま変えない",
+    "why": "拡張思考は、不要なときはオフにして使用量を抑えるよう勧められる機能で、常にオンにする節約策にはならない。"
+   },
+   {
+    "id": "d",
+    "text": "設定は変えずに、使用量の上限に達したら毎回新しい会話を始める",
+    "why": "使用量の上限は会話ごとではなく、全体にかかる。新しい会話では解消しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "effort は、応答でどれだけ思考するかを決める設定で、高いほど丁寧になる一方、時間とトークンがかかり、使用量の上限に早く達する。公式は、Low と Medium は定型の作業に向いており、使用量を長く保てると述べている。複雑な作業のときだけ effort を上げる。",
+  "refs": [
+   "https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings",
+   "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+  ]
+ },
+ {
+  "id": "asc-trb-012",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "ある企画部門で、Claude の使用量を節約したい。公式のヘルプが挙げる方法として適切なものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "関連する複数の依頼を、まとめて 1 通のメッセージで送る",
+    "why": "やり取りの回数を減らせる。公式のベストプラクティスに挙がっている。"
+   },
+   {
+    "id": "b",
+    "text": "どの作業でも effort を最高にして、やり直しを減らす",
+    "why": "高い effort ほど使用量は増える。定型の作業では Low や Medium が向く。"
+   },
+   {
+    "id": "c",
+    "text": "会話で不要なコネクタや Web 検索をオフにする",
+    "why": "ツールは多くのトークンを使うので、不要なときはオフにすると良い。"
+   },
+   {
+    "id": "d",
+    "text": "同じ参考資料を、毎回新しいチャットに添付し直す",
+    "why": "繰り返し使う資料はプロジェクトに入れると、キャッシュされて使用量が少なくなる。毎回添付すると毎回新しい内容として数えられる。"
+   }
+  ],
+  "answer": [
+   "a",
+   "c"
+  ],
+  "explanation": "使用量は、メッセージの長さ、添付ファイルの大きさ、会話の長さ、ツールの利用、モデル、effort などで変わる。関連する依頼を 1 通にまとめる、不要なコネクタや Web 検索をオフにする、定型の作業では effort を下げる、繰り返し使う資料はプロジェクトに入れる、といった方法で抑えられる。",
+  "refs": [
+   "https://support.claude.com/en/articles/9797557-usage-limit-best-practices",
+   "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+  ]
+ }
+]

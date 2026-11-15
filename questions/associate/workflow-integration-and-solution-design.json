@@ -1,1 +1,754 @@
-[]
+[
+ {
+  "id": "asc-wf-001",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある営業企画チームは、毎週の商談レポートを「決まった章立て・社内用語・書式」で作っているが、担当者によって出来栄えがばらつく。この手順を、誰が依頼しても同じように再現させたい。最も適した手段はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "過去のレポートを Project のナレッジに大量に入れ、毎回その Project の中で依頼する",
+    "why": "Project は、チャットを始めるといつも読み込まれる静的な背景知識を置く場所である。再現させたいのは背景知識ではなく「手順」であり、手順は必要なときに起動するスキルが担う。"
+   },
+   {
+    "id": "b",
+    "text": "章立て・用語・書式の手順をカスタムスキルとして書き、チームで使えるようにする",
+    "why": "スキルは、特定の作業を繰り返し同じやり方で行うための手順をまとめたもので、関連する場面で動的に読み込まれる。"
+   },
+   {
+    "id": "c",
+    "text": "各担当者が自分のカスタム指示に、レポートの作り方を自由に書いておく",
+    "why": "カスタム指示はすべての会話に広く適用されるもので、特定の作業にだけ働くスキルとは役割が違う。書き方も人ごとに分かれ、ばらつきが残る。"
+   },
+   {
+    "id": "d",
+    "text": "依頼のたびに、レポートの作り方を長い文章にして毎回の依頼文へ貼り付ける",
+    "why": "毎回貼る方法でも一応は伝わるが、貼り忘れや書き換えで担当者ごとの差が出る。手順を一度書いて再利用する、というスキルの目的に合わない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "スキルは、Claude が特定のタスクを繰り返し同じやり方で行えるようにする手順と資料のまとまりで、関連する場面で必要な分だけ読み込まれます。Project は常に読み込まれる静的な背景知識、カスタム指示は全会話に広く適用される設定、という位置づけの違いがあります。",
+  "refs": [
+   "https://support.claude.com/en/articles/12512176-what-are-skills",
+   "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills"
+  ]
+ },
+ {
+  "id": "asc-wf-002",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "営業企画チームは、SaaS の課題管理ツールに、チームの命名規則と必須項目に沿ったチケットを Claude に作成させたい。構成として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "スキルだけを作る。スキルが課題管理ツールへの接続も提供するので、コネクタの設定は不要になる",
+    "why": "スキルが与えるのは作業の手順に関する知識で、外部サービスへの接続は提供しない。接続は MCP(コネクタ)の役割である。"
+   },
+   {
+    "id": "b",
+    "text": "コネクタだけを接続する。接続すればアクセスできるので、チームの命名規則や必須項目も Claude が自動的に把握する",
+    "why": "コネクタはサービスへのアクセスを与えるもので、チーム固有の規則までは伝えない。規則は手順として別に与える必要がある。"
+   },
+   {
+    "id": "c",
+    "text": "規則を Project のナレッジに書いておき、コネクタは接続せずに Claude へチケット作成を任せる",
+    "why": "Claude が課題管理ツールに実際にチケットを作るには、そのサービスへの接続が必要である。ナレッジに規則を書いても接続の代わりにはならない。"
+   },
+   {
+    "id": "d",
+    "text": "コネクタで課題管理ツールに接続し、命名規則と必須項目はスキルに手順として書く",
+    "why": "コネクタがツールへのアクセスを与え、スキルがそのツールをどう使うかを教える。公式も、この 2 つを組み合わせて使えると述べている。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "公式ページは、MCP は外部サービスやデータに Claude をつなぎ、スキルは作業をどう進めるかという手順の知識を与えるとし、両方を併用できると述べています。スキルの例にも、チームの規約に沿って社内ツールにタスクを作るものが挙がっています。",
+  "refs": [
+   "https://support.claude.com/en/articles/12512176-what-are-skills",
+   "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities"
+  ]
+ },
+ {
+  "id": "asc-wf-003",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者が作ったカスタムスキルが、本来使われるはずの場面で呼び出されないことがある。まず見直すべき点はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "description に、スキルの内容と使う場面を具体的に書き直し、いくつかの依頼文で呼び出されるか試す",
+    "why": "Claude は description を見て、そのスキルをいつ使うかを判断する。想定どおり使われないときは description を見直して再度試す、というのが公式の手順である。"
+   },
+   {
+    "id": "b",
+    "text": "skill.md の本文を、考えられるあらゆる場面と例外を網羅するよう、大幅に長くして詳しく書き足す",
+    "why": "本文は、スキルが選ばれたあとに読まれる情報である。呼び出されるかどうかを決めるのは description なので、本文を増やしても改善しない。"
+   },
+   {
+    "id": "c",
+    "text": "複数のスキルを 1 つに統合し、あらゆる手順と場面を 1 つのスキルでまかなえるようにして管理する",
+    "why": "公式は、1 つのワークフローに絞った複数のスキルのほうが組み合わせやすいと述べている。統合は勧められていない。"
+   },
+   {
+    "id": "d",
+    "text": "スキルを使うのをやめ、毎回の依頼文に手順を書いて渡す運用に切り替える",
+    "why": "スキルの目的は手順を一度書いて再利用することである。呼び出されない原因を確かめずに手書きへ戻すのは、問題の解決にならない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "description は Claude がスキルを使うかどうかを判断する材料です。公式のテスト手順にも、期待どおり使われない場合は description を見直すとあります。",
+  "refs": [
+   "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills"
+  ]
+ },
+ {
+  "id": "asc-wf-004",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "営業企画チームが自社用のカスタムスキルを設計する。公式のベストプラクティスに沿う方針を2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "入力例と出力例を skill.md に含め、何をもって成功とするかを Claude に示す",
+    "why": "公式は、入力と出力の例を含めて、成功がどういうものかを Claude に伝えることを勧めている。"
+   },
+   {
+    "id": "b",
+    "text": "外部サービスの API キーを skill.md に直接書いておき、接続のたびに入力する手間を省く",
+    "why": "公式は、API キーやパスワードなどの機密情報をハードコードしないよう注意している。外部サービスへのアクセスには適切な MCP 接続を使う。"
+   },
+   {
+    "id": "c",
+    "text": "最初から複雑なスクリプトを含む大型のスキルを作り込み、完成してからまとめてテストする",
+    "why": "公式は、まず簡単な Markdown の指示から始め、変更のたびに少しずつテストすることを勧めている。"
+   },
+   {
+    "id": "d",
+    "text": "1 つのスキルは 1 つのワークフローに絞り、別の手順は別のスキルとして作る",
+    "why": "公式は、焦点を絞った複数のスキルのほうが、1 つの大きなスキルより組み合わせやすいと述べている。"
+   }
+  ],
+  "answer": [
+   "a",
+   "d"
+  ],
+  "explanation": "公式のベストプラクティスは、焦点を絞る、明確な description を書く、簡単なものから始める、例を使う、少しずつテストする、というものです。機密情報のハードコードは避けるべき点として挙げられています。",
+  "refs": [
+   "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills"
+  ]
+ },
+ {
+  "id": "asc-wf-005",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの企業が、ブランドガイドラインを適用する承認済みのスキルを、全社員に個別のアップロードなしで届けたい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "作成者が、全社員の名前を 1 人ずつ指定してスキルの共有を実行する",
+    "why": "特定の人への共有は、受け取った人が自分で有効にするまで無効の状態で表示される。全社員に標準手順を行き渡らせる用途の方法ではない。"
+   },
+   {
+    "id": "b",
+    "text": "組織の Owner が、そのスキルを組織全体にプロビジョニングする",
+    "why": "Owner がプロビジョニングしたスキルは、全メンバーのスキル一覧に自動で表示され、既定で有効か無効かも設定できる。標準手順を一貫して配る方法として公式に挙がっている。"
+   },
+   {
+    "id": "c",
+    "text": "作成者が ZIP ファイルを全社員にメールで送り、各自にアップロードしてもらう",
+    "why": "個別アップロードは、まさに避けたい運用である。アップロードしたスキルは、共有しない限り同僚には見えない。"
+   },
+   {
+    "id": "d",
+    "text": "各社員が Anthropic のスキルを有効にすれば、自社のブランド規定も自動的に反映される",
+    "why": "Anthropic のスキルは文書作成などの一般的な機能であり、自社固有のブランド規定は含まない。自社用の手順はカスタムスキルとして用意する必要がある。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Team・Enterprise プランの Owner はスキルを組織全体にプロビジョニングでき、メンバーの一覧に自動で現れます。公式は、承認済みの手順を全従業員に一貫して配布できる点を利点に挙げています。",
+  "refs": [
+   "https://support.claude.com/en/articles/12512176-what-are-skills",
+   "https://support.claude.com/en/articles/12512180-use-skills-in-claude"
+  ]
+ },
+ {
+  "id": "asc-wf-006",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "営業企画の担当者が、Cowork の定期タスクで「毎週月曜の朝 9 時に、チームの Slack チャンネルの先週分の投稿を要約する」ように設定した。Slack はコネクタ経由で、ローカルのファイルやアプリは使わない。月曜の朝、担当者の PC はスリープ中で Claude Desktop も閉じている。この定期タスクの動作として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "PC が復帰して Claude Desktop を開くまで実行が保留され、開いた時点で実行される",
+    "why": "定期タスクはリモートで実行されるため、PC の状態には依存しない。復帰を待つ必要はない。"
+   },
+   {
+    "id": "b",
+    "text": "スケジュールどおりに実行され、担当者は後から結果を確認できる",
+    "why": "定期タスクはリモートで動くため、PC がスリープでもアプリが閉じていても、設定した頻度で実行される。結果は他のタスクと同じように確認できる。"
+   },
+   {
+    "id": "c",
+    "text": "実行はされるが、Claude Desktop が開いている間だけ進み、閉じると途中で止まる",
+    "why": "定期タスクは Desktop アプリが開いているかどうかに左右されない。ローカルのファイルやアプリを使う場合とは条件が違う。"
+   },
+   {
+    "id": "d",
+    "text": "定期タスクは PC 上でのみ動くので、スリープ中は実行されず、その回は飛ばされる",
+    "why": "定期タスクは Anthropic 側のクラウドで動くので、PC がスリープ中でも実行される。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "公式ページは、定期タスクはリモートで実行され、コンピューターがスリープ中でも Claude Desktop アプリが閉じていても、設定した頻度で動くと説明しています。ローカルのファイルやアプリを必要とするタスクは、ローカルでのみ実行される点は別の条件です。",
+  "refs": [
+   "https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork",
+   "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork"
+  ]
+ },
+ {
+  "id": "asc-wf-007",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Cowork の定期タスクについて、公式ページの内容に合致する記述を2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Free プランのアカウントでも、日次の要約タスクを定期タスクとして作成できる",
+    "why": "定期タスクは有料プラン(Pro、Max、Ultra、Team、Enterprise)で使える機能である。"
+   },
+   {
+    "id": "b",
+    "text": "Personal Finance にリンクした個人口座のデータを、週次で集計する定期タスクを組める",
+    "why": "公式は、定期タスクでは Personal Finance にリンクしたアカウントを使えないと明記している。"
+   },
+   {
+    "id": "c",
+    "text": "保存したタスクは、一時停止・再開・手動でのオンデマンド実行ができ、各回の結果を確認できる",
+    "why": "公式の管理方法に、定期タスクの一時停止、再開、オンデマンド実行、過去の実行の確認が挙がっている。"
+   },
+   {
+    "id": "d",
+    "text": "作成時に入力したプロンプトが指示として保存され、実行のたびに独立した Cowork セッションとして動く",
+    "why": "公式は、プロンプトがタスクの指示として保存され、各タスクが独自の Cowork セッションとして実行されると説明している。"
+   }
+  ],
+  "answer": [
+   "c",
+   "d"
+  ],
+  "explanation": "定期タスクは、説明を一度書けば決まった頻度で成果物を届けてくれる機能です。頻度の選択、手動実行、一時停止と再開など、運用に関する機能が公式ページに挙がっています。",
+  "refs": [
+   "https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork"
+  ]
+ },
+ {
+  "id": "asc-wf-008",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "担当者が Cowork に、取引先 30 社へ本人名義で送る案内メールの送信と、共有ドライブの古いファイルの削除を任せる。どちらも結果を取り消しにくい作業である。承認モードの選び方として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「Manually approve」を選び、Claude が実行する各アクションを自分で確認して許可する",
+    "why": "公式は、お金・本人名義で送るメッセージ・重要なファイルなど影響の大きい作業では、近くで確認するか Manually approve に切り替えることを勧めている。"
+   },
+   {
+    "id": "b",
+    "text": "「Automatically approve」を選び、Claude が安全性を確認するので、結果の確認は不要と考える",
+    "why": "Auto は各アクションの安全性を確認して危険なものを止めるが、公式は、どのモードも利用者自身の判断の代わりにはならないと述べている。"
+   },
+   {
+    "id": "c",
+    "text": "「Skip all approvals」を選び、承認待ちで止まらないようにして作業を最短で終わらせる",
+    "why": "Skip では承認を求めず、自動の確認もない。公式は、関わるすべての操作・コネクタ・ファイルを完全に信頼できる場合に限るとしている。"
+   },
+   {
+    "id": "d",
+    "text": "最初に選んだモードはタスク中に変えられないので、念のため最も緩い設定で始める",
+    "why": "モードは、チャットボックスのモードセレクターからいつでも変更できる。緩い設定にしておく理由にはならない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Cowork の承認モードは、Claude が行動の前に許可を求める頻度を決めます。影響の大きい作業では、結果を人が確認できる Manually approve が公式の推奨に沿います。",
+  "refs": [
+   "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork"
+  ]
+ },
+ {
+  "id": "asc-wf-009",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "担当者が、自分の PC 上の「見積書」フォルダを読み、整理した結果を同じフォルダへ書き出すタスクを Cowork に依頼する。Cowork のセッション自体はクラウドで動く。このタスクを完了させるために必要な条件はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "モバイルアプリから依頼すれば、Claude がスマートフォン経由で、PC 内のフォルダへ直接アクセスして読み書きする",
+    "why": "PC 上のファイルやブラウザに触れるには、そのコンピューターで動く Claude Desktop アプリが必要である。モバイルアプリだけでは届かない。"
+   },
+   {
+    "id": "b",
+    "text": "claude.ai をブラウザで開いておけば、PC 内の任意のローカルフォルダを、Claude が自由に読み書きできる",
+    "why": "ローカルのファイルにアクセスさせるには Desktop アプリが必要で、Claude が触れるのも利用者が接続したフォルダに限られる。"
+   },
+   {
+    "id": "c",
+    "text": "Claude Desktop(macOS か Windows)を開いて接続し、対象フォルダへのアクセスを許可する",
+    "why": "ローカルファイル、ブラウザ、コンピューターの操作には、開いて接続された Claude Desktop が必要である。Claude が読み書きできるのは、接続を許可したフォルダだけである。"
+   },
+   {
+    "id": "d",
+    "text": "フォルダ内のファイルをすべて事前に Claude のプロジェクトへアップロードしてから依頼する",
+    "why": "Desktop 版では、手動のアップロードやダウンロードなしで、ローカルのファイルを直接読み書きできる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Cowork のセッションはクラウドで動きますが、ローカルファイルなど手元のコンピューターにあるものに触れるときは、Claude Desktop アプリが開いて接続されている必要があります。",
+  "refs": [
+   "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork"
+  ]
+ },
+ {
+  "id": "asc-wf-010",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの営業企画チームが、提案書の方針・過去事例・用語集を入れた Project を作成した。新人には、Project の内容を踏まえて Claude とチャットさせたいが、ナレッジや指示は書き換えさせたくない。共有時の権限として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "新人には Can edit の権限を付与し、書き換えがあれば後から担当者が元に戻す",
+    "why": "Can edit では、指示やナレッジの変更、メンバーの追加・削除ができてしまう。書き換えさせたくないという条件に合わない。"
+   },
+   {
+    "id": "b",
+    "text": "Project は共有せず、ナレッジの内容を PDF にして新人に配る",
+    "why": "共有機能を使えば、内容を見ながら Project 内でチャットまでできる。PDF を配ると、更新のたびに配り直す手間も出る。"
+   },
+   {
+    "id": "c",
+    "text": "新人には Can view の権限を付与する",
+    "why": "Can view のメンバーは、Project の内容、ナレッジ、指示を見て Project 内でチャットできるが、編集はできない。"
+   },
+   {
+    "id": "d",
+    "text": "権限を付与せず、新人のチャットでは毎回、ナレッジの内容を文章で貼り付けさせる",
+    "why": "Project を共有しない選択だが、貼り付けの手間とばらつきが出る。Can view で目的を満たせる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Team・Enterprise プランでは、Project を特定のメンバーや組織全体に共有でき、権限は Can view と Can edit の 2 段階です。見て使うだけの人には Can view が適しています。",
+  "refs": [
+   "https://support.claude.com/en/articles/9517075-what-are-projects",
+   "https://support.claude.com/en/articles/9519189-manage-project-visibility-and-sharing"
+  ]
+ },
+ {
+  "id": "asc-wf-011",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "有料プランの営業企画チームが、Project に過去 3 年分の提案書やマニュアルを追加し続け、ナレッジがコンテキストウィンドウの上限に近づいた。このときの動作として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "上限に達した時点で、それ以上のファイルは追加できなくなり、不要なファイルを削除するよう求められる",
+    "why": "以前は容量がコンテキストウィンドウの上限で決まっていたが、現在は RAG により上限を超えても追加を続けられる。"
+   },
+   {
+    "id": "b",
+    "text": "上限を超えると、古いファイルから順に自動で削除され、新しいファイルのための空き容量が確保される",
+    "why": "削除はされない。RAG モードで、より多くの内容を保持したまま関連する部分だけを検索して使う。"
+   },
+   {
+    "id": "c",
+    "text": "管理者が Project ごとに RAG を手動で有効にしない限り、上限を超えた分は Claude に読み込まれない",
+    "why": "RAG は設定なしで自動的に有効になり、利用者が操作する必要はない。"
+   },
+   {
+    "id": "d",
+    "text": "RAG モードが自動で有効になり、Claude が Project のナレッジ検索ツールで関連情報を取り出す",
+    "why": "RAG により、Project の容量は最大 10 倍まで広がる。表示される印で RAG が有効かどうかも分かる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "有料プランの Project は、ナレッジがコンテキストの上限に近づくと自動で RAG モードに切り替わり、関連する情報だけを検索して使います。ファイル名を分かりやすくするなどの工夫が検索を助けます。",
+  "refs": [
+   "https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects",
+   "https://support.claude.com/en/articles/9517075-what-are-projects"
+  ]
+ },
+ {
+  "id": "asc-wf-012",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "営業企画の担当者が、Cowork で顧客 A 向けと顧客 B 向けのプロジェクトを別々に作った。A の案件で Claude が覚えた内容が B のプロジェクトに混ざらないか心配している。公式ページの説明に沿うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "すべてのプロジェクトでメモリは共通なので、混ざらないようにするには、顧客ごとに分けず 1 つのプロジェクトにまとめる",
+    "why": "プロジェクトごとにメモリがあり、ある Project で学んだ内容は他の Project に引き継がれない。"
+   },
+   {
+    "id": "b",
+    "text": "Project のメモリは他の Project に引き継がれない。完全に分けたいなら「Use account memory」をオフにする",
+    "why": "公式は、Project のメモリは他の Project に持ち越されず、アカウントのメモリとは共有されること、完全に分離するには「Use account memory」をオフにすることを説明している。"
+   },
+   {
+    "id": "c",
+    "text": "Cowork のプロジェクトではメモリ機能そのものが使えないので、案件間で内容が混ざる心配はそもそもない",
+    "why": "Cowork のプロジェクトではメモリが有効で、同じ Project 内の以前のタスクの文脈を使う。"
+   },
+   {
+    "id": "d",
+    "text": "A の内容は、A のプロジェクトをアーカイブしない限り、B のプロジェクトにも反映され続ける",
+    "why": "メモリが引き継がれるかどうかは、アーカイブとは関係がない。アーカイブはプロジェクトを UI から外す操作である。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "プロジェクトのメモリは、そのプロジェクト内の作業の文脈を覚えるためのものです。他のプロジェクトには引き継がれませんが、アカウントのメモリとは共有されるため、完全に分けるにはオフにする設定が必要です。",
+  "refs": [
+   "https://support.claude.com/en/articles/14116274-organize-your-tasks-with-projects-in-claude-cowork",
+   "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context"
+  ]
+ },
+ {
+  "id": "asc-wf-013",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "市場調査担当に 2 つの依頼がある。(ア)昨日発表された競合 1 社のプレスリリースの日付と要点を確認する。(イ)競合 5 社の価格戦略を、Web と社内の Google ドキュメントをもとに比較する詳細なレポートを作る。公式の使い分けに沿う組み合わせはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "(ア)は Research、(イ)は Web 検索だけで足りる",
+    "why": "Research は 5 回以上のツール呼び出しを要する包括的な調査向けで、1 つの事実確認には過剰である。(イ)に Web 検索だけでは足りない。"
+   },
+   {
+    "id": "b",
+    "text": "(ア)も(イ)も Research を使い、一貫して深い調査に統一する",
+    "why": "(ア)は 1〜2 回のツール呼び出しで済む事実確認で、Web 検索が向く。Research は時間も利用量もかかる。"
+   },
+   {
+    "id": "c",
+    "text": "(ア)も(イ)も拡張思考だけで進め、Web や連携先は使わない",
+    "why": "拡張思考は、Web を使わず Claude にじっくり考えさせたい推論の課題に向く。最新情報の取得には使えない。"
+   },
+   {
+    "id": "d",
+    "text": "(ア)は Web 検索、(イ)は Research",
+    "why": "Web 検索は 1〜2 回のツール呼び出しで答えられる事実確認に、Research は複数の情報源と連携先を横断する包括的な調査に向く。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "公式ページは、Web 検索は単純な事実確認、拡張思考は Web を使わない複雑な推論、Research は 5 回以上のツール呼び出しで多様な情報源から深いレポートを作る調査に向くと整理しています。",
+  "refs": [
+   "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research",
+   "https://support.claude.com/en/articles/11088861-use-research-on-claude"
+  ]
+ },
+ {
+  "id": "asc-wf-014",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "担当者がスマートフォンの Claude アプリで Research を実行したところ、社内の Google ドキュメントの内容が調査に反映されなかった。エラーは表示されなかった。社内ドキュメントも調査に含めたいとき、適切な対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "同じ操作をモバイルでもう一度実行し、「社内ドキュメントも使って」と丁寧に、具体的な文書名も添えて依頼し直す",
+    "why": "モバイルで開始した Research は Web のみを検索し、コネクタは使われない。依頼文の言い方では解消しない。"
+   },
+   {
+    "id": "b",
+    "text": "Web 版か Claude Desktop で Research を開始し、使うコネクタを有効にしておく",
+    "why": "モバイルで始めた Research はコネクタをスキップし、エラーも出ない。コネクタを含めるには Web 版か Desktop で開始する。"
+   },
+   {
+    "id": "c",
+    "text": "Claude Desktop にローカルの MCP サーバーを設定し、Research からそのサーバーを使わせる",
+    "why": "Research は、Claude Desktop に設定したローカル MCP サーバーのツールを使えない。"
+   },
+   {
+    "id": "d",
+    "text": "コネクタが使われなかった場合は必ずエラーが出るので、原因は Google ドキュメント側の権限だと判断する",
+    "why": "モバイルではコネクタがスキップされてもエラーなどの表示は出ない。エラーが出ないことは、コネクタが使われた証拠にならない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Research は Web と、有効にしたコネクタを横断して調べます。モバイルで開始すると Web のみが対象になり、スキップされたことは表示されないため、社内情報が必要な調査は Web か Desktop で始めます。",
+  "refs": [
+   "https://support.claude.com/en/articles/11088861-use-research-on-claude"
+  ]
+ },
+ {
+  "id": "asc-wf-015",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "営業企画チームは、(1)Slack と Notion 上の情報、(2)ある担当者の PC の localhost 上でしか動かない社内ツールを、Claude から扱いたい。公式の使い分けに沿う組み合わせはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "(1)はデスクトップ拡張、(2)はリモートコネクタ",
+    "why": "クラウドのサービスはリモートコネクタが既定の選択で、すべての面で使える。localhost 上のツールはクラウドから届かない。"
+   },
+   {
+    "id": "b",
+    "text": "(1)も(2)もデスクトップ拡張",
+    "why": "Slack や Notion のようなクラウドサービスをデスクトップ拡張にすると、Web やモバイルでは使えなくなる。"
+   },
+   {
+    "id": "c",
+    "text": "(1)はリモートコネクタ、(2)はデスクトップ拡張",
+    "why": "クラウドのサービスにはリモートコネクタ(どの面でも利用可)を、自分の PC 上で動くツールにはデスクトップ拡張を使う。拡張は Claude Desktop と Claude Code で使える。"
+   },
+   {
+    "id": "d",
+    "text": "(1)も(2)もリモートコネクタ",
+    "why": "リモートコネクタは Anthropic のクラウドから接続するため、自分の PC の localhost にしかないツールには届かない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "公式の使い分けでは、Slack や Notion などのクラウドサービスはリモートコネクタ、PC 上のファイルやローカルのツールはデスクトップ拡張です。後者は Claude Desktop と Claude Code でのみ使えます。",
+  "refs": [
+   "https://support.claude.com/en/articles/11725091-when-to-use-desktop-and-web-connectors",
+   "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities"
+  ]
+ },
+ {
+  "id": "asc-wf-016",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの管理者(Owner)が、Gmail コネクタについて、メールの検索と要約は許可しつつ、送信だけは組織全体で防ぎたい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "コネクタの Tool permissions で、書き込み系を Blocked、読み取り系を Always allow にする",
+    "why": "Owner は、コネクタのツールを読み取り系と書き込み・削除系に分けて、Always allow、Needs approval、Blocked から選べる。組織全体に適用され、個人は上書きできない。"
+   },
+   {
+    "id": "b",
+    "text": "Gmail コネクタを無効にし、メールの検索や要約も含めて、各自が手作業で行う運用にする",
+    "why": "無効にすると、許可したい検索と要約もできなくなる。ツールごとに権限を分けられるため、必要以上に制限する必要がない。"
+   },
+   {
+    "id": "c",
+    "text": "各メンバーに、自分のコネクタ設定で送信を Needs approval に変えるよう依頼する",
+    "why": "組織全体の制限は Owner が設定すると全員に適用され、個々のメンバーが上書きできない。各自への依頼では強制力がない。"
+   },
+   {
+    "id": "d",
+    "text": "Gmail 側の権限は変えず、スキルに「メールは送信しない」と書いて運用する",
+    "why": "Claude は元のサービスでのユーザーの権限を引き継ぐため、Gmail 側では送信できる。指示だけに頼らず、コネクタの権限で制限できる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Owner はコネクタのアクションを組織単位で制限できます。ただし、Claude で許可しても元のサービスの権限は広がらず、制限は狭める方向にだけ働きます。",
+  "refs": [
+   "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities"
+  ]
+ },
+ {
+  "id": "asc-wf-017",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "担当者が Google ドキュメントの Claude サイドバーに、14 ページの提案書の書き直しを頼む。クライアントへ提出する前なので、Claude の変更内容を確認しながら進め、問題があれば元に戻せるようにしたい。公式ページの内容に沿うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「Accept all edits」にすれば、リンクの追加や Web 上の画像の挿入も含め、確認なしで編集が進む",
+    "why": "Accept all edits でも、リンクの追加、Web 上の画像の挿入、アクセス権の変更などは承認を求められる。「常に許可」の選択肢もない。"
+   },
+   {
+    "id": "b",
+    "text": "Claude の編集はすべて「提案」として入るため、1 件ずつ承認または却下する運用になる",
+    "why": "Claude の編集は提案ではなく直接の編集として入る。確認したいときは「Ask before edits」を使う。"
+   },
+   {
+    "id": "c",
+    "text": "編集はバージョン履歴に残らないため、作業前にファイルのコピーを保存しておく必要がある",
+    "why": "Claude の編集は、利用者名義の通常の編集として Google のバージョン履歴に残る。"
+   },
+   {
+    "id": "d",
+    "text": "既定の「Ask before edits」では許可を待ち、編集は Undo やバージョン履歴から戻せる",
+    "why": "既定のモードでは、Claude が行うことを説明して Allow を待つ。編集は通常の編集として履歴に残り、Undo や過去の版の復元で戻せる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "Claude for Google Workspace は、既定で「Ask before edits」で動き、編集は通常の編集としてバージョン履歴に記録されます。確認と巻き戻しの手段が用意されているため、提出前の文書にも安全に使えます。",
+  "refs": [
+   "https://support.claude.com/en/articles/16951679-use-claude-in-google-docs-sheets-and-slides"
+  ]
+ },
+ {
+  "id": "asc-wf-018",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Google ドキュメントやスプレッドシートのサイドバーで使う Claude(Claude for Google Workspace)について、できないこととして公式ページが挙げているものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "開いているスプレッドシートで選択したセルの数式が、何をどう計算しているかを説明する",
+    "why": "選択範囲や開いているファイルの内容を読んで質問に答えることは、基本的な使い方である。"
+   },
+   {
+    "id": "b",
+    "text": "ファイルの共有、他の人へのアクセス付与、所有者の変更",
+    "why": "公式は、ファイルの共有、アクセス権の付与、所有者の変更はできず、依頼されても拒否すると説明している。"
+   },
+   {
+    "id": "c",
+    "text": "開いているドキュメントの複数のタブにある内容を読み、その内容を編集する",
+    "why": "Claude はすべてのタブの内容を読み、編集できる。できないのは、タブの作成、名前の変更、並べ替えである。"
+   },
+   {
+    "id": "d",
+    "text": "カスタムメニュー、トリガー、スケジュールされた自動化の作成",
+    "why": "公式は、メニューやスケジュールされた自動化の作成はできないと説明している。"
+   }
+  ],
+  "answer": [
+   "b",
+   "d"
+  ],
+  "explanation": "この拡張機能は、開いているファイルを読んで編集することに特化しています。共有やアクセス権の変更、メニューやトリガーなどの自動化の作成は意図的にできないようになっています。",
+  "refs": [
+   "https://support.claude.com/en/articles/16951679-use-claude-in-google-docs-sheets-and-slides"
+  ]
+ },
+ {
+  "id": "asc-wf-019",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "経営会議用に、売上データの CSV から Excel の分析資料を Claude に作らせることになった。上司に「Claude にできること」と運用の前提を説明する言い方として、公式ページの内容に最も沿うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「作れるのは数式なしの CSV だけなので、集計や書式は人が後から全部手作業で直す」",
+    "why": "Claude は、動く数式を含む Excel、PowerPoint、Word、PDF などのファイルを作成できる。"
+   },
+   {
+    "id": "b",
+    "text": "「1 回の指示で完成品が出るので、内容を確認する工程は不要である」",
+    "why": "公式は、必要に応じて出力を確認し、改善する必要があると述べている。"
+   },
+   {
+    "id": "c",
+    "text": "「具体的に指示すれば数式入りの Excel を作れる。出力は確認し、必要なら修正して使う」",
+    "why": "公式は、作りたいものの構成・内容・書式を具体的に伝えること、出力を確認して調整する必要があることを述べている。"
+   },
+   {
+    "id": "d",
+    "text": "「ネットワーク通信を無効にすれば、MCP の接続を使っていても外部への通信は完全に止まる」",
+    "why": "ネットワーク設定を無効にしても、MCP の連携が有効な場合は、その接続を通じた通信は可能なままである。MCP の設定は別に評価する必要がある。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "ファイル作成は、会話の中でコードを実行して Excel や PowerPoint などを作る機能です。具体的に頼むほど意図に近い成果物になり、出力を確認して調整する工程は残ります。",
+  "refs": [
+   "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude"
+  ]
+ },
+ {
+  "id": "asc-wf-020",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "営業部に新しく配属されたメンバーが、職種向けのスキルとコネクタを 1 つずつ設定せずに、最初の会話からすぐ使える環境を整えたい。最も適した手段はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "営業向けの Project を作り、すべての設定を Project の指示に書き込む",
+    "why": "Project の指示は文脈や口調などを伝えるもので、コネクタの接続や手順のスキルをまとめて用意するものではない。"
+   },
+   {
+    "id": "b",
+    "text": "グローバルな指示に営業の役割を書き、スキルとコネクタは必要になったときに 1 つずつ追加する",
+    "why": "指示は役割や形式を伝えるだけで、スキルやコネクタの設定は含まれない。個別の設定が必要という点も、今回避けたい手間のままである。"
+   },
+   {
+    "id": "c",
+    "text": "営業向けのスキルをすべて自分で作成して ZIP でアップロードし、コネクタも個別に接続する",
+    "why": "1 つずつの作成と設定は、避けたい手間そのものである。ひとまとまりで配られるプラグインの目的に反する。"
+   },
+   {
+    "id": "d",
+    "text": "営業向けのプラグインを追加する",
+    "why": "プラグインは、スキル、コネクタ、サブエージェントを 1 つのパッケージにまとめたもので、最初の会話から使える設定を得られる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "プラグインは、職種・チーム・会社に合わせて Claude を動かすための、スキル・コネクタ・サブエージェントのまとまりです。営業、財務、法務など職種ごとのものが用意されており、追加するだけで設定が整います。",
+  "refs": [
+   "https://support.claude.com/en/articles/13837440-use-plugins-in-claude"
+  ]
+ }
+]

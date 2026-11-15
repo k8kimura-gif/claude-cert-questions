@@ -1,1 +1,672 @@
-[]
+[
+ {
+  "id": "asc-gov-001",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "人事部門の担当者が、会社の Team プランの Claude を使い、応募者の履歴書を評価して「不採用候補」を自動で振り分ける運用を始めようとしている。Usage Policy の高リスク用途の要件に沿う運用はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude の出力をそのまま不採用の判断として通知に使い、応募者には AI を使ったことを伝えず、後から件数だけを人事部長が確認する",
+    "why": "人事の判断を事前に人が実質的に見直す要件も、応募者に AI の利用を伝える要件も満たさない。事後に件数を確認するだけでは見直しにならない。"
+   },
+   {
+    "id": "b",
+    "text": "担当者が Claude の判断理由を読めるようにし、応募者への AI 利用の開示は、応募者から問い合わせがあった場合にだけ行う",
+    "why": "開示は問い合わせを待つものではない。判断の対象となる個人に、AI が使われたことを明確に伝える必要がある。"
+   },
+   {
+    "id": "c",
+    "text": "資格のある担当者が結果を見直して変更できる状態にし、応募者に AI を使ったことを明確に伝える",
+    "why": "採用の可否を決める用途は高リスク領域(Employment)に当たり、権限を持つ人による見直しと AI 利用の開示が要件になる。"
+   },
+   {
+    "id": "d",
+    "text": "同じ履歴書を Claude に 2 回評価させ、結果が一致した場合だけ不採用とし、人による確認は省略する",
+    "why": "Claude 同士で結果を照合しても、人が見直すことの代わりにはならない。資格のある人が変更権限を持って確認する必要がある。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "求職者の選考、順位付け、採用、不採用は、Usage Policy が高リスク領域(Employment)として挙げる用途です。この種の推奨や判断には、資格や経験のある人が、変更する権限を持って事前に実質的に見直すことと、影響を受ける個人に AI が使われたことを明確に伝えることが求められます。開示では Anthropic や Claude の名前を出す必要はありません。",
+  "refs": [
+   "https://www.anthropic.com/legal/aup"
+  ]
+ },
+ {
+  "id": "asc-gov-002",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "営業部の担当者が、見込み顧客のリストから特定の宗教の人を外すスコアリング基準を Claude に作らせようとしている。Usage Policy に照らして最も適切な理解はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "宗教などの保護された属性に基づく差別的な取り扱いは禁止されており、この依頼は避けるべきである",
+    "why": "Usage Policy は、保護された属性(宗教を含む)に基づく差別的な慣行や行動を行うこと、促進することを禁止している。"
+   },
+   {
+    "id": "b",
+    "text": "最終的な顧客への連絡を人が行うなら、スコアリング自体は Claude に任せてもよい",
+    "why": "差別的な取り扱いの禁止は、最後に人が実行するかどうかで変わらない。基準そのものが禁止の対象になる。"
+   },
+   {
+    "id": "c",
+    "text": "高リスク用途の要件である人による確認と AI 利用の開示を満たせば、このような基準も利用してよい",
+    "why": "人による確認と開示は高リスク領域の要件である。差別的な慣行の禁止は別の位置づけで、要件を満たせば許される種類のものではない。"
+   },
+   {
+    "id": "d",
+    "text": "社内の営業活動に使うだけで、個人に直接の不利益を与える判断ではないので、Usage Policy の対象外である",
+    "why": "Usage Policy は Claude を使うすべての人に適用される。社内利用という理由で対象から外れることはない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Usage Policy は、人種、民族、宗教、国籍、性別、性的指向、カースト、障害といった保護された属性に基づく差別的な慣行を行うことや促進することを、禁止事項に挙げています。Claude に差別的な基準を作らせる依頼は、この禁止に当たります。",
+  "refs": [
+   "https://www.anthropic.com/legal/aup"
+  ]
+ },
+ {
+  "id": "asc-gov-003",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "次のうち、Usage Policy が高リスク領域(High-risk Areas)として挙げている用途に当たるものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "海外向け製品マニュアルの英訳の下訳を作らせる",
+    "why": "製品マニュアルの翻訳は、高リスク領域の一覧に挙がっていない。"
+   },
+   {
+    "id": "b",
+    "text": "賃貸住宅の入居申込を承認するか却下するかを Claude の評価で決める",
+    "why": "入居・購入の申込の承認、却下、順位付けは Housing として高リスク領域に挙がっている。"
+   },
+   {
+    "id": "c",
+    "text": "社内イベントの案内文の案をいくつか作らせる",
+    "why": "案内文の作成は、個人の権利や生活に影響する判断ではなく、高リスク領域には挙がっていない。"
+   },
+   {
+    "id": "d",
+    "text": "顧客個人に特定の投資信託を買うよう勧める提案を Claude に作らせて、そのまま送る",
+    "why": "特定の金融商品の売買や配分についての個別の推奨は Finance として高リスク領域に挙がっている。"
+   }
+  ],
+  "answer": [
+   "b",
+   "d"
+  ],
+  "explanation": "Usage Policy は、法律、医療、金融、与信、保険、住宅、雇用、教育、医療へのアクセス、公的給付、法的地位の判断に関する推奨を高リスク領域としています。文章の翻訳や案内文の下書きのように個人の権利や生活に直接影響しない用途は、この一覧に入っていません。",
+  "refs": [
+   "https://www.anthropic.com/legal/aup"
+  ]
+ },
+ {
+  "id": "asc-gov-004",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Pro プランの個人アカウントで、プライバシー設定のモデル改善(Model Improvement)を許可している。ある会話だけは、チャット履歴にもメモリにも残さず、モデル改善の設定にかかわらず改善に使われないようにしたい。どうすればよいか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "新しいチャットを開始する前に「+」メニューで Memory をオフにしてから会話する",
+    "why": "Memory をオフにしても、チャットは履歴に残り、他のチャットの検索からも見つかる。履歴に残さない要件を満たさない。"
+   },
+   {
+    "id": "b",
+    "text": "プロジェクトの中でチャットを始め、プロジェクトの指示に、学習には使わないでほしいと書いておく",
+    "why": "プロジェクト内では Incognito が使えない。また、指示文に書いても、モデル改善の扱いは変わらない。"
+   },
+   {
+    "id": "c",
+    "text": "通常のチャットで会話してから、後でモデル改善の設定をオフに切り替えて、この会話を改善の対象から外す",
+    "why": "設定を切り替えても、チャットは履歴に残る。設定の変更は他のチャットすべてにも及び、この 1 回だけの対応にもならない。"
+   },
+   {
+    "id": "d",
+    "text": "プロジェクト外で新しいチャットを始め、ゴーストアイコンで Incognito chat を有効にする",
+    "why": "Incognito chat は履歴とメモリに保存されず、モデル改善を許可していても改善には使われない。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "Incognito chat は一時的な会話で、チャット履歴にもメモリにも保存されません。Privacy Center も、モデル改善を許可していても Incognito chat は Claude の改善に使われないと説明しています。開始できるのはプロジェクトの外のチャットで、始めた後に通常のチャットへ変換することはできません。",
+  "refs": [
+   "https://support.claude.com/en/articles/12260368-use-incognito-chats",
+   "https://privacy.claude.com/en/articles/10023580-is-my-data-used-for-model-training"
+  ]
+ },
+ {
+  "id": "asc-gov-005",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Team プランの社員が Incognito chat を使うことについて、ヘルプセンターの説明に合うものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "チャット履歴には残らないが、組織のオーナーが取得できる組織のデータエクスポートには含まれる",
+    "why": "Team と Enterprise では、Incognito chat は Owner が利用できる組織のデータエクスポートに含まれる。"
+   },
+   {
+    "id": "b",
+    "text": "チャットを閉じた時点で、Anthropic 側の保存場所からも即時に削除される",
+    "why": "履歴に残らないことと、保存が行われないことは別である。安全のために 30 日間保持される。"
+   },
+   {
+    "id": "c",
+    "text": "履歴には残らないが、安全のために 30 日間(既定)、または組織のデータ保持設定に従ってそれより長く保持される",
+    "why": "Incognito chat は 30 日間(既定)、またはデータ保持設定に従ってそれより長く保持されると説明されている。"
+   },
+   {
+    "id": "d",
+    "text": "Incognito chat は、Enterprise プランの Compliance API の対象にならない",
+    "why": "Enterprise プランの Compliance API には Incognito chat が含まれる。"
+   }
+  ],
+  "answer": [
+   "a",
+   "c"
+  ],
+  "explanation": "Incognito chat は、チャット履歴とメモリに保存されず、学習にも使われません。ただし Team と Enterprise では、安全のために 30 日間(既定)、または組織のデータ保持設定に従ってそれより長く保持されます。組織のデータエクスポートや、Enterprise の Compliance API にも含まれます。",
+  "refs": [
+   "https://support.claude.com/en/articles/12260368-use-incognito-chats"
+  ]
+ },
+ {
+  "id": "asc-gov-006",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Pro プランの個人アカウントで、モデル改善の設定を許可していない。それでも会話が Anthropic に利用・分析されうるのは、次のどの場合か(Trusted Tester Program などの明示的な参加はないものとする)。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "会話に PDF などのファイルを添付し、その内容について質問した場合",
+    "why": "ファイルの添付は、会話が利用されうる条件として挙げられていない。"
+   },
+   {
+    "id": "b",
+    "text": "会話が安全性の審査のためにフラグを付けられた場合",
+    "why": "安全性の審査でフラグが付いた会話は、Usage Policy の検知や執行の能力を高めるために利用・分析されうる。"
+   },
+   {
+    "id": "c",
+    "text": "会話が 1 か月以上にわたって続き、非常に長くなった場合",
+    "why": "会話の長さや期間は条件に挙げられていない。"
+   },
+   {
+    "id": "d",
+    "text": "会話の中で Web 検索のツールを何度も使った場合",
+    "why": "Web 検索の利用は条件に挙げられていない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Privacy Center によると、個人向けプランで会話が利用されるのは、(1)改善への利用を許可した場合、(2)安全性の審査でフラグが付いた場合(検知と執行の能力の向上のため)、(3)Trusted Tester Program のように明示的に参加した場合です。モデル改善の設定をオフにしていても、(2)は残ります。",
+  "refs": [
+   "https://privacy.claude.com/en/articles/10023580-is-my-data-used-for-model-training"
+  ]
+ },
+ {
+  "id": "asc-gov-007",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの Owner が、メンバーが回答の評価ボタン(👍/👎)を押すと、その会話全体が Anthropic に送られることを懸念している。組織としてこの送信を防ぐには、どうすればよいか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Team プランは既定で入出力が学習に使われるため、Enterprise プランに移行して評価ボタンを無効にする",
+    "why": "Team と Enterprise などの商用製品は、既定では入出力を学習に使わない。プラン移行も必要ない。"
+   },
+   {
+    "id": "b",
+    "text": "メンバーに、評価ボタンを押した後は、そのチャットを自分で削除して履歴から消すよう周知する",
+    "why": "削除はこの目的の手段として示されていない。フィードバックとして送られた会話は、別に保管される。"
+   },
+   {
+    "id": "c",
+    "text": "Primary Owner か Owner が、Rate chats の設定でフィードバックの送信を無効にする",
+    "why": "Primary Owner または Owner は、Rate chats の設定で、メンバーによる評価ボタンからのフィードバック送信を無効にできる。"
+   },
+   {
+    "id": "d",
+    "text": "すべてのメンバーに、通常のチャットではなく Incognito chat だけを使うことを必須にする",
+    "why": "Incognito chat の使用を組織として必須にする方法は示されていない。また、評価ボタンの送信を防ぐ手段としても挙げられていない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "商用製品(Claude for Work など)の入出力は、既定ではモデルの学習に使われません。ただし、評価ボタンでフィードバックを送ると、関連する会話全体が最大 5 年間保存され、学習に使われうることがあります。Primary Owner または Owner は、組織設定の Data and Privacy にある Rate chats で、この送信を無効にできます。",
+  "refs": [
+   "https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training"
+  ]
+ },
+ {
+  "id": "asc-gov-008",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Free プランの個人アカウント(モデル改善は許可していない。利用規約違反の検知も受けていない)で、不要になったチャットを削除した。法的な保持義務などの例外を除くと、Privacy Center の説明に合うのはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "履歴からは直ちに消え、バックエンドの保存場所からも 30 日以内に削除される",
+    "why": "削除したチャットは、履歴から即時に消え、バックエンドの保存場所からは 30 日以内に削除されると説明されている。"
+   },
+   {
+    "id": "b",
+    "text": "履歴からは消えるが、非識別化された形で最長 5 年間、学習用のパイプラインに保持される",
+    "why": "最長 5 年の保持は、改善への利用を許可した場合の、新規または再開したチャットに対する説明である。この例では許可していない。"
+   },
+   {
+    "id": "c",
+    "text": "履歴からは消えるが、入出力は最長 2 年間バックエンドに保持される",
+    "why": "最長 2 年の保持は、自動の安全性の検知で Usage Policy 違反とされた場合の説明である。"
+   },
+   {
+    "id": "d",
+    "text": "履歴にもバックエンドにも直ちに削除され、確認のための保持期間はない",
+    "why": "バックエンドからの削除は、直ちにではなく 30 日以内と説明されている。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "個人向けプランでは、削除したチャットは履歴から即時に消え、バックエンドの保存場所から 30 日以内に削除されます。最長 5 年(改善に利用を許可した場合)や最長 2 年(Usage Policy 違反としてフラグが付いた場合)は、別の条件での保持期間です。",
+  "refs": [
+   "https://privacy.claude.com/en/articles/10023548-how-long-do-you-store-my-data"
+  ]
+ },
+ {
+  "id": "asc-gov-009",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Enterprise プランの Owner が、チャットの保持期間を 30 日に設定した。ところが 6 か月前に作成したプロジェクト内のチャットが残っている。プロジェクトの保持期間は設定していない。理由として正しいのはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "保持期間の設定は、設定後に作成されたチャットだけに適用され、以前のチャットは対象にならない",
+    "why": "保持期間を短くすると、新しい期間の外に出たデータは、保存した時点で削除が予定される。設定後のデータだけが対象になるわけではない。"
+   },
+   {
+    "id": "b",
+    "text": "保持期間の最小値は 90 日であり、30 日の設定は反映されない",
+    "why": "最小の保持期間は 30 日であり、30 日の設定はできる。"
+   },
+   {
+    "id": "c",
+    "text": "チャットの保持期間は、チャットの作成日から数えるので、6 か月前のチャットも別の起算になっている",
+    "why": "保持期間は、作成日ではなく最後の操作(チャットを開く操作を含む)から数える。"
+   },
+   {
+    "id": "d",
+    "text": "プロジェクト内のチャットにはプロジェクトの保持期間が優先され、未設定なら無期限に保持される",
+    "why": "プロジェクトの保持期間はチャットより優先される。設定がなければ、プロジェクトは既定で無期限に保持され、中のチャットも削除されない。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "Enterprise の保持期間は最後の操作から数え、最小は 30 日です。ただしプロジェクト内のチャットには、プロジェクトの保持期間が優先されます。プロジェクトの保持期間を設定していなければ、既定でプロジェクトは無期限に保持されるため、チャットの保持期間では削除されません。",
+  "refs": [
+   "https://support.claude.com/en/articles/10440198-configure-custom-data-retention-controls-for-enterprise-plans"
+  ]
+ },
+ {
+  "id": "asc-gov-010",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "病院グループの Enterprise 組織で、Admin ロールの担当者が、保護対象の医療情報(PHI)を Claude で扱うために HIPAA を有効にしたい。正しい進め方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Admin が組織設定の Data and privacy から BAA に承諾して有効にする",
+    "why": "BAA の承諾と HIPAA の有効化は、Primary Owner だけが完了できる。Admin にはできない。"
+   },
+   {
+    "id": "b",
+    "text": "Primary Owner に依頼し、Primary Owner が BAA を確認して有効にする",
+    "why": "Primary Owner だけが BAA に承諾して HIPAA を有効にできる。Enterprise プランの組織が対象である。"
+   },
+   {
+    "id": "c",
+    "text": "別の Owner ロールのメンバーが、Primary Owner の代わりに BAA に承諾して有効にする",
+    "why": "Primary Owner 以外の Owner や Admin は、組織の代わりにこの手順を完了できない。"
+   },
+   {
+    "id": "d",
+    "text": "組織を Team プランに切り替えたうえで、組織設定から HIPAA を有効にする",
+    "why": "Team プランと個人向けプランでは HIPAA を有効にできない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "HIPAA 対応の提供は Enterprise プラン向けです。組織設定で有効にする手順では、Primary Owner が BAA とインプリメンテーションガイドを確認し、「Accept and enable HIPAA」で承諾します。他の Owner や Admin は代わりに完了できません。また、有効にすると元に戻せません。",
+  "refs": [
+   "https://support.claude.com/en/articles/13296973-hipaa-ready-enterprise-plans"
+  ]
+ },
+ {
+  "id": "asc-gov-011",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "HIPAA を有効にして BAA を承諾した Enterprise 組織の社員が、PHI を含むファイルを Claude Cowork で処理したいと考えている。ヘルプセンターの説明に合う判断はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "HIPAA を有効にした時点で、Claude のすべての機能が BAA の対象になるので、そのまま処理してよい",
+    "why": "HIPAA を有効にしても、すべての機能が BAA の対象になるわけではない。対象、利用できるが対象外、無効の 3 区分がある。"
+   },
+   {
+    "id": "b",
+    "text": "Cowork には HIPAA の構成を適用する方法が一切ないので、PHI は常に扱えない",
+    "why": "Primary Owner が Cowork(ローカルモード)に HIPAA の構成を適用すると、BAA の対象にできる。"
+   },
+   {
+    "id": "c",
+    "text": "Primary Owner が構成を適用するまで Cowork は対象外なので、PHI を扱わない",
+    "why": "HIPAA の有効化だけでは Cowork は BAA の対象にならない。構成を適用する前は、利用できても対象外である。"
+   },
+   {
+    "id": "d",
+    "text": "Claude Code を使っていれば、設定にかかわらず Cowork も同じ範囲で BAA の対象になる",
+    "why": "Claude Code と Cowork は別に扱われ、どちらも HIPAA の構成を適用する必要がある。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "HIPAA の有効化だけでは、Claude Code と Cowork は BAA の対象になりません。Primary Owner がそれぞれのローカルモードに HIPAA の構成を適用する必要があります。その前の Cowork は利用できても BAA の対象外なので、PHI は扱いません。",
+  "refs": [
+   "https://support.claude.com/en/articles/13296973-hipaa-ready-enterprise-plans"
+  ]
+ },
+ {
+  "id": "asc-gov-012",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Pro プランのユーザーが、あるチャットの共有リンクを作成した。その後、同じチャットで会話を続けた。リンクを知っている人が見られるものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "共有した時点のスナップショットで、その後のメッセージは非公開のままである",
+    "why": "共有されるのはスナップショットで、共有後のメッセージは非公開のままである。共有を解除して再び共有すると、スナップショットが更新される。"
+   },
+   {
+    "id": "b",
+    "text": "共有後に続けた会話も含め、チャットの最新の内容がリアルタイムに同期されて表示される",
+    "why": "リンクで見られるのはスナップショットで、リアルタイムには更新されない。"
+   },
+   {
+    "id": "c",
+    "text": "共有した時点までのメッセージに加え、チャットに添付したファイルそのものも開ける",
+    "why": "添付ファイルそのものはスナップショットに含まれず、非公開のままである。"
+   },
+   {
+    "id": "d",
+    "text": "共有した時点までのメッセージと、MCP 連携から取得した生のツール結果も表示される",
+    "why": "MCP のツール呼び出しで取得した生のデータは、共有されたスナップショットでは非表示になる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "共有リンクは、共有した時点のスナップショットで、アーティファクトを含むそれまでのメッセージが見られます。その後のメッセージは非公開のままで、共有を解除して再度共有すると更新されます。添付ファイルそのものと MCP の生データは含まれません。なお Team と Enterprise では、チャットは同じ組織のメンバーとだけ共有できます。",
+  "refs": [
+   "https://support.claude.com/en/articles/10593882-share-and-unshare-chats"
+  ]
+ },
+ {
+  "id": "asc-gov-013",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランを使い始めた社員が、「会社のプランで自分が Claude と行った会話は、会社の管理者にも見られないはずだ」と考えている。ヘルプセンターの説明に合うのはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Team プランの会話は、組織のオーナーを含めて、本人以外の誰も取得できない",
+    "why": "Primary Owner は、データエクスポートを通じて会話を含むユーザーデータを取得できる。誰も取得できないという説明ではない。"
+   },
+   {
+    "id": "b",
+    "text": "Primary Owner が会話を取得するには、そのたびに Anthropic のサポートに依頼する必要がある",
+    "why": "Primary Owner が、データエクスポートで取得を要求できると説明されている。サポートへの依頼が必要という説明はない。"
+   },
+   {
+    "id": "c",
+    "text": "個人向けプランの利用規約とプライバシーポリシーが適用されるので、会話は本人のものとして扱われる",
+    "why": "Team プランには、個人向けの利用規約とプライバシーポリシーは適用されない。Anthropic と組織の契約に従う。"
+   },
+   {
+    "id": "d",
+    "text": "Primary Owner がアカウントとデータを管理し、データエクスポートで会話などを取得できる",
+    "why": "Primary Owner は Work アカウントと関連データを管理でき、データエクスポートで会話などを取得できる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "Team と Enterprise プランでは、組織の Primary Owner が Work アカウントと関連データを管理します。データエクスポートの要求では、会話、アップロードしたファイル、利用状況が含まれることがあります。適用されるのは、Anthropic と組織の間の契約で、組織は独自の利用ポリシーを定めることもできます。",
+  "refs": [
+   "https://support.claude.com/en/articles/9265372-who-owns-and-manages-the-data-of-my-team"
+  ]
+ },
+ {
+  "id": "asc-gov-014",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "自社の問い合わせ窓口に、Claude を使った顧客向けのチャットボットを置くことになった。Usage Policy の追加ガイドラインに合う設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "セッションの冒頭か画面上で AI であることを開示する。Anthropic や Claude の名前を出す必要はない",
+    "why": "顧客に直接応答する AI には、少なくともセッションの冒頭か画面上で、AI であることの開示が求められる。モデル名の開示は必要ない。"
+   },
+   {
+    "id": "b",
+    "text": "利用者が人間かどうかを尋ねたときにだけ、AI であることを答えるようにする",
+    "why": "開示は、尋ねられたときではなく、少なくともセッションの冒頭か画面上で行う必要がある。"
+   },
+   {
+    "id": "c",
+    "text": "オペレーターの氏名と写真を表示して、人間の担当者と区別がつかないようにする",
+    "why": "AI を人間と思わせることは、Usage Policy の欺瞞の禁止にも反する。"
+   },
+   {
+    "id": "d",
+    "text": "「Powered by Claude」と製品名を明示すれば足り、AI であることの説明は不要である",
+    "why": "開示が必要なのは AI と会話していることである。Anthropic や Claude の名前を出すことは求められていないし、それだけで代わりにはならない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Usage Policy は、外部の利用者と直接やり取りする消費者向けのチャットボットや AI エージェントに、AI と会話していることの開示を求めます。少なくともセッションの冒頭か製品の画面上で行い、Anthropic、Claude、モデル名を示す必要はありません。",
+  "refs": [
+   "https://www.anthropic.com/legal/aup"
+  ]
+ },
+ {
+  "id": "asc-gov-015",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Enterprise 組織の Owner が、従業員が会社のメールアドレスで使っている Gmail や Slack を、個人の Claude アカウントからコネクタとして接続することを防ぎたい。ただし、従業員の個人アカウントは閉じたくない。適した設定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "組織設定の Capabilities で Web 検索をオフにして、Claude が外部の情報にアクセスできないようにする",
+    "why": "Web 検索のオフは、コネクタの接続元を制限する設定ではない。"
+   },
+   {
+    "id": "b",
+    "text": "会社のドメインを claim して、ドメイン上の既存の個人アカウントを組織に移行させる",
+    "why": "ドメインの claim は、ドメイン上の既存の個人アカウントを閉じる仕組みである。この例では閉じたくない。"
+   },
+   {
+    "id": "c",
+    "text": "Restrict verified-domain connectors to your enterprise をオンにし、検証済みドメインでの接続を組織内に限る",
+    "why": "この設定で、検証済みドメインのメールアドレスでの接続は組織内の Claude アカウントに限られ、個人アカウントはそのまま残る。"
+   },
+   {
+    "id": "d",
+    "text": "すべてのコネクタを Owner が個別に切断し、以後は従業員が接続できないようにする",
+    "why": "コネクタごとの切断では、今後の接続を防げない。この設定は、既存の接続を切断するものでもない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Restrict verified-domain connectors to your enterprise をオンにすると、対応するコネクタ(Gmail、Slack など)を、検証済みドメインのメールアドレスで接続できるのは、組織内の Claude アカウントだけになります。個人アカウントは閉じず、既存の接続もそのまま残ります。また、データ損失防止(DLP)の代わりにはなりません。この設定を使うには検証済みドメインが必要です。",
+  "refs": [
+   "https://support.claude.com/en/articles/15402193-restrict-verified-domain-connectors-to-your-enterprise"
+  ]
+ },
+ {
+  "id": "asc-gov-016",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Claude Cowork のヘルプは、プロンプトインジェクション攻撃が成功するために、同時に成り立つ必要がある条件を説明している。それに当たるものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude が、ユーザーが安全とみなす範囲(信頼境界)の外にある情報を読める",
+    "why": "信頼境界の外の情報を読めることは、悪意ある指示が Claude に届く経路として条件に挙げられている。"
+   },
+   {
+    "id": "b",
+    "text": "Cowork のセッションが、ユーザーのコンピューターではなく Anthropic のクラウド上で実行されている",
+    "why": "クラウドの隔離は、コードの実行場所を分けるもので、攻撃が成立する条件ではない。"
+   },
+   {
+    "id": "c",
+    "text": "ユーザーの Claude プランが Pro 以上の有料プランである",
+    "why": "プランの種類は条件に挙げられていない。"
+   },
+   {
+    "id": "d",
+    "text": "Claude が、ユーザーに不利益を及ぼしうる操作を実行できる",
+    "why": "読むだけでなく、操作を実行できることが、もう 1 つの条件として挙げられている。"
+   }
+  ],
+  "answer": [
+   "a",
+   "d"
+  ],
+  "explanation": "プロンプトインジェクションは、外部のコンテンツに埋め込まれた悪意ある指示で Claude を乗っ取る攻撃です。成立するには、Claude が信頼境界の外の情報を読めることと、ユーザーを害しうる操作を実行できることが同時に必要です。どちらか一方が欠ければ難しくなるため、読めるものと許可する操作を絞ります。",
+  "refs": [
+   "https://support.claude.com/en/articles/13364135-use-claude-cowork-safely"
+  ]
+ },
+ {
+  "id": "asc-gov-017",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "経理担当者が、初めて使うプラグインを入れた Claude Cowork に、ログイン済みの取引先ポータルで請求関連の操作とメール送信を任せようとしている。承認モードの選び方として、ヘルプセンターの説明に合うのはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Skip all approvals にして完了を待つ。永久削除は常に確認されるので、他の操作は確認不要である",
+    "why": "永久削除の確認は常にあるが、それだけでは足りない。Skip all approvals では、操作を確認する仕組みがない。"
+   },
+   {
+    "id": "b",
+    "text": "Manually approve に切り替えて、タスクの動きを見守る",
+    "why": "機密のアカウントや初めて使うツール、送信など取り消しにくい操作がある場合は、Manually approve に切り替える。"
+   },
+   {
+    "id": "c",
+    "text": "Automatically approve にしておく。Claude が各操作を審査するので、機密の操作でも人の承認は不要である",
+    "why": "Automatically approve でも、悪意あるコンテンツを読めば操作が実行されうる。機密や取り消しにくい操作では、Manually approve に切り替える。"
+   },
+   {
+    "id": "d",
+    "text": "どの承認モードでも同じなので、タスクを細かく監視せず、結果だけを後から確認する",
+    "why": "承認モードは、重大な結果を伴う操作ほど手動承認に寄せる。結果だけを後から確認するのでは取り消しにくい操作に遅れる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Cowork は承認なしでタスクを進められますが、悪意あるコンテンツを読めば、気づく前に指示どおりに動く可能性があります。タスクが機密のファイルやアカウント、サイトに触れる場合、初めて使うツールやプラグインの場合、メール送信や購入のような取り消しにくい場合は、Manually approve に切り替えます。操作の責任は利用者本人にあります。",
+  "refs": [
+   "https://support.claude.com/en/articles/13364135-use-claude-cowork-safely"
+  ]
+ },
+ {
+  "id": "asc-gov-018",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Enterprise 組織の Owner が、Claude が操作できる Web サイトを制限したい。対象は、Claude in Chrome 拡張機能と、Cowork の内蔵ブラウザの両方である。ヘルプセンターの説明に合う設定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude in Chrome の拡張機能を組織で無効にすれば、Cowork の内蔵ブラウザも同時に使えなくなる",
+    "why": "Claude in Chrome は別に管理されており、内蔵ブラウザは Cowork の設定でオンオフを切り替える。"
+   },
+   {
+    "id": "b",
+    "text": "Claude in Chrome の組織設定で許可・ブロックリストを作る。内蔵ブラウザにも同じリストが適用される",
+    "why": "Claude in Chrome の設定で作る許可リストとブロックリストは、拡張機能と内蔵ブラウザの両方に適用される。"
+   },
+   {
+    "id": "c",
+    "text": "内蔵ブラウザ用には Cowork の組織設定で別のサイトリストを作成し、2 つのリストを別々に管理する",
+    "why": "リストは 1 つで、内蔵ブラウザ用に別のリストを管理する必要はない。"
+   },
+   {
+    "id": "d",
+    "text": "各ユーザーが自分のブラウザの設定で、Claude が操作してよいサイトを決めさせる",
+    "why": "サイトのアクセスの制御は、組織の Owner が組織設定で行う。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Claude in Chrome の組織設定にある許可リストとブロックリストは、Claude in Chrome と Cowork の内蔵ブラウザの両方に適用されます。ヘルプは、最初は制限の強い許可リストから始め、挙動に慣れてから広げることを勧めています。",
+  "refs": [
+   "https://support.claude.com/en/articles/13065128-claude-in-chrome-admin-controls"
+  ]
+ }
+]

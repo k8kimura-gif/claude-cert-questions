@@ -1,1 +1,970 @@
-[]
+[
+ {
+  "id": "asc-eval-001",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "法務担当者が Claude に先行判例を尋ねたところ、事件名と判決文の一節が権威ある文体で示された。この内容を書面に使う前の対応として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "事件名と引用が具体的に付いているので、根拠が示された回答として信頼してよい",
+    "why": "具体的で説得力があることは、正確さの裏付けにならない。"
+   },
+   {
+    "id": "b",
+    "text": "判例データベースなどの原典で、その判例と引用された一節が実在し、内容が一致するかを確認する",
+    "why": "Claude は、権威的に見えても事実に基づかない引用を表示することがある。原典との照合が必要である。"
+   },
+   {
+    "id": "c",
+    "text": "同じ質問を Claude にもう一度送り、同じ判例が返ってきたら正しいとみなす",
+    "why": "繰り返し同じ内容が返っても、それが実在することの確認にはならない。原典の確認が要る。"
+   },
+   {
+    "id": "d",
+    "text": "回答の末尾に免責の一文を付けておけば、確認しないまま提出してよい",
+    "why": "免責の文言を付けても、誤った引用が書面に残る問題は解消しない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "ヘルプセンターは、Claude が権威的に見えて説得力があるが事実に基づかない引用を表示することがあると説明しています。影響の大きい内容は、原典に当たって確かめます。",
+  "refs": [
+   "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on"
+  ]
+ },
+ {
+  "id": "asc-eval-002",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "財務担当者が、Claude から得た税務上の助言を、そのまま社内の方針として通そうとしている。Anthropic のヘルプセンターの記述に沿った扱いはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "最新のモデルを使っているので、税務のような専門的な助言でも一次回答をそのまま採用してよい",
+    "why": "モデルが新しくても、誤った回答の可能性は残る。"
+   },
+   {
+    "id": "b",
+    "text": "専門的な助言が絡む場面では、Claude の利用そのものを避けるべきである",
+    "why": "ヘルプセンターは利用を禁じているのではなく、唯一の情報源にせず精査するよう述べている。"
+   },
+   {
+    "id": "c",
+    "text": "誤りがあれば Claude が自動で警告を表示するので、警告がなければ確認は不要である",
+    "why": "誤りを自動で警告する仕組みは説明されておらず、警告がないことは正確さの保証にならない。"
+   },
+   {
+    "id": "d",
+    "text": "Claude を唯一の情報源とせず、影響の大きい助言は慎重に精査してから採用する",
+    "why": "ヘルプセンターは、Claude を単一の真実の源として頼らず、重大な助言は注意深く検討するよう求めている。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "Claude は、もっともらしいが誤った回答を返すことがあります。そのため、単独の情報源にせず、影響の大きい助言は精査することが求められます。",
+  "refs": [
+   "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on"
+  ]
+ },
+ {
+  "id": "asc-eval-003",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "営業担当者が、Claude に顧客への御礼メールの送信を頼んだところ「送信しました」と返答があった。メール連携は設定しておらず、顧客からは届いていないと連絡があった。この状況の説明として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "メール連携がなければ Claude は送信できない。「送信した」は能力についての幻覚で、実際には送られていない",
+    "why": "Claude は明示的に連携されていないメールやワープロ、ファイル転送のツールを利用できない。"
+   },
+   {
+    "id": "b",
+    "text": "送信は成功しており、顧客側のメールサーバーの迷惑メール判定で、受信箱ではなく別のフォルダに振り分けられている可能性が高い",
+    "why": "そもそも送信の手段がなく、送られていない。"
+   },
+   {
+    "id": "c",
+    "text": "Claude は標準でメールを送れるが、送信の時点で通信の不具合があり、顧客のメールサーバーに届かなかっただけである",
+    "why": "標準でメールを送る機能はなく、障害の問題ではない。"
+   },
+   {
+    "id": "d",
+    "text": "返答が遅れているだけで、Claude がバックグラウンドで処理を続けており、しばらく待てば自動的に送信される",
+    "why": "送信の手段がないので、待っても送られない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ヘルプセンターによると、Claude は連携されていないツール(メール、ワープロ、ファイル転送など)にはアクセスできないのに、アクセスできるかのように答える(幻覚を起こす)ことがあります。実際に送られたかは、送信側と受信側で確認します。",
+  "refs": [
+   "https://support.claude.com/en/articles/8241188-claude-is-producing-links-that-don-t-work-and-falsely-claiming-that-it-has-sent-emails-or-produced-external-documents-what-s-going-on"
+  ]
+ },
+ {
+  "id": "asc-eval-004",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "総務担当者が Claude Haiku 4.5 に、2026 年に公表された新しい制度の内容を尋ねたところ、曖昧で不正確な回答が返ってきた。原因と対処として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "質問が短く条件が少なかったのが原因で、背景や条件を長く書き足せば、モデルは新しい制度の内容も正確に答えられるようになる。質問が詳しいほど、学習データにない情報も補える",
+    "why": "質問の長さでは、学習データにない情報は補えない。"
+   },
+   {
+    "id": "b",
+    "text": "新しい制度の情報は学習データに必ず含まれているので、チャットを開き直してもう一度尋ねれば正確な回答が得られる",
+    "why": "学習データの期限より後の出来事は、含まれていないことがある。"
+   },
+   {
+    "id": "c",
+    "text": "各モデルには学習データの期限があり、それ以降の出来事は不正確になりうる。最新の情報が要るなら web search を使うか一次情報で確認する",
+    "why": "Claude Haiku 4.5 の学習データは 2025 年 7 月までで、それ以降の情報は正確とは限らない。web search は最新の情報で回答を補う機能である。"
+   },
+   {
+    "id": "d",
+    "text": "Claude は常にインターネット上の最新情報を参照して答えるので、不正確になった原因は利用者の質問の書き方にある。モデルの種類による違いはない",
+    "why": "web search を使っていない回答は、学習データに基づく。常に最新情報を参照するわけではない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "ヘルプセンターは、各モデルに知識カットオフがあり、それ以降の出来事については正確な情報を持たない場合があると説明しています。最新の情報が必要なときは、web search で補い、出典を確認します。",
+  "refs": [
+   "https://support.claude.com/en/articles/8114494-how-up-to-date-is-claude-s-training-data",
+   "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+  ]
+ },
+ {
+  "id": "asc-eval-005",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "マーケティング担当者が、web search を使った Claude の回答を、そのまま提案資料に載せようとしている。ヘルプセンターに沿った確認の方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "引用元を開き、Claude の要約に含まれていない文脈や詳細がないか、情報源そのものの質も含めて確認する",
+    "why": "元のサイトには、要約に含まれない重要な文脈が書かれていることがある。回答の質は、参照した情報源の質にも左右される。"
+   },
+   {
+    "id": "b",
+    "text": "web search の回答には必ず引用が付くので、引用が付いている以上、元のサイトの内容を改めて確認する必要はない",
+    "why": "引用は確認を容易にするためのもので、確認の代わりにはならない。"
+   },
+   {
+    "id": "c",
+    "text": "引用元のサイトの更新日だけを確認すれば、要約が元の内容を正しく伝えているかどうかは Claude を信頼してよい",
+    "why": "更新日が新しくても、要約が元の内容を正確に伝えているかは別の問題である。"
+   },
+   {
+    "id": "d",
+    "text": "引用元が複数あれば、個々の情報源の質は考えなくても、全体として信頼できる回答になっているとみなしてよい",
+    "why": "回答の質は参照した情報源の質に左右されるため、情報源ごとの確認が必要である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ヘルプセンターは、web search の結果を使うときは引用された情報源を確認するよう勧めています。元のサイトには、Claude の要約に含まれない文脈や詳細があり、情報源の質が回答の質を左右するためです。",
+  "refs": [
+   "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on",
+   "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+  ]
+ },
+ {
+  "id": "asc-eval-006",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "人事担当者が、社内規程の記載漏れを Claude に洗い出させたい。資料に書かれていない点を、推測で埋められたくない。プロンプトに加える指示として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "不明な点があっても答えを空欄にせず、必ず何らかの結論を示すよう指示して、抜けのない一覧を作らせる。空欄は未完成に見えるため避ける",
+    "why": "結論を強制すると、根拠のない推測が増える。"
+   },
+   {
+    "id": "b",
+    "text": "資料にない点は、一般的な企業の就業規則の慣行に基づいて、もっともらしく補ってよいと伝える。資料にない点も、実務上の常識で埋めれば完成度が上がる",
+    "why": "一般知識で補わせると、資料に書かれていない内容が事実のように混ざる。"
+   },
+   {
+    "id": "c",
+    "text": "資料に情報が足りない点や確信が持てない点は、「十分な情報がないため判断できない」と答えてよいと明示する",
+    "why": "Claude に「分からない」と言う許可を明示的に与えると、誤情報を大きく減らせる。"
+   },
+   {
+    "id": "d",
+    "text": "回答は、読み手の負担を減らすために、できるだけ短い文章にまとめるよう指示する。長い回答は読まれにくいため",
+    "why": "短くしても、不明な点を推測で埋める問題は防げない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Anthropic のドキュメントは、Claude に「分からない」と答えてよいと明示することを、幻覚を減らす基本策の 1 つに挙げています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ },
+ {
+  "id": "asc-eval-007",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "調達担当者が、20k トークンを超える長い契約書のリスクを Claude に分析させる。幻覚を減らす進め方として、ドキュメントが挙げているものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "まず契約書全体を 1 段落に要約させ、その要約だけを根拠に分析させる",
+    "why": "要約は原文の言い換えであり、原文に基づく根拠にならない。"
+   },
+   {
+    "id": "b",
+    "text": "契約書でよくあるリスクの論点を先に列挙させ、当てはまりそうなものだけを選ばせる",
+    "why": "一般的な論点から入ると、契約書に書かれていない内容を当てはめやすい。"
+   },
+   {
+    "id": "c",
+    "text": "分析結果を先に出させ、根拠の引用は後から必要になったときに求める",
+    "why": "引用を後回しにすると、分析が原文に基づくことを事前に担保できない。"
+   },
+   {
+    "id": "d",
+    "text": "分析の前に、関連する箇所を一字一句そのまま抜き出させ、その引用に基づいて分析させる",
+    "why": "長い文書では、先に原文の引用を抽出させると回答が実際の文面に基づく。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "長い文書(20k トークン超)では、タスクの前に一字一句の引用を抽出させると、回答が実際の文面に基づくようになり、幻覚が減るとされています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ },
+ {
+  "id": "asc-eval-008",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "広報担当者が、提供した製品資料だけに基づくプレスリリースの草稿を Claude に書かせた。草稿に資料にない主張が紛れていないかを確かめる指示として、ドキュメントに沿うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各主張について Claude 自身に 10 段階の確からしさを付けさせ、数値が高い主張だけを草稿に残させる",
+    "why": "確からしさの自己申告は、資料に裏付けがあることの確認にならない。"
+   },
+   {
+    "id": "b",
+    "text": "草稿の各主張について資料から裏付けとなる直接の引用を探させ、見つからない主張は削除させる",
+    "why": "Claude に各主張の裏付けとなる引用を探させ、見つからなければ撤回させると、回答を検証できる形にできる。"
+   },
+   {
+    "id": "c",
+    "text": "草稿をもう一度別の言い回しで書き直させ、2 つの文面の内容が似ていれば問題がないとみなす",
+    "why": "言い回しが似ていても、資料に裏付けがあるとは限らない。"
+   },
+   {
+    "id": "d",
+    "text": "重要な主張は、資料に裏付けがなくても、注記を付けたうえで草稿にそのまま残させる",
+    "why": "裏付けのない主張は、注記を付けて残すのではなく削除する。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "ドキュメントは、草稿の後で各主張に対する直接の引用を探させ、見つからない主張は削除する方法を示しています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ },
+ {
+  "id": "asc-eval-009",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "財務担当者が、同じ質問を Claude に 3 回送ったところ、売上予測の根拠として挙げられた数値が毎回異なっていた。この結果の読み方として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "表現が変わるのは通常の揺らぎであり、数値が違っていても信頼性とは関係ない",
+    "why": "数値の食い違いは、幻覚の可能性を示すサインとして扱う。"
+   },
+   {
+    "id": "b",
+    "text": "3 回のうち最も長い回答が最も詳しいので、それを採用する",
+    "why": "長さは正確さの指標ではない。"
+   },
+   {
+    "id": "c",
+    "text": "3 回のうち 2 回出た数値なら、元データの確認なしで採用してよい",
+    "why": "複数回出た数値でも、元データによる裏付けの代わりにはならない。"
+   },
+   {
+    "id": "d",
+    "text": "出力の間の不一致は幻覚のサインの可能性があるので、その数値は元データで確認する",
+    "why": "同じプロンプトを複数回実行して出力を比べる方法では、食い違いが幻覚を示すことがある。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "ドキュメントは、同じプロンプトを複数回実行して出力を比べる方法を挙げ、出力間の不一致が幻覚を示す可能性があると述べています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ },
+ {
+  "id": "asc-eval-010",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "チームが、「資料から引用を示す」「分からない場合は分からないと答える」プロンプトを整備した。この対策と、その後の確認の関係として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "幻覚を大きく減らせるが、完全にはなくならない。重要な情報や影響の大きい判断では、引き続き内容を検証する",
+    "why": "ドキュメントは、これらの手法は幻覚を大幅に減らすが排除はできず、重要な情報は常に検証するよう注意している。"
+   },
+   {
+    "id": "b",
+    "text": "引用を示させれば幻覚は起きなくなるので、以後は人による確認を省略して業務を進めてよい。確認の工数を減らせる",
+    "why": "引用を示させても、幻覚は完全にはなくならない。"
+   },
+   {
+    "id": "c",
+    "text": "この対策が効果を持つのは短い回答に限られ、長い回答では効果が得られず、幻覚が減らない。長い回答には別の対策が必要になる",
+    "why": "回答の長さで効果が限られるという説明はない。"
+   },
+   {
+    "id": "d",
+    "text": "検証が必要になるのは、Claude 自身が回答の中で不確かだと述べた場合に限られる",
+    "why": "Claude が自信を持って述べた内容にも誤りは含まれうる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ドキュメントは、これらの手法で幻覚は大幅に減るが完全にはなくならないとし、特に影響の大きい判断では重要な情報を常に検証するよう述べています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ },
+ {
+  "id": "asc-eval-011",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "法務担当者が、社内の就業規則の記載内容だけに基づいて Claude に回答させたい。Claude の一般知識が回答に混ざるのを防ぐ方法として、ドキュメントに沿うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "回答の冒頭に、Claude が自分の一般知識を要約するよう求める",
+    "why": "一般知識を先に出させると、文書の内容と混ざりやすくなる。"
+   },
+   {
+    "id": "b",
+    "text": "就業規則の文書を何度も貼り付ければ、一般知識は自然に使われなくなる",
+    "why": "文書を増やしても、一般知識を使わないという指示の代わりにはならない。"
+   },
+   {
+    "id": "c",
+    "text": "提供した文書の情報だけを使い、一般知識は使わないよう明示的に指示する",
+    "why": "外部知識の制限は、提供した文書の情報だけを使うよう明示的に指示する手法である。"
+   },
+   {
+    "id": "d",
+    "text": "質問をできるだけ短くし、足りない点を Claude に補わせる",
+    "why": "足りない点を補わせると、文書にない内容が入りやすくなる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "ドキュメントは、提供した文書の情報だけを使い、一般知識は使わないよう明示的に指示する方法を、幻覚を減らす手法として挙げています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ },
+ {
+  "id": "asc-eval-012",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Claude が幻覚を減らす基本的な方法として、ドキュメントが挙げているものを 2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude の一般知識で補ってでも、必ず結論を出すよう指示する",
+    "why": "結論を強制すると、根拠のない回答が増える。"
+   },
+   {
+    "id": "b",
+    "text": "出典や引用は付けず、結論だけを簡潔に答えさせる",
+    "why": "根拠を示させないと、回答を検証しにくくなる。"
+   },
+   {
+    "id": "c",
+    "text": "確信が持てないときや情報が足りないときは、分からないと答えてよいと許可する",
+    "why": "「分からない」と言う許可を与える基本策である。"
+   },
+   {
+    "id": "d",
+    "text": "長い文書では、タスクの前に一字一句の引用を抜き出させる",
+    "why": "引用で回答を原文に結び付ける基本策である。"
+   }
+  ],
+  "answer": [
+   "c",
+   "d"
+  ],
+  "explanation": "基本策として、「分からない」と言う許可を与えることと、長い文書では先に直接の引用を抽出させることが示されています。引用や出典で回答を検証できる形にすることも勧められています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ },
+ {
+  "id": "asc-eval-013",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "経営企画担当者が、競合 3 社の戦略について、Web と連携済みの社内ツールの情報を総合し、出典付きの詳しいレポートにまとめたい。最も適した機能はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Research。5 回以上のツール呼び出しで多数の情報源を統合し、報告書を作る用途に向く",
+    "why": "Research は、Web と連携ツールの複数の情報源を統合し、引用付きの長い報告書を作る用途に向く。"
+   },
+   {
+    "id": "b",
+    "text": "Web search。1 〜 2 回のツール呼び出しで答えられる、単純な事実の確認に向く機能で、包括的な調査には向かない",
+    "why": "Web search は単純な事実の確認向きで、包括的な調査には向かない。"
+   },
+   {
+    "id": "c",
+    "text": "Extended thinking のみ。最新の情報を必要としない、複雑な推論に向く",
+    "why": "最新の情報や連携ツールを使わない推論の機能で、情報収集の機能ではない。"
+   },
+   {
+    "id": "d",
+    "text": "通常のチャットのみ。ツールを使わずに学習データだけで答えさせ、必要な部分は手作業で補う",
+    "why": "学習データだけでは、最新の情報や社内の情報を踏まえたレポートにならない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ヘルプセンターは、Research を、5 回以上のツール呼び出しを 1 〜 3 分かけて行う包括的な情報収集と、複数の情報源を統合した詳しいレポートの作成に最適としています。",
+  "refs": [
+   "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research"
+  ]
+ },
+ {
+  "id": "asc-eval-014",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "広報担当者が、昨夜行われた試合の結果を手早く確認したい。最も適した機能はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Research。数分かけて多数の情報源を調べて報告書にまとめる、包括的な調査に向く機能",
+    "why": "複数回のツール呼び出しを伴う包括的な情報収集向きで、1 つの結果を確認する用途には大がかりである。"
+   },
+   {
+    "id": "b",
+    "text": "Web search。1 〜 2 回のツール呼び出しで答えられる事実や、最新の情報の確認に向く",
+    "why": "最新の事実を 1 〜 2 回の検索で確認する用途に向く。"
+   },
+   {
+    "id": "c",
+    "text": "Extended thinking のみ。最新の情報は取得せず、時間をかけてじっくり考えて答える",
+    "why": "最新情報の取得を伴わないので、昨夜の結果は確認できない。"
+   },
+   {
+    "id": "d",
+    "text": "どの機能も使わず、Claude の学習データだけで答えさせて、その内容を結果として採用する",
+    "why": "学習データの期限より後の出来事は、正確でないことがある。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "ヘルプセンターは、Web search を、1 〜 2 回のツール呼び出しで答えられる単純な事実や、最新のニュースなどの確認に最適としています。",
+  "refs": [
+   "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research"
+  ]
+ },
+ {
+  "id": "asc-eval-015",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "企画担当者が、iPhone の Claude アプリで Research を実行した。Gmail と社内ドキュメントの内容を踏まえたレポートを期待したが、どちらも反映されておらず、エラー表示もなかった。この出力の評価と対処として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Research は Claude Mobile では動作しないので、表示されたレポートは、実際には Desktop 側で実行された結果である。内容は Desktop の結果と同じになる",
+    "why": "Research は Claude Mobile でも利用できる。"
+   },
+   {
+    "id": "b",
+    "text": "Research 中の連携ツールの利用は毎回承認が必要で、承認の操作をしなかったために、連携ツールが使われなかった。承認を求める画面が出なかった点が原因である",
+    "why": "Research 中、連携ツールは毎回承認を求めずに自動で使われる。"
+   },
+   {
+    "id": "c",
+    "text": "連携ツールが使われなかった場合は、レポートの冒頭にエラーや警告が表示されるので、表示がなければ連携ツールも使われている。使ったかどうかは冒頭の表示で分かる",
+    "why": "Mobile では連携ツールが使われなくても、エラーなどの表示は出ない。"
+   },
+   {
+    "id": "d",
+    "text": "Claude Mobile の Research は Web のみを検索し、連携ツールは使わない。含めるなら Web 版か Desktop で再開始する",
+    "why": "Mobile では連携ツールが使われなくても、エラーや表示は出ない。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "Research は Claude Mobile では Web だけを検索し、連携ツールは使われません。そのことを示すエラーも表示されません。内部情報を含めるには、Web 版か Claude Desktop で開始します。",
+  "refs": [
+   "https://support.claude.com/en/articles/11088861-use-research-on-claude"
+  ]
+ },
+ {
+  "id": "asc-eval-016",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "次のうち、Claude がアーティファクトとして作成する条件を満たしやすい内容はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "直前の質問に対して添える、2 行程度の補足の回答で、その場の会話の流れの中だけで役目を終える内容",
+    "why": "短い補足は、自己完結した成果物の条件を満たさない。"
+   },
+   {
+    "id": "b",
+    "text": "前の回答の一部を訂正するだけの、会話の流れを前提とした短い返答で、単独では意味が通らない内容",
+    "why": "会話の文脈がないと成立しない内容は、条件を満たさない。"
+   },
+   {
+    "id": "c",
+    "text": "会話の文脈なしで成立し、後で編集や再利用をしそうな、15 行を超える自己完結した内容",
+    "why": "アーティファクトは、重要で自己完結し、編集・再利用・参照の対象になりやすい内容に作られる。"
+   },
+   {
+    "id": "d",
+    "text": "一度読めば役目を終える、相づち程度の返答で、後から編集したり再利用したりする見込みがない内容",
+    "why": "後で編集や再利用をする内容ではない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "ヘルプセンターによると、Claude は、内容が重要で自己完結しており(通常 15 行を超える)、編集・再利用・参照の対象になりそうで、会話の補足なしで成立する場合にアーティファクトを作ります。",
+  "refs": [
+   "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them"
+  ]
+ },
+ {
+  "id": "asc-eval-017",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "営業企画担当者が、Docs テンプレートで作った提案書のうち、第 3 節だけを役員向けに簡潔に書き直したい。最も適した方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "提案書全体を最初から作り直すよう頼み、第 3 節以外が変わらないことを祈る",
+    "why": "全体を作り直すと、変更したくない部分まで変わりうる。"
+   },
+   {
+    "id": "b",
+    "text": "第 3 節の文章をハイライトして「Edit with Claude」をクリックし、依頼を入力する",
+    "why": "マークした箇所に Claude が編集を加えるので、どの節かを説明する必要がない。"
+   },
+   {
+    "id": "c",
+    "text": "過去のメッセージを編集する。第 3 節だけが書き換わった提案書に差し替わる",
+    "why": "過去のメッセージを編集すると、別の方向を試すための別バージョンのチャットが作られる。"
+   },
+   {
+    "id": "d",
+    "text": "新しいチャットを開き、提案書の全文を貼り付けて第 3 節の書き直しを頼む",
+    "why": "箇所を指定して直接編集する機能があり、貼り直す必要はない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Docs や Markdown のドキュメントでは、変えたい文章をハイライトして「Edit with Claude」から依頼すると、マークした箇所に編集が加わります。",
+  "refs": [
+   "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them"
+  ]
+ },
+ {
+  "id": "asc-eval-018",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "在庫管理のダッシュボードを Claude のアーティファクトで作ったところ、画面にエラーが表示された。まず試す対応として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "エラー付近の「Try fixing with Claude」でエラー詳細を送って修正を依頼し、直らなければ追加で調べる",
+    "why": "エラー詳細を新しいメッセージにコピーして Claude に診断させる機能があるが、解決は保証されない。"
+   },
+   {
+    "id": "b",
+    "text": "エラーは Claude 側の不具合なので、アーティファクトを削除して、最初から作り直すしかない。同じ依頼を出しても同じエラーが出るため",
+    "why": "エラーの詳細を渡して修正を試みさせる手段があり、削除は不要である。"
+   },
+   {
+    "id": "c",
+    "text": "エラーが表示されていても、ダッシュボードに出ている数値そのものは正しいとみなして使ってよい。エラーが出ていない部分は問題ないため",
+    "why": "エラーが出ている以上、出力が正しい前提は置けない。"
+   },
+   {
+    "id": "d",
+    "text": "この機能で修復を試みれば、エラーは必ず解消されるので、他の確認や調査は考えなくてよい。修復の成否は気にしなくてよい",
+    "why": "Claude は修正を試みるが、成功は保証されず、さらに調べる必要がある場合もある。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ヘルプセンターは、エラーが出たときは「Try fixing with Claude」でエラー詳細を Claude に送って診断・修正させる方法を示しています。ただし、成功は保証されず、追加の調査が要る場合もあるとしています。",
+  "refs": [
+   "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them"
+  ]
+ },
+ {
+  "id": "asc-eval-019",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "営業部長が、取引先に PowerPoint 形式で渡す提案デッキを、Claude で作成して渡したい。最も適切な進め方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Docs テンプレートでドキュメントを作り、書き出し形式として Google Docs を選んで取引先に渡す",
+    "why": "Docs の書き出し先は Word、PDF、Markdown、Google Docs で、デッキ向けではない。"
+   },
+   {
+    "id": "b",
+    "text": "Whiteboards テンプレートで共有ボードを作り、そのボードをそのまま取引先に渡して見てもらう",
+    "why": "Whiteboards は、アイデアを共有して考えるためのボードである。"
+   },
+   {
+    "id": "c",
+    "text": "チャットの回答を手作業で PowerPoint に 1 枚ずつ貼り付ける以外に、方法はない",
+    "why": "Slides テンプレートで作ったデッキは、Export で PowerPoint に書き出せる。"
+   },
+   {
+    "id": "d",
+    "text": "Slides テンプレートでデッキを作り、Export で PowerPoint(または PDF)に書き出す",
+    "why": "Slides は、デッキを PowerPoint や PDF に書き出せるテンプレートである。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "Slides テンプレートでは、ノートや報告書から作った発表資料を編集・発表でき、PowerPoint と PDF に書き出せます。",
+  "refs": [
+   "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them"
+  ]
+ },
+ {
+  "id": "asc-eval-020",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "経理担当者が、Claude に月次経費の管理用 Excel を作らせたい。業務で使うまでの進め方として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude が生成したファイルは確認済みの成果物なので、中身を見直さずそのまま業務で使ってよい。Claude の出力は検証済みである",
+    "why": "出力は確認し、必要なら調整するものである。"
+   },
+   {
+    "id": "b",
+    "text": "Excel の数式は Claude には作れないので、数式の部分だけは手作業で入力する必要がある。数式は Excel 側でしか扱えないため",
+    "why": "Claude は、動作する数式を含む Excel を作れる。"
+   },
+   {
+    "id": "c",
+    "text": "構造・内容・書式を具体的に伝えて作らせ、出来上がったファイルの中身を確認して、必要に応じて修正を依頼する",
+    "why": "具体的に依頼し、出力を確認して磨き上げる進め方が示されている。"
+   },
+   {
+    "id": "d",
+    "text": "Claude が作れるのは PDF だけなので、Excel が必要な場合は別のツールで最初から作る。他の形式には対応していないため",
+    "why": "Claude は、Excel、PowerPoint、Word、PDF のファイルを作成できる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "ヘルプセンターは、Excel などのファイルを作成できるとしたうえで、構造・内容・書式を具体的に依頼し、出力を確認して磨き上げるよう勧めています。",
+  "refs": [
+   "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude"
+  ]
+ },
+ {
+  "id": "asc-eval-021",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "会議中の質問への回答として、Claude がチャット内に比較図を描いた。翌週の会議でも使い続けたいので、図を残して更新していきたい。適切な対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "アーティファクトとして保存する。静止画でよければ画像としてコピーし、ファイルならダウンロードする",
+    "why": "カスタムビジュアルは既定では保存されず、残すにはこれらの手段を使う。"
+   },
+   {
+    "id": "b",
+    "text": "何もしなくても自動で保存されるので、次の会議でそのまま開ける",
+    "why": "カスタムビジュアルは一時的で、自動では保存されない。"
+   },
+   {
+    "id": "c",
+    "text": "Claude に「覚えておいて」と頼めば、図そのものが次回のチャットに保存される",
+    "why": "「覚えて」は、ピンク色にするなどの好みを反映させる使い方で、図を保存する手段ではない。"
+   },
+   {
+    "id": "d",
+    "text": "iPhone や Android の Claude アプリで開き直せば、図が保存される",
+    "why": "カスタムビジュアルは、iOS や Android のアプリでは表示されない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "カスタムビジュアルはチャット内の一時的な表示で、自動では保存されません。残すには、画像としてコピーする、.svg または .html でダウンロードする、アーティファクトとして保存するのいずれかを使います。",
+  "refs": [
+   "https://support.claude.com/en/articles/13979539-custom-visuals-in-chat-and-cowork"
+  ]
+ },
+ {
+  "id": "asc-eval-022",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "役員向けの週次レポートが箇条書きだらけで読みにくい。Claude への指示を改善する方法として、プロンプトのガイドに沿うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「箇条書きを使うな」と、禁止の指示を強い調子で何度も繰り返す",
+    "why": "ガイドは、「〜するな」より「〜してほしい」という肯定形の指示を勧めている。"
+   },
+   {
+    "id": "b",
+    "text": "形式は指定せず、好みの形式で出るまで何度も再生成する",
+    "why": "形式を指定せずに運に任せるより、望む形式を明確に伝える。"
+   },
+   {
+    "id": "c",
+    "text": "「滑らかな散文の段落で書いて」のように、望む形式を肯定形で指示する",
+    "why": "禁止形ではなく、何をするかを伝える形が効果的である。"
+   },
+   {
+    "id": "d",
+    "text": "レポートの長さだけを指定すれば、形式は自動的に整う",
+    "why": "長さの指定は、箇条書きか散文かという形式の指定にはならない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "プロンプトのガイドは、出力の形式を操作するには、してほしくないことを禁じるより、してほしいことを伝えるよう勧めています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ]
+ },
+ {
+  "id": "asc-eval-023",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "調査を Claude に依頼するとき、情報の信頼性を高める依頼として、プロンプトのガイドが挙げているものを 2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "最初に見つかったページの情報だけを使うよう指示し、確認の手間を省く",
+    "why": "単一の情報源だけを使うと、検証の機会が減る。"
+   },
+   {
+    "id": "b",
+    "text": "何をもって成功とするか、成功基準を明確に伝える",
+    "why": "調査では、明確な成功基準を提供することが勧められている。"
+   },
+   {
+    "id": "c",
+    "text": "成功基準は、調査が終わってから Claude 自身に決めさせる",
+    "why": "成功基準は、調査の前に明確に伝えるものである。"
+   },
+   {
+    "id": "d",
+    "text": "複数の情報源で情報を確認するよう依頼する",
+    "why": "複数の情報源での検証を促すことが勧められている。"
+   }
+  ],
+  "answer": [
+   "b",
+   "d"
+  ],
+  "explanation": "調査に関するガイドは、明確な成功基準を示すことと、複数の情報源で情報を確認するよう促すことを勧めています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ]
+ },
+ {
+  "id": "asc-eval-024",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "総務担当者が、Claude が web search の回答に示したリンクの一部が開けないことに気づいた。この状況の理解として最も適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "web search の既知の制限で、リンクが機能しない場合がある。その主張は別の情報源で確認してから使う",
+    "why": "ヘルプセンターは、ウェブサイトのリンクが機能しない場合があることを制限として挙げている。"
+   },
+   {
+    "id": "b",
+    "text": "リンクが開けないなら、その引用は捏造であり、回答全体を無効なものとして扱うべきである。引用の信頼性が失われるため",
+    "why": "リンクが開けないことは起こりうる制限であり、それだけで回答全体を無効とは言えない。"
+   },
+   {
+    "id": "c",
+    "text": "リンクが開けないのは、Claude が実際には web search を使っていないことの証拠である",
+    "why": "web search を使った場合でも、リンクが機能しないことがある。"
+   },
+   {
+    "id": "d",
+    "text": "要約が表示されている以上、リンク先を確認できなくても、その内容は正しいとみなしてよい",
+    "why": "リンク先を確認できないなら、別の情報源で確認する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ヘルプセンターは、web search の制限として、ウェブサイトのリンクが機能しない場合があることを挙げ、重要な情報は引用元を相互に照合し、権威ある情報源で確認するよう勧めています。",
+  "refs": [
+   "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+  ]
+ },
+ {
+  "id": "asc-eval-025",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Claude の回答の正確さに関する、ヘルプセンターの記述に合致するものを 2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude は、権威的に見えても事実に基づかない引用を示すことがある",
+    "why": "ヘルプセンターが、幻覚の例として挙げている。"
+   },
+   {
+    "id": "b",
+    "text": "最新モデルでは学習データの限界がなくなったので、時事の質問でも誤りは起きない",
+    "why": "モデルごとに知識カットオフがあり、それ以降の出来事は正確でないことがある。"
+   },
+   {
+    "id": "c",
+    "text": "web search の結果を使うときは、引用元を確認して元の文脈を見るとよい",
+    "why": "元のサイトには、Claude の要約にない重要な文脈が含まれることがある。"
+   },
+   {
+    "id": "d",
+    "text": "誤った回答に親指を下げるボタンを使うと、その回答は自動で修正される",
+    "why": "ボタンは、回答が役に立たなかったことを Anthropic に伝えるためのものである。"
+   }
+  ],
+  "answer": [
+   "a",
+   "c"
+  ],
+  "explanation": "ヘルプセンターは、Claude が事実に基づかない引用を示すことがあること、web search の結果を使うときは引用元を確認するよう勧めています。モデルごとに知識カットオフがあることも説明されています。",
+  "refs": [
+   "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on"
+  ]
+ },
+ {
+  "id": "asc-eval-026",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "次のうち、Claude の回答を使う前に、特に慎重な検証や専門家による確認を行うべき場面はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "社内の懇親会の会場候補を、ブレインストーミングとして複数出させる場面で、候補を選ぶ前に実際の店舗の情報も別途調べる予定がある場合",
+    "why": "ここでは出力が下書きの材料にとどまり、確認の工程も別に予定されている。影響の大きい場面とは言えない。"
+   },
+   {
+    "id": "b",
+    "text": "Claude に、自分が書いた文章の誤字脱字を指摘させ、指摘を採用するかどうかを自分で決める場面",
+    "why": "最終的な判断を利用者自身が行っており、影響の大きい判断の根拠にはならない。"
+   },
+   {
+    "id": "c",
+    "text": "回答の内容が、契約や税務のような影響の大きい判断の根拠になる場面",
+    "why": "ヘルプセンターは、影響の大きい助言は慎重に精査するよう求めており、ドキュメントも重要な情報は常に検証するよう述べている。"
+   },
+   {
+    "id": "d",
+    "text": "Claude が提案した資料の構成案を、チームでの議論のたたき台にする場面で、議論の過程で誰でも修正できる場合",
+    "why": "たたき台は議論の中で修正される前提で、そのまま重要な判断に使われるわけではない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Claude は誤った回答を返すことがあるため、単一の情報源とせず、影響の大きい助言は精査する必要があります。ドキュメントも、幻覚を減らす手法を使っても、重要な情報は常に検証するよう述べています。",
+  "refs": [
+   "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ }
+]

@@ -1,1 +1,528 @@
-[]
+[
+ {
+  "id": "asc-cfg-001",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "営業企画チームの田中さんは、製品仕様書と提案書のひな形を参照しながら、毎回同じ丁寧なトーンで提案文を作りたい。チャットごとに資料を貼り直す手間をなくしたい。最も適切な設定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "毎回のチャットに必要な資料をその都度添付し直し、トーンの指示も最初のメッセージの冒頭に書いて依頼する",
+    "why": "添付はその会話でしか使えず、毎回の貼り直しが残る。永続的な資料にはプロジェクトのナレッジを使う。"
+   },
+   {
+    "id": "b",
+    "text": "プロジェクトを作り、資料はナレッジに、トーンはプロジェクト指示に入れる",
+    "why": "プロジェクトのナレッジはそのプロジェクト内の全チャットで使われ、プロジェクト指示も全チャットに適用される。"
+   },
+   {
+    "id": "c",
+    "text": "資料の内容とトーンの指示を、すべて個人のプロフィール指示(アカウント全体の指示)に書く",
+    "why": "プロフィール指示はすべての会話に適用されるため、提案文以外の用途にも影響する。特定の作業の文脈にはプロジェクトが向く。"
+   },
+   {
+    "id": "d",
+    "text": "資料の内容とトーンの指示を、プロジェクトの名前と説明欄に詳しく書いておく",
+    "why": "プロジェクトの名前と説明は Claude からは参照できない。Claude に伝えたい内容はプロジェクト指示とナレッジに入れる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "プロジェクトは、独自のチャット履歴とナレッジベースを持つ独立した作業スペースである。ナレッジに入れた資料はそのプロジェクトのすべてのチャットで文脈として使われ、プロジェクト指示は口調や役割などを全チャットに一貫して適用する。",
+  "refs": [
+   "https://support.claude.com/en/articles/9517075-what-are-projects",
+   "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects"
+  ]
+ },
+ {
+  "id": "asc-cfg-002",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "有料プランを使う法務部の担当者が、1 つのプロジェクトに契約書や社内規程を大量に追加し続けた結果、プロジェクトのナレッジがコンテキストウィンドウの上限に近づいた。何が起きるか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "設定画面で RAG モードを手動で有効にするまで、これ以上ファイルを追加できなくなり、不要なファイルを削除して空きを作る必要がある",
+    "why": "RAG は自動で有効になり、設定や操作は不要である。"
+   },
+   {
+    "id": "b",
+    "text": "上限に達した時点でファイルの追加は止まり、容量を空けるために古い文書から順に自動で削除される",
+    "why": "RAG により上限を超えて追加でき、自動削除の仕組みは説明されていない。"
+   },
+   {
+    "id": "c",
+    "text": "プロジェクトの機能が一時的に無効になり、ナレッジを参照できない通常のチャットとして動作する",
+    "why": "プロジェクトの機能は維持される。RAG が容量を広げる。"
+   },
+   {
+    "id": "d",
+    "text": "RAG モードが自動で有効になり、Claude は必要な情報だけを検索して回答する",
+    "why": "上限に近づくと自動で RAG が有効になり、容量が最大で約 10 倍に広がる。必要な情報を検索して取り出す方式になる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "RAG(検索拡張生成)はプロジェクトのナレッジが上限に近づくと自動で有効になり、全文を一度に読み込む代わりに関連箇所を検索して使う。設定は不要で、ナレッジが閾値を下回れば自動で元の処理に戻ることもある。有料プランが対象である。",
+  "refs": [
+   "https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects",
+   "https://support.claude.com/en/articles/9517075-what-are-projects"
+  ]
+ },
+ {
+  "id": "asc-cfg-003",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "RAG が有効になっているプロジェクトで、Claude に正しい文書を見つけてもらいやすくするための方法として、公式ヘルプが勧めるものを 2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ファイル名を内容が分かる具体的な名前にする",
+    "why": "説明的なファイル名は、Claude が適切な情報を見つけやすくなる方法として挙げられている。"
+   },
+   {
+    "id": "b",
+    "text": "プロジェクトの設定で RAG の対象になる文書を 1 件ずつ手動で指定する",
+    "why": "RAG は自動で有効になり、手動で制御する設定はない。"
+   },
+   {
+    "id": "c",
+    "text": "質問するときに、参照してほしい文書を名前で指定する",
+    "why": "特定の文書を名前で指定すると、Claude は検索の対象を絞り込める。"
+   },
+   {
+    "id": "d",
+    "text": "容量を節約するため、アップロード前に各文書を要点だけに短く編集する",
+    "why": "公式ヘルプは、関連する文書やファイルを事前に網羅的に追加することを勧めている。"
+   }
+  ],
+  "answer": [
+   "a",
+   "c"
+  ],
+  "explanation": "RAG が有効なプロジェクトでは、わかりやすいファイル名を付けること、関連する文書を同じプロジェクトにまとめること、質問で文書名を指定することが勧められている。また、関連する資料は最初から網羅的に入れるとよい。",
+  "refs": [
+   "https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects"
+  ]
+ },
+ {
+  "id": "asc-cfg-004",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "記憶(メモリ)機能をオフにしているユーザーが、プロジェクト内のチャット A で「当社の決算期は 3 月」と伝えた。後日、同じプロジェクトのチャット B でもこの前提を確実に使わせたい。最も確実な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "この情報をプロジェクトのナレッジに追加する",
+    "why": "チャット間でコンテキストは共有されないため、共有したい情報はナレッジに追加する。"
+   },
+   {
+    "id": "b",
+    "text": "チャット A で一度伝えたので、同じプロジェクトのチャットでは自動的に参照される",
+    "why": "同じプロジェクトでも、ナレッジに追加しない限りチャット間でコンテキストは共有されない。"
+   },
+   {
+    "id": "c",
+    "text": "プロジェクトの説明欄に書く",
+    "why": "プロジェクトの名前と説明は Claude からは参照できない。"
+   },
+   {
+    "id": "d",
+    "text": "チャット B の名前をチャット A と同じにして、履歴を関連付ける",
+    "why": "チャット名による関連付けの仕組みはない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "プロジェクト内でも、チャット間のコンテキストは、プロジェクトのナレッジに追加しない限り共有されない。ずっと使わせたい前提は、ナレッジかプロジェクト指示に入れる。",
+  "refs": [
+   "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects"
+  ]
+ },
+ {
+  "id": "asc-cfg-005",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの営業部長が、Google ドライブ上の価格表(Google ドキュメント)をプロジェクトのナレッジとして追加したい。このプロジェクトは部の全員で共有している。ヘルプの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ドキュメントはコピーとして取り込まれるので、ドライブ側で内容を更新したら、プロジェクトから削除して追加し直す必要がある",
+    "why": "ドライブから追加した Google ドキュメントは、ドライブと同期して常に最新版を使う。"
+   },
+   {
+    "id": "b",
+    "text": "共有プロジェクトでも追加できるが、メンバー全員が各自の Google ドライブへの接続を済ませている必要がある",
+    "why": "Google ドライブからの追加は、共有プロジェクトでは無効になる。"
+   },
+   {
+    "id": "c",
+    "text": "ドライブからの追加は非公開プロジェクトのみで、共有プロジェクトでは選べない。追加した文書は最新版と同期する",
+    "why": "Google ドライブから追加できるのは非公開プロジェクトのファイルだけで、追加したドキュメントはドライブの最新版と同期する。"
+   },
+   {
+    "id": "d",
+    "text": "Google ドキュメントはプロジェクトに追加できず、チャットへの添付だけが可能である",
+    "why": "ドキュメントは URL の貼り付けか最近のドキュメントの選択でプロジェクトにも追加できる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Google ドライブコネクタでプロジェクトのファイルに追加できるのは非公開のプロジェクトだけで、共有プロジェクトではこの選択肢が無効になる。追加した Google ドキュメントはドライブと同期し、常に最新版が使われる。",
+  "refs": [
+   "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors"
+  ]
+ },
+ {
+  "id": "asc-cfg-006",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある企業の組織指示には「常にフォーマルな英語で回答する」と設定されている。ある社員は自分の指示に「カジュアルな口調で」と書き、さらに「箇条書きを多用する」とも書いている。この社員の会話で Claude はどう動くか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "個人の指示が優先され、カジュアルな口調で回答する",
+    "why": "直接矛盾する場合は、組織の指示が優先される。"
+   },
+   {
+    "id": "b",
+    "text": "フォーマルな英語で回答する。組織の指示が扱っていない箇条書きの指示は、引き続き適用される",
+    "why": "直接矛盾する部分は組織の指示が優先され、組織の指示が扱わない内容には個人の指示が引き続き適用される。"
+   },
+   {
+    "id": "c",
+    "text": "矛盾があるため、両方の指示が無視される",
+    "why": "両方が無視されるわけではない。組織の指示を優先して処理される。"
+   },
+   {
+    "id": "d",
+    "text": "フォーマルな英語で回答する。組織の指示は個人の指示と一緒に、各ユーザーが設定画面で確認できる",
+    "why": "組織の指示を見たり編集したりできるのは Owner 以上だけである。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "組織指示は Owner と Primary Owner が設定し、組織全員のすべての会話に適用される。個人の指示と直接矛盾する場合は組織の指示が優先され、組織の指示が触れない範囲では個人の指示が使われる。",
+  "refs": [
+   "https://support.claude.com/en/articles/14546867-set-organization-instructions"
+  ]
+ },
+ {
+  "id": "asc-cfg-007",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Owner が組織指示(最大 3,000 文字)を書くときの方針として、公式ヘルプに沿ったものを 2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "組織の方針を漏れなく伝えるため、背景や例外を含めて上限近くまで詳しく書く",
+    "why": "組織指示は全員のすべてのメッセージに含まれるため、簡潔なほうがよい。"
+   },
+   {
+    "id": "b",
+    "text": "「フォーマルな英語で、略語や絵文字を使わない」のように、具体的な指示にする",
+    "why": "「プロフェッショナルに」のような曖昧な指示よりも、具体的な指示のほうが勧められている。"
+   },
+   {
+    "id": "c",
+    "text": "安全上の制限が厳しすぎる場合に備えて、制限を外す指示も含める",
+    "why": "組織の指示では Claude の安全に関する挙動やコンテンツポリシーを無効にできない。"
+   },
+   {
+    "id": "d",
+    "text": "保存後に新しい会話を始めて、いくつかの種類の質問で意図どおりに動くかを試す",
+    "why": "保存後に新しい会話で、さまざまな質問を試して確認することが勧められている。"
+   }
+  ],
+  "answer": [
+   "b",
+   "d"
+  ],
+  "explanation": "組織指示は簡潔で具体的に書き、全会話に一貫して適用したい内容に絞る。互いに矛盾する指示を避け、保存後は新しい会話で動作を確かめ、定期的に見直す。",
+  "refs": [
+   "https://support.claude.com/en/articles/14546867-set-organization-instructions"
+  ]
+ },
+ {
+  "id": "asc-cfg-008",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "マーケティング担当のユーザーは Claude をさまざまな用途に使っている。そのうち「契約書レビュー」のプロジェクトでだけ、Claude に法務の確認担当者として振る舞ってほしい。最も適した設定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プロフィールのアカウント全体の指示に、契約書レビューのときだけ法務の確認担当者として振る舞うよう書く",
+    "why": "アカウント全体の指示はすべての会話に適用されるため、他の用途にも影響してしまう。"
+   },
+   {
+    "id": "b",
+    "text": "組織指示に書いて、組織全員の会話で法務の確認担当者として振る舞う標準の設定にする",
+    "why": "組織指示は Owner が設定する組織全員向けの指示で、1 つのプロジェクトのための設定には向かない。"
+   },
+   {
+    "id": "c",
+    "text": "Claude に「契約書の話では法務の確認担当者として覚えて」と伝え、記憶に保存させる",
+    "why": "記憶はそのプロジェクトに限定されず、他の会話にも影響する可能性がある。"
+   },
+   {
+    "id": "d",
+    "text": "そのプロジェクトのプロジェクト指示に役割を書く",
+    "why": "プロジェクト指示は、そのプロジェクト内のチャットだけに適用され、役割や視点を定義する用途に向いている。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "アカウント全体に効かせたい設定にはプロフィール(Instructions for Claude)を、特定の作業の文脈や役割にはプロジェクト指示を使う。プロジェクト指示は、そのプロジェクト内のチャットにだけ適用される。",
+  "refs": [
+   "https://support.claude.com/en/articles/10185728-understanding-claude-s-personalization-features",
+   "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects"
+  ]
+ },
+ {
+  "id": "asc-cfg-009",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "経理チームは、毎月の月次報告書を社内の書式と確認手順に沿って作る作業を、プロジェクトに関係なくどのチャットでも再現したい。必要なときだけ読み込まれる形にしたい。最も適した仕組みはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "手順と書式をまとめたカスタムスキルを作成する",
+    "why": "スキルは繰り返し行う手順を Claude に教える仕組みで、関連するときだけ動的に読み込まれ、Claude のあらゆる場面で使える。"
+   },
+   {
+    "id": "b",
+    "text": "手順と書式の資料をプロジェクトのナレッジに入れる",
+    "why": "プロジェクトは、そのプロジェクトのチャットで常に読み込まれる静的な背景知識であり、他のチャットでは使えない。"
+   },
+   {
+    "id": "c",
+    "text": "手順と書式を組織指示に書く",
+    "why": "組織指示は全員のすべての会話に適用されるため、特定の作業にだけ必要な手順には向かない。"
+   },
+   {
+    "id": "d",
+    "text": "月次報告書の保存先のサービスを、コネクタ(MCP)として追加する",
+    "why": "コネクタは外部サービスへの接続を与えるが、作業の手順そのものを教えるものではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "スキルは、特定の作業を繰り返し同じやり方で行うための手順やリソースをまとめたフォルダで、Claude が関連性を判断して必要なときだけ読み込む。プロジェクトは常に読み込まれる背景知識、MCP は外部サービスへの接続であり、役割が異なる。",
+  "refs": [
+   "https://support.claude.com/en/articles/12512176-what-are-skills"
+  ]
+ },
+ {
+  "id": "asc-cfg-010",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "自分でカスタムスキルを作るときの skill.md の説明(description)欄について、正しい説明はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "スキルの表示名であり、人間が一覧で見分けるためだけに使われる",
+    "why": "表示名は name フィールドである。description は Claude が呼び出しを判断する材料になる。"
+   },
+   {
+    "id": "b",
+    "text": "スキルの全手順を書くための欄で、ここに書いた内容は常にすべて会話に読み込まれる",
+    "why": "スキルは段階的に開示される。メタデータは最初の段階で、本文は必要になった場合に参照される。"
+   },
+   {
+    "id": "c",
+    "text": "何をするか、いつ使うかを書く欄で、Claude が呼び出しを判断する材料になる",
+    "why": "説明は、Claude がスキルをいつ呼び出すかを判断するために使われる重要なメタデータである。"
+   },
+   {
+    "id": "d",
+    "text": "省略可能な欄で、書かなくても Claude はスキル本文を読んで自動的に用途を判断する",
+    "why": "name と description は必須のメタデータである。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "skill.md は先頭の YAML フロントマターに name と description を持つ。description は何をするスキルか、いつ使うかを明確に書く欄で、Claude が呼び出しを判断するために使う。1 つのスキルは 1 つのワークフローに絞るとよい。",
+  "refs": [
+   "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills"
+  ]
+ },
+ {
+  "id": "asc-cfg-011",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "情報システム部が、社内ネットワーク内の VPN の内側にある自社の MCP サーバーを、カスタムコネクタとして Claude に追加したが接続できない。担当者の PC からはそのサーバーに届く。原因と対処として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "接続元を端末のネットワークにするため、ブラウザ版ではなく Claude Desktop でコネクタを追加し直す",
+    "why": "リモートのカスタムコネクタは、Claude Desktop でも Anthropic のクラウドから接続される。"
+   },
+   {
+    "id": "b",
+    "text": "Anthropic の IP 範囲を許可し、サーバーを標準の HTTPS ポート(443)で到達可能にする",
+    "why": "Claude はリモート MCP サーバーに Anthropic のクラウドから接続する。社内ネットワークの内側にあるサーバーは、Anthropic の IP を許可しなければ接続できない。"
+   },
+   {
+    "id": "c",
+    "text": "サーバーの待ち受けを 8443 などの別のポートにして、その URL をコネクタに登録し直す",
+    "why": "443 以外のポートを指定した URL には接続できない。"
+   },
+   {
+    "id": "d",
+    "text": "Request headers に API キーを設定すれば、社内ネットワークの内側のサーバーにも到達できる",
+    "why": "Request headers は認証用の固定の認証情報を送る設定であり、ネットワークの到達性は変わらない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "カスタムコネクタの接続は、すべての Claude クライアントで Anthropic のクラウドから行われる。VPN 内や非公開ネットワークのサーバーは、Anthropic の IP 範囲を許可し、標準の HTTPS ポート(443)で到達できる必要がある。",
+  "refs": [
+   "https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp"
+  ]
+ },
+ {
+  "id": "asc-cfg-012",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの Owner が、組織設定の「コネクタ」で Google ドライブのコネクタを「Add to your team」で追加した。この後、メンバーが実際に Claude からドライブを使うために必要なことはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "何も必要ない。Owner が追加した時点で、全員のアカウントが自動で接続され、使える状態になる",
+    "why": "組織で追加しても、全員に自動でアクセスが付与されるわけではない。"
+   },
+   {
+    "id": "b",
+    "text": "Owner がメンバーごとのアカウントに代わって認証を行う",
+    "why": "認証は各メンバーが個別に行う。"
+   },
+   {
+    "id": "c",
+    "text": "メンバーは会話の「+」メニューのコネクタ切り替えだけを行えばよく、認証は不要である",
+    "why": "コネクタを使うには、その前に各自がコネクタに接続して認証する必要がある。"
+   },
+   {
+    "id": "d",
+    "text": "各メンバーが Customize > Connectors で接続し認証する",
+    "why": "組織での有効化は利用できる状態にするだけで、各メンバーが個別に認証してから使う。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "Team と Enterprise では、Owner が組織でコネクタを有効にしたうえで、各ユーザーが自分で認証する。コネクタは接続先サービスの各人の権限を引き継ぐため、各人が見られない情報には Claude からも届かない。",
+  "refs": [
+   "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities",
+   "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors"
+  ]
+ },
+ {
+  "id": "asc-cfg-013",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者は、機密性の高い M&A 案件のプロジェクトで、記憶機能は使いつつ、このプロジェクトでは自分のアカウント全体の記憶を参照させたくない。プロジェクトの記憶を他と完全に分けたい。何をするべきか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "新しいチャットを毎回シークレット(incognito)チャットで始めて、記憶に残らないようにする",
+    "why": "シークレットチャットはプロジェクト外で使うもので、プロジェクトの記憶を分ける方法ではない。"
+   },
+   {
+    "id": "b",
+    "text": "案件に関する過去のチャットを削除する",
+    "why": "チャットを削除しても、そこから作られた記憶のエントリは削除されない。"
+   },
+   {
+    "id": "c",
+    "text": "プロジェクトのページで「Use account memory」をオフにする",
+    "why": "プロジェクトの記憶を完全に分けるには、プロジェクトのページで「Use account memory」をオフにする。"
+   },
+   {
+    "id": "d",
+    "text": "Owner に組織全体の記憶機能をオフにしてもらう",
+    "why": "組織全体の設定は全ユーザーに影響する。個別のプロジェクトの記憶を分ける方法としては大きすぎる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "プロジェクトごとに独自の記憶があり、プロジェクト内では、そのプロジェクトの記憶とプロジェクト外の自分の記憶が使われ、他のプロジェクトの記憶は使われない。プロジェクトの記憶を完全に分けたいときは「Use account memory」をオフにする。",
+  "refs": [
+   "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
+   "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context"
+  ]
+ },
+ {
+  "id": "asc-cfg-014",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude の記憶に、異動前の古い役職が残っていて、回答に反映されてしまう。記憶機能は使い続けたい。適切な対処はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Manage から該当トピックを開いて編集または削除する(チャットで Claude に伝えてもよい)",
+    "why": "記憶はトピックごとに確認・編集・削除でき、変更は以降のすべての会話に反映される。チャットで更新を頼むこともできる。"
+   },
+   {
+    "id": "b",
+    "text": "その記憶のもとになった古いチャットを、チャット履歴から削除する",
+    "why": "チャットを削除しても、そのチャットから作られた記憶のエントリは削除されない。"
+   },
+   {
+    "id": "c",
+    "text": "記憶を「一時停止」して、古い情報が使われないようにする",
+    "why": "一時停止しても、既存の記憶は保持されたまま、新しい記憶が作られなくなるだけで、古い情報は残る。"
+   },
+   {
+    "id": "d",
+    "text": "組織の Owner に依頼して、自分の記憶の該当エントリを編集してもらい、古い役職を直してもらう",
+    "why": "Owner は、ユーザー個人の記憶を見ることも編集することもできない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "記憶は設定画面の「Manage」からトピックごとに確認して編集・削除でき、変更はそれ以降のすべての会話に適用される。チャットで「これを忘れて/変更して」と伝える方法もある。",
+  "refs": [
+   "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
+   "https://support.claude.com/en/articles/12123587-import-and-export-your-memory-from-claude"
+  ]
+ }
+]
