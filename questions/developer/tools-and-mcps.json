@@ -820,5 +820,116 @@
    "https://code.claude.com/docs/en/mcp",
    "https://modelcontextprotocol.io/docs/learn/architecture"
   ]
+ },
+ {
+  "id": "dev-tool-023",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "クライアントツールとサーバーツールの違いとして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "クライアントツールは自分のアプリケーションで実行する。サーバーツールは Anthropic の基盤で実行される",
+    "why": "正しい。違いは、コードがどこで動くかにある。"
+   },
+   {
+    "id": "b",
+    "text": "クライアントツールは利用者が定義したもの、サーバーツールは Anthropic がスキーマを定義したものを指す",
+    "why": "bash や text_editor は Anthropic がスキーマを定義するが、クライアントツールである。"
+   },
+   {
+    "id": "c",
+    "text": "クライアントツールは input_schema が不要で、サーバーツールは input_schema が必須である",
+    "why": "自分で定義するツールには input_schema を渡す。"
+   },
+   {
+    "id": "d",
+    "text": "クライアントツールは無料で、サーバーツールはすべてトークンとは別に固定の月額料金がかかる",
+    "why": "一部のサーバーツールに、利用量に応じた料金が加わる。月額ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "ツールは、コードがどこで動くかで分かれます。クライアントツールは自分のアプリケーションで動きます。利用者が定義したツールのほか、bash や text_editor のように Anthropic がスキーマを定義するものも含みます。Claude は tool_use ブロックを返し、アプリケーションが実行して tool_result を返します。web_search や code_execution などのサーバーツールは Anthropic の基盤で動き、実行を自分で扱う必要はありません。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+  ]
+ },
+ {
+  "id": "dev-tool-024",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "社内のデータベースに Claude Code から問い合わせたい。あわせて、チームのスキーマと、よく使うクエリの書き方も伝えたい。役割の分け方として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "接続もスキーマの知識も、1 つのスキルにまとめる。スキルが外部サービスへの接続と認証を受け持つ",
+    "why": "外部サービスへの接続を提供するのは MCP である。"
+   },
+   {
+    "id": "b",
+    "text": "接続もスキーマの知識も、CLAUDE.md に書く。CLAUDE.md に接続文字列を書けば、ツールとして使える",
+    "why": "CLAUDE.md は指示を置く場所で、ツールや接続を提供しない。"
+   },
+   {
+    "id": "c",
+    "text": "接続は MCP サーバーで提供し、スキーマとクエリの書き方はスキルに書く",
+    "why": "正しい。MCP が接続を、スキルが使い方の知識を受け持つ。"
+   },
+   {
+    "id": "d",
+    "text": "接続はフックで提供し、スキーマとクエリの書き方はサブエージェントの定義に書く",
+    "why": "フックは、決まった時点で処理を走らせる仕組みである。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "MCP は、Claude を外部のサービスにつなぎ、ツールとデータへのアクセスを提供します。接続と認証は、サーバーが受け持ちます。スキルは、そのツールをうまく使うための知識や手順を与えます。公式も、MCP でデータベースに接続し、スキルにスキーマとクエリのパターンを書く組み合わせを例に挙げています。",
+  "refs": [
+   "https://code.claude.com/docs/en/features-overview"
+  ]
+ },
+ {
+  "id": "dev-tool-025",
+  "cert": "developer",
+  "domain": "tools-and-mcps",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "MCP サーバーのツールで、入力は形式として正しいが、業務上の規則に反していた(在庫を超える数量の引き当て)。MCP の仕様に沿った返し方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "JSON-RPC のプロトコルエラーとして返す。モデルには届かず、クライアントが処理を中断する",
+    "why": "プロトコルエラーは、未知のツールなど、リクエストそのものの問題に使う。"
+   },
+   {
+    "id": "b",
+    "text": "成功の結果として空の内容を返し、何も起きなかったことをモデルに推測させる",
+    "why": "失敗を成功として返すと、モデルは誤った前提で先に進む。"
+   },
+   {
+    "id": "c",
+    "text": "サーバー側で数量を在庫の上限に丸めて実行し、成功として結果を返す",
+    "why": "依頼と異なる操作を黙って行うことになる。"
+   },
+   {
+    "id": "d",
+    "text": "ツールの結果に isError: true を付け、何が問題かを内容に書いて返す",
+    "why": "正しい。業務ロジックのエラーは、ツール実行エラーとして結果の中で返す。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "MCP のツールには、2 種類のエラーがあります。プロトコルエラーは、未知のツールなど、リクエストの構造そのものの問題を表します。ツール実行エラーは、API の失敗、入力データの検証エラー、業務ロジックのエラーを表し、ツールの結果に isError: true を付けて返します。モデルは、その内容をもとに引数を直して再試行できます。",
+  "refs": [
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/tools"
+  ]
  }
 ]

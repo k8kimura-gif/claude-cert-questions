@@ -600,5 +600,155 @@
   "refs": [
    "https://www.anthropic.com/engineering/building-effective-agents"
   ]
+ },
+ {
+  "id": "dev-sec-017",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Code に、.env や .git/ 以下のファイルを編集させたくない。指示への従い方に左右されず、確実に止める方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "CLAUDE.md の冒頭に「.env と .git/ は絶対に編集しないこと」と強調して書き、毎回のセッションで読み込ませる",
+    "why": "CLAUDE.md は指示であり、従うかどうかはモデルの判断に左右される。確実に止める仕組みではない。"
+   },
+   {
+    "id": "b",
+    "text": "PreToolUse フックで編集対象のパスを検査し、保護対象なら終了コード 2 で終了するスクリプトを登録する",
+    "why": "正しい。編集ツールが実行される前に走り、終了コード 2 で編集を止められる。"
+   },
+   {
+    "id": "c",
+    "text": "PostToolUse フックで編集されたパスを検査し、保護対象だった場合は警告を出力するスクリプトを登録する",
+    "why": "PostToolUse はツールの実行後に走る。この時点で編集は済んでいる。"
+   },
+   {
+    "id": "d",
+    "text": "保護したいファイルの一覧をスキルにまとめ、編集の前にそのスキルを参照するよう説明文に書いておく",
+    "why": "スキルも指示の一種で、読み込まれるか、従うかはモデルに左右される。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "フックは、ライフサイクルの決まった時点で必ず実行されます。モデルが実行を選ぶかどうかに頼らないため、守らせたい規則に向いています。公式の例では、Edit と Write に対する PreToolUse フックがパスを検査し、保護対象なら終了コード 2 で終了して編集を止めます。止めた理由は Claude に伝わります。",
+  "refs": [
+   "https://code.claude.com/docs/en/hooks-guide",
+   "https://code.claude.com/docs/en/hooks"
+  ]
+ },
+ {
+  "id": "dev-sec-018",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "外部 API を呼び出すエージェントを、コンテナの中で動かす。API キーの扱いとして、最小権限の考え方に最も沿うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "API キーをコンテナの環境変数に入れ、システムプロンプトで「キーを出力しないこと」と指示する",
+    "why": "エージェントの環境にキーがある以上、環境が侵害されればキーも漏れる。指示は境界にならない。"
+   },
+   {
+    "id": "b",
+    "text": "API キーを暗号化したファイルとしてコンテナに置き、復号の手順をエージェントに教えておく",
+    "why": "復号できるなら、エージェントの環境からキーに到達できる。"
+   },
+   {
+    "id": "c",
+    "text": "エージェントの環境の外にプロキシを置き、そこでリクエストにキーを付ける",
+    "why": "正しい。エージェントは API を呼べるが、認証情報そのものには触れない。"
+   },
+   {
+    "id": "d",
+    "text": "権限の広い管理者用のキーを 1 本だけ発行し、すべてのエージェントで共有して管理の手間を減らす",
+    "why": "必要以上の権限を与えることになり、最小権限に反する。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "公式の解説は、認証情報をエージェントの境界の外に置く例として、外側のプロキシがリクエストにキーを注入する構成を挙げています。エージェントは API を呼び出せますが、キー自体は見えません。最小権限の表でも、認証情報は「直接渡さず、プロキシ経由で注入する」とされています。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/secure-deployment"
+  ]
+ },
+ {
+  "id": "dev-sec-019",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "受信メールの本文を読んで要約するアプリケーションを Messages API で作る。メール本文に埋め込まれた指示に従わせないために、本文を渡す場所として公式が勧めるものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "tool_result ブロックの中",
+    "why": "正しい。第三者のコンテンツは tool_result に入れ、system や通常の user テキストには入れない。"
+   },
+   {
+    "id": "b",
+    "text": "system プロンプトの末尾に、区切り線を引いたうえで追記する",
+    "why": "公式は、信頼できないコンテンツを system プロンプトに入れないよう明記している。"
+   },
+   {
+    "id": "c",
+    "text": "user メッセージのテキストブロックに、利用者の依頼文と続けてそのまま連結する",
+    "why": "通常の user テキストに入れると、利用者の指示と区別しにくい。公式はこれも避けるとしている。"
+   },
+   {
+    "id": "d",
+    "text": "assistant メッセージとして事前に埋めておき、モデル自身の発言として扱わせる",
+    "why": "モデル自身の発言として扱わせる方法は、公式の対策に挙がっていない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "間接的なプロンプトインジェクションへの対策として、公式は、第三者のコンテンツを tool_result ブロックだけに入れ、system プロンプトや通常の user テキストには入れないことを挙げています。Claude は、ツール結果の中の指示を疑って扱うよう訓練されています。あわせて、内容の種類と出所を伝えること、システムプロンプトで方針を述べることも勧められています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks"
+  ]
+ },
+ {
+  "id": "dev-sec-020",
+  "cert": "developer",
+  "domain": "security-and-safety",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Edit と Write に対する PreToolUse フックで、.env の編集を止めている。この構成に残る抜け道と、公式が示す補い方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "フックはセッションの最初の 1 回しか実行されない。SessionStart フックを追加して、定期的に再登録する",
+    "why": "フックは、該当するイベントのたびに実行される。"
+   },
+   {
+    "id": "b",
+    "text": "フックはサブエージェントには適用されない。サブエージェントの利用を、設定で全面的に禁止する",
+    "why": "出典に、この対策は書かれていない。"
+   },
+   {
+    "id": "c",
+    "text": "フックの終了コードはモデルに伝わらない。CLAUDE.md にも同じ規則を書いて、理由を説明しておく",
+    "why": "止めた理由は Claude に伝わる。CLAUDE.md は確実な制御にならない。"
+   },
+   {
+    "id": "d",
+    "text": "シェルコマンド経由なら書き換えられる。permissions.deny にパスごとの Edit の拒否ルールを加える",
+    "why": "正しい。フックの対象は Edit と Write だけなので、拒否ルールで補う。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "公式の例は、このフックだけでは Claude がシェルコマンドで保護対象のファイルを変更できると注意しています。その一部を止めるために、.claude/settings.json の permissions.deny に、パスごとの Edit の拒否ルール(例: Edit(/.env))を加えるよう案内しています。1 つの仕組みに頼らず、制御を重ねる例です。",
+  "refs": [
+   "https://code.claude.com/docs/en/hooks-guide",
+   "https://code.claude.com/docs/en/permissions"
+  ]
  }
 ]

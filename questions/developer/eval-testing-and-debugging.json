@@ -334,5 +334,79 @@
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/define-success"
   ]
+ },
+ {
+  "id": "dev-eval-010",
+  "cert": "developer",
+  "domain": "eval-testing-and-debugging",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "API のエラーを種類ごとに振り分けて、再試行するかどうかを決める処理を書く。判定の根拠として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "エラー本文の message の文言を正規表現で調べ、「overloaded」などの語が含まれるかで判定する",
+    "why": "message は人が読むための説明である。種別は type に入っている。"
+   },
+   {
+    "id": "b",
+    "text": "応答にかかった時間を測り、一定の秒数を超えたものを一時的な障害として扱う",
+    "why": "所要時間からは、エラーの種類は分からない。"
+   },
+   {
+    "id": "c",
+    "text": "HTTP のステータスコードと、エラー本文の error.type",
+    "why": "正しい。エラーは JSON で返り、error に type と message が必ず入る。"
+   },
+   {
+    "id": "d",
+    "text": "応答ヘッダーの request-id の接頭辞を調べ、種別ごとに異なる値で判定する",
+    "why": "request-id はリクエストを特定するための値で、エラーの種別は表さない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "API はエラーを必ず JSON で返し、最上位の error オブジェクトには type と message が含まれます。429 の rate_limit_error や 529 の overloaded_error のように、ステータスコードと type の組で種類が決まります。本文の request_id は、問い合わせや調査のときにリクエストを特定するために使います。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/errors"
+  ]
+ },
+ {
+  "id": "dev-eval-011",
+  "cert": "developer",
+  "domain": "eval-testing-and-debugging",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Agent SDK で max_turns を 20 に設定したエージェントが、途中で止まることがある。ターン数の上限で止まったのかを見分ける方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "最後の assistant メッセージの本文に「上限」という語が含まれるかを調べる",
+    "why": "自然文から終了の理由を読み取る方法は、当てにならない。"
+   },
+   {
+    "id": "b",
+    "text": "結果メッセージの subtype が error_max_turns かを調べる",
+    "why": "正しい。上限に達すると、結果メッセージの subtype がこの値になる。"
+   },
+   {
+    "id": "c",
+    "text": "HTTP 429 が返っているかを、SDK が出力するログから調べる",
+    "why": "429 はレート制限で、ターン数の上限とは別である。"
+   },
+   {
+    "id": "d",
+    "text": "実行にかかった秒数を記録し、いつもより長いかどうかで推定する",
+    "why": "所要時間からは、止まった理由を特定できない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "SDK は、処理の終わりに結果メッセージを返します。ターン数の上限内で完了すると subtype は success になり、上限に達すると error_max_turns になります。原因の切り分けでは、出力の文面ではなく、このような構造化された値を見ます。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/hosting"
+  ]
  }
 ]

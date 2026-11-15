@@ -1349,5 +1349,79 @@
    "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
   ]
+ },
+ {
+  "id": "arch-tool-037",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "自分専用の MCP サーバーを、claude mcp add でスコープを指定せずに追加した。別のプロジェクトを開くと、そのサーバーが使えない。原因と対処はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "既定はプロジェクトスコープで、.mcp.json に書かれる。別のプロジェクトにも .mcp.json を複製してコミットする",
+    "why": "既定はローカルスコープである。複製すると、チームにも共有される。"
+   },
+   {
+    "id": "b",
+    "text": "既定はユーザースコープである。サーバーが使えないのは、認証が切れているためである",
+    "why": "既定はローカルスコープである。"
+   },
+   {
+    "id": "c",
+    "text": "MCP サーバーは、追加したセッションの間だけ有効である。セッションを始めるたびに追加し直す",
+    "why": "設定は保存され、次のセッションでも読み込まれる。"
+   },
+   {
+    "id": "d",
+    "text": "既定はローカルスコープで、追加したプロジェクトだけで読み込まれる。--scope user で追加し直す",
+    "why": "正しい。ユーザースコープは、自分のすべてのプロジェクトで読み込まれる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "MCP サーバーのスコープは 3 つあります。ローカルは既定で、追加したプロジェクトだけで読み込まれ、チームには共有されません。プロジェクトは、プロジェクトのルートの .mcp.json に保存され、バージョン管理を通じて共有されます。ユーザーは、自分のすべてのプロジェクトで読み込まれ、共有されません。ローカルとユーザーの設定は、どちらも ~/.claude.json に保存されます。",
+  "refs": [
+   "https://code.claude.com/docs/en/mcp"
+  ]
+ },
+ {
+  "id": "arch-tool-038",
+  "cert": "architect",
+  "domain": "tool-design-and-mcp-integration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "process_refund の MCP ツールで、返品期限を過ぎた注文への返金が求められた。入力の形式は正しい。MCP の仕様に沿った返し方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールの結果に isError: true を付け、期限を過ぎていることを内容に書いて返す",
+    "why": "正しい。業務ロジックのエラーは、ツール実行エラーとして結果の中で返す。"
+   },
+   {
+    "id": "b",
+    "text": "JSON-RPC のプロトコルエラーとして返し、エージェントの処理を中断させる",
+    "why": "プロトコルエラーは、未知のツールなど、リクエストの構造そのものの問題に使う。"
+   },
+   {
+    "id": "c",
+    "text": "成功の結果として「処理しました」と返し、返金は行わずに内部のログにだけ記録する",
+    "why": "失敗を成功として返すと、エージェントは顧客に誤った案内をする。"
+   },
+   {
+    "id": "d",
+    "text": "何も返さずにタイムアウトさせ、エージェントが自分で再試行するのを待つ",
+    "why": "一時的な障害に見えるため、無意味な再試行が起きる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "MCP の仕様では、API の失敗、入力データの検証エラー、業務ロジックのエラーを、ツール実行エラーとして扱います。ツールの結果に isError: true を付けて返すと、内容がモデルに渡り、モデルは次の行動を決められます。未知のツールなど、リクエストの構造そのものの問題は、プロトコルエラーで返します。",
+  "refs": [
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/tools"
+  ]
  }
 ]

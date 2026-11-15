@@ -2,13 +2,13 @@
 
 ## 1. 対象試験と前提
 
-数値は第三者の対策サイト経由で確認したもの。CCDV-F は Anthropic の公式 Exam Guide(2026年7月版)の値とされるが、Architect の配点は公式には非公開で未確認。
+数値は、Anthropic Partner Academy の認定資格ページ(`anthropic-partners.skilljar.com/page/partner-certifications`)で公開されている公式 Exam Guide(CCDV-F、CCAR-F とも Version 1.0、2026年7月)と 2026-11-15 に照合した。問題数、時間、合格点、分野の配点は、両試験とも下の表と一致している。Exam Guide には分野ごとの出題範囲(Developer はスキルごとの配点、Architect はタスクステートメント)も載っている。
 
 | | Developer – Foundations (CCDV-F) | Architect – Foundations (CCAR-F) |
 |---|---|---|
-| 問題数 | 53問 | 60問(未確認) |
+| 問題数 | 53問 | 60問 |
 | 時間 | 120分 | 120分 |
-| 形式 | 単一選択 + 複数選択(選ぶ個数は問題文に明記) | シナリオベースの4択。6シナリオ中4つが出題されるとの情報あり |
+| 形式 | 単一選択 + 複数選択(選ぶ個数は問題文に明記) | シナリオベース。単一選択 + 複数選択(選ぶ個数は問題文に明記)。6シナリオのうち4つが無作為に出題される |
 | 合格点 | スケールドスコア 720 / 1000 | 720 / 1000 |
 
 出題ドメインと配点:
