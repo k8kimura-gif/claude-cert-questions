@@ -334,5 +334,155 @@
    "https://code.claude.com/docs/en/best-practices",
    "https://code.claude.com/docs/en/slash-commands"
   ]
+ },
+ {
+  "id": "dev-cc-010",
+  "cert": "developer",
+  "domain": "claude-code",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "既に CLAUDE.md があるリポジトリで /init を実行した。既定の動作はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "既存の CLAUDE.md を削除し、コードベースを解析した内容で新しく作り直す",
+    "why": "既存のファイルは上書きされない。"
+   },
+   {
+    "id": "b",
+    "text": "既存の CLAUDE.md を上書きせず、改善点を提案する",
+    "why": "正しい。CLAUDE.md がある場合は、改善の提案になる。"
+   },
+   {
+    "id": "c",
+    "text": "CLAUDE.md があるため何もせず、エラーを表示して終了する",
+    "why": "エラーにはならない。"
+   },
+   {
+    "id": "d",
+    "text": "既存の内容を ~/.claude/CLAUDE.md に移し、プロジェクト側には空のひな形を置く",
+    "why": "出典に、このような動作は書かれていない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "/init は、コードベースを解析して、ビルドやテストのコマンド、見つけた規約を含む CLAUDE.md の出発点を作ります。CLAUDE.md が既にある場合は、上書きせずに改善を提案します。そこから、Claude が自分では見つけられない指示を足していきます。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory",
+   "https://code.claude.com/docs/en/commands"
+  ]
+ },
+ {
+  "id": "dev-cc-011",
+  "cert": "developer",
+  "domain": "claude-code",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "API のハンドラ(src/api/ 以下の TypeScript)にだけ当てはまる規約がある。関係のない作業のときにはコンテキストに載せたくない。適切な置き方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プロジェクトの CLAUDE.md に書き、見出しに「API のハンドラを編集するときだけ読むこと」と添える",
+    "why": "CLAUDE.md は毎回すべて読み込まれる。見出しを付けても、コンテキストには載る。"
+   },
+   {
+    "id": "b",
+    "text": "別ファイルに書き、CLAUDE.md から @ で取り込む",
+    "why": "取り込んだファイルは、CLAUDE.md と一緒に読み込まれる。コンテキストの消費は減らない。"
+   },
+   {
+    "id": "c",
+    "text": "~/.claude/CLAUDE.md に書き、自分のすべてのプロジェクトで使えるようにしておく",
+    "why": "個人の設定で、チームに共有されない。毎回読み込まれる点も変わらない。"
+   },
+   {
+    "id": "d",
+    "text": ".claude/rules/ にファイルを置き、フロントマターの paths に src/api/**/*.ts を指定する",
+    "why": "正しい。paths に一致するファイルを扱うときだけ読み込まれる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": ".claude/rules/ のルールは、YAML のフロントマターの paths で対象を絞れます。パスを絞ったルールは、Claude が一致するファイルを読んだり編集したりするときに読み込まれます。@ による取り込みはファイルの整理には役立ちますが、取り込み元と一緒に読み込まれるため、コンテキストの消費は減りません。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory"
+  ]
+ },
+ {
+  "id": "dev-cc-012",
+  "cert": "developer",
+  "domain": "claude-code",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Code の auto モードの説明として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "すべての操作を確認なしで実行する。権限の規則も、分類器による審査も適用されない",
+    "why": "auto モードでは、分類器が操作を審査する。"
+   },
+   {
+    "id": "b",
+    "text": "ファイルの読み取りだけを行い、編集やコマンドの実行は一切しないモードである",
+    "why": "読み取り中心で進めるのはプランモードである。"
+   },
+   {
+    "id": "c",
+    "text": "利用者に代わって、分類器と呼ばれる別のモデルが操作を審査する",
+    "why": "正しい。確認を求める代わりに、分類器が操作を見る。"
+   },
+   {
+    "id": "d",
+    "text": "編集のたびに差分を表示し、利用者が承認するまで次の操作に進まないモードである",
+    "why": "操作のたびに利用者へ確認するのは、手動のモードの説明に近い。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "権限モードは、Claude が確認なしで行える操作の範囲を決めます。手動のモードでは、ファイルの編集、シェルコマンドの実行、ネットワークへのアクセスの多くで確認を求めます。auto モードでは、利用者の代わりに、分類器と呼ばれる 2 つ目のモデルが操作を審査します。",
+  "refs": [
+   "https://code.claude.com/docs/en/permission-modes"
+  ]
+ },
+ {
+  "id": "dev-cc-013",
+  "cert": "developer",
+  "domain": "claude-code",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "claude -p の結果を、決まったスキーマの JSON として後続のスクリプトで使いたい。指定と、結果の取り出し方として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "--output-format json と --json-schema を指定し、応答の structured_output フィールドを読む",
+    "why": "正しい。スキーマに沿った出力は structured_output に入る。"
+   },
+   {
+    "id": "b",
+    "text": "--output-format text を指定し、プロンプトで JSON だけを出力するよう頼んで、標準出力をそのままパースする",
+    "why": "スキーマへの適合は保証されない。"
+   },
+   {
+    "id": "c",
+    "text": "--json-schema だけを指定し、応答の result フィールドの文字列を JSON としてパースする",
+    "why": "スキーマに沿った出力が入るのは structured_output である。"
+   },
+   {
+    "id": "d",
+    "text": "--output-format stream-json を指定し、最後に届いたイベントの本文をスキーマとして扱う",
+    "why": "stream-json は、イベントを逐次受け取るための形式である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "スキーマに沿った出力を得るには、--output-format json と --json-schema を組み合わせます。応答には、セッション ID や使用量などの情報とともに、structured_output フィールドに構造化された出力が入ります。Claude が依頼を断った場合など、有効な出力なしで終わるとこのフィールドは付かないため、使う前に存在を確かめます。",
+  "refs": [
+   "https://code.claude.com/docs/en/headless",
+   "https://code.claude.com/docs/en/cli-reference"
+  ]
  }
 ]

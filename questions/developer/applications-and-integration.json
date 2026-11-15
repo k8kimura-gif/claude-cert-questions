@@ -2315,5 +2315,117 @@
   "refs": [
    "https://platform.claude.com/docs/en/api/errors"
   ]
+ },
+ {
+  "id": "dev-app-063",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "チームで整えたスキル、サブエージェント、フック、MCP サーバーの設定一式を、別の複数のリポジトリでも同じように使いたい。適切な方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各リポジトリの CLAUDE.md に、元のリポジトリの設定ファイルを読みに行くよう指示を書く",
+    "why": "CLAUDE.md は指示であり、他のリポジトリのフックや MCP の設定を有効にはしない。"
+   },
+   {
+    "id": "b",
+    "text": "プラグインとしてまとめ、各リポジトリでインストールする",
+    "why": "正しい。複数の部品を 1 つの単位として導入でき、更新も配布できる。"
+   },
+   {
+    "id": "c",
+    "text": "一式を 1 つの大きなスキルの SKILL.md に書き写し、各リポジトリに置く",
+    "why": "スキルは指示と知識を与えるもので、フックや MCP サーバーの設定は含められない。"
+   },
+   {
+    "id": "d",
+    "text": "設定一式を ~/.claude/ に置き、各自の端末で手作業により同期する",
+    "why": "個人の設定で、チームやリポジトリには共有されない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "プラグインは、スキル、エージェント、フック、MCP サーバーなどの部品を入れたディレクトリで、Claude Code が 1 つの単位としてインストールして読み込みます。公式は、複数の部品をまとめて配りたいとき、多くのプロジェクトに入れたいとき、版を付けて公開したいときにプラグインを使うとしています。マニフェストは .claude-plugin/plugin.json に置きます。",
+  "refs": [
+   "https://code.claude.com/docs/en/plugins"
+  ]
+ },
+ {
+  "id": "dev-app-064",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "自作のプラグインが、別のプラグイン(secrets-vault)が有効でないと動かない。また、利用者が意図せず新しい版に上がらないようにしたい。plugin.json での指定として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "dependencies に secrets-vault を書き、version に版の文字列を設定する",
+    "why": "正しい。dependencies は必要なプラグインを、version は固定する版を表す。"
+   },
+   {
+    "id": "b",
+    "text": "requires に secrets-vault を書き、lock に true を設定する",
+    "why": "出典のマニフェストに、これらの項目はない。"
+   },
+   {
+    "id": "c",
+    "text": "description に「secrets-vault が必要」と書き、name の末尾に版の番号を付ける",
+    "why": "説明文や名前は、依存関係や版の固定として扱われない。"
+   },
+   {
+    "id": "d",
+    "text": "dependencies に secrets-vault を書き、version は省略して常に最新が使われるようにする",
+    "why": "version を省くと、版は固定されない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "プラグインのマニフェスト(.claude-plugin/plugin.json)の dependencies は、そのプラグインが動くために有効でなければならないプラグインを表します。version は版の文字列で、設定すると、変更するまで利用者はその版に固定されます。",
+  "refs": [
+   "https://code.claude.com/docs/en/plugins-reference",
+   "https://code.claude.com/docs/en/plugins"
+  ]
+ },
+ {
+  "id": "dev-app-065",
+  "cert": "developer",
+  "domain": "applications-and-integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "プロジェクトの CLAUDE.md が長くなり、指示が守られにくくなってきた。ドキュメントに沿った対処はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "内容を複数のファイルに分け、CLAUDE.md から @ ですべて取り込む。読み込まれる量が減る",
+    "why": "取り込んだファイルは一緒に読み込まれるため、コンテキストの消費は減らない。"
+   },
+   {
+    "id": "b",
+    "text": "重要な指示を大文字にし、同じ指示を 3 回繰り返して書く",
+    "why": "出典は、長さを抑えることと、内容を分けることを勧めている。"
+   },
+   {
+    "id": "c",
+    "text": "CLAUDE.md を削除し、すべての指示を毎回のプロンプトに貼り付ける",
+    "why": "毎回の手作業になり、共有もできない。"
+   },
+   {
+    "id": "d",
+    "text": "一部のコードにだけ関わる指示を、パスを絞ったルールに移す",
+    "why": "正しい。一致するファイルを扱うときだけ読み込まれる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "公式は、CLAUDE.md を 1 ファイル 200 行未満に保つことを目安にしています。長いファイルはコンテキストを多く使い、守られにくくなります。コードベースの一部だけに関わる指示は、パスを絞ったルールに移します。@ による取り込みは整理には役立ちますが、取り込み元と一緒に読み込まれるため、コンテキストの消費は減りません。",
+  "refs": [
+   "https://code.claude.com/docs/en/memory"
+  ]
  }
 ]

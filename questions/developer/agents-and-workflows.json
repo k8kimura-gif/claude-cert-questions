@@ -1047,5 +1047,118 @@
    "https://www.anthropic.com/engineering/building-effective-agents",
    "https://www.anthropic.com/engineering/multi-agent-research-system"
   ]
+ },
+ {
+  "id": "dev-agent-029",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Managed Agents を使いたいが、ツールの実行(ファイル操作やコマンド)は自社の基盤の中で行いたい。ドキュメントに沿った構成はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Managed Agents では実行環境を選べない。Messages API で、ループを自前で実装するしかない",
+    "why": "環境として、自社の基盤上のサンドボックスを選べる。"
+   },
+   {
+    "id": "b",
+    "text": "環境として、自社の基盤上のセルフホストのサンドボックスを使う",
+    "why": "正しい。エージェントのループは Anthropic が運用し、ツールは自社の環境で動く。"
+   },
+   {
+    "id": "c",
+    "text": "エージェントのループを自社で動かし、ツールの実行だけを Anthropic のクラウドに任せる",
+    "why": "求めている構成と逆である。"
+   },
+   {
+    "id": "d",
+    "text": "Agent SDK を自社のコンテナで動かす構成を、Managed Agents の一種として登録する",
+    "why": "Agent SDK のホスティングは、ループを自社で動かす別の選択肢である。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Managed Agents は、エージェントのループを Anthropic が運用します。環境(Environment)は、セッションがどこで動くかの設定で、Anthropic が管理するクラウドのサンドボックスか、自社の基盤上のセルフホストのサンドボックスを選べます。ループそのものを自社で動かしたい場合は、Agent SDK のホスティングが選択肢になります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/managed-agents/overview",
+   "https://code.claude.com/docs/en/agent-sdk/hosting"
+  ]
+ },
+ {
+  "id": "dev-agent-030",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Agent SDK で、利用者ごとに 1 つのセッションを持つ複数利用者向けのアプリケーションを作る。ある利用者が戻ってきたとき、その人の会話を続ける方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "continue を指定し、そのディレクトリで最も新しいセッションを続ける",
+    "why": "continue は直近のセッションを続ける。複数の利用者がいると、別の人のセッションになりうる。"
+   },
+   {
+    "id": "b",
+    "text": "fork を指定し、元のセッションの履歴を写した新しいセッションを作る",
+    "why": "fork は、元を残して別の方向を試すためのものである。"
+   },
+   {
+    "id": "c",
+    "text": "過去のやり取りをすべて文字列に連結し、新しいセッションの最初のプロンプトに貼り付ける",
+    "why": "セッションを再開する仕組みを使えば、履歴を自分で組み立てる必要はない。"
+   },
+   {
+    "id": "d",
+    "text": "セッション ID を保存しておき、resume に渡す",
+    "why": "正しい。複数のセッションがある場合は、ID を指定して再開する。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "continue と resume は、どちらも既存のセッションを続けます。continue は、現在のディレクトリで最も新しいセッションを探します。resume は、指定したセッション ID のセッションを続けます。利用者ごとにセッションがある場合のように、複数のセッションを扱うときは、ID を自分で管理して resume を使います。fork は、元を変えずに履歴の写しから新しいセッションを作ります。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/sessions"
+  ]
+ },
+ {
+  "id": "dev-agent-031",
+  "cert": "developer",
+  "domain": "agents-and-workflows",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Agent SDK のエージェントをコンテナで動かしている。アイドル時にコンテナを止めたところ、再び起動したときに会話の続きができなかった。原因と対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "会話の記録は既定でコンテナのローカルディスクにある。SessionStore を設定して外部に保存する",
+    "why": "正しい。記録を外部に置き、起動時に読み込む。"
+   },
+   {
+    "id": "b",
+    "text": "会話の記録は Anthropic の側に保存されている。API キーを同じものにすれば、自動で復元される",
+    "why": "既定では、記録はコンテナのファイルシステムにある。"
+   },
+   {
+    "id": "c",
+    "text": "コンテナを止めると、セッション ID が無効になる仕様である。対策はなく、常時起動するしかない",
+    "why": "記録を外部に保存すれば、止めても再開できる。"
+   },
+   {
+    "id": "d",
+    "text": "max_turns の上限に達したためである。上限を引き上げれば、再起動のあとも続きができる",
+    "why": "ターン数の上限は、コンテナの停止とは関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Agent SDK では、会話の記録を含むエージェントの状態が、既定でコンテナのファイルシステムにあります。これらは、コンテナの再起動、スケールダウン、別のノードへの移動のあとには残りません。記録をホストをまたいで保つには、SessionStore のアダプターを設定します。アイドル時に止めて必要なときに起動する構成では、この設定が必須です。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/hosting",
+   "https://code.claude.com/docs/en/agent-sdk/sessions"
+  ]
  }
 ]

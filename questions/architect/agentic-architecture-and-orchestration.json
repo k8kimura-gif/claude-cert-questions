@@ -2035,5 +2035,154 @@
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts",
    "https://www.anthropic.com/engineering/building-effective-agents"
   ]
+ },
+ {
+  "id": "arch-agent-055",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "500 ドルを超える返金は、必ず人の担当者に回す決まりである。Agent SDK のフックで確実に守らせたい。適切な実装はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "PostToolUse フックで process_refund の結果を調べ、500 ドルを超えていたら取り消しを依頼する文を追加する",
+    "why": "PostToolUse の時点では、ツールは実行済みである。返金は行われている。"
+   },
+   {
+    "id": "b",
+    "text": "PreToolUse フックで金額を調べ、超えていれば permissionDecision に deny を返し、理由に人への引き継ぎを書く",
+    "why": "正しい。実行の前に止められ、理由がモデルに伝わる。"
+   },
+   {
+    "id": "c",
+    "text": "Stop フックで会話の終わりに返金の合計を調べ、超えていたら次の会話で担当者に知らせる",
+    "why": "会話の終わりでは、返金は実行済みである。"
+   },
+   {
+    "id": "d",
+    "text": "システムプロンプトに上限の金額を書き、超える返金は行わないよう強い言葉で指示する",
+    "why": "指示は確率的にしか守られない。確実さが必要な規則には足りない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "PreToolUse フックは、ツールが呼ばれる前に実行されます。permissionDecision に deny を返すとツールの呼び出しが止まり、permissionDecisionReason でモデルに理由を伝えられます。モデルは、その理由を受けて、人への引き継ぎなど別の手順に進めます。PostToolUse はツールの実行後に走るため、止める用途には使えません。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/hooks"
+  ]
+ },
+ {
+  "id": "arch-agent-056",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "devtools",
+  "stem": "調査を終えたセッションをフォークして、2 つのリファクタリング案を別々のセッションで実装させた。フォークの性質として、設計で考慮すべきものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "フォークすると元のセッションは削除される。元の調査に戻るには、最初からやり直す必要がある",
+    "why": "元のセッションの ID と履歴は、変わらずに残る。"
+   },
+   {
+    "id": "b",
+    "text": "フォークしたセッションは元と同じセッション ID を持つため、どちらか一方しか再開できない",
+    "why": "フォークは、独自のセッション ID を持つ。"
+   },
+   {
+    "id": "c",
+    "text": "フォークしたセッションは、元の会話の履歴を持たない。調査結果を、プロンプトで渡し直す必要がある",
+    "why": "フォークは、元の履歴の写しから始まる。"
+   },
+   {
+    "id": "d",
+    "text": "分かれるのは会話の履歴で、ファイルシステムではない。一方の編集は、同じディレクトリで動く他方にも見える",
+    "why": "正しい。ファイルの変更も分けたい場合は、別の仕組みが要る。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "フォークは、元の履歴の写しから始まり、その時点から分かれる新しいセッションを作ります。フォークは独自の ID を持ち、元の ID と履歴は変わりません。ただし、分かれるのは会話の履歴で、ファイルシステムではありません。フォークしたエージェントがファイルを編集すると、同じディレクトリで動くどのセッションからも見えます。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/sessions"
+  ]
+ },
+ {
+  "id": "arch-agent-057",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "support",
+  "stem": "サポートのエージェントは、顧客ごとにセッションを持つ。同じサーバーで、多数の顧客の会話が並行して進む。ある顧客が翌日に戻ってきたとき、その会話を続ける方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "顧客ごとのセッション ID を保存しておき、resume に渡す",
+    "why": "正しい。複数のセッションを扱うときは、ID を指定して再開する。"
+   },
+   {
+    "id": "b",
+    "text": "continue を使い、そのディレクトリで最も新しいセッションを自動で続ける",
+    "why": "最も新しいセッションは、別の顧客のものでありうる。"
+   },
+   {
+    "id": "c",
+    "text": "fork を使い、直前の顧客のセッションの写しから新しいセッションを始める",
+    "why": "別の顧客の履歴を引き継ぐことになる。"
+   },
+   {
+    "id": "d",
+    "text": "セッションは使わず、毎回、過去の会話の全文を新しいプロンプトの先頭に貼り付ける",
+    "why": "再開の仕組みを使えば、履歴を自分で組み立てる必要はない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "continue は、現在のディレクトリで最も新しいセッションを続けます。追跡が不要なので、会話が 1 つだけのアプリケーションに向きます。resume は、指定したセッション ID のセッションを続けます。利用者ごとに 1 つずつセッションがある場合のように、複数のセッションを扱うときは resume が必要です。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/sessions"
+  ]
+ },
+ {
+  "id": "arch-agent-058",
+  "cert": "architect",
+  "domain": "agentic-architecture-and-orchestration",
+  "type": "single",
+  "scenarioId": "research",
+  "stem": "統合を担当するサブエージェントが、自分で Web 検索を始めてしまう。サブエージェントの定義(AgentDefinition)を見ると、tools が省略されていた。原因と対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "tools を省略すると、ツールを 1 つも使えない。検索は、コーディネーターが代わりに実行している",
+    "why": "省略すると、使えるツールをすべて引き継ぐ。"
+   },
+   {
+    "id": "b",
+    "text": "tools の指定は、サブエージェントでは無視される。コーディネーターの allowedTools を減らすしかない",
+    "why": "tools は、サブエージェントが使えるツールを決める項目である。"
+   },
+   {
+    "id": "c",
+    "text": "tools を省略すると、サブエージェントが使えるツールをすべて引き継ぐ。統合に必要なツールだけを tools に列挙する",
+    "why": "正しい。役割に必要なツールに絞る。"
+   },
+   {
+    "id": "d",
+    "text": "description に「検索はしないこと」と書き足す。description は、ツールの利用を制限する項目である",
+    "why": "description は、いつそのサブエージェントを呼ぶかを判断するための説明である。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "AgentDefinition の tools は、そのサブエージェントに許すツール名の配列です。省略すると、サブエージェントが使えるツールをすべて引き継ぎます。統合の担当に検索のツールが見えていると、役割の外の作業を始める原因になります。役割に必要なツールだけを列挙します。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/subagents",
+   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+  ]
  }
 ]

@@ -1201,5 +1201,155 @@
    "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
    "https://www.anthropic.com/engineering/multi-agent-research-system"
   ]
+ },
+ {
+  "id": "dev-model-033",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Fable 5.2 を API で使う。思考の深さ、応答時間、費用のバランスを調整する主な手段はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "thinking を disabled にするか enabled にするかを、リクエストごとに切り替える",
+    "why": "Fable 5.2 では、適応的な思考が常に有効である。"
+   },
+   {
+    "id": "b",
+    "text": "temperature を下げて、思考に使われるトークンを減らす",
+    "why": "temperature は出力のばらつきに関わる設定で、思考の量を決めるものではない。"
+   },
+   {
+    "id": "c",
+    "text": "max_tokens を小さくして、思考を早く打ち切らせる",
+    "why": "max_tokens は出力の上限で、途中で打ち切られるだけである。"
+   },
+   {
+    "id": "d",
+    "text": "effort の水準を変える",
+    "why": "正しい。思考は常に有効なので、effort が主な調整手段になる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "Claude Fable 5.2 は 5 段階の effort すべてに対応し、API の既定は high です。適応的な思考(adaptive thinking)が常に有効なため、思考の深さ、応答時間、費用を調整する主な手段は effort になります。公式は high から始め、評価で品質が保てる場合に medium や low へ下げることを勧めています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/effort",
+   "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost"
+  ]
+ },
+ {
+  "id": "dev-model-034",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "effort を指定していないアプリケーションを、Claude Opus 5 から Claude Opus 5.5 に切り替えた。応答の傾向が変わった。ドキュメントに書かれている原因はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Opus 5.5 は effort の既定が medium で、Opus 5 までの high より 1 段低い",
+    "why": "正しい。指定を省くと、1 段低い水準で動く。"
+   },
+   {
+    "id": "b",
+    "text": "Opus 5.5 は effort に対応しておらず、指定しても無視される",
+    "why": "Opus 5.5 は 5 段階すべてに対応している。"
+   },
+   {
+    "id": "c",
+    "text": "Opus 5.5 は effort の既定が max で、Opus 5 までより多くのトークンを使う",
+    "why": "既定は medium である。"
+   },
+   {
+    "id": "d",
+    "text": "Opus 5.5 では effort が必須になり、省略するとエラーになる",
+    "why": "省略すると、モデルの既定の水準が使われる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "多くのモデルは effort の既定が high ですが、Claude Opus 5.5 と Claude Haiku 5.5 は medium です。Opus 5 以前の Opus は high が既定のため、effort を省いたリクエストは、Opus 5.5 では 1 段低い水準で動きます。モデルを切り替えるときは、既定値の違いを確かめ、必要なら明示します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/effort"
+  ]
+ },
+ {
+  "id": "dev-model-035",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "fast モード(speed: \"fast\")の説明として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "最初のトークンが返るまでの時間を短くする機能で、追加の料金はかからない",
+    "why": "効果は主に出力の速度で、料金は割増になる。"
+   },
+   {
+    "id": "b",
+    "text": "小型のモデルに自動で切り替えることで、応答を速くする機能である",
+    "why": "モデルを切り替える機能ではない。"
+   },
+   {
+    "id": "c",
+    "text": "出力トークンの生成速度を最大 2.5 倍にする。料金は割増になる",
+    "why": "正しい。対応モデルで、speed に fast を指定する。"
+   },
+   {
+    "id": "d",
+    "text": "入力トークンをキャッシュして、2 回目以降の応答を速くする機能である",
+    "why": "それはプロンプトキャッシュの説明である。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "fast モードは、対応するモデルで出力トークンの生成速度を最大 2.5 倍にします。料金は割増です。効果は 1 秒あたりの出力トークン数に表れ、最初のトークンまでの時間を縮めるものではありません。リクエストに speed: \"fast\" を指定して使います。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/fast-mode"
+  ]
+ },
+ {
+  "id": "dev-model-036",
+  "cert": "developer",
+  "domain": "model-selection-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "プロンプトキャッシュを使うアプリケーションで、リクエストごとに effort を low と high の間で切り替えるようにした。キャッシュの読み出しが減った。ドキュメントに沿った説明はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "effort を指定すると、キャッシュそのものが無効になる仕様である",
+    "why": "同じ設定を続ければ、キャッシュは保たれる。"
+   },
+   {
+    "id": "b",
+    "text": "effort を変えると、モデルが別のものに切り替わり、キャッシュが共有されなくなる",
+    "why": "effort はモデルを切り替える設定ではない。"
+   },
+   {
+    "id": "c",
+    "text": "effort が low のリクエストは、キャッシュへの書き込みが省略される",
+    "why": "出典に、このような記述はない。"
+   },
+   {
+    "id": "d",
+    "text": "解決された effort の値はプロンプトに反映されるため、変えるとキャッシュの区切りが無効になりうる",
+    "why": "正しい。同じ設定を続けるリクエストでは、キャッシュが保たれる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "思考の設定と effort の水準を同じに保った連続するリクエストでは、プロンプトキャッシュが保たれます。解決された effort の値はプロンプトに反映されるため、リクエストの間で変えると、キャッシュの区切り(ブレークポイント)が無効になることがあります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
  }
 ]
