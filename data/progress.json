@@ -4,975 +4,1092 @@
   "source": "muse-space:claudezi-ge-kuizu",
   "repo": "k8kimura-gif/claude-cert-questions",
   "path": "data/progress.json",
-  "exportedAt": "2026-11-15T07:34:09.735Z",
+  "exportedAt": "2026-11-15T07:59:04.789Z",
   "summary": {
-    "answered": 46,
-    "correct": 42,
-    "accuracyPercent": 91,
+    "accuracyPercent": 93,
+    "answered": 55,
     "certs": {
-      "developer": {
-        "code": "CCDV-F",
-        "name": "Developer – Foundations",
-        "answered": 46,
-        "correct": 42,
-        "accuracyPercent": 91,
-        "askedCount": 50,
-        "sessionCount": 10,
-        "completedSessionCount": 9,
-        "lastAnsweredAt": "2026-11-15T07:15:26.838Z",
-        "domains": [
-          {
-            "id": "applications-and-integration",
-            "ja": "アプリケーションと統合",
-            "weight": 33.1,
-            "answered": 19,
-            "correct": 18,
-            "accuracyPercent": 95
-          },
-          {
-            "id": "model-selection-and-optimization",
-            "ja": "モデル選択と最適化",
-            "weight": 16.8,
-            "answered": 9,
-            "correct": 9,
-            "accuracyPercent": 100
-          },
-          {
-            "id": "agents-and-workflows",
-            "ja": "エージェントとワークフロー",
-            "weight": 14.7,
-            "answered": 9,
-            "correct": 7,
-            "accuracyPercent": 78
-          },
-          {
-            "id": "prompt-and-context-engineering",
-            "ja": "プロンプトとコンテキスト設計",
-            "weight": 11,
-            "answered": 9,
-            "correct": 8,
-            "accuracyPercent": 89
-          },
-          {
-            "id": "tools-and-mcps",
-            "ja": "ツールと MCP",
-            "weight": 10.6,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
-          },
-          {
-            "id": "security-and-safety",
-            "ja": "セキュリティと安全性",
-            "weight": 8.1,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
-          },
-          {
-            "id": "claude-code",
-            "ja": "Claude Code",
-            "weight": 3.1,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
-          },
-          {
-            "id": "eval-testing-and-debugging",
-            "ja": "評価・テスト・デバッグ",
-            "weight": 2.6,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
-          }
-        ]
-      },
       "architect": {
-        "code": "CCAR-F",
-        "name": "Architect – Foundations",
-        "answered": 0,
-        "correct": 0,
         "accuracyPercent": null,
+        "answered": 0,
         "askedCount": 5,
-        "sessionCount": 1,
+        "code": "CCAR-F",
         "completedSessionCount": 0,
-        "lastAnsweredAt": null,
+        "correct": 0,
         "domains": [
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "agentic-architecture-and-orchestration",
             "ja": "エージェント設計とオーケストレーション",
-            "weight": 27,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 27
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "claude-code-configuration-and-workflows",
             "ja": "Claude Code の設定とワークフロー",
-            "weight": 20,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 20
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "prompt-engineering-and-structured-output",
             "ja": "プロンプト設計と構造化出力",
-            "weight": 20,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 20
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "tool-design-and-mcp-integration",
             "ja": "ツール設計と MCP 統合",
-            "weight": 18,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 18
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "context-management-and-reliability",
             "ja": "コンテキスト管理と信頼性",
-            "weight": 15,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 15
           }
-        ]
+        ],
+        "lastAnsweredAt": null,
+        "name": "Architect – Foundations",
+        "sessionCount": 1
       },
       "architect-pro": {
-        "code": "CCAR-P",
-        "name": "Architect – Professional",
-        "answered": 0,
-        "correct": 0,
         "accuracyPercent": null,
+        "answered": 0,
         "askedCount": 0,
-        "sessionCount": 0,
+        "code": "CCAR-P",
         "completedSessionCount": 0,
-        "lastAnsweredAt": null,
+        "correct": 0,
         "domains": [
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "solution-design-and-architecture",
             "ja": "ソリューション設計とアーキテクチャ",
-            "weight": 17,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 17
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "models-prompting-and-context-engineering",
             "ja": "モデル・プロンプト・コンテキスト設計",
-            "weight": 13,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 13
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "integration",
             "ja": "統合",
-            "weight": 19,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 19
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "evaluation-testing-and-optimization",
             "ja": "評価・テスト・最適化",
-            "weight": 16,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 16
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "governance-safety-and-risk",
             "ja": "ガバナンス・安全性・リスク管理",
-            "weight": 14,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 14
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "stakeholder-communication-and-lifecycle",
             "ja": "ステークホルダー対応とライフサイクル管理",
-            "weight": 14,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 14
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "developer-productivity-and-operational-enablement",
             "ja": "開発者の生産性と運用の整備",
-            "weight": 7,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 7
           }
-        ]
+        ],
+        "lastAnsweredAt": null,
+        "name": "Architect – Professional",
+        "sessionCount": 0
       },
       "associate": {
-        "code": "CCAO-F",
-        "name": "Associate – Foundations",
-        "answered": 0,
-        "correct": 0,
         "accuracyPercent": null,
+        "answered": 0,
         "askedCount": 0,
-        "sessionCount": 0,
+        "code": "CCAO-F",
         "completedSessionCount": 0,
-        "lastAnsweredAt": null,
+        "correct": 0,
         "domains": [
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "prompting-and-task-execution",
             "ja": "プロンプトとタスクの実行",
-            "weight": 14,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 14
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "output-evaluation-and-validation",
             "ja": "出力の評価と検証",
-            "weight": 21,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 21
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "product-and-model-selection",
             "ja": "製品とモデルの選択",
-            "weight": 12,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 12
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "workflow-integration-and-solution-design",
             "ja": "ワークフローへの統合とソリューション設計",
-            "weight": 16,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 16
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "configuration-and-knowledge-management",
             "ja": "設定とナレッジ管理",
-            "weight": 12,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 12
           },
           {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
             "id": "governance-risk-and-responsible-use",
             "ja": "ガバナンス・リスク・責任ある利用",
-            "weight": 15,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null
+            "weight": 15
           },
           {
-            "id": "troubleshooting-and-optimization",
-            "ja": "トラブルシューティングと最適化",
-            "weight": 10,
+            "accuracyPercent": null,
             "answered": 0,
             "correct": 0,
-            "accuracyPercent": null
+            "id": "troubleshooting-and-optimization",
+            "ja": "トラブルシューティングと最適化",
+            "weight": 10
           }
-        ]
+        ],
+        "lastAnsweredAt": null,
+        "name": "Associate – Foundations",
+        "sessionCount": 0
+      },
+      "developer": {
+        "accuracyPercent": 93,
+        "answered": 55,
+        "askedCount": 55,
+        "code": "CCDV-F",
+        "completedSessionCount": 11,
+        "correct": 51,
+        "domains": [
+          {
+            "accuracyPercent": 95,
+            "answered": 22,
+            "correct": 21,
+            "id": "applications-and-integration",
+            "ja": "アプリケーションと統合",
+            "weight": 33.1
+          },
+          {
+            "accuracyPercent": 100,
+            "answered": 11,
+            "correct": 11,
+            "id": "model-selection-and-optimization",
+            "ja": "モデル選択と最適化",
+            "weight": 16.8
+          },
+          {
+            "accuracyPercent": 82,
+            "answered": 11,
+            "correct": 9,
+            "id": "agents-and-workflows",
+            "ja": "エージェントとワークフロー",
+            "weight": 14.7
+          },
+          {
+            "accuracyPercent": 91,
+            "answered": 11,
+            "correct": 10,
+            "id": "prompt-and-context-engineering",
+            "ja": "プロンプトとコンテキスト設計",
+            "weight": 11
+          },
+          {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
+            "id": "tools-and-mcps",
+            "ja": "ツールと MCP",
+            "weight": 10.6
+          },
+          {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
+            "id": "security-and-safety",
+            "ja": "セキュリティと安全性",
+            "weight": 8.1
+          },
+          {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
+            "id": "claude-code",
+            "ja": "Claude Code",
+            "weight": 3.1
+          },
+          {
+            "accuracyPercent": null,
+            "answered": 0,
+            "correct": 0,
+            "id": "eval-testing-and-debugging",
+            "ja": "評価・テスト・デバッグ",
+            "weight": 2.6
+          }
+        ],
+        "lastAnsweredAt": "2026-11-15T07:58:09.594Z",
+        "name": "Developer – Foundations",
+        "sessionCount": 11
       }
-    }
+    },
+    "correct": 51
   },
   "progress": {
-    "developer": {
-      "answers": {
-        "dev-agent-001": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-agent-003": {
-          "n": 1,
-          "correct": 0,
-          "streak": 0,
-          "last": "2026-11-15"
-        },
-        "dev-agent-007": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-agent-009": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-agent-012": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-agent-015": {
-          "n": 1,
-          "correct": 0,
-          "streak": 0,
-          "last": "2026-11-15"
-        },
-        "dev-agent-018": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-agent-019": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-agent-027": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-006": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-007": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-010": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-012": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-017": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-019": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-025": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-028": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-029": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-031": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-040": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-044": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-047": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-050": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-054": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-055": {
-          "n": 1,
-          "correct": 0,
-          "streak": 0,
-          "last": "2026-11-15"
-        },
-        "dev-app-058": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-059": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-app-062": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-model-001": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-model-007": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-model-011": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-model-015": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-model-016": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-model-022": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-model-026": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-model-028": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-model-030": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-prompt-001": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-prompt-003": {
-          "n": 1,
-          "correct": 0,
-          "streak": 0,
-          "last": "2026-11-15"
-        },
-        "dev-prompt-008": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-prompt-013": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-prompt-017": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-prompt-019": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-prompt-020": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-prompt-021": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        },
-        "dev-prompt-022": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "last": "2026-11-15"
-        }
-      },
-      "log": [
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-062",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-prompt-021",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-model-022",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-agent-003",
-          "ok": 0,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-006",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-044",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-prompt-003",
-          "ok": 0,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-050",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-model-026",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-agent-027",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-010",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-prompt-001",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-agent-015",
-          "ok": 0,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-model-030",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-040",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-029",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-agent-001",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-model-015",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-prompt-013",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-031",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-058",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-prompt-008",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-agent-018",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-model-028",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-055",
-          "ok": 0,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-model-007",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-prompt-020",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-028",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-agent-007",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-025",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-model-001",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-agent-019",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-012",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-prompt-022",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-054",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-047",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-model-011",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-agent-009",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-prompt-017",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-017",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-007",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-019",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-agent-012",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-model-016",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-prompt-019",
-          "ok": 1,
-          "m": "space"
-        },
-        {
-          "d": "2026-11-15",
-          "q": "dev-app-059",
-          "ok": 1,
-          "m": "space"
-        }
-      ],
-      "mocks": [],
-      "mock": null,
-      "lastMock": null,
-      "day": null
-    },
     "architect": {
       "answers": {},
-      "log": [],
-      "mocks": [],
-      "mock": null,
+      "day": null,
       "lastMock": null,
-      "day": null
+      "log": [],
+      "mock": null,
+      "mocks": []
     },
     "architect-pro": {
       "answers": {},
-      "log": [],
-      "mocks": [],
-      "mock": null,
+      "day": null,
       "lastMock": null,
-      "day": null
+      "log": [],
+      "mock": null,
+      "mocks": []
     },
     "associate": {
       "answers": {},
-      "log": [],
-      "mocks": [],
-      "mock": null,
+      "day": null,
       "lastMock": null,
-      "day": null
+      "log": [],
+      "mock": null,
+      "mocks": []
+    },
+    "developer": {
+      "answers": {
+        "dev-agent-001": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-agent-003": {
+          "correct": 0,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 0
+        },
+        "dev-agent-007": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-agent-008": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-agent-009": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-agent-011": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-agent-012": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-agent-015": {
+          "correct": 0,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 0
+        },
+        "dev-agent-018": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-agent-019": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-agent-027": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-006": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-007": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-010": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-012": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-014": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-017": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-019": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-025": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-028": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-029": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-031": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-033": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-040": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-044": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-046": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-047": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-050": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-054": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-055": {
+          "correct": 0,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 0
+        },
+        "dev-app-058": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-059": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-app-062": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-model-001": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-model-007": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-model-011": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-model-015": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-model-016": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-model-019": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-model-022": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-model-024": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-model-026": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-model-028": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-model-030": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-prompt-001": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-prompt-003": {
+          "correct": 0,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 0
+        },
+        "dev-prompt-004": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-prompt-008": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-prompt-013": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-prompt-014": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-prompt-017": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-prompt-019": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-prompt-020": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-prompt-021": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        },
+        "dev-prompt-022": {
+          "correct": 1,
+          "last": "2026-11-15",
+          "n": 1,
+          "streak": 1
+        }
+      },
+      "day": null,
+      "lastMock": null,
+      "log": [
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-062"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-prompt-021"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-model-022"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 0,
+          "q": "dev-agent-003"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-006"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-044"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 0,
+          "q": "dev-prompt-003"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-050"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-model-026"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-agent-027"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-010"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-prompt-001"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 0,
+          "q": "dev-agent-015"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-model-030"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-040"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-029"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-agent-001"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-model-015"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-prompt-013"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-031"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-058"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-prompt-008"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-agent-018"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-model-028"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 0,
+          "q": "dev-app-055"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-model-007"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-prompt-020"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-028"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-agent-007"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-025"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-model-001"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-agent-019"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-012"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-prompt-022"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-054"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-047"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-model-011"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-agent-009"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-prompt-017"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-017"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-007"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-019"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-agent-012"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-model-016"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-prompt-019"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-059"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-model-019"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-agent-011"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-046"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-prompt-004"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-prompt-014"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-033"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-app-014"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-agent-008"
+        },
+        {
+          "d": "2026-11-15",
+          "m": "space",
+          "ok": 1,
+          "q": "dev-model-024"
+        }
+      ],
+      "mock": null,
+      "mocks": []
     }
   },
   "sessions": {
-    "developer": [
-      {
-        "id": 1,
-        "status": "completed",
-        "createdAt": "2026-11-14T13:14:21.526Z",
-        "completedAt": "2026-11-14T23:41:50.062Z",
-        "totalQuestions": 5,
-        "answered": 5,
-        "correct": 4
-      },
-      {
-        "id": 3,
-        "status": "completed",
-        "createdAt": "2026-11-14T23:45:42.112Z",
-        "completedAt": "2026-11-14T23:58:13.156Z",
-        "totalQuestions": 5,
-        "answered": 5,
-        "correct": 4
-      },
-      {
-        "id": 4,
-        "status": "completed",
-        "createdAt": "2026-11-14T23:59:49.554Z",
-        "completedAt": "2026-11-15T04:47:35.501Z",
-        "totalQuestions": 5,
-        "answered": 5,
-        "correct": 4
-      },
-      {
-        "id": 5,
-        "status": "completed",
-        "createdAt": "2026-11-15T04:47:50.113Z",
-        "completedAt": "2026-11-15T05:26:52.034Z",
-        "totalQuestions": 5,
-        "answered": 5,
-        "correct": 5
-      },
-      {
-        "id": 6,
-        "status": "completed",
-        "createdAt": "2026-11-15T05:27:08.202Z",
-        "completedAt": "2026-11-15T06:12:06.498Z",
-        "totalQuestions": 5,
-        "answered": 5,
-        "correct": 4
-      },
-      {
-        "id": 7,
-        "status": "completed",
-        "createdAt": "2026-11-15T06:31:39.012Z",
-        "completedAt": "2026-11-15T06:34:21.314Z",
-        "totalQuestions": 5,
-        "answered": 5,
-        "correct": 5
-      },
-      {
-        "id": 8,
-        "status": "completed",
-        "createdAt": "2026-11-15T06:35:01.091Z",
-        "completedAt": "2026-11-15T06:37:31.455Z",
-        "totalQuestions": 5,
-        "answered": 5,
-        "correct": 5
-      },
-      {
-        "id": 9,
-        "status": "completed",
-        "createdAt": "2026-11-15T06:37:40.093Z",
-        "completedAt": "2026-11-15T06:41:54.945Z",
-        "totalQuestions": 5,
-        "answered": 5,
-        "correct": 5
-      },
-      {
-        "id": 10,
-        "status": "completed",
-        "createdAt": "2026-11-15T06:43:45.404Z",
-        "completedAt": "2026-11-15T06:50:58.648Z",
-        "totalQuestions": 5,
-        "answered": 5,
-        "correct": 5
-      },
-      {
-        "id": 11,
-        "status": "in_progress",
-        "createdAt": "2026-11-15T07:15:11.019Z",
-        "completedAt": null,
-        "totalQuestions": 5,
-        "answered": 1,
-        "correct": 1
-      }
-    ],
     "architect": [
       {
+        "answered": 0,
+        "completedAt": null,
+        "correct": 0,
+        "createdAt": "2026-11-14T13:18:13.820Z",
         "id": 2,
         "status": "in_progress",
-        "createdAt": "2026-11-14T13:18:13.820Z",
-        "completedAt": null,
-        "totalQuestions": 5,
-        "answered": 0,
-        "correct": 0
+        "totalQuestions": 5
       }
     ],
     "architect-pro": [],
-    "associate": []
+    "associate": [],
+    "developer": [
+      {
+        "answered": 5,
+        "completedAt": "2026-11-14T23:41:50.062Z",
+        "correct": 4,
+        "createdAt": "2026-11-14T13:14:21.526Z",
+        "id": 1,
+        "status": "completed",
+        "totalQuestions": 5
+      },
+      {
+        "answered": 5,
+        "completedAt": "2026-11-14T23:58:13.156Z",
+        "correct": 4,
+        "createdAt": "2026-11-14T23:45:42.112Z",
+        "id": 3,
+        "status": "completed",
+        "totalQuestions": 5
+      },
+      {
+        "answered": 5,
+        "completedAt": "2026-11-15T04:47:35.501Z",
+        "correct": 4,
+        "createdAt": "2026-11-14T23:59:49.554Z",
+        "id": 4,
+        "status": "completed",
+        "totalQuestions": 5
+      },
+      {
+        "answered": 5,
+        "completedAt": "2026-11-15T05:26:52.034Z",
+        "correct": 5,
+        "createdAt": "2026-11-15T04:47:50.113Z",
+        "id": 5,
+        "status": "completed",
+        "totalQuestions": 5
+      },
+      {
+        "answered": 5,
+        "completedAt": "2026-11-15T06:12:06.498Z",
+        "correct": 4,
+        "createdAt": "2026-11-15T05:27:08.202Z",
+        "id": 6,
+        "status": "completed",
+        "totalQuestions": 5
+      },
+      {
+        "answered": 5,
+        "completedAt": "2026-11-15T06:34:21.314Z",
+        "correct": 5,
+        "createdAt": "2026-11-15T06:31:39.012Z",
+        "id": 7,
+        "status": "completed",
+        "totalQuestions": 5
+      },
+      {
+        "answered": 5,
+        "completedAt": "2026-11-15T06:37:31.455Z",
+        "correct": 5,
+        "createdAt": "2026-11-15T06:35:01.091Z",
+        "id": 8,
+        "status": "completed",
+        "totalQuestions": 5
+      },
+      {
+        "answered": 5,
+        "completedAt": "2026-11-15T06:41:54.945Z",
+        "correct": 5,
+        "createdAt": "2026-11-15T06:37:40.093Z",
+        "id": 9,
+        "status": "completed",
+        "totalQuestions": 5
+      },
+      {
+        "answered": 5,
+        "completedAt": "2026-11-15T06:50:58.648Z",
+        "correct": 5,
+        "createdAt": "2026-11-15T06:43:45.404Z",
+        "id": 10,
+        "status": "completed",
+        "totalQuestions": 5
+      },
+      {
+        "answered": 5,
+        "completedAt": "2026-11-15T07:41:39.154Z",
+        "correct": 5,
+        "createdAt": "2026-11-15T07:15:11.019Z",
+        "id": 11,
+        "status": "completed",
+        "totalQuestions": 5
+      },
+      {
+        "answered": 5,
+        "completedAt": "2026-11-15T07:58:09.658Z",
+        "correct": 5,
+        "createdAt": "2026-11-15T07:42:29.372Z",
+        "id": 12,
+        "status": "completed",
+        "totalQuestions": 5
+      }
+    ]
   }
 }
