@@ -81,15 +81,28 @@ async function loadCert(cert) {
 }
 
 // ---------- 学習記録 ----------
-function record(q, ok, mode) {
+// conf: true=確信あり / false=迷った / null=記録なし。迷って正解は誤答と同じ間隔(翌日)で復習に回す
+function record(q, ok, mode, conf = null) {
   const t = today();
   const a = A.p.answers[q.id] ?? { n: 0, correct: 0, streak: 0 };
+  const shaky = ok && conf === false;
   a.n++;
-  if (ok) { a.correct++; a.streak++; } else a.streak = 0;
+  if (ok) { a.correct++; a.streak = shaky ? 0 : a.streak + 1; } else a.streak = 0;
+  a.ok = ok ? 1 : 0;
+  if (conf !== null) a.c = conf ? 1 : 0; else delete a.c;
   a.last = t;
-  a.due = addDays(t, ok ? INTERVALS[Math.min(a.streak, INTERVALS.length - 1)] : 1);
+  a.due = addDays(t, ok && !shaky ? INTERVALS[Math.min(a.streak, INTERVALS.length - 1)] : 1);
   A.p.answers[q.id] = a;
-  A.p.log.push({ d: t, q: q.id, ok: ok ? 1 : 0, m: mode });
+  const entry = { d: t, q: q.id, ok: ok ? 1 : 0, m: mode };
+  if (conf !== null) entry.c = conf ? 1 : 0;
+  A.p.log.push(entry);
+}
+// 復習の優先度(小さいほど先)。古い記録(ok、c なし)は不正解として 1 に入る
+function reviewRank(a) {
+  if (a.streak > 0) return 3;
+  if (a.c === 0 && a.ok === 1) return 2;
+  if (a.c === 1) return 0;
+  return 1;
 }
 function domainStat(id) {
   let n = 0, ok = 0, seen = 0, total = 0;
@@ -97,9 +110,10 @@ function domainStat(id) {
   return { n, ok, seen, total, acc: n ? ok / n : null };
 }
 const domainWeight = (id) => domainOf(id).weight * (1.3 - (domainStat(id).acc ?? 0.5));
-function recentAccuracy() {
+// 直近 30 回のうち、正解かつ迷っていない回の割合。c のない記録は正解なら確信ありとして数える
+function recentSolid() {
   const r = A.p.log.slice(-30);
-  return r.length >= 10 ? r.reduce((s, x) => s + x.ok, 0) / r.length : null;
+  return r.length >= 10 ? r.reduce((s, x) => s + (x.ok && x.c !== 0 ? 1 : 0), 0) / r.length : null;
 }
 
 // ---------- 1日の出題量 ----------
@@ -110,11 +124,11 @@ function computePlan() {
   const studyDays = Math.max(1, daysToExam - RESERVE_DAYS);
   const unseen = A.qs.filter((q) => !A.p.answers[q.id]);
   const due = A.qs.filter((q) => A.p.answers[q.id] && A.p.answers[q.id].due <= t);
-  const acc = recentAccuracy();
+  const acc = recentSolid();
 
   let newCount = Math.ceil(unseen.length / studyDays);
   let adjust = '';
-  if (acc !== null && acc >= 0.85) { newCount = Math.ceil(newCount * 1.25); adjust = '正答率が高いので新規を増やしています'; }
+  if (acc !== null && acc >= 0.85) { newCount = Math.ceil(newCount * 1.25); adjust = '確信ありの正答が多いので新規を増やしています'; }
   newCount = Math.min(unseen.length, Math.max(newCount, MIN_DAILY - due.length));
   const newIds = weightedSample(unseen, newCount, (q) => domainWeight(q.domain)).map((q) => q.id);
 
@@ -125,7 +139,7 @@ function computePlan() {
   if (acc !== null && acc < 0.6) {
     const add = weightedSample(seenRest, 5, weakness).map((q) => q.id);
     extra = add.length; ids.push(...add);
-    if (extra) adjust = '正答率が低いので苦手問題を追加しています';
+    if (extra) adjust = '確信ありの正答が少ないので苦手問題を追加しています';
   }
   if (ids.length < MIN_DAILY) {
     const add = weightedSample(seenRest.filter((q) => !ids.includes(q.id)), MIN_DAILY - ids.length, weakness).map((q) => q.id);
@@ -184,7 +198,7 @@ routes.home = (msg) => {
           el('div', { class: 'big' }, d.daysToExam >= 0 ? `あと ${d.daysToExam} 日` : '試験日を過ぎています')),
         el('div', {}, el('div', { class: 'muted' }, '今日の目標'), el('div', { class: 'big' }, `${done} / ${d.ids.length}`))),
       el('div', { class: 'meter' }, el('i', { style: `width:${pct(done, d.ids.length)}%` })),
-      el('div', { class: 'muted' }, [breakdown, d.acc !== null && `直近の正答率 ${Math.round(d.acc * 100)}%`, d.adjust].filter(Boolean).join(' ・ '))),
+      el('div', { class: 'muted' }, [breakdown, d.acc !== null && `直近の確信あり正答 ${Math.round(d.acc * 100)}%`, d.adjust].filter(Boolean).join(' ・ '))),
     msg && el('div', { class: 'notice' }, msg),
     !A.qs.length && el('div', { class: 'notice' }, 'この資格の問題がまだ登録されていません。'),
     el('button', { class: 'btn primary', disabled: !remaining, onclick: () => startSession('today') },
@@ -193,7 +207,7 @@ routes.home = (msg) => {
       el('div', { class: 'row' }, el('strong', { class: 'grow' }, 'ひたすら解く'), domainSel),
       el('p', { class: 'muted' }, '回答するとすぐに解説が出ます。やめるまで続きます。'),
       el('button', { class: 'btn primary', disabled: !A.qs.length, onclick: () => startSession('practice', domainSel.value) }, '開始')),
-    el('button', { class: 'btn', disabled: !reviewCount, onclick: () => startSession('review') }, '復習', el('small', {}, `間違えた問題と期限が来た問題 ${reviewCount} 問`)),
+    el('button', { class: 'btn', disabled: !reviewCount, onclick: () => startSession('review') }, '復習', el('small', {}, `間違えた問題、迷った問題、期限が来た問題 ${reviewCount} 問`)),
     el('button', { class: 'btn', disabled: !A.qs.length, onclick: () => go('mock') }, '模擬試験',
       el('small', {}, A.p.mock ? '受験中の模試があります' : `本番形式 ${A.exam.questions}問 / ${A.exam.minutes}分`)),
     el('button', { class: 'btn', onclick: () => go('stats') }, '成績', el('small', {}, `回答 ${A.p.log.length} 回 / ${Object.keys(A.p.answers).length} / ${A.qs.length} 問に着手`)),
@@ -250,8 +264,10 @@ function pickPractice(domain, recent) {
 function startSession(mode, domain) {
   const queue = mode === 'today' ? shuffle(dayRemaining()) : mode === 'review' ? shuffle(reviewQueue()) : null;
   // シナリオ問題は同じシナリオが続くように並べる
+  // 復習は確信して間違えた問題を先頭に、迷って正解した問題、期限が来ただけの問題の順に並べる(安定ソート)
+  if (queue && mode === 'review') queue.sort((a, b) => reviewRank(A.p.answers[a]) - reviewRank(A.p.answers[b]));
   if (queue && A.exam.scenarioBased) queue.sort((a, b) => String(A.byId[a].scenarioId).localeCompare(String(A.byId[b].scenarioId)));
-  sess = { mode, domain: domain || '', queue, recent: [], n: 0, ok: 0, cur: null };
+  sess = { mode, domain: domain || '', queue, recent: [], n: 0, ok: 0, unsure: 0, cur: null };
   nextQuestion();
 }
 function nextQuestion() {
@@ -274,25 +290,30 @@ routes.quiz = () => {
   const y = window.scrollY;
   const status = sess.queue ? `${MODE_NAME[sess.mode]} 残り ${sess.queue.length + (st.revealed ? 0 : 1)} 問` : `${MODE_NAME[sess.mode]} ${sess.n} 問回答 / 正解 ${sess.ok}`;
   const ok = st.revealed && sameSet(st.selected, q.answer);
+  const disabled = q.type === 'multi' ? st.selected.length !== q.answer.length : !st.selected.length;
+  // 確信度つきで採点する
+  const answer = (conf) => {
+    st.revealed = true; st.conf = conf;
+    const good = sameSet(st.selected, q.answer);
+    sess.n++; if (good) sess.ok++;
+    if (good && !conf) sess.unsure++;
+    record(q, good, sess.mode, conf); saveProgress();
+    rerender();
+  };
   show(
     el('div', { class: 'muted' }, status),
     questionCard(q, st, rerender),
+    !st.revealed && el('div', { class: 'muted' }, '自信があれば「確信あり」、消去法や勘なら「迷った」で回答します。'),
     st.revealed && el('div', { class: `verdict ${ok ? 'ok' : 'ng'}` }, ok ? '正解' : '不正解'),
+    st.revealed && ok && st.conf === false && el('div', { class: 'muted' }, '迷って正解したので、復習に入れました。'),
+    st.revealed && !ok && st.conf === true && el('div', { class: 'muted' }, '確信して間違えた問題です。復習で最初に出します。'),
     st.revealed && explanation(q),
     el('div', { class: 'foot' }, el('div', { class: 'inner' },
-      el('button', { class: 'btn', style: 'flex:0 0 96px', onclick: () => go(sess.n ? 'done' : 'home') }, 'やめる'),
+      el('button', { class: 'btn', style: 'flex:0 0 72px', onclick: () => go(sess.n ? 'done' : 'home') }, 'やめる'),
       st.revealed
         ? el('button', { class: 'btn primary', onclick: nextQuestion }, '次の問題')
-        : el('button', {
-            class: 'btn primary', disabled: q.type === 'multi' ? st.selected.length !== q.answer.length : !st.selected.length,
-            onclick: () => {
-              st.revealed = true;
-              const good = sameSet(st.selected, q.answer);
-              sess.n++; if (good) sess.ok++;
-              record(q, good, sess.mode); saveProgress();
-              rerender();
-            },
-          }, '回答する')))
+        : [el('button', { class: 'btn', disabled, onclick: () => answer(false) }, '迷った'),
+           el('button', { class: 'btn primary', disabled, onclick: () => answer(true) }, '確信あり')]))
   );
   if (st.selected.length && !st.justRevealed) window.scrollTo(0, y); // 選択し直しても表示位置を保つ
   if (st.revealed && !st.justRevealed) { st.justRevealed = true; document.querySelector('.verdict')?.scrollIntoView({ block: 'center' }); }
@@ -303,7 +324,8 @@ routes.done = () => {
   const left = dayRemaining().length;
   show(
     el('h1', {}, `${MODE_NAME[s.mode]} 終了`),
-    el('div', { class: 'card' }, el('div', { class: 'big' }, `${s.ok} / ${s.n} 問正解`), el('div', { class: 'muted' }, s.n ? `正答率 ${pct(s.ok, s.n)}%` : '')),
+    el('div', { class: 'card' }, el('div', { class: 'big' }, `${s.ok} / ${s.n} 問正解`), el('div', { class: 'muted' }, s.n ? `正答率 ${pct(s.ok, s.n)}%` : ''),
+      s.unsure > 0 && el('div', { class: 'muted' }, `うち迷って正解 ${s.unsure} 問`)),
     el('p', { class: 'muted' }, left ? `今日の目標まであと ${left} 問です。` : '今日の目標は達成済みです。'),
     el('button', { class: 'btn primary', onclick: () => go('home') }, 'ホームへ'));
 };
@@ -341,7 +363,8 @@ routes.mock = () => {
       el('p', {}, `本番: ${A.exam.questions}問 / ${A.exam.minutes}分 / 合格 720点(スケールドスコア)`),
       el('p', {}, `この模試: ${preview.ids.length}問 / ${Math.round(preview.durationSec / 60)}分`),
       A.exam.scenarioBased && el('p', { class: 'muted' }, `シナリオ ${A.exam.scenariosPerExam} 件をまとめて出題します。`),
-      el('p', { class: 'muted' }, '終了するまで正誤と解説は表示されません。開始後は画面を閉じても時計が進みます。')),
+      el('p', { class: 'muted' }, '終了するまで正誤と解説は表示されません。開始後は画面を閉じても時計が進みます。'),
+      el('p', { class: 'muted' }, '見直しに追加した問題は、正解しても「迷った」として復習に入ります。')),
     short && el('div', { class: 'notice' }, `問題バンクが本番の問題数に足りないため、${preview.ids.length}問に短縮し、制限時間も同じ比率で短くしています。`),
     m ? [el('button', { class: 'btn primary', onclick: () => go('mockrun') }, '受験中の模試を再開'),
          el('button', { class: 'btn', onclick: () => { A.p.mock = null; saveProgress(); go('mock'); } }, '受験中の模試を破棄')]
@@ -393,7 +416,7 @@ function finishMock() {
   const detail = m.ids.map((id) => {
     const q = A.byId[id], sel = m.answers[id] || [], ok = sameSet(sel, q.answer);
     const b = (byDomain[q.domain] ??= { n: 0, ok: 0 }); b.n++; if (ok) b.ok++;
-    record(q, ok, 'mock');
+    record(q, ok, 'mock', m.flags[id] ? false : null);
     return { id, sel, ok, order: m.order[id] };
   });
   const res = { date: today(), total: m.ids.length, correct: detail.filter((x) => x.ok).length, sec: Math.min(m.durationSec, Math.round((Date.now() - m.startedAt) / 1000)), byDomain };
@@ -439,17 +462,35 @@ function domainTable(rows) {
         el('div', { class: `meter ${r.n && r.ok / r.n < 0.6 ? 'ng' : ''}` }, el('i', { style: `width:${pct(r.ok, r.n)}%` }))),
       el('td', { class: 'num' }, `${r.ok} / ${r.n}`), el('td', { class: 'num' }, r.n ? `${pct(r.ok, r.n)}%` : '—')))));
 }
+// 確信度つきのログを全体とドメイン別に数える(問題が消えていたら飛ばす)
+function confStat() {
+  const blank = () => ({ rated: 0, sureOk: 0, unsureOk: 0, sureNg: 0, unsureNg: 0 });
+  const all = blank(), byDomain = {};
+  for (const x of A.p.log) {
+    const dom = A.byId[x.q]?.domain;
+    if (x.c == null || !dom) continue;
+    const key = x.c === 1 ? (x.ok ? 'sureOk' : 'sureNg') : (x.ok ? 'unsureOk' : 'unsureNg');
+    for (const b of [all, (byDomain[dom] ??= blank())]) { b.rated++; b[key]++; }
+  }
+  return { all, byDomain };
+}
 routes.stats = () => {
   const days = {};
   for (const x of A.p.log) { const d = (days[x.d] ??= { n: 0, ok: 0 }); d.n++; d.ok += x.ok; }
   const dates = Object.keys(days).sort().slice(-14).reverse();
   const tot = A.p.log.reduce((s, x) => s + x.ok, 0);
+  const cs = confStat(), ca = cs.all;
   show(
     el('h1', {}, `成績 ${A.exam.code}`),
     el('div', { class: 'card' }, el('div', { class: 'big' }, A.p.log.length ? `${pct(tot, A.p.log.length)}%` : '—'),
-      el('div', { class: 'muted' }, `通算 ${tot} / ${A.p.log.length} 回正解 ・ ${Object.keys(A.p.answers).length} / ${A.qs.length} 問に着手`)),
+      el('div', { class: 'muted' }, `通算 ${tot} / ${A.p.log.length} 回正解 ・ ${Object.keys(A.p.answers).length} / ${A.qs.length} 問に着手`),
+      el('div', { class: 'muted' }, ca.rated > 0
+        ? `確信度を記録した ${ca.rated} 回: 確信ありで正解 ${pct(ca.sureOk, ca.rated)}%、迷って正解 ${ca.unsureOk} 回、確信ありで不正解 ${ca.sureNg} 回`
+        : '確信度の記録はまだありません。')),
     el('h2', {}, 'ドメイン別'),
-    domainTable(A.exam.domains.map((d) => { const s = domainStat(d.id); return { d, n: s.n, ok: s.ok, note: `${s.seen} / ${s.total} 問に着手` }; })),
+    domainTable(A.exam.domains.map((d) => { const s = domainStat(d.id), c = cs.byDomain[d.id];
+      const note = [`${s.seen} / ${s.total} 問に着手`, c?.unsureOk > 0 && `迷って正解 ${c.unsureOk} 回`, c?.sureNg > 0 && `思い込み ${c.sureNg} 回`].filter(Boolean).join(' ・ ');
+      return { d, n: s.n, ok: s.ok, note }; })),
     el('h2', {}, '日別(直近14日)'),
     el('div', { class: 'card' }, dates.length ? el('table', {},
       el('tr', {}, el('th', {}, '日付'), el('th', { class: 'num' }, '回答'), el('th', { class: 'num' }, '正答率')),
