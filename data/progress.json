@@ -4,30 +4,30 @@
   "source": "muse-space:claudezi-ge-kuizu",
   "repo": "k8kimura-gif/claude-cert-questions",
   "path": "data/progress.json",
-  "exportedAt": "2026-11-15T06:57:05.298Z",
+  "exportedAt": "2026-11-15T07:34:09.735Z",
   "summary": {
-    "answered": 45,
-    "correct": 41,
+    "answered": 46,
+    "correct": 42,
     "accuracyPercent": 91,
     "certs": {
       "developer": {
         "code": "CCDV-F",
         "name": "Developer – Foundations",
-        "answered": 45,
-        "correct": 41,
+        "answered": 46,
+        "correct": 42,
         "accuracyPercent": 91,
-        "askedCount": 45,
-        "sessionCount": 9,
+        "askedCount": 50,
+        "sessionCount": 10,
         "completedSessionCount": 9,
-        "lastAnsweredAt": "2026-11-15T06:50:58.607Z",
+        "lastAnsweredAt": "2026-11-15T07:15:26.838Z",
         "domains": [
           {
             "id": "applications-and-integration",
             "ja": "アプリケーションと統合",
             "weight": 33.1,
-            "answered": 18,
-            "correct": 17,
-            "accuracyPercent": 94
+            "answered": 19,
+            "correct": 18,
+            "accuracyPercent": 95
           },
           {
             "id": "model-selection-and-optimization",
@@ -134,6 +134,144 @@
             "id": "context-management-and-reliability",
             "ja": "コンテキスト管理と信頼性",
             "weight": 15,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          }
+        ]
+      },
+      "architect-pro": {
+        "code": "CCAR-P",
+        "name": "Architect – Professional",
+        "answered": 0,
+        "correct": 0,
+        "accuracyPercent": null,
+        "askedCount": 0,
+        "sessionCount": 0,
+        "completedSessionCount": 0,
+        "lastAnsweredAt": null,
+        "domains": [
+          {
+            "id": "solution-design-and-architecture",
+            "ja": "ソリューション設計とアーキテクチャ",
+            "weight": 17,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "models-prompting-and-context-engineering",
+            "ja": "モデル・プロンプト・コンテキスト設計",
+            "weight": 13,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "integration",
+            "ja": "統合",
+            "weight": 19,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "evaluation-testing-and-optimization",
+            "ja": "評価・テスト・最適化",
+            "weight": 16,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "governance-safety-and-risk",
+            "ja": "ガバナンス・安全性・リスク管理",
+            "weight": 14,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "stakeholder-communication-and-lifecycle",
+            "ja": "ステークホルダー対応とライフサイクル管理",
+            "weight": 14,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "developer-productivity-and-operational-enablement",
+            "ja": "開発者の生産性と運用の整備",
+            "weight": 7,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          }
+        ]
+      },
+      "associate": {
+        "code": "CCAO-F",
+        "name": "Associate – Foundations",
+        "answered": 0,
+        "correct": 0,
+        "accuracyPercent": null,
+        "askedCount": 0,
+        "sessionCount": 0,
+        "completedSessionCount": 0,
+        "lastAnsweredAt": null,
+        "domains": [
+          {
+            "id": "prompting-and-task-execution",
+            "ja": "プロンプトとタスクの実行",
+            "weight": 14,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "output-evaluation-and-validation",
+            "ja": "出力の評価と検証",
+            "weight": 21,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "product-and-model-selection",
+            "ja": "製品とモデルの選択",
+            "weight": 12,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "workflow-integration-and-solution-design",
+            "ja": "ワークフローへの統合とソリューション設計",
+            "weight": 16,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "configuration-and-knowledge-management",
+            "ja": "設定とナレッジ管理",
+            "weight": 12,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "governance-risk-and-responsible-use",
+            "ja": "ガバナンス・リスク・責任ある利用",
+            "weight": 15,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null
+          },
+          {
+            "id": "troubleshooting-and-optimization",
+            "ja": "トラブルシューティングと最適化",
+            "weight": 10,
             "answered": 0,
             "correct": 0,
             "accuracyPercent": null
@@ -296,6 +434,12 @@
           "last": "2026-11-15"
         },
         "dev-app-058": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "last": "2026-11-15"
+        },
+        "dev-app-059": {
           "n": 1,
           "correct": 1,
           "streak": 1,
@@ -686,6 +830,12 @@
           "q": "dev-prompt-019",
           "ok": 1,
           "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-059",
+          "ok": 1,
+          "m": "space"
         }
       ],
       "mocks": [],
@@ -694,6 +844,22 @@
       "day": null
     },
     "architect": {
+      "answers": {},
+      "log": [],
+      "mocks": [],
+      "mock": null,
+      "lastMock": null,
+      "day": null
+    },
+    "architect-pro": {
+      "answers": {},
+      "log": [],
+      "mocks": [],
+      "mock": null,
+      "lastMock": null,
+      "day": null
+    },
+    "associate": {
       "answers": {},
       "log": [],
       "mocks": [],
@@ -784,6 +950,15 @@
         "totalQuestions": 5,
         "answered": 5,
         "correct": 5
+      },
+      {
+        "id": 11,
+        "status": "in_progress",
+        "createdAt": "2026-11-15T07:15:11.019Z",
+        "completedAt": null,
+        "totalQuestions": 5,
+        "answered": 1,
+        "correct": 1
       }
     ],
     "architect": [
@@ -796,6 +971,8 @@
         "answered": 0,
         "correct": 0
       }
-    ]
+    ],
+    "architect-pro": [],
+    "associate": []
   }
 }
