@@ -82,6 +82,8 @@ textarea { width: 100%; min-height: 120px; font-size: 12px; font-family: ui-mono
 .verdict.ok { color: var(--ok); }
 .verdict.ng { color: var(--ng); }
 .explain { white-space: pre-wrap; }
+.deep { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+.deep textarea { font-family: inherit; font-size: 13px; min-height: 180px; }
 .refs a { color: var(--accent); word-break: break-all; font-size: 14px; }
 .notice { background: var(--warn-bg); border-radius: 10px; padding: 10px 14px; font-size: 14px; margin: 10px 0; }
 .foot {

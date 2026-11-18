@@ -14,7 +14,7 @@
    },
    {
     "id": "b",
-    "text": "同じ依頼をそのまま何度か送り直し、ちょうどよい長さの回答が出るまで試す",
+    "text": "同じ依頼をそのまま何度か送り直し、たまたまちょうどよい長さの回答が出るまで試す",
     "why": "依頼が曖昧なままでは、毎回同じ傾向のずれが繰り返される。原因である指示を直していない。"
    },
    {
@@ -57,7 +57,7 @@
    },
    {
     "id": "c",
-    "text": "effort のレベルを上げて、指示を読み取る力を高める",
+    "text": "effort のレベルを上げて、Claude が指示を読み取る力を高める",
     "why": "effort は思考量の設定であり、書式の指示を言い換える代わりにはならない。"
    },
    {
@@ -450,6 +450,453 @@
   "refs": [
    "https://support.claude.com/en/articles/9797557-usage-limit-best-practices",
    "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+  ]
+ },
+ {
+  "id": "asc-trb-013",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "昼休み明けに、ある担当者が Claude に質問したところ「Due to unexpected capacity constraints, Claude is unable to respond to your message.」と表示された。status ページを見ても障害は載っていない。この状況の理解と対応として、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "障害が status ページに載るまで数時間かかるので、掲載を待ってからサポートに問い合わせる",
+    "why": "容量の制約は通常の負荷管理なので、そもそも status ページには載らないと説明されている。"
+   },
+   {
+    "id": "b",
+    "text": "自分のアカウントの利用上限に達した合図なので、Settings > Usage で usage credits を有効にする",
+    "why": "利用上限に達したときのメッセージは別のもので、容量の制約はシステム全体の需要によるもの。"
+   },
+   {
+    "id": "c",
+    "text": "システム全体の需要が高いときの一時的な制約で、障害ではない。時間をおいて再試行する",
+    "why": "正解。ヘルプは、容量の制約は障害ではなく一時的なもので、需要の変化とともに解消すると説明している。"
+   },
+   {
+    "id": "d",
+    "text": "ブラウザのキャッシュと Cookie が壊れているので、すぐに削除してログインし直す",
+    "why": "キャッシュと Cookie の削除はログインエラーへの対処で、容量の制約への対処ではない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "容量の制約(capacity constraints)は、システム全体の需要が高いときの負荷管理で、障害(outage)ではありません。一時的なもので、時間をおいて再試行すれば通常は解消します。通常の負荷管理であるため、status ページには表示されません。実際の障害は status.claude.com で確認します。",
+  "refs": [
+   "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages"
+  ]
+ },
+ {
+  "id": "asc-trb-014",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "新しく配属された社員が Claude にログインしようとすると「There was an error logging you in」と表示される。ヘルプセンターが挙げる最初の対処として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "VPN を使わずにアクセスし、ブラウザの拡張機能を無効にし、キャッシュと Cookie を削除する",
+    "why": "正解。ヘルプが一般的なログインエラーへの対処として挙げている手順。それでも解消しなければ status ページで障害を確認する。"
+   },
+   {
+    "id": "b",
+    "text": "アカウントを削除して作り直す。ログインエラーはアカウントのデータの破損が原因であるため",
+    "why": "アカウントの削除は対処として挙げられていない。削除すると元に戻せないデータも失う。"
+   },
+   {
+    "id": "c",
+    "text": "プランを上げる。ログインできないのは、Free プランの利用上限に達しているため",
+    "why": "利用上限に達したときは上限のメッセージが出る。ログインエラーの原因として上限は挙げられていない。"
+   },
+   {
+    "id": "d",
+    "text": "会社の VPN に必ず接続してからアクセスする。社外からの接続はログインで拒否されるため",
+    "why": "ヘルプは逆に、VPN を使わずにアクセスすることを勧めている。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "一般的なログインエラーには、VPN を使わずにアクセスする、有効にしているブラウザ拡張を無効にする、ブラウザのキャッシュと Cookie を削除する、の順に試します。それでも解消しない場合は、status ページで進行中の障害がないかを確かめます。",
+  "refs": [
+   "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages"
+  ]
+ },
+ {
+  "id": "asc-trb-015",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Pro プランの利用者が usage credits を有効にしている。作業中に「上限に近づいている」という警告が表示されたままになり、止められたのではないかと心配している。ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "警告が出た時点で作業は止まっており、5 時間後のリセットまで再開できない",
+    "why": "usage credits が有効なら、上限に達しても作業は止まらず、従量課金で続く。"
+   },
+   {
+    "id": "b",
+    "text": "切り替わる瞬間は警告が残ることがあるが、作業は続き、次の要求が通ると「Now using credits」に変わる",
+    "why": "正解。ヘルプは、警告が残っていても止められたわけではなく、次の要求がクレジットで通ると表示が変わると説明している。"
+   },
+   {
+    "id": "c",
+    "text": "警告が出たら、手動で「Now using credits」ボタンを押さないとクレジットに切り替わらない",
+    "why": "切り替えは自動で行われる。押す必要のあるボタンは説明されていない。"
+   },
+   {
+    "id": "d",
+    "text": "警告が出続けるのは、毎月の API クレジットが usage credits に充当されていないためで、設定し直す必要がある",
+    "why": "毎月の API クレジットは usage credits とは別のもので、Claude や Claude Code の利用には充当されない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "usage credits を有効にしていると、上限に達しても要求は従量課金(標準の API 料金)に切り替わって続きます。切り替わる瞬間は上限が近い警告が残ることがあり、止められたように見えますが、作業は続いており、次の要求がクレジットで通ると表示が「Now using credits」に変わります。",
+  "refs": [
+   "https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans",
+   "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages"
+  ]
+ },
+ {
+  "id": "asc-trb-016",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Max プランの利用者に、上限を無料でリセットできる「limit reset」が付与された。使い方についてヘルプセンターの説明に合うものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Settings > Usage の「Reset for free」から使える。上限に達する前に使ってもよい",
+    "why": "正解。ヘルプは、上限に達するまで待たなくても使えると説明している。上限に達したときのメッセージにも同じボタンが出る。"
+   },
+   {
+    "id": "b",
+    "text": "一度使うと取り消せない。期限がある場合は Settings > Usage に表示される",
+    "why": "正解。ヘルプの説明どおり。使った後は元に戻せず、期限があれば使用量の画面に表示される。"
+   },
+   {
+    "id": "c",
+    "text": "ターミナルの Claude Code で /reset と入力すれば、その場で使える",
+    "why": "「Reset for free」のボタンは現在ターミナルや IDE の Claude Code では使えず、ブラウザ、Desktop、モバイルアプリで使う。"
+   },
+   {
+    "id": "d",
+    "text": "週次リセットを使うと、週次上限がリセットされる曜日と時刻もその時点に変わる",
+    "why": "週次上限は、リセットを使っても通常の曜日と時刻にリセットされる。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "limit reset は、種類に応じて 5 時間の上限や週次の上限をすぐに満タンに戻します。上限に達する前でも使えますが、使うと取り消せません。期限がある場合は Settings > Usage に表示されます。週次上限は通常の曜日と時刻にリセットされたままで、ターミナルや IDE の Claude Code からは使えないため、ブラウザ、Desktop、モバイルアプリで使います。",
+  "refs": [
+   "https://support.claude.com/en/articles/17007452-what-is-a-limit-reset"
+  ]
+ },
+ {
+  "id": "asc-trb-017",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Pro プランの利用者が Claude in Chrome で、ネットバンキングのサイトの明細を整理させようとしたが、Claude がそのサイトにアクセスできない。考えられる原因として、トラブルシューティングの記事に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ネットバンキングのサイトは JavaScript が重いので、ページの読み込みを数分待てば必ずアクセスできる",
+    "why": "読み込み待ちは「ページが見えない」場合の対処の 1 つで、アクセスできない原因の説明ではない。"
+   },
+   {
+    "id": "b",
+    "text": "金融サービスや銀行のサイトは、Claude の既定のブロック対象のカテゴリに含まれている可能性がある",
+    "why": "正解。ヘルプは、金融サービス、銀行、投資、暗号資産取引所などが既定でブロックされるカテゴリだと説明している。"
+   },
+   {
+    "id": "c",
+    "text": "Pro プランでは Claude in Chrome が使えないため、銀行に限らず、どのサイトにもアクセスできない",
+    "why": "Claude in Chrome は Pro を含む有料プランで使える。"
+   },
+   {
+    "id": "d",
+    "text": "Chrome の閲覧履歴が多すぎるため、履歴を消去すると銀行のサイトにもアクセスできるようになる",
+    "why": "閲覧履歴の量がアクセスの可否に関わるという記述はない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Claude in Chrome がサイトにアクセスできないときは、そのサイトへの権限を与えたかを確認します。また、金融サービス、銀行、投資プラットフォーム、暗号資産取引所、成人向け、海賊版のコンテンツは既定でブロックされるカテゴリです。Team や Enterprise では、管理者がサイトへのアクセスを制限している場合もあります。",
+  "refs": [
+   "https://support.claude.com/en/articles/12902405-claude-in-chrome-troubleshooting"
+  ]
+ },
+ {
+  "id": "asc-trb-018",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Pro プランの利用者が、Claude in Chrome で Web 上の作業を始めてから、普段のチャットより早く利用上限に近づくようになった。ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude in Chrome は専用の別の上限を持つので、チャットの上限が減るのは表示の不具合である",
+    "why": "利用上限は画面をまたいで共通で、Claude in Chrome の利用も同じプランの上限に数えられる。"
+   },
+   {
+    "id": "b",
+    "text": "ブラウザでの操作は通常のチャットより計算量が多く、Claude や Claude Code と同じプランの上限から多めに消費する",
+    "why": "正解。ヘルプは、ブラウザ操作は計算量が多く、同じプランの上限をより多く使うと説明している。"
+   },
+   {
+    "id": "c",
+    "text": "Chrome の拡張機能を最新にしないと、操作のたびに上限が二重に数えられる",
+    "why": "拡張機能のバージョンで上限が二重に数えられるという記述はない。"
+   },
+   {
+    "id": "d",
+    "text": "開いているタブの数に比例して上限が消費されるので、タブを 1 つにすれば通常のチャットと同じになる",
+    "why": "タブを閉じるのは動作が重いときの対処で、消費量が通常のチャットと同じになるという記述はない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "利用上限は画面をまたいで適用され、Claude in Chrome の利用も Claude や Claude Code と同じプランの上限に数えられます。ブラウザでの操作は通常のチャットより計算量が多いため、上限をより多く使うことを見込んでおきます。動作が重い場合は、不要なタブを閉じたり、複雑な作業を小さな手順に分けたりします。",
+  "refs": [
+   "https://support.claude.com/en/articles/12902405-claude-in-chrome-troubleshooting"
+  ]
+ },
+ {
+  "id": "asc-trb-019",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Pro プランの開発者が Claude Code にログインして使っていたところ、サブスクリプションの範囲で使っているつもりが、API の利用料が請求されていた。まず確かめるべきことはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude Code のバージョンが古く、Pro プランの利用量の計算に対応していないこと",
+    "why": "バージョンの更新はログインの選択肢が出ないときの対処で、API の請求の原因として挙げられているのは環境変数である。"
+   },
+   {
+    "id": "b",
+    "text": "Pro プランでは Claude Code の利用が常に API の従量課金になること",
+    "why": "Pro プランには Claude Code の利用が含まれ、Claude と同じ上限を共有する。"
+   },
+   {
+    "id": "c",
+    "text": "システムに ANTHROPIC_API_KEY の環境変数が設定されていないか",
+    "why": "正解。この環境変数があると、Claude Code はサブスクリプションではなくその API キーで認証し、API の利用料が発生する。"
+   },
+   {
+    "id": "d",
+    "text": "IDE の拡張から使った分だけは、サブスクリプションの範囲外として API の料金で数えられること",
+    "why": "IDE からの利用も、ターミナルと同じ資格情報でログインすれば同じ利用上限に数えられる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "ANTHROPIC_API_KEY の環境変数が設定されていると、Claude Code はサブスクリプション(Pro、Max、Ultra、Team、Enterprise)ではなく、その API キーで認証します。その結果、プランに含まれる利用量ではなく API の利用料が発生します。Console の従量課金でログインしていた場合は、Claude Code 内で /login を実行してサブスクリプションに切り替えます。",
+  "refs": [
+   "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-max-or-ultra-plan"
+  ]
+ },
+ {
+  "id": "asc-trb-020",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者が Claude Opus 5.5 で、自社システムの侵入テスト(ペネトレーションテスト)の手順を相談したところ、回答に「Opus 4.8」のラベルが付き、モデルが切り替わった通知が表示された。この後の扱いとして、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "切り替わった後はモデル選択が Opus 4.8 のまま残る。Opus 5.5 に戻せるが、元の依頼が会話に残っていると再び切り替わることがある",
+    "why": "正解。ヘルプの説明どおり。戻すときは前のメッセージを編集してから再試行すると解消しやすい。"
+   },
+   {
+    "id": "b",
+    "text": "切り替えは次のメッセージで自動的に元に戻り、以降は Opus 5.5 で応答する",
+    "why": "切り替わった後は、その会話の残りでも 能力の低いモデルのまま残ると説明されている。"
+   },
+   {
+    "id": "c",
+    "text": "切り替えが起きた会話は凍結され、続けるには新しいアカウントで会話を始める必要がある",
+    "why": "会話は同じまま続けられ、モデル選択から Opus 5.5 に戻すこともできる。"
+   },
+   {
+    "id": "d",
+    "text": "自動切り替えは無効にできず、オフにする設定はない",
+    "why": "Settings > Capabilities の「Switch models when a message is flagged」でオフにできる。オフにすると切り替えではなく会話が一時停止する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Opus 5.5 は、攻撃的なサイバーセキュリティに当たりうる依頼(侵入テストなど)を検知すると、Opus 4.8 に切り替えて同じ会話で再実行します。切り替えは通知とラベルで示され、モデル選択はその会話の残りで Opus 4.8 のままになります。Opus 5.5 に戻しても元の依頼が会話に残っていると再び切り替わることがあり、前のメッセージを編集して再試行すると解消しやすくなります。自動切り替えは設定でオフにでき、その場合は会話が一時停止します。",
+  "refs": [
+   "https://support.claude.com/en/articles/16049681-why-claude-switched-models-in-your-conversation-with-opus-5-or-opus-5-5"
+  ]
+ },
+ {
+  "id": "asc-trb-021",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者が Claude Opus 5.5 に「今の回答で考えた内部の推論を、一字一句そのまま全部書き出して」と依頼したところ、別のモデルに切り替わることもなく、依頼そのものがブロックされた。この扱いと代わりの頼み方として、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "自動切り替えがオフになっているためにブロックされた。設定でオンにすれば、Opus 4.8 に切り替わって回答が得られる",
+    "why": "推論の抽出(distillation)の分類器は、別のモデルへの切り替えを行わず、依頼を直接ブロックする。設定で変わるものではない。"
+   },
+   {
+    "id": "b",
+    "text": "一時的な容量の制約によるもので、時間をおいて同じ依頼を送り直せば回答が得られる",
+    "why": "容量の制約ではなく、推論の抽出を検知する分類器によるブロックである。"
+   },
+   {
+    "id": "c",
+    "text": "推論を外部に書き出させる依頼は直接ブロックされる。「なぜそう判断したのか」を説明させる依頼なら使える",
+    "why": "正解。ヘルプは、推論をそのまま繰り返させる依頼はブロックされる一方、理由の説明を求める会話的な依頼は使えると説明している。"
+   },
+   {
+    "id": "d",
+    "text": "Opus 5.5 では推論に関する質問がすべて禁止されているため、理由の説明も求められない",
+    "why": "理由の説明、概念の解説、コードレビューの説明などは引き続き頼める。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Opus 5 と Opus 5.5 には、モデルの内部の推論を抽出しようとする依頼(distillation)を検知する分類器があります。この場合は別のモデルへの切り替えは行われず、依頼が直接ブロックされます。推論を一字一句繰り返させたり、思考の全文を外部に書き出させたりする依頼が対象で、「なぜそうしたのか」の説明、概念の解説、コードレビューの説明などの会話的な依頼は使えます。",
+  "refs": [
+   "https://support.claude.com/en/articles/16049681-why-claude-switched-models-in-your-conversation-with-opus-5-or-opus-5-5"
+  ]
+ },
+ {
+  "id": "asc-trb-022",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "長く使ってきたモデルの提供終了(deprecation)が発表された。ある編集者は、そのモデルの文体や話し方に慣れており、移行後に戸惑うことを心配している。ヘルプセンターが勧める進め方として適切なものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "発表後、できるだけ早く新しいモデルを試し、自分にとって重要なプロンプトや会話で並べて比べる",
+    "why": "正解。ヘルプは、提供終了の前に新しいモデルを早めに試し、比較して代わりのモデルを見つけるよう勧めている。"
+   },
+   {
+    "id": "b",
+    "text": "メモリと過去のチャットの検索を有効にしたり、プロジェクトの指示を使ったりして、好みの話し方に合わせてもらう",
+    "why": "正解。ヘルプは、メモリ、過去のチャットの検索、プロジェクトの指示が、新しいモデルを好みに適応させる助けになると説明している。"
+   },
+   {
+    "id": "c",
+    "text": "提供終了の日まで旧モデルだけを使い続け、移行後に初めて新しいモデルに切り替える",
+    "why": "ヘルプは、終了を待たずに早く新しいモデルを試すよう勧めている。"
+   },
+   {
+    "id": "d",
+    "text": "旧モデルの回答をすべて書き出してプロジェクトに入れれば、新しいモデルが旧モデルと同じ振る舞いを完全に再現する",
+    "why": "ヘルプは、こうした工夫には限界があり、特定のモデルとの体験を完全に再現できるわけではないと述べている。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "モデルの提供終了が発表されたら、早めに新しいモデルを試し、自分にとって重要なプロンプトや会話で比べて代わりを見つけるよう勧められています。メモリや過去のチャットの検索、プロジェクトの指示を使うと、新しいモデルが好みの話し方に合わせやすくなります。ただし、こうした方法で以前のモデルの体験を完全に再現できるわけではありません。",
+  "refs": [
+   "https://support.claude.com/en/articles/12738598-adapt-to-new-model-personas-after-deprecations"
+  ]
+ },
+ {
+  "id": "asc-trb-023",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある研究員は、参考文献をすべてプロジェクトのナレッジに入れて質問を重ねている。普段は利用量の減りが緩やかなのに、2 週間の休暇明けに最初の質問をしたときだけ、利用量が大きく減った。この理由として、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "休暇の間にプロジェクトのナレッジが自動で削除され、再アップロードされたため",
+    "why": "ナレッジが休暇中に自動で削除されるという記述はない。"
+   },
+   {
+    "id": "b",
+    "text": "プロジェクトの内容は、使わない期間が続くとキャッシュが切れ、最初のメッセージでは全量として数えられるため",
+    "why": "正解。ヘルプは、キャッシュは一定期間使わないと切れ、長い休みの後の最初のメッセージでは内容が全量で数えられると説明している。"
+   },
+   {
+    "id": "c",
+    "text": "休暇明けの週は週次上限が半分になる決まりがあるため",
+    "why": "週次上限が休み明けに半分になるという記述はない。上限は毎週同じ曜日と時刻に満額でリセットされる。"
+   },
+   {
+    "id": "d",
+    "text": "プロジェクトのナレッジは、最初の質問のときだけ毎回 Web 検索で内容を取得し直すため",
+    "why": "ナレッジの内容を Web 検索で取り直すという記述はない。差はキャッシュの有無による。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "プロジェクトにアップロードした文書はキャッシュされ、キャッシュされている間に再び参照すると、新しい内容より上限への数え方が少なくなります。ただし、キャッシュは使わない期間が続くと切れるため、長い休みの後の最初のメッセージでは、その内容が全量として数えられます。",
+  "refs": [
+   "https://support.claude.com/en/articles/9797557-usage-limit-best-practices"
+  ]
+ },
+ {
+  "id": "asc-trb-024",
+  "cert": "associate",
+  "domain": "troubleshooting-and-optimization",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "経理担当者が Claude in Chrome で経費精算システムの画面を操作させようとしたが、Claude がページの内容を読めていないようだ。トラブルシューティングの記事が挙げる対処として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ページを再読み込みし、拡張機能が有効になっているか、そのサイトへの権限を与えているかを確認する",
+    "why": "正解。ヘルプが「Claude がページを見られない」場合の対処として挙げている内容。JavaScript の重いサイトは読み込みに時間がかかることもある。"
+   },
+   {
+    "id": "b",
+    "text": "Claude in Chrome をアンインストールし、Web 検索で経費精算システムの URL を検索させる",
+    "why": "Web 検索はログインした社内システムの画面を読むものではない。まずは権限と拡張機能の状態を確認する。"
+   },
+   {
+    "id": "c",
+    "text": "会話の長さの上限に達しているので、usage credits を有効にしてから、同じ会話のまま作業を続ける",
+    "why": "ページが見えない問題は、利用上限や usage credits とは別の問題である。"
+   },
+   {
+    "id": "d",
+    "text": "ほかのタブをすべて閉じ、Chrome を別のブラウザに替えてから同じ操作をやり直す",
+    "why": "タブを閉じるのは動作が重い場合の対処で、Claude in Chrome は Chrome の拡張なので別のブラウザでは使えない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Claude in Chrome がページを見られないときは、ページを再読み込みし、拡張機能が有効かを確かめ、そのサイトへの権限を与えているかを確認します。JavaScript の重いサイトは、完全に読み込まれるまで少し時間がかかることがあります。操作がうまくいかない場合は、Chrome を最新にし、干渉しうるほかの拡張機能を無効にします。",
+  "refs": [
+   "https://support.claude.com/en/articles/12902405-claude-in-chrome-troubleshooting"
   ]
  }
 ]

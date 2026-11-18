@@ -131,7 +131,7 @@
    },
    {
     "id": "c",
-    "text": "通常のチャットで会話してから、後でモデル改善の設定をオフに切り替えて、この会話を改善の対象から外す",
+    "text": "通常のチャットで会話してから、後でモデル改善の設定をオフに切り替えて、この会話だけを改善の対象から外してもらう",
     "why": "設定を切り替えても、チャットは履歴に残る。設定の変更は他のチャットすべてにも及び、この 1 回だけの対応にもならない。"
    },
    {
@@ -308,7 +308,7 @@
   "choices": [
    {
     "id": "a",
-    "text": "保持期間の設定は、設定後に作成されたチャットだけに適用され、以前のチャットは対象にならない",
+    "text": "保持期間の設定は、設定した後に作成されたチャットだけに適用され、それ以前のチャットは対象にならない",
     "why": "保持期間を短くすると、新しい期間の外に出たデータは、保存した時点で削除が予定される。設定後のデータだけが対象になるわけではない。"
    },
    {
@@ -345,7 +345,7 @@
   "choices": [
    {
     "id": "a",
-    "text": "Admin が組織設定の Data and privacy から BAA に承諾して有効にする",
+    "text": "Admin が組織設定の Data and privacy から BAA に承諾し、HIPAA の設定を自分で有効にする",
     "why": "BAA の承諾と HIPAA の有効化は、Primary Owner だけが完了できる。Admin にはできない。"
    },
    {
@@ -466,7 +466,7 @@
    },
    {
     "id": "c",
-    "text": "個人向けプランの利用規約とプライバシーポリシーが適用されるので、会話は本人のものとして扱われる",
+    "text": "個人向けプランの利用規約とプライバシーポリシーが適用されるので、会話はすべて本人のものとして扱われる",
     "why": "Team プランには、個人向けの利用規約とプライバシーポリシーは適用されない。Anthropic と組織の契約に従う。"
    },
    {
@@ -667,6 +667,676 @@
   "explanation": "Claude in Chrome の組織設定にある許可リストとブロックリストは、Claude in Chrome と Cowork の内蔵ブラウザの両方に適用されます。ヘルプは、最初は制限の強い許可リストから始め、挙動に慣れてから広げることを勧めています。",
   "refs": [
    "https://support.claude.com/en/articles/13065128-claude-in-chrome-admin-controls"
+  ]
+ },
+ {
+  "id": "asc-gov-019",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "経理担当者が Claude in Chrome で取引先ポータルの作業をさせている。同じ Chrome のウィンドウには、社員の給与明細のタブも開いている。ヘルプセンターの説明に照らして、注意すべき点と対策として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude はページを HTML のテキストとしてだけ読むので、画面に表示されている情報が会話に入ることはない",
+    "why": "Claude は作業中のタブのスクリーンショットを撮って判断する。表示されている内容は会話の一部になる。"
+   },
+   {
+    "id": "b",
+    "text": "Claude は作業中のタブのスクリーンショットを撮るので、表示中の情報が会話に入る。機微なサイトでは使わず、別のブラウザプロファイルの利用を検討する",
+    "why": "正解。ヘルプは、機微なサイトでは使わず、機微なアカウントにアクセスできない別のプロファイルを検討するよう勧めている。"
+   },
+   {
+    "id": "c",
+    "text": "Claude in Chrome は給与など人事の情報を自動で検知して画面から隠すので、特別な対策は要らない",
+    "why": "人事情報を自動で隠すという記述はない。表示されている内容はスクリーンショットに写る。"
+   },
+   {
+    "id": "d",
+    "text": "給与明細のタブを開いたままでも、Claude in Chrome の権限を操作の前に必ず確認させるモードにすれば、内容は会話に入らない",
+    "why": "権限の設定は操作の前に確認するかどうかで、スクリーンショットに写る内容を隠すものではない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Claude in Chrome は、ページを見て次の操作を決めるために、作業中のタブのスクリーンショットを撮ります。タブに表示されている内容はスクリーンショットに写り、会話の一部になります。ヘルプは、機微なサイトでは Claude in Chrome を使わず、機微なアカウントにアクセスできない別のブラウザプロファイルを使うことを検討するよう勧めています。",
+  "refs": [
+   "https://support.claude.com/en/articles/12902428-use-claude-in-chrome-safely"
+  ]
+ },
+ {
+  "id": "asc-gov-020",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Claude in Chrome のプロンプトインジェクションへの備えについて、ヘルプセンターの説明に合うものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "入ってくる内容を調べる分類器と、Claude の各操作を実行前に調べる分類器があるが、リスクはゼロではない",
+    "why": "正解。ヘルプは、複数の分類器で自動的に確認しているが、新しい攻撃がありうるためリスクはゼロではないと説明している。"
+   },
+   {
+    "id": "b",
+    "text": "予期しない振る舞いに注意し、信頼できるサイトで使うことが勧められている",
+    "why": "正解。ヘルプは、予期しない振る舞いに気を配り、信頼できるサイトで使うよう勧めている。"
+   },
+   {
+    "id": "c",
+    "text": "分類器があるので、どのサイトで使っても攻撃が成功することはない",
+    "why": "ヘルプは、攻撃の可能性はゼロではなく、成功すればデータの持ち出しなどにつながりうると説明している。"
+   },
+   {
+    "id": "d",
+    "text": "プロンプトインジェクションは Web ページにしか仕込めないので、メールや文書を開くときは気にしなくてよい",
+    "why": "悪意のある指示は、Web サイト、メール、文書などの Web 上の内容に隠されうる。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "ブラウザを操作する AI にとって最大のリスクは、Web サイト、メール、文書などに隠された悪意のある指示に Claude がだまされるプロンプトインジェクションです。Claude in Chrome は、入ってくる内容と各操作を分類器で自動的に確認しますが、新しい攻撃がありうるためリスクはゼロではありません。予期しない振る舞いに注意し、信頼できるサイトで使います。",
+  "refs": [
+   "https://support.claude.com/en/articles/12902428-use-claude-in-chrome-safely"
+  ]
+ },
+ {
+  "id": "asc-gov-021",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "HIPAA の設定を有効にしている Enterprise 組織で、社員が Claude in Chrome を使いたいと申し出た。ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "HIPAA を有効にした組織では Claude in Chrome は使えず、オンにする方法もない",
+    "why": "Owner が Organization settings > Claude in Chrome でオンにできる。"
+   },
+   {
+    "id": "b",
+    "text": "HIPAA を有効にした組織でも、Claude in Chrome は既定でオンになっており、すべてのサイトを開ける",
+    "why": "HIPAA を有効にした組織では、既定でオフになっている。"
+   },
+   {
+    "id": "c",
+    "text": "既定ではオフ。Owner がオンにしても、Owner が特定のサイトを許可するまでどのサイトも開けない",
+    "why": "正解。ヘルプの説明どおり。オンにした後も、Owner がサイトを許可するまで開けるサイトはない。"
+   },
+   {
+    "id": "d",
+    "text": "既定ではオフで、社員が自分の設定でオンにすれば、すべてのサイトを開ける",
+    "why": "オンにできるのは Owner で、オンにした後も許可されたサイトしか開けない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "HIPAA を有効にした組織では、Claude in Chrome は既定でオフです。Owner が Organization settings > Claude in Chrome でオンにできますが、その後も、Owner が特定のサイトを許可するまで、Claude in Chrome はどのサイトも開けません。規制の対象となるデータを扱う組織で、操作できる範囲を絞るための仕組みです。",
+  "refs": [
+   "https://support.claude.com/en/articles/12902428-use-claude-in-chrome-safely"
+  ]
+ },
+ {
+  "id": "asc-gov-022",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Enterprise プランの Owner が、内部監査のために監査ログ(audit logs)を書き出そうとしている。ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Team プランでも Enterprise と同じ手順で監査ログを書き出せる",
+    "why": "監査ログは Enterprise の組織だけで使える。"
+   },
+   {
+    "id": "b",
+    "text": "書き出しには過去 180 日分のログが含まれるが、チャットやプロジェクトのタイトルと内容は含まれず、一意の ID だけが出力される",
+    "why": "正解。ヘルプの説明どおり。チャットの入出力は、Primary Owner がデータのエクスポートで書き出せる。"
+   },
+   {
+    "id": "c",
+    "text": "監査ログには、各チャットのタイトルと本文がすべて含まれる",
+    "why": "チャットやプロジェクトのタイトルと内容は書き出されず、一意の ID だけが出力される。"
+   },
+   {
+    "id": "d",
+    "text": "一般のメンバー(User)も、自分の操作の監査ログを Data and Privacy から書き出せる",
+    "why": "書き出せるのは組織の Owner と Primary Owner。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "監査ログは Enterprise の組織だけで使え、Owner と Primary Owner が Organization settings > Data and Privacy の「Export logs」から書き出します。書き出しには過去 180 日分のログが含まれます。チャットやプロジェクトのタイトルと内容は含まれず、一意の ID だけが出力されます。チャットの入出力は、Primary Owner がデータのエクスポートで書き出せます。",
+  "refs": [
+   "https://support.claude.com/en/articles/9970975-access-audit-logs"
+  ]
+ },
+ {
+  "id": "asc-gov-023",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの組織から退職者を外した。この退職者が非公開(private)にしていたプロジェクトについて、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "退職者を外すと、そのアカウントとデータはすぐに完全に削除される",
+    "why": "メンバーを外してもアカウントやデータは削除されない。完全な削除は Owner が Support に依頼する。"
+   },
+   {
+    "id": "b",
+    "text": "非公開のプロジェクトは、自動で組織全体に公開され、残ったメンバーが引き継げる",
+    "why": "非公開だったプロジェクトは、外した後はほかのメンバーがアクセスできない。"
+   },
+   {
+    "id": "c",
+    "text": "非公開のプロジェクトは、外した後はほかのメンバーがアクセスできない",
+    "why": "正解。ヘルプの説明どおり。必要なら、外す前に共有しておくなどの対応が必要になる。"
+   },
+   {
+    "id": "d",
+    "text": "非公開のプロジェクトは、Owner なら誰でも引き続き開いて編集できる",
+    "why": "非公開のプロジェクトはほかのメンバーがアクセスできなくなる。Owner に例外があるという記述はない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "メンバーを組織から外しても、アカウントやデータは削除されません。外したメンバーのプロジェクトに残りのメンバーがアクセスできるかは、公開範囲で決まります。非公開のプロジェクトにはほかのメンバーがアクセスできなくなり、組織全体に共有されていたプロジェクトは引き続き権限に応じて使えます。",
+  "refs": [
+   "https://support.claude.com/en/articles/12053672-what-happens-to-a-user-s-data-when-they-are-removed-from-a-team-or-enterprise-organization"
+  ]
+ },
+ {
+  "id": "asc-gov-024",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Team や Enterprise の組織からメンバーを外した場合の扱いとして、ヘルプセンターの説明に合うものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "外したメンバーのデータも、Primary Owner が実行する組織のデータのエクスポートには引き続き含まれる",
+    "why": "正解。ヘルプは、外したメンバーのデータも組織のエクスポートに含まれると説明している。"
+   },
+   {
+    "id": "b",
+    "text": "同じメールアドレスで同じ組織に再び追加すると、以前のチャット、プロジェクト、スキルが戻る",
+    "why": "正解。ヘルプは、同じメールアドレスで再追加すると以前のデータが戻ると説明している。"
+   },
+   {
+    "id": "c",
+    "text": "外したメンバーのチャットは、組織内で共有されていたスナップショットも含めて、残りのメンバーが引き続き見られる",
+    "why": "外した後は、組織内に共有されたスナップショットも含めて、残りのメンバーはチャットを見られない。"
+   },
+   {
+    "id": "d",
+    "text": "SCIM でプロビジョニングしている組織では、Claude の画面でメンバーを外すだけで、IdP 側の操作は要らない",
+    "why": "SCIM を使う場合は IdP でユーザーを外さないと、再びプロビジョニングされることがある。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "メンバーを外すと、残りのメンバーはそのメンバーのチャット(組織に共有したスナップショットを含む)にアクセスできなくなりますが、データは削除されず、Primary Owner が実行するデータのエクスポートにも含まれます。同じメールアドレスで再び追加すると、以前のチャット、プロジェクト、スキルが戻ります。SCIM を使う組織では、IdP でもユーザーを外さないと再びプロビジョニングされることがあります。",
+  "refs": [
+   "https://support.claude.com/en/articles/12053672-what-happens-to-a-user-s-data-when-they-are-removed-from-a-team-or-enterprise-organization"
+  ]
+ },
+ {
+  "id": "asc-gov-025",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Pro プランの利用者のアカウントが停止された。本人は利用規約に違反した覚えがなく、誤りだと考えている。ヘルプセンターが案内している手順はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "新しいメールアドレスで別のアカウントを作り、そこから問い合わせる",
+    "why": "異議申し立てのフォームは、停止されたアカウントでログインして開く必要がある。"
+   },
+   {
+    "id": "b",
+    "text": "停止されたアカウントで claude.ai にログインし、異議申し立て(appeal)のフォームを送る",
+    "why": "正解。ヘルプは、停止されたアカウントでログインし、リンクされたフォームから異議を申し立てるよう案内している。"
+   },
+   {
+    "id": "c",
+    "text": "停止は自動で 30 日後に解除されるので、何もせずに待つ",
+    "why": "自動で解除されるという記述はない。誤りだと考えるなら異議を申し立てる。"
+   },
+   {
+    "id": "d",
+    "text": "アカウントを削除すれば停止の記録も消えるので、削除してから作り直す",
+    "why": "削除しても異議申し立ての代わりにはならない。誤りと考えるなら、まず異議を申し立てる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "アカウントが誤って停止されたと考える場合は、claude.ai に停止されたアカウントでログインし、異議申し立てのフォームを送ります。フォームはログインしていないと開けません。Safeguards チームが停止の理由を調べます。なお、Usage Policy 違反で停止された Free、Pro、Max、Ultra のアカウントでも、ログインしてデータのエクスポートやアカウントの削除はできます。",
+  "refs": [
+   "https://support.claude.com/en/articles/8241253-safeguards-warnings-and-appeals"
+  ]
+ },
+ {
+  "id": "asc-gov-026",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "自分のアカウントには問題がないのに、所属する組織が「通常と異なる活動」を理由に一時停止(on hold)された。ログインすると制限された画面に組織が表示されている。ヘルプセンターが案内している対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "自分のアカウントを削除して作り直し、組織に招待し直してもらう",
+    "why": "自分のアカウントに問題はないので、作り直しは不要。組織の見直しを依頼する手段がある。"
+   },
+   {
+    "id": "b",
+    "text": "個人の異議申し立てフォームから、自分のアカウントの停止解除を申請する",
+    "why": "停止されているのは組織で、自分のアカウントではない。組織ごとに見直しを依頼する。"
+   },
+   {
+    "id": "c",
+    "text": "影響を受けている組織の「Request a review」をクリックし、Safeguards チームに見直しを依頼する",
+    "why": "正解。制限された画面には組織ごとに表示があり、「Request a review」で見直しを依頼できる。"
+   },
+   {
+    "id": "d",
+    "text": "組織の一時停止は 24 時間で自動的に解除されるので、翌日まで待つ",
+    "why": "自動で解除されるという記述はない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "自分のアカウントに問題がなくても、所属する組織が通常と異なる活動のために一時停止されることがあります。その場合は、ログイン時の制限された画面に組織ごとの表示が出るので、影響を受けている組織の「Request a review」をクリックし、Safeguards チームに見直しを依頼します。",
+  "refs": [
+   "https://support.claude.com/en/articles/8241253-safeguards-warnings-and-appeals"
+  ]
+ },
+ {
+  "id": "asc-gov-027",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Anthropic の「エージェントの利用と Usage Policy」の記事が、エージェントの使い方として禁止の例に挙げているものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "検知を逃れたりプラットフォームの安全策を回避したりするために、複数のアカウントを作成・管理させる",
+    "why": "正解。大規模な悪用の例として挙げられている。"
+   },
+   {
+    "id": "b",
+    "text": "本人への通知や同意なしに、個人のオンラインでの活動や行動を監視・追跡させる",
+    "why": "正解。監視や無許可のデータ収集の例として挙げられている。"
+   },
+   {
+    "id": "c",
+    "text": "自社の Web サイトのリンク切れを、エージェントに定期的に確認させる",
+    "why": "自社のサイトを確認する作業は、記事が禁止の例に挙げている内容ではない。"
+   },
+   {
+    "id": "d",
+    "text": "自分が契約している SaaS の管理画面で、自分の権限の範囲でレポートを作らせる",
+    "why": "自分の権限の範囲での業務の自動化は、記事が禁止の例に挙げている内容ではない。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "エージェントやエージェント機能の利用も Usage Policy に従う必要があります。記事は禁止の例として、本人の通知や同意なしに個人の活動を監視・追跡すること、検知を逃れるために複数のアカウントを作ること、オンライン投票の操作、なりすまし、フィッシングにつながる内容の生成、許可のないシステムへのアクセスなどを挙げています。",
+  "refs": [
+   "https://support.claude.com/en/articles/12005017-using-agents-according-to-our-usage-policy"
+  ]
+ },
+ {
+  "id": "asc-gov-028",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Pro プランの利用者が、チャットの公開リンク(public link)を作り、同僚 1 人にだけメッセージで送った。公開リンクについて、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "1 人にだけ送ったので、リンクはその人だけが開ける",
+    "why": "公開リンクを特定の人に限る方法はない。受け取った人が転送したり投稿したりできる。"
+   },
+   {
+    "id": "b",
+    "text": "開くには Claude のアカウントが必要なので、アカウントのない人には見られない",
+    "why": "公開リンクはアカウントがなくても開ける。"
+   },
+   {
+    "id": "c",
+    "text": "共有した時点のスナップショットで閲覧のみ。添付ファイルは含まれず、1 人に送っただけでも公開として扱うべきである",
+    "why": "正解。ヘルプは「公開リンクは公開として扱う」ことを原則として挙げている。"
+   },
+   {
+    "id": "d",
+    "text": "リンクを受け取った人は、その会話の続きを自分のアカウントで書き込める",
+    "why": "公開リンクは閲覧のみで、閲覧者は会話を続けられない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "公開リンクは、共有した時点の会話のスナップショットを、リンクを持つ誰でも(アカウントなしでも)閲覧のみで見られるようにします。添付ファイルは含まれません。1 人にだけ送っても、受け取った人が転送や投稿をできるため、特定の人に限ることはできません。「公開リンクは公開として扱う」のが原則で、Web に公開したくない内容は公開リンクにしません。",
+  "refs": [
+   "https://support.claude.com/en/articles/16762437-public-links-for-shared-chats"
+  ]
+ },
+ {
+  "id": "asc-gov-029",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの社員が、取引先の担当者にチャットの内容を見せたいと考え、公開リンクを作ろうとした。ヘルプセンターの説明に照らして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Team と Enterprise のメンバーは、チャットを組織の中でしか共有できない",
+    "why": "正解。ヘルプは、公開リンクは Free、Pro、Max、Ultra で使え、Team と Enterprise のメンバーは組織内でしか共有できないと説明している。"
+   },
+   {
+    "id": "b",
+    "text": "Team プランでは公開リンクを作れるが、閲覧には取引先も Team プランの契約が必要である",
+    "why": "Team プランのメンバーは公開リンクを作れない。"
+   },
+   {
+    "id": "c",
+    "text": "Team プランでは公開リンクの作成に Owner の承認が必要で、承認後は誰でも閲覧できる",
+    "why": "承認によって公開リンクを作れるようになる仕組みは説明されていない。"
+   },
+   {
+    "id": "d",
+    "text": "Team プランでは公開リンクが既定で検索エンジンに表示されるため、Owner が設定で止める必要がある",
+    "why": "Team と Enterprise のメンバーは公開リンクを作れない。また、共有ページには noindex の指示が付く。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "公開リンクは Free、Pro、Max、Ultra のプランで使える機能です。Team と Enterprise のメンバーは、チャットを組織の中でしか共有できません。組織の外の相手に内容を伝える必要があるときは、組織の方針に沿った別の手段をとります。",
+  "refs": [
+   "https://support.claude.com/en/articles/16762437-public-links-for-shared-chats"
+  ]
+ },
+ {
+  "id": "asc-gov-030",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Pro プランの利用者が、チャットをメールアドレスで招待する方法で、取引先の担当者 1 人に共有した。この方法について、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "招待メールが転送されれば、転送された人も同じリンクで会話を開ける",
+    "why": "招待は入力したメールアドレスでしか開けず、転送されたメールのリンクはほかの人には開けない。"
+   },
+   {
+    "id": "b",
+    "text": "招待された人は、共有された会話の続きを自分で書き込んだり、自分のアカウントにコピーしたりできる",
+    "why": "共有された会話は閲覧のみで、続けたりコピーしたりはできない。"
+   },
+   {
+    "id": "c",
+    "text": "招待された人は、コネクタや MCP ツールの呼び出しで取得された生のデータもすべて見られる",
+    "why": "見られるのは Claude の最終的な応答で、コネクタや MCP ツールの生のデータは見られない。"
+   },
+   {
+    "id": "d",
+    "text": "招待は入力したメールアドレスでしか開けず、共有時点のスナップショットを閲覧のみで見られる",
+    "why": "正解。ヘルプの説明どおり。共有した後のメッセージは、共有を更新しない限り見られない。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "特定の人への共有では、招待した人だけが会話のスナップショットを閲覧のみで見られます。招待は入力したメールアドレスでしか開けず、メールが転送されてもほかの人は開けません。共有後に送ったメッセージ、(組織外への共有では)添付ファイル、コネクタや MCP ツールの生のデータは含まれません。受け取った人は会話を続けたりコピーしたりできません。",
+  "refs": [
+   "https://support.claude.com/en/articles/16762496-share-a-chat-with-specific-people"
+  ]
+ },
+ {
+  "id": "asc-gov-031",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "利用量課金の Enterprise プランで、Owner が「US-only inference」をオンにした。この設定について、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "組織のデータの保存場所と、Slack や Google Drive などのコネクタが処理する場所も、すべて米国内に限定される",
+    "why": "この設定が対象とするのは推論だけで、データの保存場所やコネクタの処理場所は制御しない。"
+   },
+   {
+    "id": "b",
+    "text": "推論(モデルが応答を生成する処理)を米国内のサーバーに限る。データの保存場所やコネクタ先のサービスの処理は対象外",
+    "why": "正解。ヘルプの説明どおり。推論だけが対象である。"
+   },
+   {
+    "id": "c",
+    "text": "オンにしても料金は変わらず、席の料金と利用料はどちらも従来どおりである",
+    "why": "対象のモデルでは、利用料が標準の API 料金の 1.1 倍になる。席の料金は変わらない。"
+   },
+   {
+    "id": "d",
+    "text": "この設定は社員が個別にオンにするもので、組織全体には適用されない",
+    "why": "組織全体に適用される設定で、変更できるのは Primary Owner、Owner、Privacy を「Can manage」にしたカスタムロール。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "US-only inference は、組織の推論(Claude が応答を生成する処理)をすべて米国内のサーバーで行う、組織全体の設定です。データの保存場所や、Slack や Google Drive などのコネクタ先のサービスが行う処理は対象外です。オンにすると、対象のモデル(Opus 4.6、Sonnet 4.6 以降)の利用料が標準の API 料金の 1.1 倍になり、席の料金は変わりません。",
+  "refs": [
+   "https://support.claude.com/en/articles/15422948-enable-us-only-inference-for-your-organization"
+  ]
+ },
+ {
+  "id": "asc-gov-032",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "法律事務所が、契約書レビューや訴訟準備に Claude を使うかを検討している。Anthropic のヘルプ記事「法務での利用:秘匿特権と機密保持」が、検討すべき点として挙げているものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "個人向けの無料アカウントを各弁護士が使えば、商用の契約条件を確認する必要はない",
+    "why": "記事は、DPA と学習に使わない約束を含む商用の契約条件で使っているかを、基本の前提として挙げている。"
+   },
+   {
+    "id": "b",
+    "text": "Claude の出力は一次資料と照合しなくてよいので、弁護士の関与は最小限にできる",
+    "why": "記事は、弁護士が関与し、出力を一次資料で確認し、AI の利用を記録することを挙げている。"
+   },
+   {
+    "id": "c",
+    "text": "商用の契約条件(DPA と学習に使わない約束)かどうか、案件の機微さに応じて ZDR や自社クラウド内での利用が必要か、弁護士の関与と一次資料での確認をどう保つか",
+    "why": "正解。記事が「検討を勧める点」として挙げている内容。"
+   },
+   {
+    "id": "d",
+    "text": "裁判所の判断は確定しているので、どの法域でも AI の利用は秘匿特権で保護されると考えてよい",
+    "why": "記事は、この分野の法は動いており、控訴審の判断もなく、法域によって異なりうると述べ、自らの弁護士と相談するよう勧めている。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "記事は、法務で Claude を使う際に、(1)DPA と学習に使わない約束を含む商用の契約条件で使っているか、(2)案件の機微さに応じて ZDR や自社クラウド内(AWS Bedrock や Google Cloud Vertex AI)での利用が必要か、(3)弁護士の関与、一次資料での確認、AI 利用の記録をどう保つか、を検討するよう挙げています。Team、Enterprise、API の顧客のコンテンツは、既定では学習に使われません。この記事は法的助言ではないと明記されています。",
+  "refs": [
+   "https://support.claude.com/en/articles/15707726-using-claude-for-legal-work-privilege-confidentiality-and-how-to-think-about-configuration"
+  ]
+ },
+ {
+  "id": "asc-gov-033",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Pro プランの利用者が、モデル改善(Model Improvement)を許可している。会話が改善に使われる場合のプライバシー保護として、ヘルプセンターが挙げているものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "確認の前に、データをメールアドレスなどのユーザー ID から自動で切り離す",
+    "why": "正解。ヘルプが挙げている保護の 1 つ。"
+   },
+   {
+    "id": "b",
+    "text": "アクセスできるのは、モデルの学習に関わる少数の担当者に限られる",
+    "why": "正解。ヘルプが挙げている保護の 1 つ。"
+   },
+   {
+    "id": "c",
+    "text": "モデル改善を許可していれば、Incognito chat の会話も改善に使われる",
+    "why": "Incognito chat の会話は、モデル改善を許可していても改善に使われない。"
+   },
+   {
+    "id": "d",
+    "text": "改善に使ったデータをもとに、本人に合った製品の案内を送る",
+    "why": "ヘルプは、こうしたデータを連絡、プロファイル作成、販売や営業に使わないと説明している。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "会話を Claude の改善に使う場合、確認の前にデータをユーザー ID(メールアドレスなど)から自動で切り離し、アクセスを学習に関わる少数の担当者に限ります。データを連絡やプロファイル作成、販売に使うことはありません。Incognito chat の会話は、モデル改善を許可していても改善に使われません。それでも、口座番号、健康情報、パスワードなどの非常に機微な情報の共有には慎重になるよう勧められています。",
+  "refs": [
+   "https://support.claude.com/en/articles/8325621-i-would-like-to-input-sensitive-data-into-my-chats-with-claude-who-can-view-my-conversations"
+  ]
+ },
+ {
+  "id": "asc-gov-034",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Enterprise プランの Owner が IP 許可リスト(IP allowlisting)を設定し、社内ネットワークからだけ Claude にアクセスできるようにした。ヘルプセンターの説明に照らして、注意すべき点はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "IP 許可リストを使うには、Anthropic に申請して設定してもらう必要がある",
+    "why": "Enterprise の Owner は、Anthropic を通さずに自分で設定・管理できる。"
+   },
+   {
+    "id": "b",
+    "text": "IP 許可リストは Team プランでも同じように使える",
+    "why": "IP 許可リストは Enterprise プランと Claude Platform の組織で使える(公開ベータ)。"
+   },
+   {
+    "id": "c",
+    "text": "組織の外に共有したアーティファクトは、IP 許可リストの制限を受けない",
+    "why": "正解。ヘルプは、組織の外に共有したアーティファクトは許可リストで制限されないと注意している。"
+   },
+   {
+    "id": "d",
+    "text": "IP 許可リストを設定すると、組織外へのアーティファクトの共有も自動で禁止される",
+    "why": "自動で禁止されるのではなく、組織外に共有したアーティファクトは許可リストの対象外になる。共有の管理は別に行う。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "IP 許可リストは、組織が承認した IP アドレスからだけ Claude にアクセスできるようにする機能で、Enterprise プランと Claude Platform の組織で公開ベータとして使えます。Enterprise の Owner は Anthropic を通さずに自分で設定できます。ただし、組織の外に共有したアーティファクトは許可リストの制限を受けないため、組織外への共有は別に管理します。",
+  "refs": [
+   "https://support.claude.com/en/articles/13200993-restrict-access-to-claude-with-ip-allowlisting"
+  ]
+ },
+ {
+  "id": "asc-gov-035",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの組織の Primary Owner について、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Primary Owner は組織に何人でも置け、ライセンスを消費しない",
+    "why": "組織に置ける Primary Owner は 1 人だけで、そのシートはライセンスを 1 つ使う。"
+   },
+   {
+    "id": "b",
+    "text": "Primary Owner は必ず実在の個人でなければならず、サービスアカウントは使えない",
+    "why": "個人に結び付かないサービスアカウントを Primary Owner にできる。"
+   },
+   {
+    "id": "c",
+    "text": "Primary Owner は組織に 1 人だけで、ライセンスを 1 つ使う。個人に結び付かないサービスアカウントにもできる",
+    "why": "正解。ヘルプの説明どおり。誰が Primary Owner かは Settings > Account で確認できる。"
+   },
+   {
+    "id": "d",
+    "text": "Primary Owner は Admin と同じ権限で、請求書の閲覧や支払い方法の変更はできない",
+    "why": "請求書の閲覧や支払い方法の変更は Owner と Primary Owner ができる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Team と Enterprise の組織に置ける Primary Owner は 1 人だけで、そのシートはプランのライセンスを 1 つ使います。Primary Owner は個人に結び付かないサービスアカウントにもできます。誰が Primary Owner かは Settings > Account で確認できます。",
+  "refs": [
+   "https://support.claude.com/en/articles/9267276-roles-and-permissions"
+  ]
+ },
+ {
+  "id": "asc-gov-036",
+  "cert": "associate",
+  "domain": "governance-risk-and-responsible-use",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude in Chrome が備えている安全策のうち、ヘルプセンターが「特定の高リスクの操作」の前に行うと説明している「操作の確認(action confirmations)」の対象として挙げられている例はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ファイルのダウンロードや、機微な情報の入力",
+    "why": "正解。ヘルプは、ファイルのダウンロードや機微な情報の入力などの高リスクの操作で確認を求めると説明している。"
+   },
+   {
+    "id": "b",
+    "text": "ページのスクロールや、タブの切り替え",
+    "why": "スクロールやタブの切り替えは、高リスクの操作の例として挙げられていない。"
+   },
+   {
+    "id": "c",
+    "text": "ページの文章の要約や、開いているタブの内容の比較",
+    "why": "読み取りや要約は、確認の対象の例として挙げられていない。"
+   },
+   {
+    "id": "d",
+    "text": "検索エンジンでのキーワード検索や、検索結果の一覧の表示",
+    "why": "検索は、確認の対象の例として挙げられていない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Claude in Chrome は、モデルの学習、分類器による内容の確認、細かな権限、高リスクのサイトのブロックリスト、操作の自動審査などを組み合わせて守られています。その 1 つが、ファイルのダウンロードや機微な情報の入力など、特定の高リスクの操作の前に確認を求める仕組みです。それでも攻撃の可能性はゼロではないため、注意して使います。",
+  "refs": [
+   "https://support.claude.com/en/articles/12902428-use-claude-in-chrome-safely"
   ]
  }
 ]

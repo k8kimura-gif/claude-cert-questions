@@ -537,7 +537,7 @@
   "choices": [
    {
     "id": "a",
-    "text": "(1)はデスクトップ拡張、(2)はリモートコネクタ",
+    "text": "(1)はデスクトップ拡張(.mcpb)、(2)はリモートコネクタ",
     "why": "クラウドのサービスはリモートコネクタが既定の選択で、すべての面で使える。localhost 上のツールはクラウドから届かない。"
    },
    {
@@ -702,7 +702,7 @@
    },
    {
     "id": "d",
-    "text": "「ネットワーク通信を無効にすれば、MCP の接続を使っていても外部への通信は完全に止まる」",
+    "text": "「ネットワーク通信を無効にすれば、MCP の接続を使っていても外部への通信は完全に止まるので安全だ」",
     "why": "ネットワーク設定を無効にしても、MCP の連携が有効な場合は、その接続を通じた通信は可能なままである。MCP の設定は別に評価する必要がある。"
    }
   ],
@@ -749,6 +749,747 @@
   "explanation": "プラグインは、職種・チーム・会社に合わせて Claude を動かすための、スキル・コネクタ・サブエージェントのまとまりです。営業、財務、法務など職種ごとのものが用意されており、追加するだけで設定が整います。",
   "refs": [
    "https://support.claude.com/en/articles/13837440-use-plugins-in-claude"
+  ]
+ },
+ {
+  "id": "asc-wf-021",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "プロジェクト管理担当者が、Claude との会話の中で Asana のボードを開き、タスクにチェックを付けたりステータスを変えたりしながら、そのまま Claude と話を続けたい。最も適した機能はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "インタラクティブなコネクタ。対応するコネクタは、会話の中に操作できるアプリの画面を表示する",
+    "why": "正解。インタラクティブなコネクタは、ダッシュボードやタスクボードなどの画面を会話の中に表示し、その場で操作できる。"
+   },
+   {
+    "id": "b",
+    "text": "Research。Asana の内容を調べて、ボードの状態をまとめたレポートを作る",
+    "why": "Research は調査とレポートのための機能で、会話の中でボードを操作するものではない。"
+   },
+   {
+    "id": "c",
+    "text": "アーティファクト。Claude に Asana のボードとそっくりの画面を作らせ、そこでチェックを付ける",
+    "why": "Claude が作る画面は Asana のデータを更新しない。実際のボードを操作するにはインタラクティブなコネクタを使う。"
+   },
+   {
+    "id": "d",
+    "text": "プロジェクト。Asana のボードの画面を書き出してナレッジに入れ、Claude に読ませる",
+    "why": "ナレッジに入れた資料は参照されるだけで、Asana のボードを操作する機能ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "一部のコネクタは、テキストの回答の代わりに、分析ダッシュボードやタスクボードなどのアプリの画面を会話の中に表示できます(インタラクティブなコネクタ)。たとえばプロジェクトの状況を尋ねると Claude が Asana のボードを開き、タスクのチェックやステータスの更新をしながら会話を続けられます。表示の形は、インラインのカード、サイドパネル、全画面の 3 種類です。",
+  "refs": [
+   "https://support.claude.com/en/articles/13454812-use-interactive-connectors-in-claude"
+  ]
+ },
+ {
+  "id": "asc-wf-022",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者は、Claude の Web 版でインタラクティブなコネクタを開き、サイドバーにピン留めした。翌日 Claude Desktop を開くと、そのピンが見当たらない。ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ピンはブラウザごとに保存されるので、Web 版で付けたピンは Claude Desktop には表示されない",
+    "why": "正解。ヘルプは、ピンはブラウザごとに保存され、Web で付けたピンは Claude Desktop に表示されないと説明している。"
+   },
+   {
+    "id": "b",
+    "text": "ピンは 24 時間で自動的に外れる仕様なので、毎日付け直す必要がある",
+    "why": "ピンが時間で外れるという記述はない。"
+   },
+   {
+    "id": "c",
+    "text": "インタラクティブなコネクタは Claude Desktop では使えないので、ピンも表示されない",
+    "why": "インタラクティブなコネクタは Claude Desktop でも使える。"
+   },
+   {
+    "id": "d",
+    "text": "コネクタの接続が切れたため、ピンが消えた。コネクタを接続し直せばピンも戻る",
+    "why": "接続が切れたのではなく、ピンがブラウザごとに保存されることによる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "インタラクティブなコネクタは、Claude に頼まなくてもナビゲーションから開き、サイドバーにピン留めできます。ピンはブラウザごとに保存されるため、Web 版で付けたピンは Claude Desktop には表示されません。使う場所ごとにピンを付けます。",
+  "refs": [
+   "https://support.claude.com/en/articles/13454812-use-interactive-connectors-in-claude"
+  ]
+ },
+ {
+  "id": "asc-wf-023",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Cowork で、Slack のチャンネルの投稿を集めて要約するタスクを頼んだ。Slack のコネクタも接続済みで、コンピューター操作(computer use)も有効にしている。Claude が使う手段の順として、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "まず画面の操作で Slack のアプリを開く。画面の操作がいちばん確実だからである",
+    "why": "ヘルプは逆に、画面の操作は時間がかかり誤りも起きやすいと説明している。"
+   },
+   {
+    "id": "b",
+    "text": "まずブラウザで Slack の Web 版を開き、コネクタは使わない",
+    "why": "コネクタがあればまずそれを使う。ブラウザは、コネクタがない場合の手段。"
+   },
+   {
+    "id": "c",
+    "text": "まずコネクタを使う。コネクタがなければブラウザ、それもなければ画面の操作を使う",
+    "why": "正解。ヘルプは、最も正確な手段から、コネクタ、ブラウザ、画面の操作の順に使うと説明している。"
+   },
+   {
+    "id": "d",
+    "text": "3 つの手段を同時に使い、結果を照らし合わせて最も確かなものを選ぶ",
+    "why": "同時に使うという記述はない。最も速く確実な手段を優先する。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Cowork では、Claude は最も正確な手段から使います。コネクタ(Gmail、Google Drive、Microsoft 365、Slack など)があればそれを使い、なければ Claude Desktop の組み込みブラウザか Claude in Chrome を使い、それもなければコンピューター操作で画面を直接操作します。Slack のコネクタなら数秒で済む作業も、画面の操作では時間がかかり、誤りも起きやすくなります。",
+  "refs": [
+   "https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork"
+  ]
+ },
+ {
+  "id": "asc-wf-024",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "ある担当者が、Cowork のコンピューター操作(computer use)を使い始める。個人情報を守るための使い方として、ヘルプセンターの説明に合うものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude は画面のスクリーンショットを撮って操作するので、機密情報のあるファイルやアプリは閉じてから使う",
+    "why": "正解。ヘルプは、画面に表示されている情報は Claude に見えるため、機微な情報のあるファイルやアプリを閉じるよう勧めている。"
+   },
+   {
+    "id": "b",
+    "text": "銀行、医療、行政などの機微なアプリには、コンピューター操作の権限を与えない",
+    "why": "正解。ヘルプが推奨事項として挙げている内容。"
+   },
+   {
+    "id": "c",
+    "text": "Claude は株取引や機微なデータの入力を避けるよう訓練されているので、機微なアプリへのアクセスを制限する必要はない",
+    "why": "ヘルプは、この訓練は絶対ではなく、機微なアプリへのアクセスを止める代わりにしてはならないと説明している。"
+   },
+   {
+    "id": "d",
+    "text": "一度許可したアプリは以後すべてのタスクで使われるので、最初にすべてのアプリを許可しておく",
+    "why": "Claude はアプリごとに権限を求める。必要なアプリだけを許可し、機微なアプリには許可しない。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "コンピューター操作では、Claude は画面のスクリーンショットを撮って操作するため、表示されている情報が見えます。機密情報のあるファイルやアプリは閉じてから使い、銀行、医療、行政などの機微なアプリには権限を与えないよう勧められています。Claude は株取引や機微なデータの入力を避けるよう訓練されていますが、これは絶対ではなく、アクセスを制限する代わりにはなりません。",
+  "refs": [
+   "https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork"
+  ]
+ },
+ {
+  "id": "asc-wf-025",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "macOS 15 の Mac で、Cowork のコンピューター操作を使ってタスクを任せた。作業中も自分は別の作業を続けたい。既定の動き方について、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude は画面全体を占有し、作業が終わるまでマウスとキーボードを使えなくなる",
+    "why": "macOS 15 以降の既定では、Claude は背景のウィンドウで作業し、ポインタやキーボードを奪わない。"
+   },
+   {
+    "id": "b",
+    "text": "Claude は背景のウィンドウで作業し、ポインタやキーボードを奪わない。画面全体が必要なときはセッションごとに最初に許可を求める",
+    "why": "正解。ヘルプの説明どおり。画面を占有させたい場合は設定で「Full control」に変えられる。"
+   },
+   {
+    "id": "c",
+    "text": "背景で作業させるには、事前に Settings で「Full control」を選ぶ必要がある",
+    "why": "「Full control」は、背景ではなく画面を占有して作業させるための設定。"
+   },
+   {
+    "id": "d",
+    "text": "macOS ではコンピューター操作を使えないので、Windows の PC で使う必要がある",
+    "why": "コンピューター操作は macOS と Windows の Claude Desktop で使える。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "macOS 15 以降では、Claude は既定で背景のウィンドウで作業し、ポインタやキーボードを奪わないため、利用者は作業を続けられます。入力中は Claude が待つことが多く、タスクで画面全体が必要になったときは、セッションごとに最初に許可を求めます。画面を占有させたい場合は、設定で「Full control」を選びます。",
+  "refs": [
+   "https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork"
+  ]
+ },
+ {
+  "id": "asc-wf-026",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者は、Web で調べて表にまとめる作業の「Web の部分」を Claude に任せ、自分は自分の Chrome で別の作業を続けたい。自分のタブやログイン状態には触れてほしくない。Cowork でどちらのブラウザを使うのが適しているか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude in Chrome。自分の Chrome の今のページで、ログイン済みのアカウントを使って作業させる",
+    "why": "Claude in Chrome は、自分の Chrome の、ログイン済みのアカウントで作業させるときに向く。タブやログインに触れたくない要件に合わない。"
+   },
+   {
+    "id": "b",
+    "text": "組み込みブラウザ。Claude 専用のブラウザで作業し、自分のタブやログインに触れない",
+    "why": "正解。ヘルプは、Web の部分を任せて自分の作業を続けたいときは組み込みブラウザが向くと説明している。"
+   },
+   {
+    "id": "c",
+    "text": "どちらも使わず、Web 検索だけで済ませる。ブラウザを使うと自分のタブが必ず操作されるため",
+    "why": "組み込みブラウザは自分のブラウザとは別で、タブに触れない。"
+   },
+   {
+    "id": "d",
+    "text": "Claude in Chrome。Chrome を使っている人は組み込みブラウザを選べないため",
+    "why": "優先するブラウザは Settings > Cowork でいつでも切り替えられる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Cowork の Web 作業には 2 つの方法があります。組み込みブラウザは Claude 専用のブラウザで、インストール不要で、自分のタブやログインに触れません。Web の部分を任せて自分は作業を続けたいときに向きます。Claude in Chrome は自分の Chrome の、今開いているページで、ログイン済みのアカウントを使って作業するときに向きます。優先するブラウザは Settings > Cowork で切り替えられます。",
+  "refs": [
+   "https://support.claude.com/en/articles/16607400-use-the-built-in-browser-in-claude-cowork"
+  ]
+ },
+ {
+  "id": "asc-wf-027",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Cowork の組み込みブラウザで、業務システムのいくつかのサイトにログインした。この扱いについて、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "組み込みブラウザでのログインはタスクが終わると自動で消えるので、次のセッションでは毎回ログインし直す",
+    "why": "Claude は Cowork のセッションをまたいでログインを覚えている。"
+   },
+   {
+    "id": "b",
+    "text": "組み込みブラウザでログインしたものは、その PC での以後の Cowork のセッションでも Claude が使える。お金や個人情報を扱うサイトでは慎重に選ぶ",
+    "why": "正解。ヘルプは、ログインしたものは以後のセッションでも Claude が使えるので、どのサイトにログインするかを慎重に選ぶよう注意している。"
+   },
+   {
+    "id": "c",
+    "text": "組み込みブラウザは自分の Chrome の保存済みログインを常に自動で使うので、別にログインする必要はない",
+    "why": "組み込みブラウザは自分のブラウザとは別で、Cookie をインポートしない限り保存済みのログインは見えない。"
+   },
+   {
+    "id": "d",
+    "text": "Team プランでは Cookie のインポートを止める設定はなく、全員が必ずインポートできる",
+    "why": "Team と Enterprise では、Owner が組織の Cookie のインポートをオフにできる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "組み込みブラウザは自分のブラウザとは別のもので、Cookie をインポートしない限り Claude は保存済みのログインを見られません。組み込みブラウザでログインしたものは、その PC での以後の Cowork のセッションでも Claude が使えます。お金や個人情報を扱うサイトでは、どこにログインするかを慎重に選びます。Team と Enterprise では Owner が Cookie のインポートをオフにできます。",
+  "refs": [
+   "https://support.claude.com/en/articles/16607400-use-the-built-in-browser-in-claude-cowork"
+  ]
+ },
+ {
+  "id": "asc-wf-028",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Pro プランの担当者が、スマートフォンから Cowork のタスクを始め、組み込みブラウザで Web の作業をさせたい。Cowork のセッションはクラウドで動いている。ヘルプセンターの説明に照らして、必要な条件はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "特に条件はない。組み込みブラウザもクラウドで動くので、PC は電源を切っておいてよい",
+    "why": "組み込みブラウザはデスクトップアプリの中にあるため、Claude Desktop が開いてオンラインである必要がある。"
+   },
+   {
+    "id": "b",
+    "text": "スマートフォンにも Claude in Chrome の拡張を入れておく",
+    "why": "組み込みブラウザは自分のブラウザに依存しない。必要なのは Claude Desktop が開いていること。"
+   },
+   {
+    "id": "c",
+    "text": "PC の Claude Desktop が開いていて、オンラインであること",
+    "why": "正解。ヘルプは、セッションがクラウドで動いていても、組み込みブラウザを使うには Claude Desktop が開いてオンラインである必要があると説明している。"
+   },
+   {
+    "id": "d",
+    "text": "スマートフォンの Claude アプリを閉じずに、作業が終わるまで画面を表示し続ける",
+    "why": "クラウドのセッションは、スマートフォンのアプリを閉じても続く。必要なのは Claude Desktop 側の条件である。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "組み込みブラウザは Claude Desktop の中にあるため、Cowork のセッションがクラウドで動いていても、Claude が組み込みブラウザを使うには Claude Desktop が開いてオンラインである必要があります。組み込みブラウザを優先ブラウザにしている場合、Web やモバイルから始めたタスクも、デスクトップアプリが開いていればそのブラウザを使います。",
+  "refs": [
+   "https://support.claude.com/en/articles/16607400-use-the-built-in-browser-in-claude-cowork"
+  ]
+ },
+ {
+  "id": "asc-wf-029",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの営業チームが、Google Meet の商談に Claude Meetings で Claude を参加させようとしている。取引先の担当者も参加する。ヘルプセンターの説明に照らして、事前に確認すべきことと注意点として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude は見えない形で参加するので、参加者への説明は不要である",
+    "why": "Claude は見える参加者として加わる。追加する前に、全員が文字起こしされることに同意しているかを確認する。"
+   },
+   {
+    "id": "b",
+    "text": "参加者全員が文字起こしされることに問題がないかを確認する。Claude が Meet のチャットに書いた内容は通話の全員に見える",
+    "why": "正解。ヘルプは、追加する前に全員が文字起こしに同意しているかを確かめるよう求め、Meet のチャットは全員に見えると注意している。"
+   },
+   {
+    "id": "c",
+    "text": "Claude の会議ページのチャットも取引先から見えるので、社内の相談は書かない",
+    "why": "会議ページのチャットは組織の内部向けで、外部のゲストからは見えない。"
+   },
+   {
+    "id": "d",
+    "text": "Claude Meetings は Enterprise プランだけの機能なので、Team プランでは使えない",
+    "why": "Claude Meetings は Team と Enterprise のプランでベータとして提供されている。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Claude Meetings では、Claude が Google Meet の通話に見える参加者として加わり、メモを取り、質問に答え、ドキュメントなどを作ります。Claude を追加したり自動参加をオンにしたりする前に、通話の全員が文字起こしされることに問題がないかを確認します。Claude が Meet のチャットに書いた内容は通話の全員に見えますが、Claude の会議ページのチャットは組織内だけのもので、外部のゲストからは見えません。",
+  "refs": [
+   "https://support.claude.com/en/articles/18325154-use-claude-meetings"
+  ]
+ },
+ {
+  "id": "asc-wf-030",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Meetings を使い始めるときの条件について、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Team プランでは既定でオンで、Owner がオフにできる。会議に Claude を追加するには Google Calendar の接続が必要で、Owner が組織で有効にしておく必要がある",
+    "why": "正解。ヘルプの説明どおり。Enterprise では Owner が組織の全体か一部でオンにする。"
+   },
+   {
+    "id": "b",
+    "text": "Enterprise プランでは既定でオンで、Owner はオフにできない",
+    "why": "Enterprise プランでは Owner がオンにする。既定でオンなのは Team プラン。"
+   },
+   {
+    "id": "c",
+    "text": "Google Calendar を接続しなくても、Meet の URL を貼り付けるだけで Claude を追加できる",
+    "why": "ヘルプの手順では、Google Calendar を接続して会議を選び、「Add Claude」を押す。"
+   },
+   {
+    "id": "d",
+    "text": "ZDR や HIPAA-ready の組織でも、ベータの間は制限なく使える",
+    "why": "ベータの間は、ZDR や HIPAA-ready の組織などでは使えないと説明されている。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Claude Meetings は Team と Enterprise のプランでベータとして提供されています。Team プランでは既定でオンで、Owner がオフにできます。Enterprise プランでは Owner が組織の全体か一部でオンにします。会議に Claude を追加するには Google Calendar を接続する必要があり、Owner が組織で Google Calendar を有効にしておく必要があります。ベータの間は、ZDR や HIPAA-ready の組織などでは使えません。",
+  "refs": [
+   "https://support.claude.com/en/articles/18325154-use-claude-meetings"
+  ]
+ },
+ {
+  "id": "asc-wf-031",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Meetings で、通話中に Claude が参加者の接続済みツール(Slack でのメッセージ送信など)を使う場合の扱いとして、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "会議を追加した人のツールだけが、全参加者の依頼に使われる",
+    "why": "Claude は各人の接続済みツールを、その人の許可を得て使う。"
+   },
+   {
+    "id": "b",
+    "text": "各人の接続済みツールを、その人の許可を得て使う。最初に確認し、一度許可するとそれ以降に適用される",
+    "why": "正解。ヘルプの説明どおり。"
+   },
+   {
+    "id": "c",
+    "text": "通話中はツールを使えず、会議が終わってから実行される",
+    "why": "通話中に接続済みのツールを使えると説明されている。"
+   },
+   {
+    "id": "d",
+    "text": "ツールを使うたびに、参加者全員の同意を Meet のチャットで集める",
+    "why": "許可を求めるのはツールの持ち主本人で、全員の同意を集めるという記述はない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Claude Meetings では、通話中に Claude が接続済みのツール(Slack のメッセージ送信など)を使えます。Claude は各人の接続済みツールを、その人の許可を得て使います。最初に確認があり、一度許可するとそれ以降にも適用されます。",
+  "refs": [
+   "https://support.claude.com/en/articles/18325154-use-claude-meetings"
+  ]
+ },
+ {
+  "id": "asc-wf-032",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Instacart などのアプリを Claude に接続した利用者が、夕食の献立を相談したところ、Claude がアプリを提案してカートを作り始めた。接続済みアプリの提案について、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude は提案したアプリで、確認なしに注文を確定することがある",
+    "why": "予約や購入の前に Claude は確認を求め、利用者が詳細を確かめてから確定する。"
+   },
+   {
+    "id": "b",
+    "text": "提案されるアプリの順番には、提携先からの広告料が反映されている",
+    "why": "Claude はアプリを推薦するために対価を受け取らず、有料の掲載や広告はないと説明されている。"
+   },
+   {
+    "id": "c",
+    "text": "予約や購入の前には確認を求める。この会話だけで使わせたくない場合は、「+」のコネクタの一覧でアプリをオフにする",
+    "why": "正解。ヘルプの説明どおり。完全に止めたい場合は Customize > Connectors で切断する。"
+   },
+   {
+    "id": "d",
+    "text": "接続したアプリは、ほかの会話の内容も読み取って商品の提案に使う",
+    "why": "接続したアプリは、ほかの会話を見られないと説明されている。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Claude は、接続済みのアプリが会話の内容に合うと、名前を出さなくても提案します。予約や購入の前には確認を求め、利用者が詳細を確かめてから確定します。アプリの推薦に対価は受け取らず、有料の掲載や広告もありません。1 つの会話だけで使わせたくない場合は「+」のコネクタの一覧でオフにし、完全に止めたい場合は Customize > Connectors で切断します。",
+  "refs": [
+   "https://support.claude.com/en/articles/14730684-how-claude-suggests-connected-apps"
+  ]
+ },
+ {
+  "id": "asc-wf-033",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの情報システム部が、社内で作ったローカルの MCP サーバーを、社員が Claude Desktop にワンクリックで入れられるようにしたい。また、公開ディレクトリの拡張は使わせたくない。ヘルプセンターの説明に合う方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各社員に JSON の設定ファイルを配り、手作業で MCP サーバーを設定してもらう",
+    "why": "デスクトップ拡張なら JSON の手作業の設定は不要で、Owner がワンクリックでの導入を用意できる。"
+   },
+   {
+    "id": "b",
+    "text": "MCP サーバーをプロジェクトのナレッジにアップロードし、社員に共有する",
+    "why": "プロジェクトのナレッジは MCP サーバーを導入する仕組みではない。"
+   },
+   {
+    "id": "c",
+    "text": "Owner が公開のデスクトップ拡張を無効にし、自社のデスクトップ拡張(.mcpb)をアップロードしてチームに提供する",
+    "why": "正解。Team と Enterprise の Owner と Primary Owner は、公開の拡張の有効・無効を管理し、自社の拡張をアップロードしてワンクリックで導入させられる。"
+   },
+   {
+    "id": "d",
+    "text": "ローカルの MCP サーバーは Claude Desktop では使えないので、リモートのカスタムコネクタとして公開し直す",
+    "why": "ローカルの MCP サーバーは、デスクトップ拡張として Claude Desktop に導入できる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "デスクトップ拡張(.mcpb)を使うと、ローカルの MCP サーバーを JSON の手作業の設定なしにワンクリックで導入できます。Team と Enterprise の Owner と Primary Owner は、公開のデスクトップ拡張を有効・無効にでき、自社用の拡張をアップロードしてチームがワンクリックで導入できるようにできます。",
+  "refs": [
+   "https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop"
+  ]
+ },
+ {
+  "id": "asc-wf-034",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "営業担当者が、Salesforce in Claude のプラグインで、商談の議事メモから Salesforce の更新案を作らせた。Salesforce への変更について、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude は Salesforce のすべてのデータを見られるので、担当外の商談も更新できる",
+    "why": "Claude が見られるのは、その人の既存の Salesforce の権限で許される範囲だけ。"
+   },
+   {
+    "id": "b",
+    "text": "既定では、変更を書き込む前に提案を表示し、「Allow once」「Always allow」「Deny」から選ばせる",
+    "why": "正解。ヘルプは、既定では提案された変更を書き込む前に 1 件ずつ承認を求めると説明している。"
+   },
+   {
+    "id": "c",
+    "text": "更新案は Claude が自動で書き込み、後から変更履歴で確認する",
+    "why": "既定では書き込む前に承認を求める。"
+   },
+   {
+    "id": "d",
+    "text": "Salesforce への書き込みは管理者しか承認できないので、担当者は提案を管理者に送る",
+    "why": "提案された変更は、その担当者が自分で確認して許可するか拒否するかを選ぶ。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Salesforce in Claude は、Salesforce の取引先や商談のデータと、Salesforce が作った営業向けのスキル、Salesforce と Slack のコネクタをまとめたプラグインです。Claude が見られるのは、その人の既存の Salesforce の権限で許される範囲だけです。既定では、変更を書き込む前に提案を表示し、「Allow once」「Always allow」「Deny」から選ばせます。",
+  "refs": [
+   "https://support.claude.com/en/articles/16952186-use-salesforce-in-claude"
+  ]
+ },
+ {
+  "id": "asc-wf-035",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Pro プランの担当者が、Claude のクラウドブラウザで、Claude に代わってある会員サイトにログインするため「Take control」で操作を引き取った。ログインした後に Claude に返す前の注意として、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "パスワードや確認コードは必ず隠されるので、入力内容を気にする必要はない",
+    "why": "隠す試みはサイトの作りに左右されるので頼らないよう注意されている。Claude は入力した内容を見られる。"
+   },
+   {
+    "id": "b",
+    "text": "ログインしたままにすると、その会話やタスクの中で Claude があなたとして操作できる。望まないならサインアウトしてから返す",
+    "why": "正解。ヘルプは、望まない場合はサインアウトしてから返すよう案内している。パネルを閉じたり時間切れになったりしても制御は戻る。"
+   },
+   {
+    "id": "c",
+    "text": "「Hand back to Claude」を押すと、ログインは自動で解除される",
+    "why": "返してもログインは残り、Claude はそのサイトであなたとして操作できる。"
+   },
+   {
+    "id": "d",
+    "text": "クラウドブラウザは Team プランでも同じように使える",
+    "why": "クラウドブラウザは Pro、Max、Ultra のプランで段階的に提供されており、Team と Enterprise では使えない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "クラウドブラウザは Anthropic のサーバーで動くブラウザで、「Take control」で一時的に操作を引き取れます。Claude は入力された内容と、返したときに開いているページを見られます。パスワードやコードを隠す試みはサイトの作りに左右されるため頼れません。サイトにログインすると、その会話やタスクの中で Claude があなたとして操作できるので、望まない場合はサインアウトしてから返します。パネルを閉じても時間切れでも制御は戻るため、先にサインアウトします。",
+  "refs": [
+   "https://support.claude.com/en/articles/18442783-use-the-cloud-browser-in-claude"
+  ]
+ },
+ {
+  "id": "asc-wf-036",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "チャットと Cowork を統合した新しい Claude の体験で、まとまった作業を Claude に任せる。ヘルプセンターが「同僚に依頼するように」伝えるときに含めるとよいと挙げているものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "作業を細かい手順に分けた指示と、各手順で使うツールの名前",
+    "why": "新しい体験では、作業を手順に分けたりモードを選んだりする必要はないと説明されている。"
+   },
+   {
+    "id": "b",
+    "text": "望む成果、成果の形式、Claude が使うべき入力(ファイル、リンク、アプリ)",
+    "why": "正解。ヘルプは、望む成果、形式、必要な入力を含めると良い結果が得られると説明している。"
+   },
+   {
+    "id": "c",
+    "text": "「Chat」と「Cowork」のどちらで実行するかの指定と、モデルの名前",
+    "why": "新しい体験では「Chat」と「Cowork」の選択がなく、Claude がツールを選ぶ。"
+   },
+   {
+    "id": "d",
+    "text": "作業の所要時間の見積もりと、途中で報告してほしい回数",
+    "why": "所要時間や報告の回数は、ヘルプが挙げている要素ではない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "新しい体験では、作業を手順に分けたりモードを選んだりせずに、望む結果を伝えれば Claude が手順を進めます。良い結果を得るには、望む成果(「1 ページの要約」など)、形式(Word の文書、スライド、Slack に貼れる文など)、Claude が使うべき入力(ファイル、リンク、アプリ)を含めるよう勧められています。",
+  "refs": [
+   "https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude"
+  ]
+ },
+ {
+  "id": "asc-wf-037",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "新しい Claude の体験には、Claude がどれだけ自分で判断して進めるかを決める権限の設定がある。この設定について、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Auto では、Claude は各手順で確認を求めずに進め、操作の前に自動の安全チェックが走る。メッセージの送信などの影響が大きい作業では近くで確認する",
+    "why": "正解。ヘルプの説明どおり。Manual では各操作の前に確認を求める。"
+   },
+   {
+    "id": "b",
+    "text": "Manual はすべてのプランの既定で、Auto は Enterprise プランだけで選べる",
+    "why": "Auto は Pro、Max、Ultra、Team で既定として展開され、Enterprise では Manual が既定(Chrome の Cowork サイドパネルを除く)。"
+   },
+   {
+    "id": "c",
+    "text": "設定は 1 回の操作ごとに切り替わり、会話全体には適用されない",
+    "why": "設定は会話全体に適用され、いつでも変えられる。"
+   },
+   {
+    "id": "d",
+    "text": "Auto を選ぶと、Claude の作業を途中で止めたり方向を変えたりはできなくなる",
+    "why": "どの設定でも、作業中の Claude を止めたり方向を変えたりできる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "権限の設定には Auto と Manual があります。Auto では、Claude は各手順で確認を求めずに進め、操作の前に自動の安全チェックが走ります(Pro、Max、Ultra、Team で既定として展開中)。Manual では、Claude が操作の前に確認を求め、許可するかを選びます(Enterprise の既定)。設定は会話全体に適用され、いつでも変えられ、作業中に止めたり方向を変えたりもできます。メッセージの送信や重要なファイルの変更など影響の大きい作業では、近くで確認することが勧められています。",
+  "refs": [
+   "https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude"
+  ]
+ },
+ {
+  "id": "asc-wf-038",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Plugins のページに統合された後、ある担当者が、スキルとコネクタをまとめたプラグインを削除した。プラグインに含まれていたコネクタの扱いとして、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プラグインを削除すると、含まれていたコネクタも自動で切断される",
+    "why": "プラグインを削除してもコネクタは切断されない。"
+   },
+   {
+    "id": "b",
+    "text": "プラグインを削除してもコネクタは切断されないので、不要なら別に切断する",
+    "why": "正解。ヘルプは、スキルとコネクタをまとめたプラグインを削除してもコネクタは切断されないため、別に切断する必要があると説明している。"
+   },
+   {
+    "id": "c",
+    "text": "コネクタは削除できず、プラグインを入れ直すまで使えない状態で残る",
+    "why": "コネクタは引き続き接続されており、使えない状態になるわけではない。必要なら別に切断できる。"
+   },
+   {
+    "id": "d",
+    "text": "プラグインを削除すると、そのコネクタで取得したデータも、Claude の会話からすべて削除される",
+    "why": "データが削除されるという記述はない。コネクタの接続も残る。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Plugins のページでは、プラグイン、スキル、コネクタを 1 か所で探し、追加し、管理できます。既存のコネクタ、スキル、プラグインはそのまま残ります。スキルとコネクタをまとめたプラグインを削除しても、コネクタは切断されないため、不要なら別に切断します。",
+  "refs": [
+   "https://support.claude.com/en/articles/17740565-manage-plugins-skills-and-connectors-from-one-plugins-page"
+  ]
+ },
+ {
+  "id": "asc-wf-039",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者は、通勤中にスマートフォンから Dispatch で Claude に依頼し、自宅の PC にあるローカルの表計算ファイルからレポートを作らせたい。Dispatch を以前から使っている。ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Dispatch はクラウドで動くので、PC の電源を切っていてもローカルのファイルを処理できる",
+    "why": "Dispatch はデスクトップでタスクを動かすので、PC が起動していてアプリが開いている必要がある。"
+   },
+   {
+    "id": "b",
+    "text": "Dispatch のタスクは PC で動くので、PC が起動していて Claude Desktop が開いている必要がある",
+    "why": "正解。ヘルプの説明どおり。クラウドのセッションと違い、PC が必要である。"
+   },
+   {
+    "id": "c",
+    "text": "Dispatch は新しい利用者も含め、すべての有料プランで使える",
+    "why": "Dispatch は一部の Pro、Max、Ultra プランで限定ベータとして提供されており、新しい利用者には提供されていない。"
+   },
+   {
+    "id": "d",
+    "text": "Dispatch ではタスクごとに新しいスレッドが作られ、前のタスクの文脈は引き継がれない",
+    "why": "Dispatch は 1 つの継続したスレッドで、前のタスクの文脈を引き継ぐ。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Dispatch は、スマートフォンから Claude に依頼し、デスクトップの PC でタスクを動かす機能です。PC で動くため、PC が起動していて Claude Desktop が開いている必要があります(Anthropic のサーバーで動くクラウドのセッションとは異なります)。1 つの継続したスレッドで前のタスクの文脈を引き継ぎます。限定ベータで、新しい利用者には提供されていません。",
+  "refs": [
+   "https://support.claude.com/en/articles/13947068-assign-tasks-from-anywhere-in-claude-cowork"
+  ]
+ },
+ {
+  "id": "asc-wf-040",
+  "cert": "associate",
+  "domain": "workflow-integration-and-solution-design",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude に業務用のツールを操作させる手段のうち、コンピューター操作(computer use)が特に役立つ場面として、ヘルプセンターが例に挙げているものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Gmail のメールを検索して要約する。コネクタより画面の操作のほうが速いため",
+    "why": "Gmail にはコネクタがあり、コネクタのほうが速く確実。コンピューター操作が優先されるわけではない。"
+   },
+   {
+    "id": "b",
+    "text": "コネクタのない社内のダッシュボードや、チームが使う専門的なツールを操作する",
+    "why": "正解。ヘルプは、コネクタのないアプリの操作をコンピューター操作の例として挙げている。"
+   },
+   {
+    "id": "c",
+    "text": "Slack のチャンネルの投稿を集める。画面を見ながらのほうが誤りが少ないため",
+    "why": "Slack はコネクタのほうが速く、画面の操作は誤りが起きやすいと説明されている。"
+   },
+   {
+    "id": "d",
+    "text": "ネットバンキングで振込を行う。人の操作と同じ手順で確実に実行できるため",
+    "why": "Claude は送金などの危険な操作を避けるよう訓練されており、銀行のアプリに権限を与えないよう勧められている。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "コンピューター操作では、Claude が画面をクリックし、入力し、デスクトップのアプリを操作します。Claude はコネクタ、ブラウザ、画面の操作の順に、より正確で速い手段を優先するため、コンピューター操作が役立つのは、社内のダッシュボードや専門的なツールなど、コネクタのないアプリを扱う場面です。銀行などの機微なアプリには権限を与えないよう勧められています。",
+  "refs": [
+   "https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork"
   ]
  }
 ]
