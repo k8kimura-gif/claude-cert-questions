@@ -352,7 +352,7 @@
    },
    {
     "id": "b",
-    "text": "スキルの全手順を書くための欄で、ここに書いた内容は常にすべて会話に読み込まれる",
+    "text": "スキルの全手順を書くための欄で、ここに書いた内容は常にすべての会話に最初から読み込まれる",
     "why": "スキルは段階的に開示される。メタデータは最初の段階で、本文は必要になった場合に参照される。"
    },
    {
@@ -512,7 +512,7 @@
    },
    {
     "id": "d",
-    "text": "組織の Owner に依頼して、自分の記憶の該当エントリを編集してもらい、古い役職を直してもらう",
+    "text": "組織の Owner に依頼して、自分の記憶の該当エントリを編集してもらい、古い役職を新しいものに直してもらう",
     "why": "Owner は、ユーザー個人の記憶を見ることも編集することもできない。"
    }
   ],
@@ -523,6 +523,526 @@
   "refs": [
    "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
    "https://support.claude.com/en/articles/12123587-import-and-export-your-memory-from-claude"
+  ]
+ },
+ {
+  "id": "asc-cfg-015",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの Owner が、社内で承認済みの「議事録作成」スキルを全員に使ってもらいたい。各自にスキルファイルを配ってアップロードさせる手間をなくしたい。ヘルプセンターの説明に合う方法と、その後の扱いとして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "全員のアカウントに Owner がログインし、Customize > Skills から 1 人ずつアップロードする",
+    "why": "組織の設定からアップロードすれば全員に配布される。1 人ずつ操作する必要はない。"
+   },
+   {
+    "id": "b",
+    "text": "Organization settings > Plugins & skills からアップロードする。全員に既定で有効になり、各自がオフにもできる",
+    "why": "正解。ヘルプの説明どおり。組織で配布したスキルは全員に既定で有効になり、ユーザーは個別にオフにできる。"
+   },
+   {
+    "id": "c",
+    "text": "組織指示(organization instructions)にスキルの本文を貼り付ける。全員の会話に常に読み込まれる",
+    "why": "組織指示はスキルを配布する仕組みではない。スキルは組織の設定から配布する。"
+   },
+   {
+    "id": "d",
+    "text": "組織の設定からアップロードする。配布したスキルは全員に強制され、ユーザーはオフにできない",
+    "why": "組織で配布したスキルは既定で有効だが、ユーザーは個別にオフにできると説明されている。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Team と Enterprise では、Owner が Organization settings > Plugins & skills からスキルをアップロード(SKILL.md を含む .zip)または作成すると、組織の全員の Customize > Skills に配布されます。各ユーザーが同じスキルをアップロードする必要はありません。配布したスキルは既定で有効ですが、ユーザーは個別にオフにできます。",
+  "refs": [
+   "https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization"
+  ]
+ },
+ {
+  "id": "asc-cfg-016",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Enterprise プランの組織で、マーケティング部向けに作った 10 個のスキルを、マーケティング部のメンバーだけに使わせたい。ヘルプセンターが案内している方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Organization settings > Plugins & skills から 10 個のスキルを配布し、ほかの部署には使わないよう周知する",
+    "why": "この方法で配布すると全員に配られる。特定のグループだけに配るには別の方法をとる。"
+   },
+   {
+    "id": "b",
+    "text": "10 個のスキルを 1 つのプラグインにまとめ、そのプラグインをマーケティング部のグループに割り当てる",
+    "why": "正解。Enterprise プランでは、スキルをプラグインにまとめてグループに割り当てると、そのグループのメンバーだけがスキルを使える。"
+   },
+   {
+    "id": "c",
+    "text": "マーケティング部のプロジェクトのナレッジに 10 個のスキルのファイルを入れ、プロジェクトを非公開にする",
+    "why": "プロジェクトのナレッジに置いたファイルはスキルとして配布されない。"
+   },
+   {
+    "id": "d",
+    "text": "10 個のスキルの description に「マーケティング部専用」と書けば、ほかの部署では呼び出されない",
+    "why": "description はスキルを使う場面を判断する手がかりで、利用者を制限するアクセス制御ではない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Organization settings > Plugins & skills からの配布は全員が対象です。Enterprise プランでは、スキルをプラグインにまとめ、そのプラグインをグループに割り当てることで、一部のユーザーにだけスキルを配れます。たとえばマーケティング部向けの 10 個のスキルを 1 つのプラグインにまとめて、マーケティングのグループに割り当てます。",
+  "refs": [
+   "https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization"
+  ]
+ },
+ {
+  "id": "asc-cfg-017",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "情報システム部が、社員には組織で承認したスキルだけを使わせたいと考え、Organization settings > Plugins & skills の Policy で「User-created skills」をオフにした。この後の状態として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "社員は自分でスキルを作ったりアップロードしたりできないが、組織が配布したスキルと Anthropic の組み込みスキルは使える",
+    "why": "正解。ヘルプの説明どおり。配布済みのスキルと組み込みスキルは引き続き有効にして使える。"
+   },
+   {
+    "id": "b",
+    "text": "組織で配布したスキルも含めて、すべてのスキルが使えなくなる",
+    "why": "配布したスキルと Anthropic の組み込みスキルは引き続き使える。止まるのはユーザー自身による作成とアップロード。"
+   },
+   {
+    "id": "c",
+    "text": "社員が以前に作ったスキルは、組織のライブラリへ自動で公開される",
+    "why": "この設定でスキルが組織のライブラリへ公開されるという記述はない。公開は「Publish to org」とその方針による。"
+   },
+   {
+    "id": "d",
+    "text": "カスタムロールで Create skills の権限を持つ社員だけは、引き続き自分でスキルを作れる",
+    "why": "組織の設定が主スイッチで、オフの間はロールにかかわらずユーザーは自分のスキルを作成・アップロードできない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "「User-created skills」をオフにすると、ユーザーは Claude でスキルを作ったり、スキルファイルをアップロードしたりできなくなります。組織が配布したスキルと Anthropic の組み込みスキルは引き続き有効にして使えます。この組織設定が主スイッチで、オフの間はカスタムロールの権限にかかわらず、ユーザーは自分のスキルを作れません。",
+  "refs": [
+   "https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization"
+  ]
+ },
+ {
+  "id": "asc-cfg-018",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある組織では、社員が作った便利なスキルを全社で共有できるようにしたい。ただし、公開する前に必ず Owner が内容を確認したい。Plugins & skills の Policy にある Publishing の設定として適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Open。提出されたスキルは確認なしで公開されるが、公開後に Owner が取り下げられる",
+    "why": "Open では、提出されたスキルやプラグインは確認なしで組織のライブラリに公開される。公開前の確認という要件に合わない。"
+   },
+   {
+    "id": "b",
+    "text": "Off。社員の「Publish to org」ボタンを消し、Owner が社員から受け取ったスキルを確認して自分で追加する",
+    "why": "Off でも Owner は直接追加できるが、社員が提出して承認を受ける流れはなくなる。"
+   },
+   {
+    "id": "c",
+    "text": "Requires review。社員が提出し、Owner が 1 件ずつ承認してから公開される",
+    "why": "正解。社員が提出でき、Owner が承認してから公開される設定。以後の版も同じ確認を通る。"
+   },
+   {
+    "id": "d",
+    "text": "User-created skills をオフにする。オフにすると提出されたスキルが自動で確認待ちになる",
+    "why": "User-created skills は自分でスキルを作れるかどうかの設定で、公開の確認とは別の設定である。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Publishing の設定には 3 つあります。Requires review では社員がスキルやプラグインを提出し、Owner が 1 件ずつ承認してから公開されます(以後の版も確認を通ります)。Open では確認なしで公開され、Off では「Publish to org」ボタンが表示されず、Owner だけが直接追加します。",
+  "refs": [
+   "https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization"
+  ]
+ },
+ {
+  "id": "asc-cfg-019",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Enterprise プランの Owner が、組織の既定モデルを設定する。新しいモデルが出るたびに設定し直さなくても、Anthropic が勧めるモデルに自動で追従させたい。どの選択肢を選ぶべきか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「Choose a specific model」で、現時点の最新モデルを選んでおく",
+    "why": "特定のモデルを選ぶと、新しいモデルが出ても変わらない。自動で追従させる要件に合わない。"
+   },
+   {
+    "id": "b",
+    "text": "「Use Anthropic’s recommended default」を選ぶ",
+    "why": "正解。新しいモデルの公開に合わせて自動で更新される、Anthropic 推奨のモデルが既定になる。"
+   },
+   {
+    "id": "c",
+    "text": "Model access ですべてのモデルをオフにし、Haiku だけを残す",
+    "why": "これはモデルの利用を制限する設定で、既定モデルの自動追従とは関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "「Always start with the default model and effort level」をオンにする",
+    "why": "この設定は、新しい会話を必ず既定のモデルで始めさせるもので、既定モデルそのものを自動で更新するものではない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "既定モデルの選択肢は 2 つあります。「Use Anthropic’s recommended default」は、新しいモデルの公開に合わせて自動で更新される推奨モデルです。「Choose a specific model」は特定のモデルに固定され、新しいモデルが出ても変わりません。特定のモデルを選ぶ場合は、同じページの Model access で有効にしたモデルだけが選べます。",
+  "refs": [
+   "https://support.claude.com/en/articles/15330088-set-a-default-model-for-your-organization"
+  ]
+ },
+ {
+  "id": "asc-cfg-020",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Enterprise プランの組織で既定モデルを Claude Sonnet 5.5 に設定した。しかし、ある社員が一度 Opus 5.5 に切り替えると、その社員の次の会話も Opus 5.5 で始まってしまう。すべての新しい会話を既定のモデルと effort で始めさせたい。適切な設定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Model access で Opus 5.5 をオフにし、社員が切り替えられないようにする",
+    "why": "モデルを使えなくすることになり、必要なときに選び直す自由もなくなる。新しい会話の始め方を変える設定は別にある。"
+   },
+   {
+    "id": "b",
+    "text": "既定モデルを一度別のモデルに変えてから Sonnet 5.5 に戻し、全員の選択をリセットする",
+    "why": "既定を変えると各メンバーのモデル選択は置き換わるが、その後に切り替えれば再び最後の選択が引き継がれる。"
+   },
+   {
+    "id": "c",
+    "text": "「Always start with the default model and effort level」をオンにする",
+    "why": "正解。この設定をオンにすると、最後に使ったモデルではなく、組織の既定のモデルと effort で新しい会話が始まる。"
+   },
+   {
+    "id": "d",
+    "text": "組織指示に「新しい会話では Sonnet 5.5 を使うこと」と書く",
+    "why": "組織指示は回答の仕方への指示で、モデル選択の設定を変えるものではない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "既定では、各ユーザーの次の会話は最後に使ったモデルで始まります。「Always start with the default model and effort level」をオンにすると、新しい会話はすべて組織の既定のモデルと effort で始まります。ユーザーは会話ごとに別のモデルを選ぶこともできます。",
+  "refs": [
+   "https://support.claude.com/en/articles/15330088-set-a-default-model-for-your-organization"
+  ]
+ },
+ {
+  "id": "asc-cfg-021",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Enterprise プランで、組織の既定モデルを Sonnet 5.5 にし、「研究開発」のカスタムロールの既定モデルを Opus 5.5 に設定した。研究開発ロールのメンバーが新しい会話を始めたときの既定モデルはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Sonnet 5.5。組織の既定はすべてのメンバーに優先して適用されるため",
+    "why": "カスタムロールの既定は、そのロールのメンバーについて組織の既定より優先される。"
+   },
+   {
+    "id": "b",
+    "text": "Opus 5.5。カスタムロールの既定は、組織の既定より優先されるため",
+    "why": "正解。ヘルプは、ロールの既定はそのロールのメンバーに適用され、組織の既定より優先されると説明している。"
+   },
+   {
+    "id": "c",
+    "text": "Anthropic の推奨モデル。既定が 2 つの階層で異なると、両方が無視されるため",
+    "why": "2 つの階層で異なる場合に両方が無視されるという記述はない。"
+   },
+   {
+    "id": "d",
+    "text": "会話のたびに、Sonnet 5.5 と Opus 5.5 のどちらで始めるかを選ぶ画面が表示される",
+    "why": "そのような選択画面は説明されていない。ロールの既定が優先される。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "既定モデルは、組織全体の既定と、カスタムロールの既定の 2 つの階層で設定できます。カスタムロールの既定は、そのロールに割り当てられたメンバーに適用され、組織の既定より優先されます。ロールの既定に選べるのは、そのロールがアクセスを許可したモデルだけです。",
+  "refs": [
+   "https://support.claude.com/en/articles/15330088-set-a-default-model-for-your-organization",
+   "https://support.claude.com/en/articles/15694740-manage-model-access-for-your-organization"
+  ]
+ },
+ {
+  "id": "asc-cfg-022",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Enterprise プランのモデルのアクセス管理(Model access)について、ヘルプセンターの説明に合うものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "組織の単位でモデルを無効にすると、Owner や Admin を含むすべてのメンバーがそのモデルを使えなくなる",
+    "why": "正解。組織の単位の設定は、Primary Owner、Owner、Admin、User を含む全員に影響する。"
+   },
+   {
+    "id": "b",
+    "text": "Haiku のモデルは常にすべてのメンバーが使え、無効にできない",
+    "why": "正解。メンバーが必ず使えるモデルを 1 つ残すため、Haiku は無効にできないと説明されている。"
+   },
+   {
+    "id": "c",
+    "text": "カスタムロールでは、組織で無効にしたモデルでもそのロールにだけ許可できる",
+    "why": "組織の設定が上限で、ロールは組織で無効なモデルへのアクセスを与えられない。"
+   },
+   {
+    "id": "d",
+    "text": "カスタムロールの effort の上限は、組織の上限より高く設定できる",
+    "why": "ロールの effort の上限は組織の上限を超えられない。組織の上限を下げると、それより高いロールの上限も下がる。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "モデルのアクセスと effort の上限は、組織とカスタムロールの 2 つの階層で決まり、組織の設定が上限になります。組織でモデルを無効にすると Owner や Admin を含む全員に影響し、ロールは組織で無効なモデルを許可できず、組織の上限を超える effort も許可できません。Haiku のモデルは常に全員が使え、無効にできません。",
+  "refs": [
+   "https://support.claude.com/en/articles/15694740-manage-model-access-for-your-organization"
+  ]
+ },
+ {
+  "id": "asc-cfg-023",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの Owner が、情報管理の方針の見直しにあわせて、Organization settings > Data and privacy の「Share projects」をオフにした。この後の状態として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "すでに共有されていたプロジェクトも含め、すべての共有が解除され、作成者だけが使える状態になる",
+    "why": "すでに共有されたプロジェクトは共有されたままで、アクセスを持つ人はそのまま使える。"
+   },
+   {
+    "id": "b",
+    "text": "すでに共有されたプロジェクトは共有されたままだが、公開(public)のプロジェクトは非公開になり、新しく人を追加できなくなる",
+    "why": "正解。ヘルプの説明どおり。公開プロジェクトでのみアクセスしていた人はアクセスを失う。既存のアクセスの変更や削除はできる。"
+   },
+   {
+    "id": "c",
+    "text": "プロジェクトの「Share」メニューが表示されなくなり、既存のメンバーのアクセスも変更できなくなる",
+    "why": "メニューは開け、新しい追加ができない旨が表示される。既存のアクセスの変更や削除はできる。"
+   },
+   {
+    "id": "d",
+    "text": "公開プロジェクトはそのまま残り、新しい非公開プロジェクトの共有だけが禁止される",
+    "why": "Share projects をオフにすると Public projects もオフになり、既存の公開プロジェクトは非公開になる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "「Share projects」をオフにすると、ユーザーは新しいユーザーやグループにプロジェクトを共有できなくなります。すでに共有されたプロジェクトは共有されたままで、アクセスを持つ人はそのまま使えます。サブ設定の「Public projects」もオフになり、既存の公開プロジェクトは非公開になるため、公開だったことでアクセスできていた人はアクセスを失います。",
+  "refs": [
+   "https://support.claude.com/en/articles/9927533-control-project-sharing-for-your-organization"
+  ]
+ },
+ {
+  "id": "asc-cfg-024",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Enterprise プランの Owner が、プロジェクトを全社に公開する機能だけを止め、特定のメンバーやグループへの共有は続けさせたい。適切な設定とその結果として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「Share projects」をオフにする。特定のメンバーへの共有は引き続きできる",
+    "why": "Share projects をオフにすると、特定のメンバーやグループへの新しい共有もできなくなる。"
+   },
+   {
+    "id": "b",
+    "text": "各プロジェクトの作成者に、プロジェクトを「Only people invited」に変えるよう依頼するだけで、設定は変えない",
+    "why": "各自に任せると、新しい公開プロジェクトの作成は止まらない。組織の設定で止められる。"
+   },
+   {
+    "id": "c",
+    "text": "「Public projects」だけをオフにする。既存の公開プロジェクトは非公開になり、特定のメンバーやグループへの共有は続けられる",
+    "why": "正解。公開プロジェクトだけを止める設定。既存の公開プロジェクトは非公開になり、新しい公開プロジェクトは作れない。"
+   },
+   {
+    "id": "d",
+    "text": "「Public projects」だけをオフにする。既存の公開プロジェクトは公開のまま残り、今後は新しい公開プロジェクトだけが作れなくなる",
+    "why": "既存の公開プロジェクトもすべて非公開になると説明されている。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "「Share projects」のサブ設定である「Public projects」だけをオフにすると、既存の公開プロジェクトはすべて非公開になり、新しい公開プロジェクトは作れず、組織の全員への共有もできなくなります。一方で、特定のユーザーやグループへの共有は続けられ、すでに共有されたプロジェクトの設定もそのまま残ります。",
+  "refs": [
+   "https://support.claude.com/en/articles/9927533-control-project-sharing-for-your-organization"
+  ]
+ },
+ {
+  "id": "asc-cfg-025",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの営業企画チームのリーダーが、提案書作成用の非公開プロジェクトを新人 5 人と共有する。新人にはプロジェクトの指示とナレッジを見てチャットはしてほしいが、指示やナレッジは変更させたくない。適切な設定と、共有後の扱いとして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "5 人に「Can edit」を付ける。リーダーのプロジェクト内のチャットも 5 人に自動で共有される",
+    "why": "Can edit では指示やナレッジを変更できてしまう。また、自分のチャットは共有しない限り非公開のまま。"
+   },
+   {
+    "id": "b",
+    "text": "プロジェクトを公開(Everyone at [組織名])に切り替える。公開プロジェクトは閲覧だけができ、内容の編集はできない",
+    "why": "公開にすると組織の全員が使えるようになり、5 人に限る要件に合わない。"
+   },
+   {
+    "id": "c",
+    "text": "5 人に「Can view」を付ける。ナレッジと指示は共有されるが、リーダーのチャットは共有しない限り非公開のまま",
+    "why": "正解。Can view は内容を見てチャットできるが編集はできない。チャットは自分で共有しない限り非公開。"
+   },
+   {
+    "id": "d",
+    "text": "5 人に「Can view」を付ける。Can view のメンバーはプロジェクト内でチャットできず、閲覧だけができる",
+    "why": "Can view のメンバーもプロジェクト内でチャットできる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "非公開プロジェクトに招待するときの権限は 2 つです。「Can view」はプロジェクトの内容、ナレッジ、指示を見て、プロジェクト内でチャットできますが、編集はできません。「Can edit」は指示やナレッジを変更し、メンバー設定も更新できます。共有されるのはプロジェクトとナレッジで、自分のチャットは共有しない限り非公開のままです。",
+  "refs": [
+   "https://support.claude.com/en/articles/9519189-manage-project-visibility-and-sharing"
+  ]
+ },
+ {
+  "id": "asc-cfg-026",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある経理担当者は、どの会話でも「回答は日本語で、金額は税込と税抜を併記する」ようにしてほしい。プロジェクトに関係なく、アカウントのすべての会話に適用したい。最も適した機能はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プロジェクトの指示(project instructions)に書く",
+    "why": "プロジェクトの指示はそのプロジェクト内のチャットにだけ適用される。"
+   },
+   {
+    "id": "b",
+    "text": "Settings > Your Claude の Instructions(Instructions for Claude)に書く",
+    "why": "正解。アカウント全体の設定で、ここに書いた指示はすべての会話に適用される。"
+   },
+   {
+    "id": "c",
+    "text": "会話のたびに最初のメッセージで指示を貼り付ける",
+    "why": "毎回貼り付けることもできるが、アカウント全体の指示に書けば手間なくすべての会話に適用される。"
+   },
+   {
+    "id": "d",
+    "text": "チャットの共有リンクを作り、指示を書いた会話を毎回コピーして使う",
+    "why": "共有リンクは会話を他人に見せる機能で、すべての会話に指示を適用する機能ではない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Settings > Your Claude(古い画面では Account)の Instructions は、アカウント全体の設定で、すべての会話に適用されます。特定のプロジェクトだけの背景や手順はプロジェクトの指示に、回答の形式や伝え方をその場で切り替えたい場合はスキルに置く、と使い分けます。",
+  "refs": [
+   "https://support.claude.com/en/articles/10185728-understanding-claude-s-personalization-features"
+  ]
+ },
+ {
+  "id": "asc-cfg-027",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Enterprise プランの管理者が、社員が個々に認証しなくても、社内の業務ツールのコネクタが最初のログイン時から使えるようにしたい。また、退職者を ID プロバイダー(IdP)で無効化したら、コネクタへのアクセスも同時に止めたい。ヘルプセンターが説明している仕組みはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各社員が自分でコネクタを認証し、退職時には社員本人にコネクタの接続を解除してもらう",
+    "why": "要件は個々の認証をなくすこと。退職者に解除を任せると、アクセスが残るおそれがある。"
+   },
+   {
+    "id": "b",
+    "text": "組織指示に、退職者はコネクタを使わないよう書いておく",
+    "why": "組織指示は回答への指示で、コネクタのアクセスを制御するものではない。"
+   },
+   {
+    "id": "c",
+    "text": "Enterprise-managed auth の IdP-managed。管理者がまとめて認証し、IdP で無効化するとコネクタのアクセスも同時に外れる",
+    "why": "正解。管理者が一元的にコネクタのアクセスを用意し、IdP でのプロビジョニング解除と同時にコネクタのアクセスも外れる。"
+   },
+   {
+    "id": "d",
+    "text": "プロジェクトのナレッジにコネクタの資料を入れ、退職者をプロジェクトから外す",
+    "why": "ナレッジへの資料の追加は、コネクタの認証やアクセス制御の仕組みではない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Enterprise-managed auth では、各人が個々にコネクタを認証する代わりに、管理者がコネクタのアクセスを一元的に用意します。組織で有効にしたコネクタは、メンバーの最初のログイン時から自動で使えます。IdP-managed では、ID プロバイダーでプロビジョニングを解除すると、コネクタへのアクセスも同時に外れます。ロールごとにどのコネクタを使わせるかも選べます。",
+  "refs": [
+   "https://support.claude.com/en/articles/15537633-auto-connect-your-organization-s-apps-to-claude"
+  ]
+ },
+ {
+  "id": "asc-cfg-028",
+  "cert": "associate",
+  "domain": "configuration-and-knowledge-management",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの Owner が、組織にスキルを配布しようとしたが、Organization settings > Plugins & skills でうまく配布できない。ヘルプセンターが前提条件として挙げている確認事項はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Policy タブで、Cloud code execution and file creation と Skills の両方がオンになっているか",
+    "why": "正解。スキルはコード実行とファイル作成を必要とするため、両方をオンにしておくことが前提条件とされている。"
+   },
+   {
+    "id": "b",
+    "text": "組織の全員が Premium シートを使っているか",
+    "why": "スキルの配布にシートの種類の条件は挙げられていない。"
+   },
+   {
+    "id": "c",
+    "text": "組織指示が 3,000 文字以内に収まっているか",
+    "why": "組織指示の文字数はスキルの配布の前提条件ではない。"
+   },
+   {
+    "id": "d",
+    "text": "全員がメモリ機能をオンにしているか",
+    "why": "メモリの設定はスキルの配布の前提条件として挙げられていない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "組織でスキルを配布する前に、Organization settings > Plugins & skills の Policy タブで、Cloud code execution and file creation と Skills の両方がオンになっているかを確認します。スキルはコード実行とファイル作成の機能を使うためです。",
+  "refs": [
+   "https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization"
   ]
  }
 ]

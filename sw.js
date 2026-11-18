@@ -1,5 +1,5 @@
 // 同一オリジンの GET をキャッシュし、裏で更新する(stale-while-revalidate)
-const CACHE = 'ccq-v4';
+const CACHE = 'ccq-v5';
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (e) => e.waitUntil(
   caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())

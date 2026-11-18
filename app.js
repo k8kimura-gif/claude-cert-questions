@@ -239,10 +239,84 @@ function questionCard(q, st, onChange) {
           st.revealed && el('span', { class: 'why' }, `${right ? '正解。' : sel ? 'あなたの回答。' : ''}${c.why}`)));
     }));
 }
-function explanation(q) {
+function explanation(q, st) {
   return el('div', { class: 'card' },
     el('strong', {}, '解説'), el('p', { class: 'explain' }, q.explanation),
-    el('div', { class: 'refs' }, q.refs.map((r) => el('div', {}, el('a', { href: r, target: '_blank', rel: 'noopener' }, r)))));
+    el('div', { class: 'refs' }, q.refs.map((r) => el('div', {}, el('a', { href: r, target: '_blank', rel: 'noopener' }, r)))),
+    st && deepDive(q, st));
+}
+
+// ---------- 深掘り用プロンプト ----------
+// 生成 AI に貼り付けて追加解説させるための文面を作る。表示した選択肢の並び(A〜D)をそのまま使う。
+function deepDivePrompt(q, st) {
+  const order = st.order || q.choices.map((c) => c.id);
+  const label = (cid) => 'ABCDEFG'[order.indexOf(cid)];
+  const list = (ids) => ids.length ? [...ids].sort((a, b) => order.indexOf(a) - order.indexOf(b)).map(label).join('、') : '未回答';
+  const ok = sameSet(st.selected, q.answer);
+  const sc = q.scenarioId && A.scenarios[q.scenarioId];
+  const conf = st.conf === true ? '(確信ありで回答)' : st.conf === false ? '(迷って回答)' : '';
+  return [
+    `Claude の認定資格「${A.exam.name}(${A.exam.code})」の対策問題について、深掘りした解説をお願いします。`,
+    '',
+    '## 調べ方の条件',
+    '- 根拠は Anthropic の公式資料で確かめてください(platform.claude.com/docs、code.claude.com/docs、support.claude.com、anthropic.com、modelcontextprotocol.io など)。記憶だけで答えず、Web 検索やページの取得ができる場合は必ず現在のページを開いて確認してください。',
+    '- 根拠にしたページの URL と、該当する記述の要点を示してください。公式資料で確認できなかった点は、推測であることをはっきり書いてください。',
+    '- Claude の製品や API は仕様の変更が速いので、下の問題・正解・解説が現在の公式資料と食い違っている場合は、遠慮なく指摘してください。',
+    '',
+    '## 問題',
+    `分野: ${domainOf(q.domain).ja}(${domainOf(q.domain).name})`,
+    sc && `シナリオ: ${sc.title}\n${sc.text}`,
+    q.type === 'multi' && `(${q.answer.length}つ選択)`,
+    q.stem,
+    '',
+    ...order.map((cid) => `${label(cid)}. ${q.choices.find((c) => c.id === cid).text}`),
+    '',
+    `正解: ${list(q.answer)}`,
+    `私の回答: ${list(st.selected)}${conf} → ${ok ? '正解' : '不正解'}`,
+    '',
+    '## 問題集の解説',
+    q.explanation,
+    '',
+    '選択肢ごとの説明:',
+    ...order.map((cid) => `${label(cid)}: ${q.choices.find((c) => c.id === cid).why}`),
+    '',
+    '問題集が挙げている参照先:',
+    ...q.refs.map((r) => `- ${r}`),
+    '',
+    '## 解説してほしいこと',
+    `1. 正解(${list(q.answer)})が正しい理由を、公式資料の記述に基づいて説明してください。`,
+    ok ? `2. 私は正解しましたが、${st.conf === false ? '迷って選びました。' : ''}理解があいまいになりやすい点を補ってください。`
+      : `2. 私が選んだ ${list(st.selected)} がなぜ誤りなのか、どこで考え違いをしやすいのかを説明してください。`,
+    '3. ほかの誤りの選択肢についても、どんな状況なら正しくなるのか(または、なぜどの状況でも誤りなのか)を説明してください。',
+    '4. この論点に関連して本番で問われそうな周辺知識と、似た問題で迷わないための見分け方を挙げてください。',
+    '5. 理解を確かめるための類題を 1 問作り、解答と解説を最後に付けてください。',
+    '',
+    '回答は日本語でお願いします。',
+  ].filter((x) => x !== false && x != null).join('\n');
+}
+function deepDive(q, st) {
+  const box = el('div', {});
+  const open = () => {
+    const text = deepDivePrompt(q, st);
+    const ta = el('textarea', { readonly: true, rows: 10 }, text);
+    const msg = el('span', { class: 'muted' });
+    const copy = () => {
+      ta.select();
+      (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+        .then(() => { msg.textContent = 'コピーしました。Claude などの生成 AI に貼り付けてください。'; })
+        .catch(() => { msg.textContent = '自動でコピーできませんでした。上の文面を選択してコピーしてください。'; });
+    };
+    box.replaceChildren(
+      el('p', { class: 'muted' }, '問題、正解、あなたの回答を含む依頼文です。生成 AI に貼り付けると、公式資料を根拠にした追加の解説が得られます。'),
+      ta,
+      el('div', { class: 'row' },
+        el('button', { class: 'btn small', onclick: copy }, 'コピー'),
+        navigator.share && el('button', { class: 'btn small', onclick: () => navigator.share({ text }).catch(() => {}) }, '共有…'),
+        msg));
+    copy();
+  };
+  box.append(el('button', { class: 'btn small', onclick: open }, 'AI で深掘りするプロンプトを作る'));
+  return el('div', { class: 'deep' }, box);
 }
 
 // ---------- 練習・今日の問題・復習 ----------
@@ -307,7 +381,7 @@ routes.quiz = () => {
     st.revealed && el('div', { class: `verdict ${ok ? 'ok' : 'ng'}` }, ok ? '正解' : '不正解'),
     st.revealed && ok && st.conf === false && el('div', { class: 'muted' }, '迷って正解したので、復習に入れました。'),
     st.revealed && !ok && st.conf === true && el('div', { class: 'muted' }, '確信して間違えた問題です。復習で最初に出します。'),
-    st.revealed && explanation(q),
+    st.revealed && explanation(q, st),
     el('div', { class: 'foot' }, el('div', { class: 'inner' },
       el('button', { class: 'btn', style: 'flex:0 0 72px', onclick: () => go(sess.n ? 'done' : 'home') }, 'やめる'),
       st.revealed
@@ -434,7 +508,7 @@ routes.result = (openIdx) => {
       el('div', { class: 'muted' }, `模試の見直し 問 ${openIdx + 1} / ${detail.length}`),
       questionCard(q, { order: x.order, selected: x.sel, revealed: true }, () => {}),
       el('div', { class: `verdict ${x.ok ? 'ok' : 'ng'}` }, x.ok ? '正解' : x.sel.length ? '不正解' : '未回答'),
-      explanation(q),
+      explanation(q, { order: x.order, selected: x.sel, conf: null }),
       el('div', { class: 'foot' }, el('div', { class: 'inner' },
         el('button', { class: 'btn', disabled: openIdx === 0, onclick: () => go('result', openIdx - 1) }, '前へ'),
         el('button', { class: 'btn', onclick: () => go('result') }, '結果へ'),

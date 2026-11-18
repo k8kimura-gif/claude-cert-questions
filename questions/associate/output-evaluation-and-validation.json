@@ -238,7 +238,7 @@
    },
    {
     "id": "b",
-    "text": "契約書でよくあるリスクの論点を先に列挙させ、当てはまりそうなものだけを選ばせる",
+    "text": "契約書でよくあるリスクの論点を先に一覧で列挙させ、そこから当てはまりそうなものだけを選ばせる",
     "why": "一般的な論点から入ると、契約書に書かれていない内容を当てはめやすい。"
    },
    {
@@ -280,7 +280,7 @@
    },
    {
     "id": "c",
-    "text": "草稿をもう一度別の言い回しで書き直させ、2 つの文面の内容が似ていれば問題がないとみなす",
+    "text": "草稿をもう一度別の言い回しで書き直させ、2 つの文面の内容がおおむね似ていれば問題がないとみなす",
     "why": "言い回しが似ていても、資料に裏付けがあるとは限らない。"
    },
    {
@@ -307,7 +307,7 @@
   "choices": [
    {
     "id": "a",
-    "text": "表現が変わるのは通常の揺らぎであり、数値が違っていても信頼性とは関係ない",
+    "text": "表現が変わるのは通常の揺らぎであり、数値が少し違っていても回答の信頼性とは関係がない",
     "why": "数値の食い違いは、幻覚の可能性を示すサインとして扱う。"
    },
    {
@@ -386,7 +386,7 @@
    },
    {
     "id": "b",
-    "text": "就業規則の文書を何度も貼り付ければ、一般知識は自然に使われなくなる",
+    "text": "就業規則の文書を何度も貼り付けておけば、Claude の一般知識は自然に使われなくなる",
     "why": "文書を増やしても、一般知識を使わないという指示の代わりにはならない。"
    },
    {
@@ -678,7 +678,7 @@
   "choices": [
    {
     "id": "a",
-    "text": "Docs テンプレートでドキュメントを作り、書き出し形式として Google Docs を選んで取引先に渡す",
+    "text": "Docs テンプレートでドキュメントを作り、書き出し形式として Google Docs を選んで、そのリンクを取引先に渡す",
     "why": "Docs の書き出し先は Word、PDF、Markdown、Google Docs で、デッキ向けではない。"
    },
    {
@@ -730,7 +730,7 @@
    },
    {
     "id": "d",
-    "text": "Claude が作れるのは PDF だけなので、Excel が必要な場合は別のツールで最初から作る",
+    "text": "Claude が作れるファイルは PDF だけなので、Excel が必要な場合は別のツールを使って最初から自分で作る",
     "why": "Claude は、Excel、PowerPoint、Word、PDF のファイルを作成できる。"
    }
   ],
@@ -789,7 +789,7 @@
   "choices": [
    {
     "id": "a",
-    "text": "「箇条書きを使うな」と、禁止の指示を強い調子で何度も繰り返す",
+    "text": "「箇条書きを使うな」と、禁止の指示を強い調子で、プロンプトの中で何度も繰り返す",
     "why": "ガイドは、「〜するな」より「〜してほしい」という肯定形の指示を勧めている。"
    },
    {
@@ -965,6 +965,973 @@
   "refs": [
    "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on",
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ]
+ },
+ {
+  "id": "asc-eval-027",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者が、Web 検索を使わずに Claude Sonnet 4.6 に「2025 年 12 月に施行された新しい制度の要点」を尋ねた。回答の扱いとして、ヘルプセンターの説明に照らして適切なものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Sonnet 4.6 の学習データは 2025 年 8 月までなので、それ以降の出来事は正確に知らない可能性がある。Web 検索を使うか一次情報で確かめる",
+    "why": "正解。ヘルプは、各モデルに学習データの期限があり、それ以降の出来事は正確な情報を持たない可能性があると説明している。"
+   },
+   {
+    "id": "b",
+    "text": "Claude は学習データを常に更新しているので、施行直後の制度でも正確に答えられる",
+    "why": "ヘルプは、データは更新されているものの、各モデルには知識の期限があると説明している。"
+   },
+   {
+    "id": "c",
+    "text": "回答に自信のある書き方がされていれば、期限後の出来事でも正確だと判断してよい",
+    "why": "書き方に自信があっても、期限後の情報は正確でない可能性がある。"
+   },
+   {
+    "id": "d",
+    "text": "Sonnet 4.6 は最新のモデルなので、2026 年までの出来事を学習している",
+    "why": "Sonnet 4.6 の学習データは 2025 年 8 月まで。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "各モデルには学習データの期限(knowledge cutoff)があり、Sonnet 4.6 と Opus 4.6 は 2025 年 8 月、Sonnet 5.5 や Opus 5.5 は 2026 年 6 月までです。期限より後の出来事について尋ねると、正確な情報を持っていない可能性があります。新しい出来事は Web 検索を使うか、一次情報で確かめます。",
+  "refs": [
+   "https://support.claude.com/en/articles/8114494-how-up-to-date-is-claude-s-training-data"
+  ]
+ },
+ {
+  "id": "asc-eval-028",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "財務担当者が、Claude に複雑な減価償却の計算をさせ、その結果を決算資料に使おうとしている。ヘルプセンターの説明に沿った扱いはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude は計算ができるので、出てきた結果をそのまま決算資料に転記して使ってよい",
+    "why": "ヘルプは、複雑な計算や重要な計算は専用のソフトや手作業で確かめるよう勧めている。"
+   },
+   {
+    "id": "b",
+    "text": "同じ計算を 2 回させて、答えが一致すれば確定してよい",
+    "why": "一致しても誤りの可能性は残る。ヘルプは専用のソフトや手作業での確認を勧めている。"
+   },
+   {
+    "id": "c",
+    "text": "複雑な計算や重要な計算は、専用の数学ソフトや手作業で確かめてから使う",
+    "why": "正解。ヘルプの説明どおり。"
+   },
+   {
+    "id": "d",
+    "text": "Claude は計算を扱えないので、数式を含む作業には使わない",
+    "why": "Claude は数式を扱い計算もできる。重要な結果を確認すればよい。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Claude は数式を扱い、計算を行えますが、複雑な計算や業務上重要な計算は、専用の数学ソフトや手作業で確かめるよう勧められています。決算資料のように誤りの影響が大きい用途では、検証してから使います。",
+  "refs": [
+   "https://support.claude.com/en/articles/10366421-how-does-claude-handle-mathematical-equations-and-calculations"
+  ]
+ },
+ {
+  "id": "asc-eval-029",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある報道機関の担当者が、寄せられた文章が Claude で生成されたものかを確かめたいと考えた。Anthropic の AI 生成コンテンツの表示(marking)についての説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "生成された文章には透かし(watermark)が入るため、誰でも公開のツールで判定できる",
+    "why": "透かしの検出は、規制当局や報道機関など対象となる組織向けに限定公開(private preview)で提供されている。"
+   },
+   {
+    "id": "b",
+    "text": "透かしの検出は限定公開で、対象となる組織(規制当局、法執行機関、報道機関など)に提供されている",
+    "why": "正解。記事の説明どおり。"
+   },
+   {
+    "id": "c",
+    "text": "透かしは EU 域内で生成された文章だけに入るので、日本で生成された文章は判定できない",
+    "why": "表示は、対応するモデルの出力に、提供されている地域を問わず世界中で適用される。"
+   },
+   {
+    "id": "d",
+    "text": "Claude が作る文章には透かしが入らず、ファイルにだけ Content Credentials(C2PA)が付く",
+    "why": "対応するモデルでは、生成された文章に埋め込みの透かしが入り、ファイルには C2PA が付く。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Anthropic は EU AI Act の行動規範に署名し、2026 年 8 月 2 日以降に EU で提供を始めたモデルから、機械で読み取れる表示に対応しています。生成された文章には埋め込みの透かしが入り、Claude が作ったファイルには Content Credentials(C2PA)が付きます。透かしの検出は、規制当局、法執行機関、報道機関など、対象となる組織に限定公開で提供されています。",
+  "refs": [
+   "https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content"
+  ]
+ },
+ {
+  "id": "asc-eval-030",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "AI 生成コンテンツの表示(透かしなど)が適用される範囲について、Anthropic の説明に合うものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "対応するモデルの出力に、Claude Platform(API)、Claude、Claude Code、Claude Cowork などの製品をまたいで適用される",
+    "why": "正解。記事は、対応するモデルの出力に、Claude を使うあらゆる場所で表示が適用されると説明している。"
+   },
+   {
+    "id": "b",
+    "text": "AWS、Google Cloud、Microsoft Foundry 経由で使う対応モデルの出力にも透かしが入る",
+    "why": "正解。クラウドパートナー経由の対応モデルにも透かしが入ると説明されている。"
+   },
+   {
+    "id": "c",
+    "text": "2026 年 8 月 2 日より前に出たモデルは、今後も表示の対象にならない",
+    "why": "以前のモデルにも表示の対応を進めていると説明されている。"
+   },
+   {
+    "id": "d",
+    "text": "表示は EU 域内の利用者の出力だけに適用される",
+    "why": "表示は、Claude が提供されている世界中の地域で適用される。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "透かしなどの表示は、対応するモデルの出力に、Claude Platform(API)、Claude、Claude Code、Claude Cowork、Claude Tag などの製品をまたいで、世界中で適用されます。AWS、Google Cloud、Microsoft Foundry 経由の対応モデルにも透かしが入ります。2026 年 8 月 2 日より前のモデルについては、対応を進めている段階です。",
+  "refs": [
+   "https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content"
+  ]
+ },
+ {
+  "id": "asc-eval-031",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者が、スマートフォンの Claude アプリで「明日の大阪の天気は?」と尋ねた。同僚の PC では天気がカードのような表示になっていたが、自分のアプリでは文章で返ってきた。ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "天気の視覚的な表示は Web とデスクトップで使え、モバイルでは文章で回答される",
+    "why": "正解。ヘルプは、天気の視覚的な表示は Web とデスクトップで使え、iOS と Android では文章で提供されると説明している。"
+   },
+   {
+    "id": "b",
+    "text": "モバイルでは天気の情報そのものが提供されないので、Web 検索の結果を自分で開く必要がある",
+    "why": "モバイルでも天気の情報は文章で提供される。"
+   },
+   {
+    "id": "c",
+    "text": "天気の表示は有料プランだけの機能なので、プランを上げれば表示される",
+    "why": "視覚的な表示はすべての利用者が使える。違いは端末による。"
+   },
+   {
+    "id": "d",
+    "text": "天気の表示には Web 検索が不要なので、Web 検索を切れば表示される",
+    "why": "天気やレシピのデータ表示には、Web 検索の有効化が必要。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "天気やレシピなどの視覚的な表示はすべての利用者が使えますが、データを表示するウィジェットには Web 検索の有効化が必要です。天気の視覚的な表示は Web とデスクトップで使え、iOS と Android では文章で提供されます。気温は、米国の地点では華氏、それ以外では摂氏で表示されます。",
+  "refs": [
+   "https://support.claude.com/en/articles/13641943-visual-and-interactive-content"
+  ]
+ },
+ {
+  "id": "asc-eval-032",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "カスタムビジュアル(Claude が会話の中で作る図やグラフ)について、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "写真やイラストとして生成されるので、どの端末でも同じ画像として表示される",
+    "why": "カスタムビジュアルは HTML で作られ、iOS や Android のアプリでは表示されない。"
+   },
+   {
+    "id": "b",
+    "text": "HTML で作られる対話的なもので、Web とデスクトップで表示される。品質は一定でなく、期待した場面で作られないこともある",
+    "why": "正解。ヘルプの説明どおり。ベータのため、品質や複雑さにはばらつきがある。"
+   },
+   {
+    "id": "c",
+    "text": "Settings で機能をオンにしないと作られない",
+    "why": "オンにする操作は不要で、Claude が役立つと判断したときに作る。頼んで作らせることもできる。"
+   },
+   {
+    "id": "d",
+    "text": "一度作られた図は自動で保存され、後からいつでもアーティファクトの一覧から開ける",
+    "why": "カスタムビジュアルは既定では一時的で、自動では保存されない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "カスタムビジュアルは、Claude が質問に合わせて HTML で作る図、グラフ、対話的な表示で、Web とデスクトップのアプリで表示されます(iOS と Android では表示されません)。オンにする操作は不要で、Claude が役立つと判断したときに作り、頼んで作らせることもできます。ベータのため品質にはばらつきがあり、期待した場面で作られないこともあります。既定では保存されないので、残したいものは画像のコピー、ダウンロード、アーティファクトへの保存で残します。",
+  "refs": [
+   "https://support.claude.com/en/articles/13979539-custom-visuals-in-chat-and-cowork"
+  ]
+ },
+ {
+  "id": "asc-eval-033",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者が、Cowork のセッションで Claude が作った比較図を、共有リンクで同僚に見せようとしたが、同僚には図が表示されなかった。また、図の中をクリックしても追加の質問が送られなかった。ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Cowork のカスタムビジュアルは共有リンクで表示されず、図をクリックして追加の質問を送る機能もまだない",
+    "why": "正解。ヘルプは、Cowork では共有ができず、クリックによる追加の質問もまだ使えないと説明している。"
+   },
+   {
+    "id": "b",
+    "text": "同僚がログインしていなかったためで、ログインすれば Cowork の図も共有リンクで表示される",
+    "why": "Cowork のカスタムビジュアルは、共有リンクではほかの人に表示されないと説明されている。"
+   },
+   {
+    "id": "c",
+    "text": "Cowork では図が作られないので、表示されたのはチャットの図である",
+    "why": "カスタムビジュアルは Cowork でも作られる。共有などに違いがある。"
+   },
+   {
+    "id": "d",
+    "text": "図をクリックする機能は Cowork のほうが充実しており、チャットでは使えない",
+    "why": "逆で、クリックで追加の質問を送る機能はチャットにあり、Cowork ではまだ使えない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "カスタムビジュアルは Cowork でも作られますが、チャットとの違いが 2 つあります。共有リンクではほかの人に表示されないこと、図の中をクリックして追加の質問を送る機能がまだないことです(入力して質問することはできます)。図を残したり見せたりしたい場合は、画像のコピー、ダウンロード、アーティファクトへの保存を使います。",
+  "refs": [
+   "https://support.claude.com/en/articles/13979539-custom-visuals-in-chat-and-cowork"
+  ]
+ },
+ {
+  "id": "asc-eval-034",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "2026 年 8 月より前に Cowork で作った「ライブアーティファクト」を修正したい。ヘルプセンターの説明に合う方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ライブアーティファクトを開き、その場で直接編集する",
+    "why": "ライブアーティファクトは開いたり共有したりできるが、その場では編集できない。"
+   },
+   {
+    "id": "b",
+    "text": "「Share」から新しいアーティファクトとして公開し直し、その後はほかのアーティファクトと同じように編集する",
+    "why": "正解。ヘルプの説明どおり。すでに共有していたリンクの閲覧者には新しい版が表示される。"
+   },
+   {
+    "id": "c",
+    "text": "ライブアーティファクトを削除し、同じ内容を Claude に一から作り直させる",
+    "why": "公開し直す方法があり、一から作り直す必要はない。"
+   },
+   {
+    "id": "d",
+    "text": "ライブアーティファクトは 2026 年 8 月 19 日以降は開けなくなったため、修正できない",
+    "why": "ライブアーティファクトは引き続き使え、開いて共有もできる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "ライブアーティファクトは、2026 年 8 月 19 日より前に Cowork で作られたアーティファクトです。引き続き Artifacts の一覧にあり、開いたり共有したりできますが、その場では編集できません。修正するには、「Share」から新しいアーティファクトとして公開し直します。すでに共有していたリンクの閲覧者には、新しい版が表示されます。",
+  "refs": [
+   "https://support.claude.com/en/articles/14729249-use-live-artifacts-in-claude-cowork"
+  ]
+ },
+ {
+  "id": "asc-eval-035",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者が、社内の Slack や Asana につながるアーティファクト(ダッシュボード)を作り、同じ組織の同僚に共有した。同僚が開くと、一部の表示がエラーになった。ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "共有したアーティファクトは作成者の接続を使うので、エラーは作成者の接続が切れたことを示す",
+    "why": "共有されたアーティファクトは、作成者ではなく閲覧者の接続を使う。"
+   },
+   {
+    "id": "b",
+    "text": "共有されたアーティファクトは閲覧者自身の接続とアクセス権を使う。閲覧者がデータにアクセスできない部分はエラーになる",
+    "why": "正解。ヘルプの説明どおり。"
+   },
+   {
+    "id": "c",
+    "text": "アーティファクトは組織内では共有できないので、エラーになった",
+    "why": "組織内での共有はできる。"
+   },
+   {
+    "id": "d",
+    "text": "アーティファクトの共有ではデータが固定の画像として渡されるので、エラーは表示の不具合である",
+    "why": "共有されたアーティファクトは、閲覧者の接続を使ってデータを取得する。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "接続済みのアプリからデータを取得するアーティファクトは、作成者ではなく閲覧者の接続を使います。閲覧者がそのデータにアクセスできない場合、その部分は作成者のデータではなくエラーを表示します。誰でも自分のアプリを接続して使う仕組みなので、共有先の人の接続やアクセス権を確認します。",
+  "refs": [
+   "https://support.claude.com/en/articles/9547008-share-artifacts",
+   "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them"
+  ]
+ },
+ {
+  "id": "asc-eval-036",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある企画担当者が、新しい施策の進捗を追う軽い表を、チームと Claude で一緒に編集しながら作りたい。一方、経理部は既存の Excel ファイルで、Excel の機能をフルに使った分析を続けたい。ヘルプセンターの説明に合う使い分けはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "どちらも Claude Sheets を使う。Claude Sheets は Excel のすべての機能を持つため",
+    "why": "Claude Sheets は Claude の中の軽い共有用の表で、Excel のすべての機能が必要な場合は Claude for Excel を使う。"
+   },
+   {
+    "id": "b",
+    "text": "どちらも Claude for Excel を使う。Claude の中で表を作る機能はないため",
+    "why": "Claude の中で表を作る Claude Sheets がある。"
+   },
+   {
+    "id": "c",
+    "text": "企画担当者は Claude Sheets、経理部は Claude for Excel を使う",
+    "why": "正解。Claude と一緒に作る軽い共有の表には Claude Sheets、既存の Excel ファイルやフル機能が必要な作業には Claude for Excel が向く。"
+   },
+   {
+    "id": "d",
+    "text": "企画担当者は Claude for Excel、経理部は Claude Sheets を使う",
+    "why": "使い分けが逆。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Claude Sheets は Claude に組み込まれた表計算で、Claude と一緒に作る軽い共有の表に向きます。Claude for Excel と Claude for Google Workspace は、すでに Excel や Google スプレッドシートにあるファイルに Claude を持ち込むものです。ファイルがすでにそれらのアプリにある場合や、アプリのすべての機能が必要な場合はこちらを使います。",
+  "refs": [
+   "https://support.claude.com/en/articles/18324300-get-started-with-claude-sheets"
+  ]
+ },
+ {
+  "id": "asc-eval-037",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Sheets で、Claude に表の修正を頼んだところ、意図しない数式の変更が入ってしまった。その後、自分でもいくつかのセルを編集している。Claude の変更前の状態に戻すときの注意として、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "版の履歴から以前の版を復元できるが、その版より後の編集(自分の編集も含む)も取り消される",
+    "why": "正解。ヘルプは、以前の版を復元すると、その後の編集も取り除かれると説明している。"
+   },
+   {
+    "id": "b",
+    "text": "Claude の変更だけを選んで取り消せるので、自分の編集は残る",
+    "why": "版の履歴で復元すると、その版より後の編集はすべて取り除かれる。"
+   },
+   {
+    "id": "c",
+    "text": "Claude Sheets には版の履歴がないので、手作業で数式を直すしかない",
+    "why": "版の履歴で以前の版を表示し、復元できる。"
+   },
+   {
+    "id": "d",
+    "text": "以前の版に戻すと、表がアーティファクトの一覧から削除される",
+    "why": "復元によって表が一覧から削除されるという記述はない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Claude Sheets では、Claude の変更は 1 つずつ枠で示され、何が変わったかを確認できます。版の履歴から以前の版を表示して復元できますが、その版より後の編集もすべて取り除かれます。自分の編集を残したい場合は、復元の前に内容を控えておくなどの注意が必要です。",
+  "refs": [
+   "https://support.claude.com/en/articles/18324300-get-started-with-claude-sheets"
+  ]
+ },
+ {
+  "id": "asc-eval-038",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者が Claude Sheets で部門の予算表を作らせる。実際の金額はすでに手元にある。ヘルプセンターが挙げる、より良い結果を得るためのコツに合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "金額は渡さずに、Claude に業界の平均的な数字で仮の表を作らせ、後から自分で差し替える",
+    "why": "ヘルプは、数字があるなら Claude に渡して、自分のデータから表を作らせるよう勧めている。"
+   },
+   {
+    "id": "b",
+    "text": "表の用途と追跡したいことを伝え、手元の数字も渡して、自分のデータから作らせる",
+    "why": "正解。ヘルプのコツどおり。"
+   },
+   {
+    "id": "c",
+    "text": "「予算表」とだけ伝え、項目は Claude に任せる",
+    "why": "用途や追跡したいことを伝えるほうが、目的に合った表になる。"
+   },
+   {
+    "id": "d",
+    "text": "数字は画像にして渡すと、Claude が最も正確に読み取れる",
+    "why": "画像で渡すことはコツとして挙げられていない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Claude Sheets では、表を何に使い、何を追跡したいかを伝えると良い結果になります。すでに数字があるなら Claude に渡し、自分のデータから表を作らせます。Claude は複数のタブ、タブをまたぐ数式、書式、プルダウン、グラフなどを使って表を作れます。",
+  "refs": [
+   "https://support.claude.com/en/articles/18324300-get-started-with-claude-sheets"
+  ]
+ },
+ {
+  "id": "asc-eval-039",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "営業企画の担当者が、Claude Docs で販売チーム向けの資料を作らせる。ヘルプセンターが挙げる「良い依頼」の要素に最も合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「資料を作って」とだけ頼み、出来上がりを見てから足りない点を伝える",
+    "why": "目的、読み手、扱う内容を最初に伝えるほうが、良い下書きになる。"
+   },
+   {
+    "id": "b",
+    "text": "「販売チーム向けに、価格、時期、顧客からの上位 3 つの質問を扱う 2 ページのローンチ概要を作って」と頼む",
+    "why": "正解。ヘルプは、文書の目的、読み手、扱う内容を含む依頼が良い結果につながると説明している。"
+   },
+   {
+    "id": "c",
+    "text": "資料の文字数だけを指定し、内容は Claude に任せる",
+    "why": "文字数だけでは、目的や読み手、扱う内容が伝わらない。"
+   },
+   {
+    "id": "d",
+    "text": "最初に完成版の見出しをすべて指定し、Claude には質問させない",
+    "why": "Claude Docs は書き始める前にいくつか質問する。目的や読み手を伝えることが重要である。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Claude Docs で良い結果を得るには、文書の目的、読み手、扱う内容を伝えます。ヘルプの例のように「販売チーム向けに、価格、時期、顧客からの上位 3 つの質問を扱う 2 ページのローンチ概要」と頼むと、的確な下書きになります。Claude は書き始める前にいくつか質問し、ファイル、メモリ、プロジェクト、接続済みのアプリなどの文脈も使います。",
+  "refs": [
+   "https://support.claude.com/en/articles/16923645-get-started-with-claude-docs"
+  ]
+ },
+ {
+  "id": "asc-eval-040",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "チームで編集している Claude Docs の文書で、あるメンバーがコメントで @Claude に修正を頼んだ。Claude の動き方として、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude は文書の所有者の権限で動くので、頼んだ人が見られないデータも使える",
+    "why": "Claude は常に、依頼した人の権限で動く。"
+   },
+   {
+    "id": "b",
+    "text": "Claude はスレッドで返信して修正し、何をなぜ変えたかを説明する。Claude は依頼した人の権限で動く",
+    "why": "正解。ヘルプの説明どおり。"
+   },
+   {
+    "id": "c",
+    "text": "コメントでは Claude に頼めないので、会話の中で頼み直す必要がある",
+    "why": "コメントで @Claude と書けば、Claude に修正を頼める。"
+   },
+   {
+    "id": "d",
+    "text": "Claude が作業している間は文書がロックされ、ほかのメンバーは編集できない",
+    "why": "Claude が作業している間も何もロックされず、いつでも一緒に編集できる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Claude Docs では、テキストを選んでコメントし、@Claude と書くと修正を頼めます。Claude はスレッドで返信して変更を加え、何をなぜ変えたかを説明します。Claude は常に依頼した人の権限で動き、作業中も文書はロックされないため、メンバーはいつでも一緒に編集できます。",
+  "refs": [
+   "https://support.claude.com/en/articles/16923645-get-started-with-claude-docs"
+  ]
+ },
+ {
+  "id": "asc-eval-041",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの担当者が、顧客の資料を添付したチャットで作ったアーティファクトを、組織内に共有しようとしている。共有の前に確認すべきこととして、ヘルプセンターが注意しているものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "共有すると、閲覧者はそのチャットの添付ファイルにもアクセスできるので、機微な文書が含まれていないかを確かめる",
+    "why": "正解。ヘルプは、チャットで作ったアーティファクトを共有すると、閲覧者はそのチャットの添付やファイルにもアクセスできると注意している。"
+   },
+   {
+    "id": "b",
+    "text": "共有されるのはアーティファクトの表示だけなので、添付ファイルを確認する必要はない",
+    "why": "閲覧者はチャットの添付やファイルにもアクセスできる。"
+   },
+   {
+    "id": "c",
+    "text": "組織内の共有では閲覧者に Claude のアカウントが不要なので、取引先にもリンクを送ってよい",
+    "why": "組織内の共有は、組織のアカウントでサインインした人が開く。外部への共有は別の設定が必要。"
+   },
+   {
+    "id": "d",
+    "text": "共有すると、アーティファクトの元のチャットが閲覧者のアカウントに複製される",
+    "why": "チャットが複製されるという記述はない。注意すべきは添付やファイルへのアクセスである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "チャットで作ったアーティファクトを共有すると、閲覧者はそのチャットの添付やファイルにもアクセスできます。共有する前に、機微な文書が含まれていないかを確かめます。プロジェクトで作ったアーティファクトの場合、閲覧者はそのプロジェクトへのアクセスも必要です。",
+  "refs": [
+   "https://support.claude.com/en/articles/9547008-share-artifacts"
+  ]
+ },
+ {
+  "id": "asc-eval-042",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの担当者が、アーティファクトを組織外の取引先にも見せたいと考え、共有の画面を開いたが、「Anyone with the link」が灰色で選べない。ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Team プランでは「Anyone with the link」が使えないので、取引先に見せる方法はない",
+    "why": "Team と Enterprise でも、Owner が外部共有を許可すれば使える。"
+   },
+   {
+    "id": "b",
+    "text": "「Anyone with the link」は、Owner が External sharing をオンにするか、そのアーティファクトを個別に許可したときだけ使える。Owner か Primary Owner に相談する",
+    "why": "正解。ヘルプの説明どおり。"
+   },
+   {
+    "id": "c",
+    "text": "ブラウザのキャッシュを削除すれば選べるようになる",
+    "why": "キャッシュの問題ではなく、組織の設定による。"
+   },
+   {
+    "id": "d",
+    "text": "個人の Pro プランに切り替えてから同じアーティファクトを共有する",
+    "why": "組織のデータを個人のアカウントに移して共有することは、組織の方針を回避することになる。まず Owner に相談する。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Team と Enterprise では、アーティファクトの共有先として「Only people invited」「Anyone at [組織名]」「Anyone with the link」を選べます。「Anyone with the link」は、Owner が External sharing をオンにしたか、そのアーティファクトを個別に許可した場合だけ使えます。灰色で選べない場合は、Owner か Primary Owner に相談します。Owner が外部共有をオフにすると、既存のリンクも使えなくなります。",
+  "refs": [
+   "https://support.claude.com/en/articles/9547008-share-artifacts"
+  ]
+ },
+ {
+  "id": "asc-eval-043",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Pro プランの利用者が、チャットで作った旧来のアーティファクトを公開(Publish)していたが、一度「Unpublish」した。後日、同じアーティファクトをもう一度公開したくなった。ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "「Publish」を押し直せば、前と同じリンクで公開できる",
+    "why": "一度非公開にしたアーティファクトは、再び公開できない。"
+   },
+   {
+    "id": "b",
+    "text": "一度 Unpublish すると同じアーティファクトは再公開できず、新しいアーティファクトを作る必要がある。使っていた保存データも削除される",
+    "why": "正解。ヘルプの説明どおり。"
+   },
+   {
+    "id": "c",
+    "text": "Unpublish してから 30 日以内なら、同じアーティファクトを再公開できる",
+    "why": "期限付きで再公開できるという記述はない。"
+   },
+   {
+    "id": "d",
+    "text": "Unpublish してもリンクは有効なままなので、再公開の必要はない",
+    "why": "Unpublish はアクセスを取り消す操作で、リンクは使えなくなる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "公開した旧来のアーティファクトは「Unpublish」でアクセスを取り消せますが、一度非公開にすると同じアーティファクトは再び公開できません。後で共有したい場合は、新しいアーティファクトを作ります。Unpublish すると、そのアーティファクトが使っていた個人用と共有用の保存データも完全に削除されます。",
+  "refs": [
+   "https://support.claude.com/en/articles/9547008-share-artifacts"
+  ]
+ },
+ {
+  "id": "asc-eval-044",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある講師が、受講者が質問すると Claude が答える練習用のアプリ(Claude を使うアーティファクト)を作り、200 人に公開した。費用と利用量について、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "使われた分はすべて作成者の利用上限から引かれるので、作成者はプランを上げておく必要がある",
+    "why": "利用量は作成者ではなく、使う人それぞれのプランの上限に数えられる。"
+   },
+   {
+    "id": "b",
+    "text": "API キーの設定が必要で、利用量に応じて作成者に API の料金が請求される",
+    "why": "API キーは不要で、作成者に費用はかからない。"
+   },
+   {
+    "id": "c",
+    "text": "使う人は自分の Claude アカウントでサインインし、利用量はそれぞれの人のプランの上限に数えられる",
+    "why": "正解。ヘルプの説明どおり。何人が使っても共有は無料である。"
+   },
+   {
+    "id": "d",
+    "text": "公開したアーティファクトでは Claude の機能は使えず、作成者だけが使える",
+    "why": "使う人がサインインすれば、Claude を使う機能を使える。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "Claude を使うアーティファクトは、Anthropic の基盤の上で小さなアプリとして動きます。使う人は自分の Claude アカウントでサインインし、それぞれのインスタンスで使います。API キーは不要で、作成者に費用はかからず、利用量は作成者ではなく使う人それぞれのプランの上限に数えられます。",
+  "refs": [
+   "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them",
+   "https://support.claude.com/en/articles/9547008-share-artifacts"
+  ]
+ },
+ {
+  "id": "asc-eval-045",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Enterprise プランの Owner が、コード実行とファイル作成の機能のネットワーク設定を決める。機微なデータを扱う部署もある。ヘルプセンターの説明に合うものを2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ネットワークの外向き通信(network egress)をオフにすると、何か問題が起きてもデータがサンドボックスの外に出るのを防げる。最も安全な構成である",
+    "why": "正解。ヘルプは、ネットワークを切ると、サンドボックスの問題やプロンプトインジェクションがあってもデータが外に出ないと説明している。"
+   },
+   {
+    "id": "b",
+    "text": "MCP の連携を有効にしている場合は、egress の設定にかかわらず、その接続を通じた通信は起こりうる",
+    "why": "正解。ヘルプは、MCP の連携があると egress の設定にかかわらず通信が可能なままだと注意している。"
+   },
+   {
+    "id": "c",
+    "text": "ネットワークをオフにすると、Excel のモデル作成やプレゼン資料の作成もできなくなる",
+    "why": "ネットワークを切っても、コード実行とファイル作成の機能は使える。"
+   },
+   {
+    "id": "d",
+    "text": "「All domains」は柔軟性が高く、リスクも最も低い設定である",
+    "why": "「All domains」は最も柔軟だが、最もリスクの高い設定とされている。"
+   }
+  ],
+  "answer": [
+   "a",
+   "b"
+  ],
+  "explanation": "コード実行とファイル作成は隔離されたサンドボックスで動きます。ネットワークの外向き通信をオフにすると、サンドボックスの問題やプロンプトインジェクションがあってもデータが外に出るのを防げ、Excel のモデルやプレゼン資料の作成などの機能はそのまま使えます。「All domains」は最も柔軟ですが最もリスクが高い設定です。MCP の連携を有効にしている場合は、egress の設定にかかわらず、その接続を通じた通信が起こりえます。",
+  "refs": [
+   "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude"
+  ]
+ },
+ {
+  "id": "asc-eval-046",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの Owner が、コード実行とファイル作成のネットワーク設定を、安全性を保ちながら段階的に広げたい。ヘルプセンターが示している進め方の順として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "すべてのドメインを許可して始め、問題が起きたドメインから順に止める",
+    "why": "ヘルプは逆に、最も安全な構成から始めて広げる進め方を示している。"
+   },
+   {
+    "id": "b",
+    "text": "ネットワークをオフにして始め、次にパッケージマネージャーを許可し、必要に応じて特定のドメインを許可リストに加える",
+    "why": "正解。ヘルプが「段階的な進め方」として示している順序。"
+   },
+   {
+    "id": "c",
+    "text": "パッケージマネージャーを止め、特定のドメインだけを許可して始め、最後にネットワークをオフにする",
+    "why": "順序が逆。最も安全なオフの状態から始める。"
+   },
+   {
+    "id": "d",
+    "text": "最初から特定のドメインとすべてのパッケージマネージャーを許可し、以後は設定を変えない",
+    "why": "段階的に広げる進め方に合わない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "ヘルプは、ネットワークを (1) オフにして始め(最も安全)、(2) パッケージマネージャー(pip、npm など)を許可し、(3) 業務上必要な特定のドメインを許可リストに加える、という段階的な進め方を示しています。ネットワークを切っておくことは、サンドボックスの脆弱性やプロンプトインジェクションがあってもデータが外に出るのを防ぐ最後の防壁になります。",
+  "refs": [
+   "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude"
+  ]
+ },
+ {
+  "id": "asc-eval-047",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの社員が、チャットの「+」メニューに「Web search」が見当たらないと申し出た。新しい Claude の体験はまだ届いていない。ヘルプセンターの説明に照らして、まず確認すべきことはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "社員が使っているモデルが Web 検索に対応していないため、Haiku 4.5 以外に切り替える",
+    "why": "Haiku 4.5 も Web 検索に対応するモデルに含まれている。"
+   },
+   {
+    "id": "b",
+    "text": "Owner か Primary Owner が、Organization settings > Capabilities で組織の Web 検索を有効にしているか",
+    "why": "正解。Team と Enterprise では、Owner か Primary Owner が組織全体で有効にしてから、メンバーが会話ごとにオンにできる。"
+   },
+   {
+    "id": "c",
+    "text": "社員が Settings > Usage で usage credits を有効にしているか",
+    "why": "usage credits は上限後の利用を続けるための設定で、Web 検索の表示とは関係がない。"
+   },
+   {
+    "id": "d",
+    "text": "社員がモバイルアプリを使っているか。Web 検索はデスクトップアプリだけの機能である",
+    "why": "Web 検索がデスクトップだけの機能だという記述はない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Team と Enterprise では、Owner か Primary Owner が Organization settings > Capabilities で組織全体の Web 検索を有効にする必要があります。有効になれば、メンバーはチャットの「+」から「Web search」をオンにできます。新しい Claude の体験では Web 検索のトグルはなく、Claude が役立つときに検索します。",
+  "refs": [
+   "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+  ]
+ },
+ {
+  "id": "asc-eval-048",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Web 検索を使った Claude の回答を、社内レポートの根拠に使う。ヘルプセンターの説明に沿った確認の仕方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "回答に引用元が付いていれば、その内容は元のサイトと必ず一致しているので、確認は不要である",
+    "why": "ヘルプは、元のサイトには Claude のまとめに含まれない重要な文脈がありうるため、引用元を確認するよう勧めている。"
+   },
+   {
+    "id": "b",
+    "text": "回答に示された引用元を開いて確認する。元のサイトには、Claude のまとめに含まれない重要な文脈や詳細があることがある",
+    "why": "正解。ヘルプの説明どおり。"
+   },
+   {
+    "id": "c",
+    "text": "Claude に同じ質問を Web 検索なしで尋ね、答えが一致すれば確定する",
+    "why": "Web 検索なしの回答は学習データの範囲に限られる。確認の方法として挙げられているのは引用元の確認である。"
+   },
+   {
+    "id": "d",
+    "text": "引用元のリンクが開けた時点で、内容も正しいと判断する",
+    "why": "リンクが開けることと、内容が正しくまとめられていることは別。元のサイトの内容を確かめる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Web 検索を使うと、Claude の回答には出典への直接の引用やリンクが付きます。ヘルプは、Claude の回答を唯一の情報源にせず、Web 検索の結果を使うときは引用元を確認するよう勧めています。元のサイトには、Claude のまとめに含まれない重要な文脈や詳細があることがあります。",
+  "refs": [
+   "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on",
+   "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+  ]
+ },
+ {
+  "id": "asc-eval-049",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者が、Web 検索をオンにした状態で、特定の記事の URL を貼り付け「この記事を要約して」と頼んだ。この動作について、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "URL を貼り付けても、Claude はキーワードで検索した結果だけを使い、そのページは読まない",
+    "why": "Web 検索がオンなら、URL が示されたとき Claude はそのページの内容を直接取得できる(web fetch)。"
+   },
+   {
+    "id": "b",
+    "text": "Web 検索がオンなら、URL が示されたときに Claude はそのページの内容を直接取得して分析できる(web fetch)",
+    "why": "正解。ヘルプの説明どおり。"
+   },
+   {
+    "id": "c",
+    "text": "URL の内容を読ませるには、Research を使う必要がある",
+    "why": "Web 検索がオンなら web fetch で読める。Research が必須だという記述はない。"
+   },
+   {
+    "id": "d",
+    "text": "URL を貼り付けると、Claude はそのページの画像だけを表示する",
+    "why": "画像の検索結果は Web 検索の機能の一部だが、URL を示すとページの内容を取得して分析できる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "Web 検索がオンのとき、Claude は URL が示されると、そのページの内容を直接取得して分析できます(web fetch)。Web 検索では、画像の検索結果を会話に表示することもでき、別の設定は不要です。回答には出典の引用とリンクが付くので、元のページで内容を確かめられます。",
+  "refs": [
+   "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+  ]
+ },
+ {
+  "id": "asc-eval-050",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ある担当者が Pro プランで、Google カレンダーと Slack を読み書きするアーティファクトを作り、同僚に共有しようとしている。アーティファクトが接続済みのアプリを使う仕組みについて、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "最初にアプリを使うとき、Claude はどのアプリとツールを使うかを示して承認を求める。共有や公開をしても、使う人はそれぞれ自分のアプリを接続する",
+    "why": "正解。ヘルプの説明どおり。個々のツールはオフにでき、その選択は以後にも引き継がれる。"
+   },
+   {
+    "id": "b",
+    "text": "作成者が承認すれば、共有された同僚は作成者の Google カレンダーと Slack をそのまま使える",
+    "why": "使う人はそれぞれ自分のアプリを接続する。作成者の接続が共有されるわけではない。"
+   },
+   {
+    "id": "c",
+    "text": "アーティファクトはアプリを読むことはできるが、書き込むことはできない",
+    "why": "アーティファクトは接続済みのアプリを読み書きできる。"
+   },
+   {
+    "id": "d",
+    "text": "操作のたびに承認が必要なコネクタのツールも、アーティファクトでは自動で使われる",
+    "why": "操作ごとに承認が必要なコネクタのツールは、アーティファクトでは使えない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "アーティファクトは、Claude に接続済みのアプリ(Asana、Google カレンダー、Slack など)やカスタムコネクタを読み書きできます。最初にアプリを使うとき、Claude はどのアプリとツールを使うかを示して承認を求め、個々のツールをオフにもできます。共有や公開をしたアーティファクトでも、使う人はそれぞれ自分のアプリを接続します。Team と Enterprise では Owner が組織全体でこの機能をオフにできます。",
+  "refs": [
+   "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them"
+  ]
+ },
+ {
+  "id": "asc-eval-051",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Team プランの担当者が、接続済みのアプリと Claude を使うアーティファクトを「Anyone with the link」で共有し、取引先(Claude にサインインしていない)に見せた。取引先から見えるものとして、ヘルプセンターの説明に合うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "作成者と同じように、接続済みのアプリのデータも Claude を使う機能もすべて動く",
+    "why": "リンクだけで開いた人には、接続済みのアプリや Claude を使う部分は動かない。"
+   },
+   {
+    "id": "b",
+    "text": "アーティファクト自体は見えるが、接続済みのアプリや Claude を使う部分は動かず、コメントも見たり追加したりできない",
+    "why": "正解。ヘルプの説明どおり。"
+   },
+   {
+    "id": "c",
+    "text": "「Anyone with the link」で共有したアーティファクトは、サインインしないと一切開けない",
+    "why": "多くのアーティファクトは、サインインしなくても開ける。"
+   },
+   {
+    "id": "d",
+    "text": "取引先が見るときは、作成者の接続を使ってデータが表示される",
+    "why": "閲覧者は自分の接続を使う。リンクだけの閲覧者には、アプリを使う部分は動かない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "「Anyone with the link」で共有したアーティファクトは、組織外の人やサインインしていない人も開けます。ただし、リンクだけで開いた人には、接続済みのアプリや Claude を使う部分は動かず、コメントも見たり追加したりできません。アプリからデータを取得する部分は、閲覧者自身の接続を使う仕組みだからです。",
+  "refs": [
+   "https://support.claude.com/en/articles/9547008-share-artifacts"
+  ]
+ },
+ {
+  "id": "asc-eval-052",
+  "cert": "associate",
+  "domain": "output-evaluation-and-validation",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Enterprise プランの社員が、チームで使う予算表を Claude Sheets で作ろうとしたが、Artifacts のタブに「Sheets」が見当たらない。同じ会社の別組織(Team プラン)の知人は使えている。ヘルプセンターの説明に照らして考えられる理由はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude Sheets は Team プランでは既定でオンだが、Enterprise プランでは組織の設定でオンにされるまでオフになっている",
+    "why": "正解。ヘルプの説明どおり。組織の管理者に、Organization settings でオンにしてもらう必要がある。"
+   },
+   {
+    "id": "b",
+    "text": "Claude Sheets は Team プランだけの機能で、Enterprise プランでは提供されていない",
+    "why": "Claude Sheets は Pro、Max、Ultra、Team、Enterprise のプランでベータとして提供されている。"
+   },
+   {
+    "id": "c",
+    "text": "Claude Sheets はモバイルアプリだけの機能なので、PC では表示されない",
+    "why": "Claude Sheets はアーティファクトとして Web などで作れる。モバイルだけの機能ではない。"
+   },
+   {
+    "id": "d",
+    "text": "社員が usage credits を有効にしていないため、表計算の機能が隠されている",
+    "why": "usage credits は上限後に利用を続けるための設定で、Sheets の表示とは関係がない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "Claude Sheets は Pro、Max、Ultra、Team、Enterprise のプランでベータとして提供されています。Team プランでは既定でオンですが、Enterprise プランでは組織の設定でオンにされるまでオフです。見当たらない場合は、組織の管理者に設定を確認してもらいます。",
+  "refs": [
+   "https://support.claude.com/en/articles/18324300-get-started-with-claude-sheets"
   ]
  }
 ]
