@@ -4,1091 +4,1961 @@
   "source": "muse-space:claudezi-ge-kuizu",
   "repo": "k8kimura-gif/claude-cert-questions",
   "path": "data/progress.json",
-  "exportedAt": "2026-11-15T07:59:04.789Z",
+  "exportedAt": "2026-11-18T15:34:47.914Z",
   "summary": {
-    "accuracyPercent": 93,
-    "answered": 55,
+    "answered": 94,
+    "correct": 83,
+    "accuracyPercent": 88,
     "certs": {
-      "architect": {
-        "accuracyPercent": null,
-        "answered": 0,
-        "askedCount": 5,
-        "code": "CCAR-F",
-        "completedSessionCount": 0,
-        "correct": 0,
-        "domains": [
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "agentic-architecture-and-orchestration",
-            "ja": "エージェント設計とオーケストレーション",
-            "weight": 27
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "claude-code-configuration-and-workflows",
-            "ja": "Claude Code の設定とワークフロー",
-            "weight": 20
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "prompt-engineering-and-structured-output",
-            "ja": "プロンプト設計と構造化出力",
-            "weight": 20
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "tool-design-and-mcp-integration",
-            "ja": "ツール設計と MCP 統合",
-            "weight": 18
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "context-management-and-reliability",
-            "ja": "コンテキスト管理と信頼性",
-            "weight": 15
-          }
-        ],
-        "lastAnsweredAt": null,
-        "name": "Architect – Foundations",
-        "sessionCount": 1
-      },
-      "architect-pro": {
-        "accuracyPercent": null,
-        "answered": 0,
-        "askedCount": 0,
-        "code": "CCAR-P",
-        "completedSessionCount": 0,
-        "correct": 0,
-        "domains": [
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "solution-design-and-architecture",
-            "ja": "ソリューション設計とアーキテクチャ",
-            "weight": 17
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "models-prompting-and-context-engineering",
-            "ja": "モデル・プロンプト・コンテキスト設計",
-            "weight": 13
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "integration",
-            "ja": "統合",
-            "weight": 19
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "evaluation-testing-and-optimization",
-            "ja": "評価・テスト・最適化",
-            "weight": 16
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "governance-safety-and-risk",
-            "ja": "ガバナンス・安全性・リスク管理",
-            "weight": 14
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "stakeholder-communication-and-lifecycle",
-            "ja": "ステークホルダー対応とライフサイクル管理",
-            "weight": 14
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "developer-productivity-and-operational-enablement",
-            "ja": "開発者の生産性と運用の整備",
-            "weight": 7
-          }
-        ],
-        "lastAnsweredAt": null,
-        "name": "Architect – Professional",
-        "sessionCount": 0
-      },
-      "associate": {
-        "accuracyPercent": null,
-        "answered": 0,
-        "askedCount": 0,
-        "code": "CCAO-F",
-        "completedSessionCount": 0,
-        "correct": 0,
-        "domains": [
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "prompting-and-task-execution",
-            "ja": "プロンプトとタスクの実行",
-            "weight": 14
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "output-evaluation-and-validation",
-            "ja": "出力の評価と検証",
-            "weight": 21
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "product-and-model-selection",
-            "ja": "製品とモデルの選択",
-            "weight": 12
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "workflow-integration-and-solution-design",
-            "ja": "ワークフローへの統合とソリューション設計",
-            "weight": 16
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "configuration-and-knowledge-management",
-            "ja": "設定とナレッジ管理",
-            "weight": 12
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "governance-risk-and-responsible-use",
-            "ja": "ガバナンス・リスク・責任ある利用",
-            "weight": 15
-          },
-          {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
-            "id": "troubleshooting-and-optimization",
-            "ja": "トラブルシューティングと最適化",
-            "weight": 10
-          }
-        ],
-        "lastAnsweredAt": null,
-        "name": "Associate – Foundations",
-        "sessionCount": 0
-      },
       "developer": {
-        "accuracyPercent": 93,
-        "answered": 55,
-        "askedCount": 55,
         "code": "CCDV-F",
-        "completedSessionCount": 11,
-        "correct": 51,
+        "name": "Developer – Foundations",
+        "answered": 79,
+        "correct": 72,
+        "accuracyPercent": 91,
+        "askedCount": 82,
+        "sessionCount": 17,
+        "completedSessionCount": 15,
+        "lastAnsweredAt": "2026-11-17T23:42:40.152Z",
+        "confRated": 24,
+        "sureOkPercent": 63,
+        "unsureOk": 6,
+        "sureNg": 2,
         "domains": [
           {
-            "accuracyPercent": 95,
-            "answered": 22,
-            "correct": 21,
             "id": "applications-and-integration",
             "ja": "アプリケーションと統合",
-            "weight": 33.1
+            "weight": 33.1,
+            "answered": 31,
+            "correct": 28,
+            "accuracyPercent": 90,
+            "unsureOk": 4,
+            "sureNg": 2
           },
           {
-            "accuracyPercent": 100,
-            "answered": 11,
-            "correct": 11,
             "id": "model-selection-and-optimization",
             "ja": "モデル選択と最適化",
-            "weight": 16.8
+            "weight": 16.8,
+            "answered": 16,
+            "correct": 16,
+            "accuracyPercent": 100,
+            "unsureOk": 0,
+            "sureNg": 0
           },
           {
-            "accuracyPercent": 82,
-            "answered": 11,
-            "correct": 9,
             "id": "agents-and-workflows",
             "ja": "エージェントとワークフロー",
-            "weight": 14.7
+            "weight": 14.7,
+            "answered": 15,
+            "correct": 13,
+            "accuracyPercent": 87,
+            "unsureOk": 2,
+            "sureNg": 0
           },
           {
-            "accuracyPercent": 91,
-            "answered": 11,
-            "correct": 10,
             "id": "prompt-and-context-engineering",
             "ja": "プロンプトとコンテキスト設計",
-            "weight": 11
+            "weight": 11,
+            "answered": 15,
+            "correct": 14,
+            "accuracyPercent": 93,
+            "unsureOk": 0,
+            "sureNg": 0
           },
           {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
             "id": "tools-and-mcps",
             "ja": "ツールと MCP",
-            "weight": 10.6
-          },
-          {
-            "accuracyPercent": null,
+            "weight": 10.6,
             "answered": 0,
             "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
             "id": "security-and-safety",
             "ja": "セキュリティと安全性",
-            "weight": 8.1
+            "weight": 8.1,
+            "answered": 1,
+            "correct": 0,
+            "accuracyPercent": 0,
+            "unsureOk": 0,
+            "sureNg": 0
           },
           {
-            "accuracyPercent": null,
-            "answered": 0,
-            "correct": 0,
             "id": "claude-code",
             "ja": "Claude Code",
-            "weight": 3.1
-          },
-          {
-            "accuracyPercent": null,
+            "weight": 3.1,
             "answered": 0,
             "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
             "id": "eval-testing-and-debugging",
             "ja": "評価・テスト・デバッグ",
-            "weight": 2.6
+            "weight": 2.6,
+            "answered": 1,
+            "correct": 1,
+            "accuracyPercent": 100,
+            "unsureOk": 0,
+            "sureNg": 0
           }
-        ],
-        "lastAnsweredAt": "2026-11-15T07:58:09.594Z",
-        "name": "Developer – Foundations",
-        "sessionCount": 11
+        ]
+      },
+      "architect": {
+        "code": "CCAR-F",
+        "name": "Architect – Foundations",
+        "answered": 0,
+        "correct": 0,
+        "accuracyPercent": null,
+        "askedCount": 5,
+        "sessionCount": 1,
+        "completedSessionCount": 0,
+        "lastAnsweredAt": null,
+        "confRated": 0,
+        "sureOkPercent": null,
+        "unsureOk": 0,
+        "sureNg": 0,
+        "domains": [
+          {
+            "id": "agentic-architecture-and-orchestration",
+            "ja": "エージェント設計とオーケストレーション",
+            "weight": 27,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
+            "id": "claude-code-configuration-and-workflows",
+            "ja": "Claude Code の設定とワークフロー",
+            "weight": 20,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
+            "id": "prompt-engineering-and-structured-output",
+            "ja": "プロンプト設計と構造化出力",
+            "weight": 20,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
+            "id": "tool-design-and-mcp-integration",
+            "ja": "ツール設計と MCP 統合",
+            "weight": 18,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
+            "id": "context-management-and-reliability",
+            "ja": "コンテキスト管理と信頼性",
+            "weight": 15,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          }
+        ]
+      },
+      "architect-pro": {
+        "code": "CCAR-P",
+        "name": "Architect – Professional",
+        "answered": 0,
+        "correct": 0,
+        "accuracyPercent": null,
+        "askedCount": 0,
+        "sessionCount": 0,
+        "completedSessionCount": 0,
+        "lastAnsweredAt": null,
+        "confRated": 0,
+        "sureOkPercent": null,
+        "unsureOk": 0,
+        "sureNg": 0,
+        "domains": [
+          {
+            "id": "solution-design-and-architecture",
+            "ja": "ソリューション設計とアーキテクチャ",
+            "weight": 17,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
+            "id": "models-prompting-and-context-engineering",
+            "ja": "モデル・プロンプト・コンテキスト設計",
+            "weight": 13,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
+            "id": "integration",
+            "ja": "統合",
+            "weight": 19,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
+            "id": "evaluation-testing-and-optimization",
+            "ja": "評価・テスト・最適化",
+            "weight": 16,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
+            "id": "governance-safety-and-risk",
+            "ja": "ガバナンス・安全性・リスク管理",
+            "weight": 14,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
+            "id": "stakeholder-communication-and-lifecycle",
+            "ja": "ステークホルダー対応とライフサイクル管理",
+            "weight": 14,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
+            "id": "developer-productivity-and-operational-enablement",
+            "ja": "開発者の生産性と運用の整備",
+            "weight": 7,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          }
+        ]
+      },
+      "associate": {
+        "code": "CCAO-F",
+        "name": "Associate – Foundations",
+        "answered": 15,
+        "correct": 11,
+        "accuracyPercent": 73,
+        "askedCount": 16,
+        "sessionCount": 1,
+        "completedSessionCount": 1,
+        "lastAnsweredAt": "2026-11-17T14:31:54.533Z",
+        "confRated": 15,
+        "sureOkPercent": 53,
+        "unsureOk": 3,
+        "sureNg": 3,
+        "domains": [
+          {
+            "id": "prompting-and-task-execution",
+            "ja": "プロンプトとタスクの実行",
+            "weight": 14,
+            "answered": 0,
+            "correct": 0,
+            "accuracyPercent": null,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
+            "id": "output-evaluation-and-validation",
+            "ja": "出力の評価と検証",
+            "weight": 21,
+            "answered": 5,
+            "correct": 4,
+            "accuracyPercent": 80,
+            "unsureOk": 0,
+            "sureNg": 1
+          },
+          {
+            "id": "product-and-model-selection",
+            "ja": "製品とモデルの選択",
+            "weight": 12,
+            "answered": 2,
+            "correct": 1,
+            "accuracyPercent": 50,
+            "unsureOk": 0,
+            "sureNg": 1
+          },
+          {
+            "id": "workflow-integration-and-solution-design",
+            "ja": "ワークフローへの統合とソリューション設計",
+            "weight": 16,
+            "answered": 2,
+            "correct": 1,
+            "accuracyPercent": 50,
+            "unsureOk": 0,
+            "sureNg": 0
+          },
+          {
+            "id": "configuration-and-knowledge-management",
+            "ja": "設定とナレッジ管理",
+            "weight": 12,
+            "answered": 2,
+            "correct": 1,
+            "accuracyPercent": 50,
+            "unsureOk": 1,
+            "sureNg": 1
+          },
+          {
+            "id": "governance-risk-and-responsible-use",
+            "ja": "ガバナンス・リスク・責任ある利用",
+            "weight": 15,
+            "answered": 2,
+            "correct": 2,
+            "accuracyPercent": 100,
+            "unsureOk": 2,
+            "sureNg": 0
+          },
+          {
+            "id": "troubleshooting-and-optimization",
+            "ja": "トラブルシューティングと最適化",
+            "weight": 10,
+            "answered": 2,
+            "correct": 2,
+            "accuracyPercent": 100,
+            "unsureOk": 0,
+            "sureNg": 0
+          }
+        ]
       }
-    },
-    "correct": 51
+    }
   },
   "progress": {
-    "architect": {
-      "answers": {},
-      "day": null,
-      "lastMock": null,
-      "log": [],
-      "mock": null,
-      "mocks": []
-    },
-    "architect-pro": {
-      "answers": {},
-      "day": null,
-      "lastMock": null,
-      "log": [],
-      "mock": null,
-      "mocks": []
-    },
-    "associate": {
-      "answers": {},
-      "day": null,
-      "lastMock": null,
-      "log": [],
-      "mock": null,
-      "mocks": []
-    },
     "developer": {
       "answers": {
         "dev-agent-001": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-agent-002": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-16",
+          "due": "2026-11-17",
+          "c": 0
         },
         "dev-agent-003": {
-          "correct": 0,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 0
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-15",
+          "due": "2026-11-16"
         },
         "dev-agent-007": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-agent-008": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-agent-009": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-agent-010": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
         },
         "dev-agent-011": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-agent-012": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-agent-015": {
-          "correct": 0,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 0
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-15",
+          "due": "2026-11-16"
         },
         "dev-agent-018": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-agent-019": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-agent-024": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18",
+          "c": 1
         },
         "dev-agent-027": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-agent-031": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-18",
+          "due": "2026-11-19",
+          "c": 0
         },
         "dev-app-006": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-007": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-010": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-012": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-014": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-app-016": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-18",
+          "due": "2026-11-19",
+          "c": 1
         },
         "dev-app-017": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-019": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-app-021": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-18",
+          "due": "2026-11-19",
+          "c": 0
+        },
+        "dev-app-024": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-16",
+          "due": "2026-11-17",
+          "c": 0
         },
         "dev-app-025": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-028": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-029": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-031": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-033": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-app-038": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 1
         },
         "dev-app-040": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-app-042": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-16",
+          "due": "2026-11-19",
+          "c": 1
+        },
+        "dev-app-043": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 0
         },
         "dev-app-044": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-app-045": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-16",
+          "c": 0
         },
         "dev-app-046": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-047": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-050": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-app-051": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-18",
+          "due": "2026-11-21",
+          "c": 1
         },
         "dev-app-054": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-055": {
-          "correct": 0,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 0
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-15",
+          "due": "2026-11-16"
         },
         "dev-app-058": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-059": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-app-062": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-app-065": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18",
+          "c": 1
+        },
+        "dev-eval-001": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-16",
+          "due": "2026-11-19",
+          "c": 1
         },
         "dev-model-001": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-model-004": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18",
+          "c": 1
         },
         "dev-model-007": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-model-011": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-model-015": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-model-016": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-model-019": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-model-020": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-18",
+          "due": "2026-11-21",
+          "c": 1
         },
         "dev-model-022": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-model-023": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-16",
+          "due": "2026-11-19",
+          "c": 1
         },
         "dev-model-024": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-model-026": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-model-027": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-18",
+          "due": "2026-11-21",
+          "c": 1
         },
         "dev-model-028": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-model-030": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-model-032": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
         },
         "dev-prompt-001": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-prompt-002": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
         },
         "dev-prompt-003": {
-          "correct": 0,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 0
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-15",
+          "due": "2026-11-16"
         },
         "dev-prompt-004": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-prompt-005": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-18",
+          "due": "2026-11-21",
+          "c": 1
+        },
+        "dev-prompt-007": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-16",
+          "due": "2026-11-19",
+          "c": 1
         },
         "dev-prompt-008": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-prompt-012": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18",
+          "c": 1
         },
         "dev-prompt-013": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-prompt-014": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-prompt-017": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-prompt-019": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-prompt-020": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-prompt-021": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
         },
         "dev-prompt-022": {
-          "correct": 1,
-          "last": "2026-11-15",
           "n": 1,
-          "streak": 1
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-15",
+          "due": "2026-11-18"
+        },
+        "dev-sec-019": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-16",
+          "due": "2026-11-17",
+          "c": 0
         }
       },
-      "day": null,
-      "lastMock": null,
       "log": [
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-062",
           "ok": 1,
-          "q": "dev-app-062"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-prompt-021",
           "ok": 1,
-          "q": "dev-prompt-021"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-model-022",
           "ok": 1,
-          "q": "dev-model-022"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-agent-003",
           "ok": 0,
-          "q": "dev-agent-003"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-006",
           "ok": 1,
-          "q": "dev-app-006"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-044",
           "ok": 1,
-          "q": "dev-app-044"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-prompt-003",
           "ok": 0,
-          "q": "dev-prompt-003"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-050",
           "ok": 1,
-          "q": "dev-app-050"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-model-026",
           "ok": 1,
-          "q": "dev-model-026"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-agent-027",
           "ok": 1,
-          "q": "dev-agent-027"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-010",
           "ok": 1,
-          "q": "dev-app-010"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-prompt-001",
           "ok": 1,
-          "q": "dev-prompt-001"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-agent-015",
           "ok": 0,
-          "q": "dev-agent-015"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-model-030",
           "ok": 1,
-          "q": "dev-model-030"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-040",
           "ok": 1,
-          "q": "dev-app-040"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-029",
           "ok": 1,
-          "q": "dev-app-029"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-agent-001",
           "ok": 1,
-          "q": "dev-agent-001"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-model-015",
           "ok": 1,
-          "q": "dev-model-015"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-prompt-013",
           "ok": 1,
-          "q": "dev-prompt-013"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-031",
           "ok": 1,
-          "q": "dev-app-031"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-058",
           "ok": 1,
-          "q": "dev-app-058"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-prompt-008",
           "ok": 1,
-          "q": "dev-prompt-008"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-agent-018",
           "ok": 1,
-          "q": "dev-agent-018"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-model-028",
           "ok": 1,
-          "q": "dev-model-028"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-055",
           "ok": 0,
-          "q": "dev-app-055"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-model-007",
           "ok": 1,
-          "q": "dev-model-007"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-prompt-020",
           "ok": 1,
-          "q": "dev-prompt-020"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-028",
           "ok": 1,
-          "q": "dev-app-028"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-agent-007",
           "ok": 1,
-          "q": "dev-agent-007"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-025",
           "ok": 1,
-          "q": "dev-app-025"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-model-001",
           "ok": 1,
-          "q": "dev-model-001"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-agent-019",
           "ok": 1,
-          "q": "dev-agent-019"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-012",
           "ok": 1,
-          "q": "dev-app-012"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-prompt-022",
           "ok": 1,
-          "q": "dev-prompt-022"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-054",
           "ok": 1,
-          "q": "dev-app-054"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-047",
           "ok": 1,
-          "q": "dev-app-047"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-model-011",
           "ok": 1,
-          "q": "dev-model-011"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-agent-009",
           "ok": 1,
-          "q": "dev-agent-009"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-prompt-017",
           "ok": 1,
-          "q": "dev-prompt-017"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-017",
           "ok": 1,
-          "q": "dev-app-017"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-007",
           "ok": 1,
-          "q": "dev-app-007"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-019",
           "ok": 1,
-          "q": "dev-app-019"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-agent-012",
           "ok": 1,
-          "q": "dev-agent-012"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-model-016",
           "ok": 1,
-          "q": "dev-model-016"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-prompt-019",
           "ok": 1,
-          "q": "dev-prompt-019"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-059",
           "ok": 1,
-          "q": "dev-app-059"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-model-019",
           "ok": 1,
-          "q": "dev-model-019"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-agent-011",
           "ok": 1,
-          "q": "dev-agent-011"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-046",
           "ok": 1,
-          "q": "dev-app-046"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-prompt-004",
           "ok": 1,
-          "q": "dev-prompt-004"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-prompt-014",
           "ok": 1,
-          "q": "dev-prompt-014"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-033",
           "ok": 1,
-          "q": "dev-app-033"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-app-014",
           "ok": 1,
-          "q": "dev-app-014"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-agent-008",
           "ok": 1,
-          "q": "dev-agent-008"
+          "m": "space"
         },
         {
           "d": "2026-11-15",
-          "m": "space",
+          "q": "dev-model-024",
           "ok": 1,
-          "q": "dev-model-024"
+          "m": "space"
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-agent-024",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-model-004",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-prompt-012",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-065",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-15",
+          "q": "dev-app-045",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-16",
+          "q": "dev-app-042",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-16",
+          "q": "dev-app-024",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-16",
+          "q": "dev-model-023",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-16",
+          "q": "dev-agent-002",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-16",
+          "q": "dev-prompt-007",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-16",
+          "q": "dev-eval-001",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-16",
+          "q": "dev-sec-019",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-17",
+          "q": "dev-app-038",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "dev-prompt-002",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "dev-agent-010",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "dev-model-032",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "dev-app-043",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-18",
+          "q": "dev-agent-031",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-18",
+          "q": "dev-model-027",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-18",
+          "q": "dev-prompt-005",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-18",
+          "q": "dev-app-051",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-18",
+          "q": "dev-app-021",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-18",
+          "q": "dev-model-020",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-18",
+          "q": "dev-app-016",
+          "ok": 0,
+          "m": "space",
+          "c": 1
         }
       ],
+      "mocks": [],
       "mock": null,
-      "mocks": []
+      "lastMock": null,
+      "day": null
+    },
+    "architect": {
+      "answers": {},
+      "log": [],
+      "mocks": [],
+      "mock": null,
+      "lastMock": null,
+      "day": null
+    },
+    "architect-pro": {
+      "answers": {},
+      "log": [],
+      "mocks": [],
+      "mock": null,
+      "lastMock": null,
+      "day": null
+    },
+    "associate": {
+      "answers": {
+        "asc-cfg-005": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 1
+        },
+        "asc-cfg-006": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 0
+        },
+        "asc-eval-002": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-eval-003": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-eval-009": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 1
+        },
+        "asc-eval-025": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-eval-026": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-gov-009": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 0
+        },
+        "asc-gov-016": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 0
+        },
+        "asc-prod-003": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 1
+        },
+        "asc-prod-007": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-trb-005": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-trb-010": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-wf-008": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-wf-020": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 0
+        }
+      },
+      "log": [
+        {
+          "d": "2026-11-17",
+          "q": "asc-prod-003",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-cfg-006",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-eval-026",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-prod-007",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-wf-020",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-wf-008",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-gov-009",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-trb-005",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-eval-009",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-gov-016",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-eval-025",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-cfg-005",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-trb-010",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-eval-002",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-eval-003",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        }
+      ],
+      "mocks": [],
+      "mock": null,
+      "lastMock": null,
+      "day": null
     }
   },
   "sessions": {
+    "developer": [
+      {
+        "id": 1,
+        "status": "completed",
+        "createdAt": "2026-11-14T13:14:21.526Z",
+        "completedAt": "2026-11-14T23:41:50.062Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 4
+      },
+      {
+        "id": 3,
+        "status": "completed",
+        "createdAt": "2026-11-14T23:45:42.112Z",
+        "completedAt": "2026-11-14T23:58:13.156Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 4
+      },
+      {
+        "id": 4,
+        "status": "completed",
+        "createdAt": "2026-11-14T23:59:49.554Z",
+        "completedAt": "2026-11-15T04:47:35.501Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 4
+      },
+      {
+        "id": 5,
+        "status": "completed",
+        "createdAt": "2026-11-15T04:47:50.113Z",
+        "completedAt": "2026-11-15T05:26:52.034Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 6,
+        "status": "completed",
+        "createdAt": "2026-11-15T05:27:08.202Z",
+        "completedAt": "2026-11-15T06:12:06.498Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 4
+      },
+      {
+        "id": 7,
+        "status": "completed",
+        "createdAt": "2026-11-15T06:31:39.012Z",
+        "completedAt": "2026-11-15T06:34:21.314Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 8,
+        "status": "completed",
+        "createdAt": "2026-11-15T06:35:01.091Z",
+        "completedAt": "2026-11-15T06:37:31.455Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 9,
+        "status": "completed",
+        "createdAt": "2026-11-15T06:37:40.093Z",
+        "completedAt": "2026-11-15T06:41:54.945Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 10,
+        "status": "completed",
+        "createdAt": "2026-11-15T06:43:45.404Z",
+        "completedAt": "2026-11-15T06:50:58.648Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 11,
+        "status": "completed",
+        "createdAt": "2026-11-15T07:15:11.019Z",
+        "completedAt": "2026-11-15T07:41:39.154Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 12,
+        "status": "completed",
+        "createdAt": "2026-11-15T07:42:29.372Z",
+        "completedAt": "2026-11-15T07:58:09.658Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 13,
+        "status": "completed",
+        "createdAt": "2026-11-15T13:21:55.149Z",
+        "completedAt": "2026-11-15T13:25:13.058Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 14,
+        "status": "completed",
+        "createdAt": "2026-11-15T23:52:48.943Z",
+        "completedAt": "2026-11-16T00:06:09.028Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 15,
+        "status": "in_progress",
+        "createdAt": "2026-11-16T00:06:33.969Z",
+        "completedAt": null,
+        "totalQuestions": 2,
+        "answered": 2,
+        "correct": 1
+      },
+      {
+        "id": 16,
+        "status": "completed",
+        "createdAt": "2026-11-16T23:33:13.447Z",
+        "completedAt": "2026-11-16T23:37:48.554Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 4
+      },
+      {
+        "id": 18,
+        "status": "completed",
+        "createdAt": "2026-11-17T23:29:26.555Z",
+        "completedAt": "2026-11-17T23:33:39.039Z",
+        "totalQuestions": 5,
+        "answered": 5,
+        "correct": 5
+      },
+      {
+        "id": 19,
+        "status": "in_progress",
+        "createdAt": "2026-11-17T23:33:58.888Z",
+        "completedAt": null,
+        "totalQuestions": 5,
+        "answered": 2,
+        "correct": 1
+      }
+    ],
     "architect": [
       {
-        "answered": 0,
-        "completedAt": null,
-        "correct": 0,
-        "createdAt": "2026-11-14T13:18:13.820Z",
         "id": 2,
         "status": "in_progress",
-        "totalQuestions": 5
+        "createdAt": "2026-11-14T13:18:13.820Z",
+        "completedAt": null,
+        "totalQuestions": 5,
+        "answered": 0,
+        "correct": 0
       }
     ],
     "architect-pro": [],
-    "associate": [],
-    "developer": [
+    "associate": [
       {
-        "answered": 5,
-        "completedAt": "2026-11-14T23:41:50.062Z",
-        "correct": 4,
-        "createdAt": "2026-11-14T13:14:21.526Z",
-        "id": 1,
+        "id": 17,
         "status": "completed",
-        "totalQuestions": 5
-      },
-      {
-        "answered": 5,
-        "completedAt": "2026-11-14T23:58:13.156Z",
-        "correct": 4,
-        "createdAt": "2026-11-14T23:45:42.112Z",
-        "id": 3,
-        "status": "completed",
-        "totalQuestions": 5
-      },
-      {
-        "answered": 5,
-        "completedAt": "2026-11-15T04:47:35.501Z",
-        "correct": 4,
-        "createdAt": "2026-11-14T23:59:49.554Z",
-        "id": 4,
-        "status": "completed",
-        "totalQuestions": 5
-      },
-      {
-        "answered": 5,
-        "completedAt": "2026-11-15T05:26:52.034Z",
-        "correct": 5,
-        "createdAt": "2026-11-15T04:47:50.113Z",
-        "id": 5,
-        "status": "completed",
-        "totalQuestions": 5
-      },
-      {
-        "answered": 5,
-        "completedAt": "2026-11-15T06:12:06.498Z",
-        "correct": 4,
-        "createdAt": "2026-11-15T05:27:08.202Z",
-        "id": 6,
-        "status": "completed",
-        "totalQuestions": 5
-      },
-      {
-        "answered": 5,
-        "completedAt": "2026-11-15T06:34:21.314Z",
-        "correct": 5,
-        "createdAt": "2026-11-15T06:31:39.012Z",
-        "id": 7,
-        "status": "completed",
-        "totalQuestions": 5
-      },
-      {
-        "answered": 5,
-        "completedAt": "2026-11-15T06:37:31.455Z",
-        "correct": 5,
-        "createdAt": "2026-11-15T06:35:01.091Z",
-        "id": 8,
-        "status": "completed",
-        "totalQuestions": 5
-      },
-      {
-        "answered": 5,
-        "completedAt": "2026-11-15T06:41:54.945Z",
-        "correct": 5,
-        "createdAt": "2026-11-15T06:37:40.093Z",
-        "id": 9,
-        "status": "completed",
-        "totalQuestions": 5
-      },
-      {
-        "answered": 5,
-        "completedAt": "2026-11-15T06:50:58.648Z",
-        "correct": 5,
-        "createdAt": "2026-11-15T06:43:45.404Z",
-        "id": 10,
-        "status": "completed",
-        "totalQuestions": 5
-      },
-      {
-        "answered": 5,
-        "completedAt": "2026-11-15T07:41:39.154Z",
-        "correct": 5,
-        "createdAt": "2026-11-15T07:15:11.019Z",
-        "id": 11,
-        "status": "completed",
-        "totalQuestions": 5
-      },
-      {
-        "answered": 5,
-        "completedAt": "2026-11-15T07:58:09.658Z",
-        "correct": 5,
-        "createdAt": "2026-11-15T07:42:29.372Z",
-        "id": 12,
-        "status": "completed",
-        "totalQuestions": 5
+        "createdAt": "2026-11-17T09:32:15.180Z",
+        "completedAt": "2026-11-17T15:12:32.290Z",
+        "totalQuestions": 16,
+        "answered": 15,
+        "correct": 11
       }
     ]
   }
