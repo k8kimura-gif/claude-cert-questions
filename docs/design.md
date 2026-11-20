@@ -43,6 +43,7 @@ claude-cert-questions/
 ├── exams/
 │   ├── developer.json        # 試験定義: ドメイン、配点、問題数、制限時間
 │   └── architect.json
+├── topics/<資格>.json         # 問題が参照するトピック(公式資料の概要)
 ├── questions/
 │   ├── developer/<domain>.json
 │   └── architect/
@@ -70,9 +71,28 @@ claude-cert-questions/
   "answer": ["b"],
   "explanation": "全体の解説",
   "refs": ["https://docs.claude.com/…"],
+  "topics": ["prompt-caching"],
   "difficulty": 2
 }
 ```
+
+`topics` は、問題が扱う話題について公式資料の内容をまとめた「トピック」の ID。トピックは `topics/<資格>.json` に資格ごとにまとめ、複数の問題から参照する(同じ概要を問題ごとに重複させない)。
+
+```json
+{
+  "id": "prompt-caching",
+  "title": "プロンプトキャッシュ",
+  "summary": "公式資料の概要(300〜600字)",
+  "points": ["押さえるべき要点を 3〜8 個"],
+  "sources": [{ "url": "https://…", "title": "ページ名" }],
+  "checked": "2026-11-20"
+}
+```
+
+- トピックの概要と要点には、公式資料に書いてあることだけを書く。推測や一般論は書かない。`checked` は出典を読んで確かめた日。
+- 解説(`explanation`)は「正解の根拠(公式資料の記述)」と「見分け方(誤答との違い)」の 2 段で書く。
+- アプリは回答後に、解説、関連トピック(開閉式)、参照先の順に表示する。深掘り用のプロンプトにもトピックの概要を含める。
+- 現在トピックがあるのは CCAO-F の「設定とナレッジ管理」と CCDV-F の「Tools and MCPs」(試作)。`topics` は省略可能で、ない問題は従来どおり表示する。
 
 - `type` は `single` / `multi`。`multi` は「2つ選べ」のように個数を問題文に含める。
 - `cert` を問題側に持たせ、読み込み時にモードと一致しないものは弾く。2資格の問題が混ざらないことをデータとコードの両方で保証する。

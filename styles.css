@@ -82,6 +82,14 @@ textarea { width: 100%; min-height: 120px; font-size: 12px; font-family: ui-mono
 .verdict.ok { color: var(--ok); }
 .verdict.ng { color: var(--ng); }
 .explain { white-space: pre-wrap; }
+.topics { margin: 12px 0; }
+.topic { border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; margin: 8px 0; }
+.topic summary { cursor: pointer; font-weight: 600; }
+.topic[open] summary { margin-bottom: 6px; }
+.topic p, .topic li { font-size: 15px; }
+.topic ul { padding-left: 1.2em; margin: 6px 0; }
+.topic li { margin: 4px 0; }
+.small { font-size: 13px; }
 .deep { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
 .deep textarea { font-family: inherit; font-size: 13px; min-height: 180px; }
 .refs a { color: var(--accent); word-break: break-all; font-size: 14px; }

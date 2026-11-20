@@ -31,10 +31,14 @@
   "answer": [
    "b"
   ],
-  "explanation": "プロジェクトは、独自のチャット履歴とナレッジベースを持つ独立した作業スペースである。ナレッジに入れた資料はそのプロジェクトのすべてのチャットで文脈として使われ、プロジェクト指示は口調や役割などを全チャットに一貫して適用する。",
+  "explanation": "正解は b です。プロジェクトのナレッジベースに追加した資料は、そのプロジェクト内のすべてのチャットで背景情報として使われます。プロジェクト指示は、口調や役割などを、そのプロジェクト内のすべてのチャットに適用します。「資料を毎回貼り直さない」と「同じトーンで書く」という 2 つの要件を、プロジェクト 1 つで満たせます。\n\n見分け方: 「その作業のときだけ、毎回同じ資料と指示を使いたい」はプロジェクトの典型的な使い方です。毎回の添付(a)では手間が残ります。アカウント全体の指示(c)はすべての会話に適用されるため、提案文以外の会話にも影響します。プロジェクトの名前と説明(d)は Claude からは参照できないと、ヘルプセンターに明記されています。",
   "refs": [
    "https://support.claude.com/en/articles/9517075-what-are-projects",
    "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects"
+  ],
+  "topics": [
+   "projects",
+   "personalization"
   ]
  },
  {
@@ -69,10 +73,13 @@
   "answer": [
    "d"
   ],
-  "explanation": "RAG(検索拡張生成)はプロジェクトのナレッジが上限に近づくと自動で有効になり、全文を一度に読み込む代わりに関連箇所を検索して使う。設定は不要で、ナレッジが閾値を下回れば自動で元の処理に戻ることもある。有料プランが対象である。",
+  "explanation": "正解は d です。有料プランでは、プロジェクトのナレッジがコンテキストウィンドウの上限に近づくと、Claude が自動で RAG モードに切り替えます。RAG モードでは、ナレッジ全体を一度に読み込む代わりに、プロジェクトナレッジの検索ツールで必要な情報だけを取り出して回答に使い、容量は最大 10 倍に広がります。設定は不要で、ナレッジが閾値を下回れば元の方式に戻ることもあります。\n\n見分け方: RAG の問題では「自動」「設定不要」「容量が広がる」の 3 点が手がかりです。手動で有効にする(a)、古い文書から自動で削除する(b)、プロジェクトの機能が止まる(c)は、いずれもヘルプセンターの説明にありません。",
   "refs": [
    "https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects",
    "https://support.claude.com/en/articles/9517075-what-are-projects"
+  ],
+  "topics": [
+   "project-rag"
   ]
  },
  {
@@ -108,9 +115,12 @@
    "a",
    "c"
   ],
-  "explanation": "RAG が有効なプロジェクトでは、わかりやすいファイル名を付けること、関連する文書を同じプロジェクトにまとめること、質問で文書名を指定することが勧められている。また、関連する資料は最初から網羅的に入れるとよい。",
+  "explanation": "正解は a と c です。ヘルプセンターは RAG が有効なプロジェクトの使い方として、関連する資料を最初から網羅的に追加する、説明的なファイル名を付ける、関連する文書を同じプロジェクトにまとめる、質問で文書を名前で指定する、の 4 つを挙げています。分かりやすいファイル名は Claude が正しい情報を取り出す手がかりになり、文書名を指定すると検索の対象を絞り込めます。\n\n見分け方: RAG を使うかどうかは自動で決まり、対象の文書を手動で指定する設定はありません(b)。また、ヘルプセンターは資料を短く削ることではなく、関連する資料を網羅的に入れることを勧めています(d)。",
   "refs": [
    "https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects"
+  ],
+  "topics": [
+   "project-rag"
   ]
  },
  {
@@ -145,9 +155,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "プロジェクト内でも、チャット間のコンテキストは、プロジェクトのナレッジに追加しない限り共有されない。ずっと使わせたい前提は、ナレッジかプロジェクト指示に入れる。",
+  "explanation": "正解は a です。ヘルプセンターには、プロジェクト内でもチャット間の文脈は、プロジェクトのナレッジベースに追加しない限り共有されない、と書かれています。記憶をオフにしているこのユーザーが、チャット A で伝えた前提をチャット B でも確実に使わせるには、その情報をナレッジに追加します。プロジェクト指示に書く方法も、プロジェクト内のすべてのチャットに適用されるので有効です。\n\n見分け方: 「同じプロジェクトなら自動で共有される」(b)は、よくある誤解です。プロジェクトの説明欄(c)は Claude からは参照できません。チャットの名前で履歴を関連付ける仕組み(d)は説明されていません。なお、記憶がオンであれば各プロジェクトには独自の記憶がありますが、この問題の条件では使えません。",
   "refs": [
    "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects"
+  ],
+  "topics": [
+   "projects",
+   "memory"
   ]
  },
  {
@@ -182,9 +196,13 @@
   "answer": [
    "c"
   ],
-  "explanation": "Google ドライブコネクタでプロジェクトのファイルに追加できるのは非公開のプロジェクトだけで、共有プロジェクトではこの選択肢が無効になる。追加した Google ドキュメントはドライブと同期し、常に最新版が使われる。",
+  "explanation": "正解は c です。Google Drive のコネクタでプロジェクトのファイルに追加できるのは非公開のプロジェクトだけで、共有プロジェクトではこの選択肢が無効になります。また、チャットやプロジェクトに追加した Google ドキュメントは Google Drive と同期し、常に最新版が使われます。\n\n見分け方: 「共有プロジェクトでは Drive から追加できない」と「追加したドキュメントは同期する」の 2 点を押さえます。コピーとして取り込まれるので追加し直す(a)は、同期の説明と逆です。全員が Google ドライブに接続すれば共有プロジェクトでも追加できる(b)という説明はありません。ドキュメントは URL の貼り付けか最近のドキュメントの選択でプロジェクトにも追加できるので、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors"
+  ],
+  "topics": [
+   "google-workspace",
+   "projects"
   ]
  },
  {
@@ -219,9 +237,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "組織指示は Owner と Primary Owner が設定し、組織全員のすべての会話に適用される。個人の指示と直接矛盾する場合は組織の指示が優先され、組織の指示が触れない範囲では個人の指示が使われる。",
+  "explanation": "正解は b です。組織指示と個人の指示の両方がある場合は組織指示が優先され、直接矛盾するときは組織指示に従います。ヘルプセンターも、組織指示が「常にフォーマルな英語で」、個人の指示が「カジュアルな口調で」という例で、Claude はフォーマルに答えると説明しています。一方、組織指示が扱っていない事柄(この問題では箇条書き)には、個人の指示が引き続き適用されます。\n\n見分け方: 「矛盾する部分は組織指示が優先、触れていない部分は個人の指示が残る」という 2 段の関係です。個人の指示が優先(a)も、両方を無視(c)も誤りです。d は前半は正しいものの、組織指示を見たり編集したりできるのは Owner 以上だけで、一般のユーザーは確認できません。",
   "refs": [
    "https://support.claude.com/en/articles/14546867-set-organization-instructions"
+  ],
+  "topics": [
+   "org-instructions"
   ]
  },
  {
@@ -257,9 +278,12 @@
    "b",
    "d"
   ],
-  "explanation": "組織指示は簡潔で具体的に書き、全会話に一貫して適用したい内容に絞る。互いに矛盾する指示を避け、保存後は新しい会話で動作を確かめ、定期的に見直す。",
+  "explanation": "正解は b と d です。組織指示は組織の全員の毎回のメッセージに含まれるため、ヘルプセンターは簡潔で明確に書くことを勧めています。「プロフェッショナルに」のような曖昧な指示ではなく、「フォーマルな英語で答える。短縮形、俗語、絵文字は使わない」のように具体的に書きます。保存後は新しい会話を始め、いくつかの種類の質問で意図どおりに動くかを確かめます。\n\n見分け方: 上限の 3,000 文字近くまで詳しく書く(a)のは、簡潔にという方針に反します。安全上の制限を外す指示(c)は、組織指示では Claude の安全上のガイドラインやコンテンツポリシーを無効にできないため、従われません。",
   "refs": [
    "https://support.claude.com/en/articles/14546867-set-organization-instructions"
+  ],
+  "topics": [
+   "org-instructions"
   ]
  },
  {
@@ -294,10 +318,14 @@
   "answer": [
    "d"
   ],
-  "explanation": "アカウント全体に効かせたい設定にはプロフィール(Instructions for Claude)を、特定の作業の文脈や役割にはプロジェクト指示を使う。プロジェクト指示は、そのプロジェクト内のチャットにだけ適用される。",
+  "explanation": "正解は d です。プロジェクト指示はそのプロジェクト内のチャットにだけ適用されます。ヘルプセンターはプロジェクト指示の用途の 1 つとして、プロジェクト内で Claude が取るべき役割や視点を定めることを挙げています。「契約書レビューのプロジェクトでだけ、法務の確認担当者として振る舞う」という要件にそのまま合います。\n\n見分け方: 適用範囲で選びます。アカウント全体の指示(a)はすべての会話に、組織指示(b)は組織の全員のすべての会話に適用されるため、範囲が広すぎます。記憶(c)は、振る舞いを特定のプロジェクトに限定する仕組みではありません。",
   "refs": [
    "https://support.claude.com/en/articles/10185728-understanding-claude-s-personalization-features",
    "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects"
+  ],
+  "topics": [
+   "personalization",
+   "projects"
   ]
  },
  {
@@ -332,9 +360,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "スキルは、特定の作業を繰り返し同じやり方で行うための手順やリソースをまとめたフォルダで、Claude が関連性を判断して必要なときだけ読み込む。プロジェクトは常に読み込まれる背景知識、MCP は外部サービスへの接続であり、役割が異なる。",
+  "explanation": "正解は a です。スキルは、指示、スクリプト、リソースをまとめたフォルダで、特定の作業を繰り返し同じやり方で行えるようにします。Claude は使えるスキルを確認し、作業に関係するものだけを読み込みます(段階的な開示)。ヘルプセンターは、プロジェクトは常に読み込まれる静的な背景知識、スキルは必要なときに動的に有効になり Claude のどこでも使える手順、と対比しています。\n\n見分け方: 問題文の「プロジェクトに関係なく」「必要なときだけ読み込まれる」がスキルを示す言葉です。プロジェクトのナレッジ(b)はそのプロジェクト内だけで、常に読み込まれます。組織指示(c)は全員のすべての会話に適用されます。コネクタ(MCP)(d)は外部サービスへの接続で、作業の手順を教えるものではありません。",
   "refs": [
    "https://support.claude.com/en/articles/12512176-what-are-skills"
+  ],
+  "topics": [
+   "skills"
   ]
  },
  {
@@ -369,9 +400,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "skill.md は先頭の YAML フロントマターに name と description を持つ。description は何をするスキルか、いつ使うかを明確に書く欄で、Claude が呼び出しを判断するために使う。1 つのスキルは 1 つのワークフローに絞るとよい。",
+  "explanation": "正解は c です。skill.md は先頭の YAML フロントマターに、必須のメタデータである name と description を持ちます。description は、スキルが何をするか、いつ使うかを書く欄で、ヘルプセンターは Claude がスキルをいつ呼び出すかを判断するために使う重要な欄だと説明しています(200 文字以内)。メタデータは段階的な開示の 1 段目で、本文の Markdown は必要になったときに参照される 2 段目です。\n\n見分け方: 人が見分けるための名前は name(64 文字以内)の役割です(a)。本文が常にすべての会話に読み込まれるわけではありません(b)。description は必須で、省略できません(d)。スキルが期待どおりに呼び出されないときは、description を見直すことが勧められています。",
   "refs": [
    "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills"
+  ],
+  "topics": [
+   "skills"
   ]
  },
  {
@@ -406,9 +440,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "カスタムコネクタの接続は、すべての Claude クライアントで Anthropic のクラウドから行われる。VPN 内や非公開ネットワークのサーバーは、Anthropic の IP 範囲を許可し、標準の HTTPS ポート(443)で到達できる必要がある。",
+  "explanation": "正解は b です。カスタムコネクタでは、Claude はリモート MCP サーバーに、利用者の端末ではなく Anthropic のクラウドから接続します。これは claude.ai、Claude Desktop、Cowork、モバイルアプリのどれでも同じです。そのため、VPN の内側やファイアウォールで遮られたサーバーには、担当者の PC から届いても接続できません。ファイアウォールで Anthropic の IP アドレスを許可し、標準の HTTPS ポート(443)で到達できるようにします。\n\n見分け方: 「担当者の PC からは届く」がこの問題の罠です。Claude Desktop で追加し直しても、接続元は Anthropic のクラウドのままです(a)。443 以外のポートを指定した URL には接続できません(c)。Request headers は API キーなどの認証情報を送る設定で、ネットワークの到達性は変わりません(d)。",
   "refs": [
    "https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp"
+  ],
+  "topics": [
+   "custom-connectors"
   ]
  },
  {
@@ -443,10 +480,14 @@
   "answer": [
    "d"
   ],
-  "explanation": "Team と Enterprise では、Owner が組織でコネクタを有効にしたうえで、各ユーザーが自分で認証する。コネクタは接続先サービスの各人の権限を引き継ぐため、各人が見られない情報には Claude からも届かない。",
+  "explanation": "正解は d です。Team と Enterprise では、Owner か Primary Owner が組織でコネクタを有効にしても、誰かに自動でアクセスが与えられるわけではなく、各メンバーが個別に認証してから使います。メンバーは Customize > Connectors から接続して認証します。コネクタは接続先サービスでの各人の権限を引き継ぐため、本人が見られない情報には Claude からも届きません。\n\n見分け方: 組織での有効化は「使える状態にする」だけ、と覚えます(a は誤り)。Owner がメンバーに代わって認証する仕組みは説明されていません(b)。「+」メニューでの切り替えは、接続と認証を済ませたあとの手順です(c)。なお、管理者がまとめて認可する Enterprise-managed auth を使う場合は、メンバーの個別の認証は不要になります。",
   "refs": [
    "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities",
    "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors"
+  ],
+  "topics": [
+   "connectors",
+   "enterprise-managed-auth"
   ]
  },
  {
@@ -481,10 +522,14 @@
   "answer": [
    "c"
   ],
-  "explanation": "プロジェクトごとに独自の記憶があり、プロジェクト内では、そのプロジェクトの記憶とプロジェクト外の自分の記憶が使われ、他のプロジェクトの記憶は使われない。プロジェクトの記憶を完全に分けたいときは「Use account memory」をオフにする。",
+  "explanation": "正解は c です。各プロジェクトは独自の記憶を持ちます。プロジェクト内では、そのプロジェクトの記憶と、プロジェクト外のチャットから作られた自分の記憶が使われ、他のプロジェクトの記憶は使われません。プロジェクトの記憶を他と完全に分けたいときは、プロジェクトのページの Memory で「Use account memory」をオフにします。\n\n見分け方: 条件は「記憶は使いつつ、このプロジェクトだけ分けたい」です。シークレットチャット(a)はプロジェクトの外で始めるもので、記憶にも履歴にも残らないため、記憶を使うという条件に合いません。チャットを削除しても、そこから作られた記憶のエントリは削除されません(b)。組織全体で記憶をオフにする(d)と、全員の記憶が止まります。",
   "refs": [
    "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
    "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context"
+  ],
+  "topics": [
+   "memory",
+   "projects"
   ]
  },
  {
@@ -508,7 +553,7 @@
    {
     "id": "c",
     "text": "記憶を「一時停止」して、古い情報が使われないようにする",
-    "why": "一時停止しても、既存の記憶は保持されたまま、新しい記憶が作られなくなるだけで、古い情報は残る。"
+    "why": "一時停止(Pause memory)は既存の記憶を残したまま、記憶の利用と新しい記憶の作成を止める。記憶を使い続けたいという条件に合わず、古い役職の記述も残る。"
    },
    {
     "id": "d",
@@ -519,10 +564,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "記憶は設定画面の「Manage」からトピックごとに確認して編集・削除でき、変更はそれ以降のすべての会話に適用される。チャットで「これを忘れて/変更して」と伝える方法もある。",
+  "explanation": "正解は a です。記憶は Settings > Your Claude の「Manage」から確認でき、トピックごとに編集または削除できます。1 つのトピックを直すと、その変更は以降のすべての会話に反映されます。チャットで Claude に、覚えてほしいこと・変えてほしいこと・忘れてほしいことを伝えて更新することもできます。\n\n見分け方: 会話を削除しても、そこから作られた記憶のエントリは削除されません(b)。Pause memory は記憶の利用そのものを止めるため、記憶を使い続けたいという条件に合いません(c)。Owner は個人の記憶を見ることも編集することもできません(d)。",
   "refs": [
    "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
    "https://support.claude.com/en/articles/12123587-import-and-export-your-memory-from-claude"
+  ],
+  "topics": [
+   "memory"
   ]
  },
  {
@@ -557,9 +605,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Team と Enterprise では、Owner が Organization settings > Plugins & skills からスキルをアップロード(SKILL.md を含む .zip)または作成すると、組織の全員の Customize > Skills に配布されます。各ユーザーが同じスキルをアップロードする必要はありません。配布したスキルは既定で有効ですが、ユーザーは個別にオフにできます。",
+  "explanation": "正解は b です。Team と Enterprise では、Owner が Organization settings > Plugins & skills からスキルをアップロード(SKILL.md を含む .zip)または作成すると、すぐに組織の全員の Customize > Skills に配布されます。各ユーザーが同じスキルをアップロードする必要はありません。Owner が配布したスキルは既定で全員に有効になり、各ユーザーは個別にオフにできます。\n\n見分け方: 「全員に配布」「既定で有効」「各自でオフにできる(削除はできない)」の 3 点です。Owner が 1 人ずつアップロードする必要はありません(a)。組織指示はスキルを配布する仕組みではありません(c)。組織の設定からアップロードしたスキルについて、ヘルプセンターはユーザーが個別にオフにできると説明しています(d)。",
   "refs": [
    "https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization"
+  ],
+  "topics": [
+   "org-skills"
   ]
  },
  {
@@ -594,9 +645,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Organization settings > Plugins & skills からの配布は全員が対象です。Enterprise プランでは、スキルをプラグインにまとめ、そのプラグインをグループに割り当てることで、一部のユーザーにだけスキルを配れます。たとえばマーケティング部向けの 10 個のスキルを 1 つのプラグインにまとめて、マーケティングのグループに割り当てます。",
+  "explanation": "正解は b です。Organization settings > Plugins & skills から配布したスキルは、組織の全員が対象です。Enterprise プランでは、スキルをプラグインにまとめ、そのプラグインをグループに割り当てることで、そのグループのメンバーだけにスキルを配れます。ヘルプセンターも、マーケティング部向けの 10 個のスキルを 1 つのプラグインにまとめ、マーケティングのグループに割り当てる例を挙げています。\n\n見分け方: 全員に配って周知する(a)と、他の部署にも配られます。プロジェクトのナレッジに置いたファイルは、スキルとして配布されません(c)。description は Claude がいつスキルを使うかを判断する手がかりで、利用者を制限するアクセス制御ではありません(d)。",
   "refs": [
    "https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization"
+  ],
+  "topics": [
+   "org-skills"
   ]
  },
  {
@@ -631,9 +685,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "「User-created skills」をオフにすると、ユーザーは Claude でスキルを作ったり、スキルファイルをアップロードしたりできなくなります。組織が配布したスキルと Anthropic の組み込みスキルは引き続き有効にして使えます。この組織設定が主スイッチで、オフの間はカスタムロールの権限にかかわらず、ユーザーは自分のスキルを作れません。",
+  "explanation": "正解は a です。Policy タブで User-created skills をオフにすると、ユーザーは Claude でスキルを作ったり、スキルファイルをアップロードしたりできなくなります。一方、Owner が配布したスキルと Anthropic の組み込みスキルは、引き続き有効にして使えます。この組織の設定が主スイッチで、オフの間はカスタムロールの権限にかかわらず、ユーザーは自分のスキルを作成・アップロードできません。\n\n見分け方: 止まるのは「ユーザーによる作成とアップロード」だけです(b は誤り)。組織のライブラリへの公開は Publishing の設定で決まり、この設定とは別です(c)。カスタムロールの Create skills の権限は、組織の設定がオンのときに追加で必要になる条件で、組織の設定がオフなら権限があっても作れません(d)。",
   "refs": [
    "https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization"
+  ],
+  "topics": [
+   "org-skills"
   ]
  },
  {
@@ -668,9 +725,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Publishing の設定には 3 つあります。Requires review では社員がスキルやプラグインを提出し、Owner が 1 件ずつ承認してから公開されます(以後の版も確認を通ります)。Open では確認なしで公開され、Off では「Publish to org」ボタンが表示されず、Owner だけが直接追加します。",
+  "explanation": "正解は c です。Publishing の設定は 3 つあります。Requires review では、ユーザーがスキルやプラグインを提出し、Owner が 1 件ずつ承認してから公開されます。以後の版も同じ確認を通ります。Open では、提出されたものは確認なしで組織のライブラリに公開されます。Off では「Publish to org」ボタンが表示されず、Owner が直接追加することだけができます。\n\n見分け方: 「公開前に必ず Owner が確認する」のは Requires review です。Open(a)は公開後に Owner が取り除けても、事前の確認という要件を満たしません。Off(b)では、社員が提出して承認を受ける流れ自体がなくなります。User-created skills(d)は自分でスキルを作れるかどうかの設定で、公開の確認とは別の設定です。",
   "refs": [
    "https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization"
+  ],
+  "topics": [
+   "org-skills"
   ]
  },
  {
@@ -705,9 +765,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "既定モデルの選択肢は 2 つあります。「Use Anthropic’s recommended default」は、新しいモデルの公開に合わせて自動で更新される推奨モデルです。「Choose a specific model」は特定のモデルに固定され、新しいモデルが出ても変わりません。特定のモデルを選ぶ場合は、同じページの Model access で有効にしたモデルだけが選べます。",
+  "explanation": "正解は b です。Enterprise の Organization settings > Models で既定モデルを設定するときの選択肢は 2 つです。「Use Anthropic’s recommended default」は、新しいモデルの公開に合わせて自動で更新される Anthropic の推奨モデルです。「Choose a specific model」は特定のモデルに固定され、新しいモデルが出ても変わりません。\n\n見分け方: 「自動で追従」は recommended default です。a は選んだ時点では最新でも、以後は変わりません。Model access(c)は使えるモデルを制限する設定で、既定モデルの更新とは関係がありません。d は新しい会話を必ず既定のモデルで始めさせる設定で、既定モデルそのものを更新するものではありません。",
   "refs": [
    "https://support.claude.com/en/articles/15330088-set-a-default-model-for-your-organization"
+  ],
+  "topics": [
+   "org-model-settings"
   ]
  },
  {
@@ -742,9 +805,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "既定では、各ユーザーの次の会話は最後に使ったモデルで始まります。「Always start with the default model and effort level」をオンにすると、新しい会話はすべて組織の既定のモデルと effort で始まります。ユーザーは会話ごとに別のモデルを選ぶこともできます。",
+  "explanation": "正解は c です。既定では、各ユーザーの次の会話は最後に使ったモデルで始まります。そのため、一度 Opus 5.5 に切り替えた社員は、次の会話も Opus 5.5 で始まります。「Always start with the default model and effort level」をオンにすると、新しい会話は常に組織の既定のモデルと既定の effort で始まります。ユーザーは会話の中でモデルを変えられますが、次の会話は再び既定から始まります。\n\n見分け方: モデルを無効にする(a)と、必要なときにも使えなくなります。既定を変え直す(b)と各自の選択は一度置き換わりますが、その後に切り替えれば、再び最後の選択が引き継がれます。組織指示(d)は、モデルの選択を変える設定ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/15330088-set-a-default-model-for-your-organization"
+  ],
+  "topics": [
+   "org-model-settings"
   ]
  },
  {
@@ -779,10 +845,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "既定モデルは、組織全体の既定と、カスタムロールの既定の 2 つの階層で設定できます。カスタムロールの既定は、そのロールに割り当てられたメンバーに適用され、組織の既定より優先されます。ロールの既定に選べるのは、そのロールがアクセスを許可したモデルだけです。",
+  "explanation": "正解は b です。既定モデルは、組織全体の既定とカスタムロールの既定の 2 つの階層で設定できます。カスタムロールの既定は、そのロールに割り当てられたメンバーに適用され、組織の既定より優先されます。ロールの既定に選べるのは、そのロールがアクセスを許可したモデルだけです。\n\n見分け方: 「ロールの既定が組織の既定より優先」と覚えます。なお、ロールの設定が効くのはロールが「Custom」のメンバーだけで、User、Admin、Owner のメンバーには組織の既定が使われます。また、複数のロールで既定が異なる場合は、最も能力の高いモデルが既定になります。2 つの階層で異なると両方が無視される(c)、選択画面が出る(d)という説明はありません。",
   "refs": [
    "https://support.claude.com/en/articles/15330088-set-a-default-model-for-your-organization",
    "https://support.claude.com/en/articles/15694740-manage-model-access-for-your-organization"
+  ],
+  "topics": [
+   "org-model-settings"
   ]
  },
  {
@@ -818,9 +887,12 @@
    "a",
    "b"
   ],
-  "explanation": "モデルのアクセスと effort の上限は、組織とカスタムロールの 2 つの階層で決まり、組織の設定が上限になります。組織でモデルを無効にすると Owner や Admin を含む全員に影響し、ロールは組織で無効なモデルを許可できず、組織の上限を超える effort も許可できません。Haiku のモデルは常に全員が使え、無効にできません。",
+  "explanation": "正解は a と b です。モデルのアクセスと effort の上限は、組織とカスタムロールの 2 つの階層で決まり、組織の設定が上限になります。組織でモデルを無効にすると、Primary Owner、Owner、Admin、User を含む全員がそのモデルを使えなくなります。また、Haiku のモデルは常に全員が使え、無効にできません。メンバーが必ず使えるモデルを 1 つ残すためです。\n\n見分け方: ロールは、組織で有効なモデルの一部を許可するだけで、組織で無効なモデルを許可することはできません(c)。ロールの effort の上限も組織の上限を超えられず、組織の上限を下げると、それより高いロールの上限も引き下げられます(d)。",
   "refs": [
    "https://support.claude.com/en/articles/15694740-manage-model-access-for-your-organization"
+  ],
+  "topics": [
+   "org-model-settings"
   ]
  },
  {
@@ -855,9 +927,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "「Share projects」をオフにすると、ユーザーは新しいユーザーやグループにプロジェクトを共有できなくなります。すでに共有されたプロジェクトは共有されたままで、アクセスを持つ人はそのまま使えます。サブ設定の「Public projects」もオフになり、既存の公開プロジェクトは非公開になるため、公開だったことでアクセスできていた人はアクセスを失います。",
+  "explanation": "正解は b です。Share projects をオフにすると、新しいユーザーやグループにはプロジェクトを共有できなくなります。すでに共有されたプロジェクトは共有されたままで、アクセスを持つ人はそのまま使えます。同時にサブ設定の Public projects もオフになり、既存の公開プロジェクトは非公開になるため、公開だったことでアクセスできていた人はアクセスを失います。\n\n見分け方: 「既存の共有は残る」「公開は非公開になる」「新しい追加はできない」の 3 点です。すべての共有が解除されるわけではありません(a)。Share メニューは開けて「Project sharing is turned off by your administrator」と表示され、既存のアクセスの変更や削除はできます(c)。公開プロジェクトが残る(d)のは誤りです。なお、共有を再びオンにしても、非公開になったプロジェクトは非公開のままです。",
   "refs": [
    "https://support.claude.com/en/articles/9927533-control-project-sharing-for-your-organization"
+  ],
+  "topics": [
+   "project-sharing"
   ]
  },
  {
@@ -892,9 +967,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "「Share projects」のサブ設定である「Public projects」だけをオフにすると、既存の公開プロジェクトはすべて非公開になり、新しい公開プロジェクトは作れず、組織の全員への共有もできなくなります。一方で、特定のユーザーやグループへの共有は続けられ、すでに共有されたプロジェクトの設定もそのまま残ります。",
+  "explanation": "正解は c です。Public projects は Share projects のサブ設定です。Public projects だけをオフにすると、既存の公開プロジェクトはすべて非公開になり、新しい公開プロジェクトは作れず、組織の全員への共有もできなくなります。一方で、特定のユーザーやグループへの共有は続けられ、すでに共有されたプロジェクトの設定もそのまま残ります。\n\n見分け方: 「全社への公開だけを止める」なら Public projects、「共有そのものを止める」なら Share projects です。Share projects をオフにすると、特定のメンバーへの新しい共有もできなくなります(a)。各自に任せる(b)と、新しい公開プロジェクトの作成は止まりません。既存の公開プロジェクトは公開のまま残る(d)のではなく、非公開になります。",
   "refs": [
    "https://support.claude.com/en/articles/9927533-control-project-sharing-for-your-organization"
+  ],
+  "topics": [
+   "project-sharing"
   ]
  },
  {
@@ -929,9 +1007,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "非公開プロジェクトに招待するときの権限は 2 つです。「Can view」はプロジェクトの内容、ナレッジ、指示を見て、プロジェクト内でチャットできますが、編集はできません。「Can edit」は指示やナレッジを変更し、メンバー設定も更新できます。共有されるのはプロジェクトとナレッジで、自分のチャットは共有しない限り非公開のままです。",
+  "explanation": "正解は c です。非公開プロジェクトに招待するときの権限は 2 つです。「Can view」はプロジェクトの内容、ナレッジ、指示を見て、プロジェクト内でチャットできますが、編集はできません。「Can edit」は指示やナレッジを変更し、メンバー設定も更新できます。共有されるのはプロジェクトとナレッジベースで、自分のチャットは自分で共有しない限り非公開のままです。\n\n見分け方: 「チャットはしてほしいが、指示やナレッジは変更させたくない」は Can view です。Can edit(a)では変更できてしまいます。公開(b)にすると組織の全員が使えるようになり、5 人に限るという要件に合いません。Can view のメンバーもプロジェクト内でチャットできます(d)。",
   "refs": [
    "https://support.claude.com/en/articles/9519189-manage-project-visibility-and-sharing"
+  ],
+  "topics": [
+   "project-sharing"
   ]
  },
  {
@@ -966,9 +1047,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Settings > Your Claude(古い画面では Account)の Instructions は、アカウント全体の設定で、すべての会話に適用されます。特定のプロジェクトだけの背景や手順はプロジェクトの指示に、回答の形式や伝え方をその場で切り替えたい場合はスキルに置く、と使い分けます。",
+  "explanation": "正解は b です。Settings > Your Claude(古い画面では Account)の Instructions(古い画面では Instructions for Claude)は、アカウント全体の設定です。ここに書いた指示は、その人のすべての会話に適用されます。ヘルプセンターは、すべてのやり取りに効かせたい設定はプロフィールの指示に、特定のプロジェクトの指針や文脈はプロジェクト指示に書く、という使い分けを示しています。\n\n見分け方: 「プロジェクトに関係なく、すべての会話」はアカウント全体の指示です。プロジェクト指示(a)は、そのプロジェクト内のチャットだけに適用されます。毎回貼り付ける(c)こともできますが、手間が残ります。チャットの共有リンク(d)は、会話を他の人に見せる機能です。",
   "refs": [
    "https://support.claude.com/en/articles/10185728-understanding-claude-s-personalization-features"
+  ],
+  "topics": [
+   "personalization"
   ]
  },
  {
@@ -1003,9 +1087,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Enterprise-managed auth では、各人が個々にコネクタを認証する代わりに、管理者がコネクタのアクセスを一元的に用意します。組織で有効にしたコネクタは、メンバーの最初のログイン時から自動で使えます。IdP-managed では、ID プロバイダーでプロビジョニングを解除すると、コネクタへのアクセスも同時に外れます。ロールごとにどのコネクタを使わせるかも選べます。",
+  "explanation": "正解は c です。Enterprise-managed auth では、各人がコネクタを個別に認証する代わりに、管理者がコネクタを組織として一度認可します。組織で有効にしたコネクタは、メンバーが最初にログインした時点から自動で使えます。識別の方法のうち IdP-managed では、ID プロバイダーがユーザーをコネクタにサインインさせ、ID プロバイダーでプロビジョニングを解除すると、コネクタへのアクセスも同時に外れます。どのロールにどのコネクタを与えるかも選べます。\n\n見分け方: 「個別の認証をなくす」と「IdP での無効化に連動して止める」の 2 つの条件を両方満たすのは c だけです。各自に認証と解除を任せる方法(a)は、どちらの条件も満たしません。組織指示(b)やプロジェクトのナレッジ(d)は、コネクタのアクセスを制御する仕組みではありません。",
   "refs": [
    "https://support.claude.com/en/articles/15537633-auto-connect-your-organization-s-apps-to-claude"
+  ],
+  "topics": [
+   "enterprise-managed-auth"
   ]
  },
  {
@@ -1040,9 +1127,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "組織でスキルを配布する前に、Organization settings > Plugins & skills の Policy タブで、Cloud code execution and file creation と Skills の両方がオンになっているかを確認します。スキルはコード実行とファイル作成の機能を使うためです。",
+  "explanation": "正解は a です。組織でスキルを配布する前に、Organization settings > Plugins & skills の Policy タブで、Cloud code execution and file creation と Skills の両方がオンになっているかを確認します。スキルはコード実行がないと動かないため、コード実行が無効だとスキルは使えません。個人でスキルを使う場合も、コード実行を有効にしておく必要があります。\n\n見分け方: 「スキルの前提はコード実行」と結び付けて覚えます。シートの種類(b)、組織指示の文字数(c)、メモリの設定(d)は、ヘルプセンターが挙げる前提条件にはありません。",
   "refs": [
    "https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization"
+  ],
+  "topics": [
+   "org-skills",
+   "skills"
   ]
  }
 ]

@@ -51,7 +51,7 @@ const emptyProgress = () => ({ answers: {}, log: [], mocks: [], mock: null, last
 
 // ---------- 状態 ----------
 const settings = load('settings', { cert: null, examDates: {} });
-const A = { cert: null, exam: null, qs: [], byId: {}, scenarios: {}, p: emptyProgress() };
+const A = { cert: null, exam: null, qs: [], byId: {}, scenarios: {}, topics: {}, p: emptyProgress() };
 let sess = null;      // 練習・今日の問題・復習のセッション(メモリ上のみ)
 let timerId = null;
 
@@ -69,11 +69,13 @@ async function loadCert(cert) {
   const exam = await getJson(`exams/${cert}.json`);
   const files = await Promise.all(exam.domains.map((d) => getJson(`questions/${cert}/${d.id}.json`, [])));
   const scen = exam.scenarioBased ? await getJson(`questions/${cert}/scenarios.json`, []) : [];
+  const topics = await getJson(`topics/${cert}.json`, []);
   A.cert = cert; A.exam = exam;
   // 別資格の問題が紛れ込んでも出題しない
   A.qs = files.flat().filter((q) => q.cert === cert && domainOf(q.domain));
   A.byId = Object.fromEntries(A.qs.map((q) => [q.id, q]));
   A.scenarios = Object.fromEntries(scen.map((s) => [s.id, s]));
+  A.topics = Object.fromEntries(topics.map((t) => [t.id, t]));
   A.p = { ...emptyProgress(), ...load('progress:' + cert, {}) };
   settings.cert = cert; saveSettings();
   document.documentElement.dataset.cert = cert;
@@ -239,11 +241,26 @@ function questionCard(q, st, onChange) {
           st.revealed && el('span', { class: 'why' }, `${right ? '正解。' : sel ? 'あなたの回答。' : ''}${c.why}`)));
     }));
 }
+const topicsOf = (q) => (q.topics || []).map((id) => A.topics[id]).filter(Boolean);
 function explanation(q, st) {
+  const ts = topicsOf(q);
   return el('div', { class: 'card' },
     el('strong', {}, '解説'), el('p', { class: 'explain' }, q.explanation),
+    ts.length > 0 && el('div', { class: 'topics' },
+      el('strong', {}, '関連トピック(公式資料の概要)'),
+      ts.map(topicView)),
+    el('strong', {}, '参照先'),
     el('div', { class: 'refs' }, q.refs.map((r) => el('div', {}, el('a', { href: r, target: '_blank', rel: 'noopener' }, r)))),
     st && deepDive(q, st));
+}
+// 問題が扱う話題について、公式資料の内容をまとめたもの。開閉できる
+function topicView(t) {
+  return el('details', { class: 'topic' },
+    el('summary', {}, t.title),
+    el('p', {}, t.summary),
+    t.points?.length > 0 && el('ul', {}, t.points.map((x) => el('li', {}, x))),
+    el('div', { class: 'refs' }, '出典: ', t.sources.map((s) => el('div', {}, el('a', { href: s.url, target: '_blank', rel: 'noopener' }, s.title)))),
+    t.checked && el('p', { class: 'muted small' }, `${t.checked} 時点の公式資料に基づく。仕様は変わるので、出典で最新の内容を確認すること。`));
 }
 
 // ---------- 深掘り用プロンプト ----------
@@ -282,6 +299,7 @@ function deepDivePrompt(q, st) {
     '',
     '問題集が挙げている参照先:',
     ...q.refs.map((r) => `- ${r}`),
+    ...topicsOf(q).flatMap((t) => ['', `問題集の関連トピック「${t.title}」の概要:`, t.summary, ...t.points.map((x) => `- ${x}`)]),
     '',
     '## 解説してほしいこと',
     `1. 正解(${list(q.answer)})が正しい理由を、公式資料の記述に基づいて説明してください。`,

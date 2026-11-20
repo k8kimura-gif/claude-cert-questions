@@ -1,0 +1,305 @@
+[
+ {
+  "id": "projects",
+  "title": "プロジェクト",
+  "summary": "プロジェクトは、独自のチャット履歴とナレッジベースを持つ独立した作業スペースです。無料プランを含むすべての利用者が使え、無料プランでは最大 5 個まで作れます。ナレッジベースに文書、テキスト、コードなどを追加すると、そのプロジェクト内のすべてのチャットで背景情報として使われます。プロジェクト指示(project instructions)には、よりフォーマルな口調にする、特定の役割や業界の視点で答える、といった Claude の振る舞いを書きます。プロジェクト指示は、そのプロジェクト内のすべてのチャットに適用されます。一方、プロジェクトの名前と説明は Claude からは参照できません。また、同じプロジェクト内でも、チャット間で文脈は共有されません。共有したい情報はナレッジベースに追加します。なお、ヘルプセンターには Claude Code から段階的に提供が始まった新しい版のプロジェクト(ベータ)の説明もありますが、この概要は現行版のプロジェクトについてのものです。",
+  "points": [
+   "ナレッジベースに追加した資料は、そのプロジェクトのすべてのチャットで使われる",
+   "プロジェクト指示は、そのプロジェクト内のチャットにだけ適用される",
+   "プロジェクトの名前と説明は Claude からは参照できない",
+   "チャット間の文脈は、ナレッジベースに追加しない限り共有されない",
+   "各プロジェクトは独自の記憶(メモリ)を持つ。他と完全に分けるには、プロジェクトのページで「Use account memory」をオフにする",
+   "有料プランでは、ナレッジがコンテキストウィンドウの上限に近づくと RAG が自動で有効になる",
+   "アーカイブしても共有の設定やメンバーは変わらない。アーカイブ中のプロジェクトは削除できず、先にアーカイブを解除する"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/9517075-what-are-projects",
+    "title": "What are projects?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
+    "title": "How can I create and manage projects?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "project-rag",
+  "title": "プロジェクトの RAG(検索拡張生成)",
+  "summary": "有料プラン(Pro、Max、Ultra、Team、Enterprise)では、プロジェクトのナレッジがコンテキストウィンドウの上限に近づくと、Claude が自動で RAG モードに切り替えます。以前は、コンテキストウィンドウに基づく容量の上限に達すると資料を追加できませんでしたが、RAG によって容量が最大 10 倍に広がり、上限を超えても追加を続けられます。RAG モードでは、ナレッジ全体を一度に読み込む代わりに、Claude がプロジェクトナレッジの検索ツールで、質問に答えるのに必要な情報だけを取り出して使います。設定は不要で、いつ RAG を使うかを利用者が制御することもできません。ナレッジが閾値を下回れば、文脈に読み込む方式に自動で戻ることがあります。ヘルプセンターは、応答の品質は文脈に読み込む方式と変わらないと説明しています。",
+  "points": [
+   "対象は有料プラン。自動で有効になり、手動で設定したり切り替えたりする方法はない",
+   "容量は最大 10 倍になる。RAG が有効なことは画面の表示で分かる",
+   "回答するときに、Claude がプロジェクトナレッジの検索ツールを使う様子が見える",
+   "勧められている使い方: 関連する資料を最初から網羅的に追加する、説明的なファイル名を付ける、関連する文書を同じプロジェクトにまとめる、質問で文書を名前で指定する",
+   "Web 検索、拡張思考、Research など、他の機能と一緒に使える"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects",
+    "title": "Retrieval augmented generation (RAG) for projects"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/9517075-what-are-projects",
+    "title": "What are projects?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "project-sharing",
+  "title": "プロジェクトの共有と組織の制御",
+  "summary": "Team と Enterprise では、プロジェクトを組織内で共有できます。公開範囲は 2 種類で、公開(Everyone at [組織名])は組織の全員が閲覧・利用でき、非公開(Only people invited)は招待したメンバーだけが使えます。作成後にどちらにも切り替えられます。非公開プロジェクトに招待するときの権限は 2 つで、「Can view」はプロジェクトの内容、ナレッジ、指示を見てプロジェクト内でチャットできますが、編集はできません。「Can edit」は指示やナレッジを変更し、メンバー設定も更新できます。共有されるのはプロジェクトとナレッジで、自分のチャットは自分で共有しない限り非公開のままです。管理側では、Owner と Primary Owner が Organization settings > Data and privacy の Sharing にある 2 つの設定を使います。「Share projects」は組織内での共有そのものを、そのサブ設定である「Public projects」は組織全員への公開を制御します。どちらも既定はオンです。",
+  "points": [
+   "Share projects をオフ: 新しいユーザーやグループに共有できなくなる。既存の共有とアクセスは残り、既存のアクセスの変更や削除はできる。Public projects も同時にオフになり、既存の公開プロジェクトは非公開になる",
+   "Public projects だけをオフ: 既存の公開プロジェクトはすべて非公開になり、新しい公開プロジェクトも作れない。特定のユーザーやグループへの共有は続けられる",
+   "共有を再びオンにしても、非公開になったプロジェクトは非公開のまま",
+   "Enterprise ではロールごとに共有の可否を設定でき、グループへの共有(ベータ)もできる",
+   "公開プロジェクトでも、各自のチャットは手動で共有しない限り他のメンバーからは見えない",
+   "アーカイブしても共有の設定は変わらない。アクセスを外すには共有設定でメンバーを削除する"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/9519189-manage-project-visibility-and-sharing",
+    "title": "Manage project visibility and sharing"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/9927533-control-project-sharing-for-your-organization",
+    "title": "Control project sharing for your organization"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/9517075-what-are-projects",
+    "title": "What are projects?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "personalization",
+  "title": "指示の使い分け(アカウント全体の指示・プロジェクト指示・スキル)",
+  "summary": "Claude の振る舞いを調整する機能は、適用範囲で使い分けます。アカウント全体の指示(Settings > Your Claude の Instructions。古い画面では Account の Instructions for Claude)は、その人のすべての会話に適用されます。好みの進め方、よく使う用語、よくある場面、全般的な伝え方などを書きます。プロジェクト指示は、そのプロジェクト内のチャットにだけ適用され、プロジェクト固有の文脈、ワークフローの指針、特定の作業の要件、プロジェクト内で Claude が取るべき役割や視点を定めるのに向きます。スキルは、口調や形式の調整、特定の作業のための専門的な能力など、必要なときに有効になる振る舞いを加えます。これらは単独でも組み合わせても使えます。組織の全員に適用したい指示には、Owner が設定する組織指示を使います。",
+  "points": [
+   "アカウント全体の指示: その人のすべての会話に適用される",
+   "プロジェクト指示: そのプロジェクト内のチャットだけに適用される。役割や視点の定義に向く",
+   "スキル: 作業に関係するときだけ読み込まれる手順や能力",
+   "組織指示: Owner が設定し、組織の全員のすべての会話に適用される(別のトピックを参照)"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/10185728-understanding-claude-s-personalization-features",
+    "title": "Understanding Claude's personalization features"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "org-instructions",
+  "title": "組織指示(organization instructions)",
+  "summary": "組織指示は、Team と Enterprise の Owner と Primary Owner が設定し、組織の全員のすべての会話で Claude が従う指示です。伝え方の基準、書式の要件、コンプライアンス上の指針、業務領域の前提など、どこでも一貫して適用したい内容に使います。設定は Organization settings > Organization and access の Organization instructions で行い、最大 3,000 文字です。反映には最大 1 時間かかることがあります。個人の指示と両方がある場合は組織指示が優先され、直接矛盾するときは組織指示に従います。組織指示が扱っていない事柄には、個人の指示が引き続き適用されます。ただし、この優先順位はプロンプトとしての指示に基づくもので、直接矛盾するまれなケースでは動作が変わりうるため、テストで確かめることが勧められています。",
+  "points": [
+   "組織指示を見て編集できるのは Owner 以上だけ。個人の指示はその本人だけが見て編集できる",
+   "組織指示は全員の毎回のメッセージに含まれるため、簡潔で明確に書く",
+   "「プロフェッショナルに」のような曖昧な指示ではなく、具体的に書く",
+   "全会話に一貫して適用したい振る舞いに絞り、指示同士の矛盾を避ける",
+   "組織指示で Claude の安全上のガイドラインやコンテンツポリシーを無効にすることはできない",
+   "保存後は新しい会話で、いくつかの種類の質問を試して確認する。定期的に見直す"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/14546867-set-organization-instructions",
+    "title": "Set organization instructions"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "skills",
+  "title": "スキル(Skills)の仕組みと作り方",
+  "summary": "スキルは、指示、スクリプト、リソースをまとめたフォルダで、Claude が専門的な作業の精度を上げるために動的に読み込みます。ブランドガイドラインに沿った文書作成や、組織固有の手順でのデータ分析など、特定の作業を繰り返し同じやり方で行えるようにします。Free から Enterprise までのプランで使え、コード実行を有効にしておく必要があります。スキルは段階的な開示(progressive disclosure)で動きます。Claude は使えるスキルを確認して関連するものを判断し、作業に必要な情報だけを読み込むため、コンテキストウィンドウを圧迫しにくくなります。自作するときは、スキルのフォルダに skill.md を置き、先頭の YAML フロントマターに必須のメタデータである name(64 文字以内)と description(200 文字以内)を書きます。description は、何をするスキルで、いつ使うかを書く欄で、Claude が呼び出すかどうかを判断する材料になります。メタデータが段階的な開示の 1 段目で、本文の Markdown は必要になったときに参照される 2 段目です。",
+  "points": [
+   "スキルとプロジェクト: プロジェクトは常に読み込まれる静的な背景知識。スキルは必要なときに動的に有効になり、Claude のどこでも使える手順",
+   "スキルと MCP: MCP は外部のサービスやデータへの接続。スキルは作業の進め方の知識。組み合わせて使える",
+   "スキルとカスタム指示: カスタム指示はすべての会話に広く適用される。スキルは関係するときだけ読み込まれる",
+   "良いスキルは、特定の繰り返し作業に絞り、明確な指示と必要に応じた例を持ち、いつ使うかを定めている",
+   "補足資料は REFERENCE.md などの別ファイルに置いて skill.md から参照できる。実行可能なスクリプトも添付できる",
+   "アップロードは、スキルのフォルダを最上位に含む ZIP で行う。アップロード後は Customize > Skills で有効にし、呼び出されるかを複数のプロンプトで試し、必要なら description を直す",
+   "スクリプトに API キーやパスワードを直接書かない。ダウンロードしたスキルは有効にする前に中身を確認する"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/12512176-what-are-skills",
+    "title": "What are skills?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills",
+    "title": "How to create custom skills"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "org-skills",
+  "title": "組織でのスキルの配布と管理",
+  "summary": "Team と Enterprise では、Owner が Organization settings > Plugins & skills からスキルをアップロード(SKILL.md を含む .zip)または作成すると、すぐに組織の全員の Customize > Skills に配布されます。各自が同じスキルをアップロードする必要はありません。Owner が配布したスキルは既定で全員に有効になり、各ユーザーは個別にオフにできます(削除はできません)。前提として、Policy タブで Cloud code execution and file creation と Skills の両方がオンになっている必要があります。スキルはコード実行がないと動かないためです。Enterprise では、スキルをプラグインにまとめてグループに割り当てると、そのグループのメンバーだけにスキルを配れます。Policy タブでは、ユーザーが自分でスキルを作れるか(User-created skills)と、ユーザーが作ったスキルやプラグインを組織のライブラリに公開する方式(Publishing)も制御できます。",
+  "points": [
+   "User-created skills をオフ: ユーザーは自分でスキルを作成・アップロードできない。配布済みのスキルと Anthropic の組み込みスキルは引き続き使える。この組織の設定が主スイッチで、オフの間はロールにかかわらず作れない",
+   "Publishing の設定: Requires review(提出ごとに Owner が承認してから公開。以後の版も確認を通る)、Open(確認なしで公開)、Off(「Publish to org」ボタンが表示されない。Owner は直接追加できる)",
+   "Publishing の初期値はプランや既存の設定によって異なる",
+   "配布したスキルは、Claude アカウントでサインインした Claude Code にも読み込まれる",
+   "Enterprise ではスキルとプラグインのセキュリティスキャンを有効にでき、悪意のある内容を含むものはブロックされる",
+   "ベストプラクティス: 配布前に自分のアカウントで試す、特定のチーム向けのスキルはプラグインにまとめてグループに割り当てる、description を正確に書く"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization",
+    "title": "Provision and manage skills for your organization"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/12512176-what-are-skills",
+    "title": "What are skills?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "memory",
+  "title": "記憶(メモリ)と過去のチャットの検索",
+  "summary": "Claude は、過去のチャットを検索して参照することと、チャットから記憶を作って新しい会話に引き継ぐことができます。過去のチャットの検索は有料プランで使え、RAG で行われ、会話の中ではツール呼び出しとして表示されます。記憶は Free、Pro、Max、Ultra では既定でオンで、Team と Enterprise では組織で使えるかどうかを Owner が決めます。新しい記憶の仕組みでは、Claude は会話が終わってから要約するのではなく、会話中に個別のトピックとして記憶を保存します。保存された記憶は Settings > Your Claude の「Manage」からトピックごとに確認・編集・削除でき、変更は以降のすべての会話に反映されます。チャットで Claude に、覚えること・変えること・忘れることを伝えて更新することもできます。各プロジェクトは独自の記憶を持ち、プロジェクト内では、そのプロジェクトの記憶とプロジェクト外の自分の記憶が使われ、他のプロジェクトの記憶は使われません。",
+  "points": [
+   "記憶をオフにするときの選択肢は 2 つ。Pause memory は既存の記憶を残したまま、記憶の利用と新しい記憶の作成を止める。Reset memory はプロジェクトの記憶を含むすべての記憶を完全に削除し、元に戻せない",
+   "1 つのチャットだけ記憶を使わないときは、最初のメッセージを送る前に「+」メニューで Memory をオフにする。そのチャットは履歴に残る",
+   "シークレット(incognito)チャットは、記憶にもチャット履歴にも保存されない",
+   "会話を削除しても、そこから作られた記憶のエントリは削除されない。記憶は個別に削除する",
+   "プロジェクトの記憶を完全に分けるには、プロジェクトのページで「Use account memory」をオフにする",
+   "健康や宗教などの機微な話題は既定では保存されない。政府発行の ID 番号や金融口座の番号などは、頼まれても保存されない",
+   "組織で記憶をオフにすると、全員で記憶の利用と保存が止まる(既存の記憶は削除されない)。Owner は個人の記憶を見ることも編集することもできない",
+   "他の AI サービスの記憶を取り込む機能と、Claude の記憶を書き出す方法がある(実験的な機能)"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
+    "title": "Use Claude's chat search and memory to build on previous context"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
+    "title": "How can I create and manage projects?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/12123587-import-and-export-your-memory-from-claude",
+    "title": "Import and export your memory from Claude"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "connectors",
+  "title": "コネクタ(Connectors)",
+  "summary": "コネクタは、Claude がアプリやサービスにアクセスしてデータを取得し、そのサービスの中で操作を行えるようにする仕組みです。Claude は接続先サービスでの各人の権限を引き継ぐため、元のシステムで本人が見られないファイルやチャンネル、レコードには、Claude からも届きません。ただし、共有の認証情報を使うカスタムコネクタは、その認証情報が届く範囲にアクセスします。コネクタは Connectors Directory から追加でき、MCP に対応した任意のサービスにはカスタムコネクタで接続できます。Team と Enterprise では、Owner か Primary Owner が Organization settings > Connectors でコネクタを組織に追加(「Add to your team」)してから、各メンバーが個別に認証して使います。組織で有効にしても、誰かに自動でアクセスが与えられるわけではありません。会話で使うときは、「+」メニューの Connectors で使いたいサービスをオンにします。",
+  "points": [
+   "組織での有効化は「使える状態にする」だけで、認証は各メンバーが行う(Enterprise-managed auth を使う場合を除く)",
+   "Owner は組織全体でコネクタの操作を制限できる(Always allow / Needs approval / Blocked)。元のシステムの権限より広げることはできない",
+   "Enterprise では、カスタムロールの設定と組織の設定のうち、厳しいほうが適用される",
+   "コネクタが 10 個以上有効なときは、Tool access を On demand にすると会話の余裕が増える",
+   "接続するのは信頼できる必要なサービスだけにし、使わなくなったものは切断する"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities",
+    "title": "Use connectors to extend Claude's capabilities"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "custom-connectors",
+  "title": "カスタムコネクタ(リモート MCP)",
+  "summary": "カスタムコネクタは、既存のリモート MCP サーバーや自分で作ったリモート MCP サーバーに Claude を接続する機能で、Free から Enterprise までのプランで使えます(Free は 1 個まで)。重要なのは接続元です。Claude はリモート MCP サーバーに、利用者の端末ではなく Anthropic のクラウドから接続します。これは claude.ai、Claude Desktop、Cowork、モバイルアプリのどれでも同じです。そのため、サーバーは Anthropic の IP 範囲から公開インターネット経由で到達できる必要があり、社内ネットワークや VPN の内側、ファイアウォールで遮られたサーバーには、自分の PC から届いても接続できません。非公開ネットワークのサーバーは、ファイアウォールで Anthropic の IP アドレスを許可します。また、標準の HTTPS ポート(443)で到達できる必要があり、別のポートを指定した URL には接続できません。",
+  "points": [
+   "Team では Owner と Primary Owner が組織に追加し、その後に各メンバーが接続して認証する",
+   "認証は OAuth が一般的。OAuth の代わりに、API キーなどの固定の認証情報を Request headers で送ることもできる。この場合、組織の全員が同じ認証情報でサービスに届く",
+   "Claude Desktop の claude_desktop_config.json で設定するローカル MCP サーバーは別の仕組みで、ローカルのネットワークを使う",
+   "Anthropic が検証していないサービスにつなぐ機能なので、信頼できる組織のサーバーだけに接続し、要求される権限を確認する",
+   "悪意のあるサーバーは、Claude に意図しない操作をさせる隠れた指示(プロンプトインジェクション)を含みうる。ツールの入出力に注意し、ツールの動作の変化を監視する",
+   "設定を変えるには、いったん削除して追加し直す"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp",
+    "title": "Get started with custom connectors using remote MCP"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities",
+    "title": "Use connectors to extend Claude's capabilities"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "google-workspace",
+  "title": "Google Workspace コネクタ",
+  "summary": "Gmail、Google Calendar、Google Drive のコネクタを使うと、メールの検索や送信、予定の管理、文書の読み込みや保存を会話の中で行えます。Team と Enterprise では、Owner か Primary Owner が組織で有効にしたあとに、各ユーザーが自分の Google アカウントで認証します。Claude は接続した Google アカウントのデータだけにアクセスし、Google Workspace での既存の権限を引き継ぎます。Google ドキュメントは、URL の貼り付けか最近のドキュメントからの選択で、チャットやプロジェクトに追加できます。追加したドキュメントは Google Drive と同期し、常に最新版が使われます。ただし、Drive からプロジェクトのファイルに追加できるのは非公開のプロジェクトだけで、共有プロジェクトではこの選択肢が無効になります。",
+  "points": [
+   "Drive のファイルを読むとき、Claude が取り出すのはテキストだけで、文書に埋め込まれた画像は処理されない",
+   "メールの送信・返信・転送などは、Auto モード以外では既定で毎回承認を求める",
+   "コネクタで取得したデータはチャットに結び付いて保存され、チャットを削除すれば消せる",
+   "組織で接続できないときは、Google Workspace の管理者が Claude を信頼できるアプリとして許可する必要がある"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors",
+    "title": "Use Google Workspace connectors"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "enterprise-managed-auth",
+  "title": "Enterprise-managed auth(コネクタの一括認可)",
+  "summary": "Enterprise-managed auth は、各人がコネクタを個別に認証する代わりに、管理者がコネクタのアクセスを組織としてまとめて用意する仕組みで、Team と Enterprise で使えます。管理者がコネクタを一度認可して組織で有効にすると、メンバーは最初にログインした時点から自動でそのコネクタを使えます。ユーザーの識別の方法は 2 つあります。IdP-managed(一般提供)は、Claude とコネクタでシングルサインオン(SSO)が有効になっていることを前提に、ID プロバイダー(IdP)がユーザーをコネクタにサインインさせます。Claude-issued(ベータ)は IdP や SSO を使わず、Claude がサインインしたユーザーをコネクタに伝え、メールアドレスで照合します。管理者は、どのコネクタを有効にするか、どのロールに与えるか、どの権限(スコープ)を要求させるかを決められます。",
+  "points": [
+   "IdP-managed では、IdP でプロビジョニングを解除すると、コネクタへのアクセスも同時に外れる",
+   "Claude-issued では、組織から外すと Claude はその人をサインインさせなくなるが、接続先サービス側のアカウントも別に削除する",
+   "ロールを選んで特定のチームで試験的に導入し、あとから対象を広げられる",
+   "ブラウザでのサインインと併用すると、管理された認可を先に試し、失敗したら個別のサインインを求める",
+   "対応するコネクタと IdP は限られている(IdP は現在 Okta)",
+   "メンバーは、組織が用意したもの以外に個人のコネクタを追加できる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/15537633-auto-connect-your-organization-s-apps-to-claude",
+    "title": "Auto-connect your organization's apps to Claude"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities",
+    "title": "Use connectors to extend Claude's capabilities"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "org-model-settings",
+  "title": "組織のモデル設定(既定モデルとモデルのアクセス管理)",
+  "summary": "Enterprise では、Organization settings > Models で、新しい会話が始まるモデル(既定モデル)と、メンバーが使えるモデル(Model access)を管理します。管理できるのは Primary Owner、Owner と、Identity & Access の権限を持つカスタムロールのメンバーです。既定モデルは、「Use Anthropic’s recommended default」(新しいモデルの公開に合わせて自動で更新される推奨モデル)か、「Choose a specific model」(新しいモデルが出ても変わらない固定のモデル)から選びます。既定では、各ユーザーの次の会話は最後に使ったモデルで始まります。「Always start with the default model and effort level」をオンにすると、新しい会話は常に既定のモデルと既定の effort で始まります。既定モデルとモデルのアクセスは、組織とカスタムロールの 2 つの階層で設定できます。",
+  "points": [
+   "カスタムロールの既定モデルは、そのロールのメンバーについて組織の既定より優先される。複数のロールで異なる場合は、最も能力の高いモデルが既定になる",
+   "モデルのアクセスは組織の設定が上限。組織で無効にしたモデルは Owner や Admin を含む全員が使えず、ロールで許可することもできない",
+   "effort の上限も組織の設定が上限で、ロールの上限は組織の上限を超えられない",
+   "Haiku のモデルは常に全員が使え、無効にできない",
+   "カスタムロールの設定が効くのは、ロールが「Custom」のメンバーだけ",
+   "特定のモデルを既定にするときは、Model access で有効にしたモデルからしか選べない",
+   "複数のロールに属するメンバーは、使えるモデルは足し合わせ、effort の上限は最も高いものになる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/15330088-set-a-default-model-for-your-organization",
+    "title": "Set a default model for your organization"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/15694740-manage-model-access-for-your-organization",
+    "title": "Manage model access for your organization"
+   }
+  ],
+  "checked": "2026-11-20"
+ }
+]

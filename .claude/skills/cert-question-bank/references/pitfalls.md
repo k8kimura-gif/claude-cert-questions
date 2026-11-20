@@ -52,3 +52,12 @@
 - UI の設定名を、本文にない日本語訳で書いた(「アカウントのメモリを使う」)。別の問題の表記ともずれた。設定名は本文の英語表記のまま書く。
 - 解説の締めに、出典にない一言を足していた(「意図的にできないようになっている」「〜に特化している」「回答は誤りを含みうる」など)。出典にない設計意図や性格づけは書かない。
 - 誤答の `why` で「〜は戻らない。出典にもそうした記述はない」のように、断定したあとで出典がないことにも触れ、自己矛盾していた。根拠がないなら「出典に〜という記述はない」とだけ書く。
+
+## トピック付けの試作で見つかったもの(2026-11-20)
+
+- `platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use` は `define-tools` に転送される。結果の返し方は `handle-tool-calls`、並列呼び出しは `parallel-tool-use`、strict は `strict-tool-use` に分かれた。参照先は内容に合うページに付け替える。
+- `www.anthropic.com/engineering/writing-tools-for-agents` は `www.anthropic.com/research/writing-tools-for-agents` に移った。
+- 並列ツール呼び出しで「アプリケーションは並行して実行する」と書いていた。実行の順番はアプリケーションが選ぶもので、API は決めない。結果を 1 つの user メッセージにまとめて返すことが要点。
+- `disable_parallel_tool_use` は `tool_choice` オブジェクトの中に書く。トップレベルのパラメータではない。
+- 記憶の Pause memory は「新しい記憶が作られなくなるだけ」ではなく、記憶の利用も止める。
+- Define tools は「不透明な内部参照ではなく、意味のある安定した識別子(slug や UUID)」を返すよう勧めている一方、記事 Writing effective tools for agents は uuid のような低水準の識別子を避けるよう勧めている。UUID について書くときは、どちらの出典の主張かを明示する。
