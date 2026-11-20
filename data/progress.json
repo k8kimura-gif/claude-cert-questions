@@ -4,64 +4,151 @@
   "source": "muse-space:claudezi-ge-kuizu",
   "repo": "k8kimura-gif/claude-cert-questions",
   "path": "data/progress.json",
-  "exportedAt": "2026-11-18T15:34:47.914Z",
+  "exportedAt": "2026-11-20T22:25:53.073Z",
   "summary": {
-    "answered": 94,
-    "correct": 83,
-    "accuracyPercent": 88,
+    "answered": 197,
+    "correct": 166,
+    "accuracyPercent": 84,
     "certs": {
+      "associate": {
+        "code": "CCAO-F",
+        "name": "Associate – Foundations",
+        "answered": 84,
+        "correct": 66,
+        "accuracyPercent": 79,
+        "askedCount": 97,
+        "sessionCount": 5,
+        "completedSessionCount": 4,
+        "lastAnsweredAt": "2026-11-20T12:52:48.591Z",
+        "confRated": 84,
+        "sureOkPercent": 65,
+        "unsureOk": 11,
+        "sureNg": 14,
+        "domains": [
+          {
+            "id": "prompting-and-task-execution",
+            "ja": "プロンプトとタスクの実行",
+            "weight": 14,
+            "answered": 9,
+            "correct": 6,
+            "accuracyPercent": 67,
+            "unsureOk": 0,
+            "sureNg": 2
+          },
+          {
+            "id": "output-evaluation-and-validation",
+            "ja": "出力の評価と検証",
+            "weight": 21,
+            "answered": 20,
+            "correct": 15,
+            "accuracyPercent": 75,
+            "unsureOk": 1,
+            "sureNg": 5
+          },
+          {
+            "id": "product-and-model-selection",
+            "ja": "製品とモデルの選択",
+            "weight": 12,
+            "answered": 11,
+            "correct": 9,
+            "accuracyPercent": 82,
+            "unsureOk": 2,
+            "sureNg": 2
+          },
+          {
+            "id": "workflow-integration-and-solution-design",
+            "ja": "ワークフローへの統合とソリューション設計",
+            "weight": 16,
+            "answered": 14,
+            "correct": 11,
+            "accuracyPercent": 79,
+            "unsureOk": 2,
+            "sureNg": 2
+          },
+          {
+            "id": "configuration-and-knowledge-management",
+            "ja": "設定とナレッジ管理",
+            "weight": 12,
+            "answered": 11,
+            "correct": 7,
+            "accuracyPercent": 64,
+            "unsureOk": 2,
+            "sureNg": 3
+          },
+          {
+            "id": "governance-risk-and-responsible-use",
+            "ja": "ガバナンス・リスク・責任ある利用",
+            "weight": 15,
+            "answered": 10,
+            "correct": 9,
+            "accuracyPercent": 90,
+            "unsureOk": 3,
+            "sureNg": 0
+          },
+          {
+            "id": "troubleshooting-and-optimization",
+            "ja": "トラブルシューティングと最適化",
+            "weight": 10,
+            "answered": 9,
+            "correct": 9,
+            "accuracyPercent": 100,
+            "unsureOk": 1,
+            "sureNg": 0
+          }
+        ]
+      },
       "developer": {
         "code": "CCDV-F",
         "name": "Developer – Foundations",
-        "answered": 79,
-        "correct": 72,
-        "accuracyPercent": 91,
-        "askedCount": 82,
-        "sessionCount": 17,
-        "completedSessionCount": 15,
-        "lastAnsweredAt": "2026-11-17T23:42:40.152Z",
-        "confRated": 24,
-        "sureOkPercent": 63,
-        "unsureOk": 6,
-        "sureNg": 2,
+        "answered": 113,
+        "correct": 100,
+        "accuracyPercent": 88,
+        "askedCount": 113,
+        "sessionCount": 18,
+        "completedSessionCount": 17,
+        "lastAnsweredAt": "2026-11-20T22:25:26.267Z",
+        "confRated": 58,
+        "sureOkPercent": 60,
+        "unsureOk": 14,
+        "sureNg": 5,
         "domains": [
           {
             "id": "applications-and-integration",
             "ja": "アプリケーションと統合",
             "weight": 33.1,
-            "answered": 31,
-            "correct": 28,
-            "accuracyPercent": 90,
-            "unsureOk": 4,
-            "sureNg": 2
+            "answered": 42,
+            "correct": 36,
+            "accuracyPercent": 86,
+            "unsureOk": 7,
+            "sureNg": 3
           },
           {
             "id": "model-selection-and-optimization",
             "ja": "モデル選択と最適化",
             "weight": 16.8,
-            "answered": 16,
-            "correct": 16,
-            "accuracyPercent": 100,
-            "unsureOk": 0,
-            "sureNg": 0
+            "answered": 21,
+            "correct": 20,
+            "accuracyPercent": 95,
+            "unsureOk": 2,
+            "sureNg": 1
           },
           {
             "id": "agents-and-workflows",
             "ja": "エージェントとワークフロー",
             "weight": 14.7,
-            "answered": 15,
-            "correct": 13,
-            "accuracyPercent": 87,
-            "unsureOk": 2,
+            "answered": 21,
+            "correct": 19,
+            "accuracyPercent": 90,
+            "unsureOk": 3,
             "sureNg": 0
           },
           {
             "id": "prompt-and-context-engineering",
             "ja": "プロンプトとコンテキスト設計",
             "weight": 11,
-            "answered": 15,
-            "correct": 14,
-            "accuracyPercent": 93,
+            "answered": 19,
+            "correct": 18,
+            "accuracyPercent": 95,
             "unsureOk": 0,
             "sureNg": 0
           },
@@ -69,19 +156,19 @@
             "id": "tools-and-mcps",
             "ja": "ツールと MCP",
             "weight": 10.6,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null,
-            "unsureOk": 0,
+            "answered": 3,
+            "correct": 3,
+            "accuracyPercent": 100,
+            "unsureOk": 2,
             "sureNg": 0
           },
           {
             "id": "security-and-safety",
             "ja": "セキュリティと安全性",
             "weight": 8.1,
-            "answered": 1,
-            "correct": 0,
-            "accuracyPercent": 0,
+            "answered": 4,
+            "correct": 3,
+            "accuracyPercent": 75,
             "unsureOk": 0,
             "sureNg": 0
           },
@@ -89,9 +176,9 @@
             "id": "claude-code",
             "ja": "Claude Code",
             "weight": 3.1,
-            "answered": 0,
+            "answered": 1,
             "correct": 0,
-            "accuracyPercent": null,
+            "accuracyPercent": 0,
             "unsureOk": 0,
             "sureNg": 0
           },
@@ -99,11 +186,11 @@
             "id": "eval-testing-and-debugging",
             "ja": "評価・テスト・デバッグ",
             "weight": 2.6,
-            "answered": 1,
+            "answered": 2,
             "correct": 1,
-            "accuracyPercent": 100,
+            "accuracyPercent": 50,
             "unsureOk": 0,
-            "sureNg": 0
+            "sureNg": 1
           }
         ]
       },
@@ -260,97 +347,1364 @@
             "sureNg": 0
           }
         ]
-      },
-      "associate": {
-        "code": "CCAO-F",
-        "name": "Associate – Foundations",
-        "answered": 15,
-        "correct": 11,
-        "accuracyPercent": 73,
-        "askedCount": 16,
-        "sessionCount": 1,
-        "completedSessionCount": 1,
-        "lastAnsweredAt": "2026-11-17T14:31:54.533Z",
-        "confRated": 15,
-        "sureOkPercent": 53,
-        "unsureOk": 3,
-        "sureNg": 3,
-        "domains": [
-          {
-            "id": "prompting-and-task-execution",
-            "ja": "プロンプトとタスクの実行",
-            "weight": 14,
-            "answered": 0,
-            "correct": 0,
-            "accuracyPercent": null,
-            "unsureOk": 0,
-            "sureNg": 0
-          },
-          {
-            "id": "output-evaluation-and-validation",
-            "ja": "出力の評価と検証",
-            "weight": 21,
-            "answered": 5,
-            "correct": 4,
-            "accuracyPercent": 80,
-            "unsureOk": 0,
-            "sureNg": 1
-          },
-          {
-            "id": "product-and-model-selection",
-            "ja": "製品とモデルの選択",
-            "weight": 12,
-            "answered": 2,
-            "correct": 1,
-            "accuracyPercent": 50,
-            "unsureOk": 0,
-            "sureNg": 1
-          },
-          {
-            "id": "workflow-integration-and-solution-design",
-            "ja": "ワークフローへの統合とソリューション設計",
-            "weight": 16,
-            "answered": 2,
-            "correct": 1,
-            "accuracyPercent": 50,
-            "unsureOk": 0,
-            "sureNg": 0
-          },
-          {
-            "id": "configuration-and-knowledge-management",
-            "ja": "設定とナレッジ管理",
-            "weight": 12,
-            "answered": 2,
-            "correct": 1,
-            "accuracyPercent": 50,
-            "unsureOk": 1,
-            "sureNg": 1
-          },
-          {
-            "id": "governance-risk-and-responsible-use",
-            "ja": "ガバナンス・リスク・責任ある利用",
-            "weight": 15,
-            "answered": 2,
-            "correct": 2,
-            "accuracyPercent": 100,
-            "unsureOk": 2,
-            "sureNg": 0
-          },
-          {
-            "id": "troubleshooting-and-optimization",
-            "ja": "トラブルシューティングと最適化",
-            "weight": 10,
-            "answered": 2,
-            "correct": 2,
-            "accuracyPercent": 100,
-            "unsureOk": 0,
-            "sureNg": 0
-          }
-        ]
       }
     }
   },
   "progress": {
+    "associate": {
+      "answers": {
+        "asc-cfg-003": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-20",
+          "c": 0
+        },
+        "asc-cfg-005": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 1
+        },
+        "asc-cfg-006": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 0
+        },
+        "asc-cfg-014": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-19",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-cfg-017": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-cfg-020": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-cfg-022": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 0
+        },
+        "asc-cfg-023": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 1
+        },
+        "asc-cfg-025": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-cfg-027": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-22",
+          "c": 1
+        },
+        "asc-cfg-028": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-eval-001": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-eval-002": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-eval-003": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-eval-004": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-eval-007": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-22",
+          "c": 1
+        },
+        "asc-eval-009": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 1
+        },
+        "asc-eval-012": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-22",
+          "c": 1
+        },
+        "asc-eval-013": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-eval-017": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-19",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-eval-019": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-eval-022": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-eval-025": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-eval-026": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-eval-032": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 1
+        },
+        "asc-eval-034": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-eval-037": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-eval-040": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 0
+        },
+        "asc-eval-041": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-19",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-eval-044": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 1
+        },
+        "asc-eval-045": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-22",
+          "c": 1
+        },
+        "asc-gov-001": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-22",
+          "c": 1
+        },
+        "asc-gov-003": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-gov-008": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 0
+        },
+        "asc-gov-009": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 0
+        },
+        "asc-gov-016": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 0
+        },
+        "asc-gov-017": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-gov-022": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-gov-027": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-gov-031": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 0
+        },
+        "asc-gov-034": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-prm-005": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-prm-006": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 1
+        },
+        "asc-prm-008": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-22",
+          "c": 1
+        },
+        "asc-prm-012": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-prm-014": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-22",
+          "c": 1
+        },
+        "asc-prm-017": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 1
+        },
+        "asc-prm-025": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 0
+        },
+        "asc-prm-027": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-prm-028": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-prod-001": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-prod-002": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-22",
+          "c": 1
+        },
+        "asc-prod-003": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 1
+        },
+        "asc-prod-005": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 1
+        },
+        "asc-prod-006": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-prod-007": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-prod-014": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-prod-018": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 0
+        },
+        "asc-prod-019": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-prod-021": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 0
+        },
+        "asc-prod-026": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-trb-001": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-trb-005": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-trb-006": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-20",
+          "c": 0
+        },
+        "asc-trb-007": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-22",
+          "c": 1
+        },
+        "asc-trb-010": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-trb-015": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-trb-019": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-trb-022": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-trb-024": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-22",
+          "c": 1
+        },
+        "asc-wf-003": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-wf-008": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-17",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-wf-009": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-19",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-wf-010": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-20",
+          "c": 0
+        },
+        "asc-wf-011": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-19",
+          "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-wf-012": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-wf-016": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-wf-018": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-20",
+          "c": 0
+        },
+        "asc-wf-020": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-17",
+          "due": "2026-11-18",
+          "c": 0
+        },
+        "asc-wf-031": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-wf-032": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-wf-034": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-wf-037": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-wf-040": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-22",
+          "c": 1
+        }
+      },
+      "log": [
+        {
+          "d": "2026-11-17",
+          "q": "asc-prod-003",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-cfg-006",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-eval-026",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-prod-007",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-wf-020",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-wf-008",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-gov-009",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-trb-005",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-eval-009",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-gov-016",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-eval-025",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-cfg-005",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-trb-010",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-eval-002",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-17",
+          "q": "asc-eval-003",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-trb-006",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-wf-010",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-prm-014",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-cfg-003",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-wf-018",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-eval-012",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-gov-001",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-prod-002",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-eval-017",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-wf-040",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-prm-008",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-eval-041",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-wf-011",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-eval-007",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-trb-007",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-trb-024",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-eval-045",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-wf-009",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-cfg-027",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "asc-cfg-014",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prm-017",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prod-001",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-eval-001",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-gov-027",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-gov-017",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prod-005",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-wf-034",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-eval-044",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prod-019",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prod-021",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-cfg-022",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-gov-022",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prm-012",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-gov-034",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-trb-022",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-eval-034",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-eval-037",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prm-005",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-eval-019",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-trb-015",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-wf-012",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-wf-032",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-cfg-017",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-gov-003",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-eval-040",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prod-026",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-trb-001",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-wf-016",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prm-028",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-eval-004",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prm-027",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-wf-037",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-eval-032",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-trb-019",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prod-014",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-gov-031",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-cfg-028",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-wf-003",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prod-018",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-wf-031",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prm-006",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-eval-022",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-cfg-020",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-eval-013",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prod-006",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-cfg-025",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-gov-008",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-cfg-023",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "asc-prm-025",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        }
+      ],
+      "mocks": [],
+      "mock": null,
+      "lastMock": null,
+      "day": null
+    },
     "developer": {
       "answers": {
         "dev-agent-001": {
@@ -451,6 +1805,33 @@
           "last": "2026-11-15",
           "due": "2026-11-18"
         },
+        "dev-agent-020": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-22",
+          "c": 1
+        },
+        "dev-agent-021": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
+        "dev-agent-022": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 0
+        },
         "dev-agent-024": {
           "n": 1,
           "correct": 1,
@@ -458,6 +1839,24 @@
           "ok": 1,
           "last": "2026-11-15",
           "due": "2026-11-18",
+          "c": 1
+        },
+        "dev-agent-025": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
+        "dev-agent-026": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
           "c": 1
         },
         "dev-agent-027": {
@@ -468,6 +1867,15 @@
           "last": "2026-11-15",
           "due": "2026-11-18"
         },
+        "dev-agent-029": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
         "dev-agent-031": {
           "n": 1,
           "correct": 1,
@@ -476,6 +1884,15 @@
           "last": "2026-11-18",
           "due": "2026-11-19",
           "c": 0
+        },
+        "dev-app-002": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 1
         },
         "dev-app-006": {
           "n": 1,
@@ -517,6 +1934,15 @@
           "last": "2026-11-15",
           "due": "2026-11-18"
         },
+        "dev-app-015": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 0
+        },
         "dev-app-016": {
           "n": 1,
           "correct": 0,
@@ -533,6 +1959,15 @@
           "ok": 1,
           "last": "2026-11-15",
           "due": "2026-11-18"
+        },
+        "dev-app-018": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
         },
         "dev-app-019": {
           "n": 1,
@@ -551,6 +1986,15 @@
           "due": "2026-11-19",
           "c": 0
         },
+        "dev-app-022": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
         "dev-app-024": {
           "n": 1,
           "correct": 1,
@@ -567,6 +2011,15 @@
           "ok": 1,
           "last": "2026-11-15",
           "due": "2026-11-18"
+        },
+        "dev-app-026": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 0
         },
         "dev-app-028": {
           "n": 1,
@@ -592,6 +2045,15 @@
           "last": "2026-11-15",
           "due": "2026-11-18"
         },
+        "dev-app-032": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 0
+        },
         "dev-app-033": {
           "n": 1,
           "correct": 1,
@@ -599,6 +2061,33 @@
           "ok": 1,
           "last": "2026-11-15",
           "due": "2026-11-18"
+        },
+        "dev-app-034": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
+        "dev-app-035": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
+        "dev-app-036": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
         },
         "dev-app-038": {
           "n": 1,
@@ -616,6 +2105,15 @@
           "ok": 1,
           "last": "2026-11-15",
           "due": "2026-11-18"
+        },
+        "dev-app-041": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 0
         },
         "dev-app-042": {
           "n": 1,
@@ -667,6 +2165,15 @@
           "ok": 1,
           "last": "2026-11-15",
           "due": "2026-11-18"
+        },
+        "dev-app-048": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-20",
+          "c": 0
         },
         "dev-app-050": {
           "n": 1,
@@ -734,6 +2241,15 @@
           "due": "2026-11-18",
           "c": 1
         },
+        "dev-cc-011": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 0
+        },
         "dev-eval-001": {
           "n": 1,
           "correct": 1,
@@ -741,6 +2257,15 @@
           "ok": 1,
           "last": "2026-11-16",
           "due": "2026-11-19",
+          "c": 1
+        },
+        "dev-eval-008": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
           "c": 1
         },
         "dev-model-001": {
@@ -760,6 +2285,15 @@
           "due": "2026-11-18",
           "c": 1
         },
+        "dev-model-006": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-23",
+          "c": 1
+        },
         "dev-model-007": {
           "n": 1,
           "correct": 1,
@@ -775,6 +2309,24 @@
           "ok": 1,
           "last": "2026-11-15",
           "due": "2026-11-18"
+        },
+        "dev-model-012": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 1
+        },
+        "dev-model-013": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-20",
+          "due": "2026-11-21",
+          "c": 0
         },
         "dev-model-015": {
           "n": 1,
@@ -876,6 +2428,24 @@
           "due": "2026-11-20",
           "c": 1
         },
+        "dev-model-034": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
+        "dev-model-036": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 0
+        },
         "dev-prompt-001": {
           "n": 1,
           "correct": 1,
@@ -918,6 +2488,15 @@
           "due": "2026-11-21",
           "c": 1
         },
+        "dev-prompt-006": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
         "dev-prompt-007": {
           "n": 1,
           "correct": 1,
@@ -934,6 +2513,15 @@
           "ok": 1,
           "last": "2026-11-15",
           "due": "2026-11-18"
+        },
+        "dev-prompt-009": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-19",
+          "due": "2026-11-22",
+          "c": 1
         },
         "dev-prompt-012": {
           "n": 1,
@@ -960,6 +2548,15 @@
           "last": "2026-11-15",
           "due": "2026-11-18"
         },
+        "dev-prompt-015": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
         "dev-prompt-017": {
           "n": 1,
           "correct": 1,
@@ -967,6 +2564,15 @@
           "ok": 1,
           "last": "2026-11-15",
           "due": "2026-11-18"
+        },
+        "dev-prompt-018": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
         },
         "dev-prompt-019": {
           "n": 1,
@@ -1000,6 +2606,33 @@
           "last": "2026-11-15",
           "due": "2026-11-18"
         },
+        "dev-sec-007": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
+        "dev-sec-010": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
+        "dev-sec-012": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
         "dev-sec-019": {
           "n": 1,
           "correct": 0,
@@ -1008,6 +2641,33 @@
           "last": "2026-11-16",
           "due": "2026-11-17",
           "c": 0
+        },
+        "dev-tool-017": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 0
+        },
+        "dev-tool-019": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 0
+        },
+        "dev-tool-021": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
         }
       },
       "log": [
@@ -1508,6 +3168,244 @@
           "ok": 0,
           "m": "space",
           "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "dev-agent-020",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-19",
+          "q": "dev-app-048",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-19",
+          "q": "dev-prompt-009",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "dev-model-006",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "dev-app-036",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-20",
+          "q": "dev-app-041",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-20",
+          "q": "dev-model-013",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-app-032",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-model-012",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-agent-029",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-model-034",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-agent-021",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-app-002",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-sec-007",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-agent-025",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-app-034",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-prompt-015",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-cc-011",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-app-015",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-app-022",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-sec-010",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-tool-019",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-tool-017",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-sec-012",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-agent-022",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-app-018",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-eval-008",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-app-026",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-agent-026",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-model-036",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-prompt-006",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-app-035",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-prompt-018",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "dev-tool-021",
+          "ok": 1,
+          "m": "space",
+          "c": 1
         }
       ],
       "mocks": [],
@@ -1530,259 +3428,56 @@
       "mock": null,
       "lastMock": null,
       "day": null
-    },
-    "associate": {
-      "answers": {
-        "asc-cfg-005": {
-          "n": 1,
-          "correct": 0,
-          "streak": 0,
-          "ok": 0,
-          "last": "2026-11-17",
-          "due": "2026-11-18",
-          "c": 1
-        },
-        "asc-cfg-006": {
-          "n": 1,
-          "correct": 1,
-          "streak": 0,
-          "ok": 1,
-          "last": "2026-11-17",
-          "due": "2026-11-18",
-          "c": 0
-        },
-        "asc-eval-002": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "ok": 1,
-          "last": "2026-11-17",
-          "due": "2026-11-20",
-          "c": 1
-        },
-        "asc-eval-003": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "ok": 1,
-          "last": "2026-11-17",
-          "due": "2026-11-20",
-          "c": 1
-        },
-        "asc-eval-009": {
-          "n": 1,
-          "correct": 0,
-          "streak": 0,
-          "ok": 0,
-          "last": "2026-11-17",
-          "due": "2026-11-18",
-          "c": 1
-        },
-        "asc-eval-025": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "ok": 1,
-          "last": "2026-11-17",
-          "due": "2026-11-20",
-          "c": 1
-        },
-        "asc-eval-026": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "ok": 1,
-          "last": "2026-11-17",
-          "due": "2026-11-20",
-          "c": 1
-        },
-        "asc-gov-009": {
-          "n": 1,
-          "correct": 1,
-          "streak": 0,
-          "ok": 1,
-          "last": "2026-11-17",
-          "due": "2026-11-18",
-          "c": 0
-        },
-        "asc-gov-016": {
-          "n": 1,
-          "correct": 1,
-          "streak": 0,
-          "ok": 1,
-          "last": "2026-11-17",
-          "due": "2026-11-18",
-          "c": 0
-        },
-        "asc-prod-003": {
-          "n": 1,
-          "correct": 0,
-          "streak": 0,
-          "ok": 0,
-          "last": "2026-11-17",
-          "due": "2026-11-18",
-          "c": 1
-        },
-        "asc-prod-007": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "ok": 1,
-          "last": "2026-11-17",
-          "due": "2026-11-20",
-          "c": 1
-        },
-        "asc-trb-005": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "ok": 1,
-          "last": "2026-11-17",
-          "due": "2026-11-20",
-          "c": 1
-        },
-        "asc-trb-010": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "ok": 1,
-          "last": "2026-11-17",
-          "due": "2026-11-20",
-          "c": 1
-        },
-        "asc-wf-008": {
-          "n": 1,
-          "correct": 1,
-          "streak": 1,
-          "ok": 1,
-          "last": "2026-11-17",
-          "due": "2026-11-20",
-          "c": 1
-        },
-        "asc-wf-020": {
-          "n": 1,
-          "correct": 0,
-          "streak": 0,
-          "ok": 0,
-          "last": "2026-11-17",
-          "due": "2026-11-18",
-          "c": 0
-        }
-      },
-      "log": [
-        {
-          "d": "2026-11-17",
-          "q": "asc-prod-003",
-          "ok": 0,
-          "m": "space",
-          "c": 1
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-cfg-006",
-          "ok": 1,
-          "m": "space",
-          "c": 0
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-eval-026",
-          "ok": 1,
-          "m": "space",
-          "c": 1
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-prod-007",
-          "ok": 1,
-          "m": "space",
-          "c": 1
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-wf-020",
-          "ok": 0,
-          "m": "space",
-          "c": 0
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-wf-008",
-          "ok": 1,
-          "m": "space",
-          "c": 1
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-gov-009",
-          "ok": 1,
-          "m": "space",
-          "c": 0
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-trb-005",
-          "ok": 1,
-          "m": "space",
-          "c": 1
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-eval-009",
-          "ok": 0,
-          "m": "space",
-          "c": 1
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-gov-016",
-          "ok": 1,
-          "m": "space",
-          "c": 0
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-eval-025",
-          "ok": 1,
-          "m": "space",
-          "c": 1
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-cfg-005",
-          "ok": 0,
-          "m": "space",
-          "c": 1
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-trb-010",
-          "ok": 1,
-          "m": "space",
-          "c": 1
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-eval-002",
-          "ok": 1,
-          "m": "space",
-          "c": 1
-        },
-        {
-          "d": "2026-11-17",
-          "q": "asc-eval-003",
-          "ok": 1,
-          "m": "space",
-          "c": 1
-        }
-      ],
-      "mocks": [],
-      "mock": null,
-      "lastMock": null,
-      "day": null
     }
   },
   "sessions": {
+    "associate": [
+      {
+        "id": 17,
+        "status": "completed",
+        "createdAt": "2026-11-17T09:32:15.180Z",
+        "completedAt": "2026-11-17T15:12:32.290Z",
+        "totalQuestions": 16,
+        "answered": 15,
+        "correct": 11
+      },
+      {
+        "id": 20,
+        "status": "completed",
+        "createdAt": "2026-11-18T15:52:37.289Z",
+        "completedAt": "2026-11-18T16:08:57.398Z",
+        "totalQuestions": 9,
+        "answered": 9,
+        "correct": 8
+      },
+      {
+        "id": 21,
+        "status": "completed",
+        "createdAt": "2026-11-19T04:52:01.797Z",
+        "completedAt": "2026-11-19T21:26:45.464Z",
+        "totalQuestions": 17,
+        "answered": 17,
+        "correct": 11
+      },
+      {
+        "id": 22,
+        "status": "completed",
+        "createdAt": "2026-11-19T21:48:31.126Z",
+        "completedAt": "2026-11-20T11:49:35.440Z",
+        "totalQuestions": 17,
+        "answered": 17,
+        "correct": 15
+      },
+      {
+        "id": 24,
+        "status": "in_progress",
+        "createdAt": "2026-11-20T11:52:33.221Z",
+        "completedAt": null,
+        "totalQuestions": 38,
+        "answered": 26,
+        "correct": 21
+      }
+    ],
     "developer": [
       {
         "id": 1,
@@ -1930,12 +3625,21 @@
       },
       {
         "id": 19,
-        "status": "in_progress",
+        "status": "completed",
         "createdAt": "2026-11-17T23:33:58.888Z",
-        "completedAt": null,
+        "completedAt": "2026-11-18T16:33:10.382Z",
         "totalQuestions": 5,
-        "answered": 2,
-        "correct": 1
+        "answered": 5,
+        "correct": 4
+      },
+      {
+        "id": 23,
+        "status": "completed",
+        "createdAt": "2026-11-20T00:11:49.442Z",
+        "completedAt": "2026-11-20T22:25:26.299Z",
+        "totalQuestions": 31,
+        "answered": 31,
+        "correct": 25
       }
     ],
     "architect": [
@@ -1949,17 +3653,6 @@
         "correct": 0
       }
     ],
-    "architect-pro": [],
-    "associate": [
-      {
-        "id": 17,
-        "status": "completed",
-        "createdAt": "2026-11-17T09:32:15.180Z",
-        "completedAt": "2026-11-17T15:12:32.290Z",
-        "totalQuestions": 16,
-        "answered": 15,
-        "correct": 11
-      }
-    ]
+    "architect-pro": []
   }
 }
