@@ -823,12 +823,14 @@
   "title": "Claude Code の非対話実行(claude -p)",
   "summary": "Claude Code は、-p(--print)フラグを付けると非対話で実行できます。公式ドキュメントはこれを Agent SDK の CLI としての使い方と位置付け、スクリプトや CI/CD での利用を想定しています。成功すると終了コード 0、失敗すると 0 以外で終わるため、スクリプトで分岐できます。--output-format で出力の形を選べ、text(既定)、json(結果、セッション ID、メタデータを含む JSON)、stream-json(逐次届く改行区切りの JSON)があります。決まったスキーマに沿った出力が必要なときは、--output-format json と --json-schema を組み合わせ、応答の structured_output フィールドから取り出します。--bare を付けると、フック、スキル、MCP サーバー、CLAUDE.md などの自動検出を飛ばして起動を速くできます。",
   "points": [
-   "--output-format json の通常の応答では、テキストの結果は result フィールドに入る",
+   "--output-format json の通常の応答では、テキストの結果は result フィールドに入る。total_cost_usd とモデルごとの費用の内訳も含まれる(クライアント側の推定値)",
    "--json-schema を使った応答では、構造化された出力は structured_output フィールドに入る。Claude が依頼を断った場合など、有効な出力なしで終わるとこのフィールドは付かないので、使う前に存在を確かめる",
    "--allowedTools は、列挙したツールを確認なしで使えるようにする(事前の許可)。使えるツールを絞るのは --tools",
    "--permission-mode で、セッション全体の権限モード(auto、dontAsk、acceptEdits など)を指定できる",
    "--max-turns でエージェントのターン数を制限できる(print モードのみ。既定は無制限)",
-   "claude mcp serve は、Claude Code 自体を MCP サーバーとして起動し、他のアプリケーションから接続させるためのもの"
+   "claude mcp serve は、Claude Code 自体を MCP サーバーとして起動し、他のアプリケーションから接続させるためのもの",
+   "-p でも、利用者が呼び出すスキルとカスタムコマンドは使え、プロンプトに /skill-name を含めると展開される。--bare はスキルの自動検出も飛ばす。--bare はスクリプトや SDK の呼び出しに勧められ、将来 -p の既定になる予定",
+   "-p では信頼の確認(workspace trust)のダイアログが出ない。信頼していないフォルダでの -p では、.claude/settings.json の permissions.allow は使われない(deny と ask は効く)。許可するツールは --allowedTools などで渡す"
   ],
   "sources": [
    {
@@ -838,9 +840,17 @@
    {
     "url": "https://code.claude.com/docs/en/cli-reference",
     "title": "CLI reference"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/permissions",
+    "title": "Configure permissions"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/mcp",
+    "title": "Connect Claude Code to tools via MCP"
    }
   ],
-  "checked": "2026-11-20"
+  "checked": "2026-11-21"
  },
  {
   "id": "claude-code-permissions",
@@ -967,7 +977,8 @@
    "誤りと分かる指摘が多い種類には、投稿の前に根拠を求める(例: 振る舞いの主張には、名前からの推測ではなくソースの file:line の引用を付ける)",
    "毎回確かめてほしいチームの規則(新しい API のルートには結合テストがある、など)を書き足せる",
    "REVIEW.md はベースまたは既定のブランチから読み、プルリクエスト自身の変更からは読まない。/code-review は CLAUDE.md を読み、REVIEW.md は読まない",
-   "Claude Code のベストプラクティス: 仕様に照らしたレビューを頼むときは「skip style」を外さない。問題を探すよう頼まれたレビュアーは必ず何かを見つける"
+   "Claude Code のベストプラクティス: 仕様に照らしたレビューを頼むときは「skip style」を外さない。問題を探すよう頼まれたレビュアーは必ず何かを見つける",
+   "次のレビューは、以前の指摘への返信を読み、修正されたと判断した指摘のスレッドを解決する。差分が変わらないプッシュ(空のコミットなど)で、Important の指摘のスレッドが誰にも解決されていなければ、新しいレビューを始めず前回の結果を残すことがある"
   ],
   "sources": [
    {
@@ -977,6 +988,10 @@
    {
     "url": "https://code.claude.com/docs/en/code-review-customize",
     "title": "Customize Code Review"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/code-review-pull-requests",
+    "title": "Read and request reviews on a pull request"
    },
    {
     "url": "https://code.claude.com/docs/en/best-practices",
@@ -1424,6 +1439,64 @@
    {
     "url": "https://code.claude.com/docs/en/sub-agents",
     "title": "Create custom subagents"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "claude-code-sessions",
+  "title": "Claude Code のセッションの再開と名前付け(--continue・--resume・/rename)",
+  "summary": "Claude Code のセッションは、プロジェクトのディレクトリに結び付いてローカルに保存される会話で、中断した所から再開したり、別の方針を試すために分岐したり、作業を切り替えたりできます。CLI では claude --continue が現在のディレクトリで最も新しいセッションを開き、claude --resume は選択画面を開き、claude --resume <name> や claude --resume <session-id> で特定のセッションを直接再開します。セッションの中からは /resume で切り替えます。セッションには起動時の claude -n <name> や途中の /rename <name> で名前を付けられ、その名前で再開できます。名前を付けないセッションには最初のプロンプトを要約したタイトルが生成され、これも再開に使えます。再開すると会話の履歴、使っていたモデル、エージェントなどが戻りますが、--add-dir のような起動時のフラグは戻らないので、再開のときにもう一度渡します。",
+  "points": [
+   "claude --resume <name> は、名前が 1 つに一致すれば直接再開し、複数に一致すると名前を検索語にした選択画面を開く。/resume <name> は、名前が曖昧だとエラーになる",
+   "既定の表示名(作業ディレクトリの名前と 2 文字の接尾辞。例 my-app-3f)は再開の手がかりにならず、--resume に渡しても見つからない",
+   "--continue は claude -p や Agent SDK で作ったセッションを飛ばす",
+   "--fork-session を --resume や --continue と使うと、元のセッション ID を使い回さず、新しいセッション ID で再開する",
+   "/clear は空のコンテキストで新しい会話を始める。前のセッションは保存され、/resume で戻れる。/clear <name> で離れるセッションに名前を付けられる",
+   "コンパクションしたセッションを再開すると、最後の要約、要約されなかったメッセージ、その後のメッセージから続く",
+   "権限モードは、ターミナルから --continue や --resume で再開すると元のモードが戻る場合がある。claude -p --resume では新しい -p の実行と同じモードで始まる(plan モードは条件を満たせば戻る)"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/sessions",
+    "title": "Manage sessions"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "title": "CLI reference"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/common-workflows",
+    "title": "Common workflows"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "choosing-a-model",
+  "title": "モデルの選び方(Claude Code での指定を含む)",
+  "summary": "Claude のモデル選択は、能力、速度、費用の兼ね合いで決めます。公式ガイド Choosing the right model は、必要な能力、応答の速さ、開発と本番の予算に加え、1 つのモデルの中で知能と遅延・費用を交換する effort も検討するよう勧め、モデルを替えるより effort の調整のほうが良い手段になることが多いとしています。始め方は 2 つあります。効率優先は Claude Haiku 5.5 のような高速で安価なモデルから始め、十分に試して、能力が足りないときだけ上げる方法で、試作、遅延の要件が厳しい用途、費用に敏感な用途、大量で単純な作業に向きます。能力優先は Claude Opus 5.5 で実装し、評価を見ながら effort を下げるかモデルを下げる方法で、複雑な推論や高度なコーディングに向きます。どちらでも、用途に合った評価セットを作り、実際のプロンプトとデータでモデルを比べることが最も重要な手順とされています。Claude Code では、起動時の --model やセッション中の /model でモデルを選べます。",
+  "points": [
+   "選択表: 最高の能力は Claude Fable 5.2、複雑なエージェント型コーディングは Claude Opus 5.5、日常のコーディングやエージェントの速度と能力は Claude Sonnet 5.5、最も低い遅延と価格は Claude Haiku 5.5(リアルタイム用途、大量の処理、サブエージェントの作業)。多くの作業は Claude Opus 5.5 から始める",
+   "effort の既定は、Claude Fable 5.2、Fable 5.1、Opus 5、Sonnet 5.5 が high、Claude Opus 5.5 と Haiku 5.5 が medium。評価に応じて上下させる",
+   "Claude Code の --model は sonnet、opus、haiku、fable などの別名か完全なモデル名を受け取り、起動したそのセッションだけに効く。同時に別のモデルを使うには、端末ごとに --model を付けて起動する",
+   "Claude Code でモデルが決まる優先順は、セッション中の /model、起動時の --model、環境変数 ANTHROPIC_MODEL などの順",
+   "別名は提供元ごとの推奨の版を指し、時とともに更新される。版を固定するには完全なモデル名(例 claude-opus-5-5)を使う",
+   "Manage costs effectively: たいていのコーディング作業は Sonnet で足り、Opus より費用が低い。Opus は複雑な設計判断や多段の推論に取っておく。単純なサブエージェントの作業には model: haiku を指定する",
+   "複数のモデルの組み合わせには、難しい判断を上位モデルに相談する advisor と、上位モデルが大量の作業を安価なモデルに任せる orchestrator の 2 つの型がある"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
+    "title": "Choosing the right model"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/model-config",
+    "title": "Model configuration"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/costs",
+    "title": "Manage costs effectively"
    }
   ],
   "checked": "2026-11-21"

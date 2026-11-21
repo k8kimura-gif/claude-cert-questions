@@ -18,7 +18,7 @@ Claude の API や Claude Code の仕様は変わるのが速く、学習時点�
   |---|---|---|---|---|
   | `associate` | CCAO-F | `asc-` | なし | 全問にあり |
   | `developer` | CCDV-F | `dev-` | なし | 全問にあり |
-  | `architect` | CCAR-F | `arch-` | 全問にあり | まだない |
+  | `architect` | CCAR-F | `arch-` | 全問にあり | 全問にあり |
   | `architect-pro` | CCAR-P | `arp-` | なし | まだない |
 - 問題 ID は変えない・再利用しない。利用者の学習記録が ID に結び付いているため。削除した ID も欠番のままにする。
 - 文章は日本語(本番が日本語版のため)。API のパラメータ名、コマンド、ファイル名は原文のまま書く。
