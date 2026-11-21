@@ -31,9 +31,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "ウェブ検索は、1〜2 回のツール呼び出しで答えられる単純な事実確認(最新ニュースの見出しや特定企業の情報など)に向きます。検索の方針を指示しつつ、実行と分析を Claude に任せたい場合にも適しています。",
+  "explanation": "正解は c です。ヘルプセンターは、Web 検索を、1〜2 回のツール呼び出しで答えられる単純な事実確認に向くと説明し、特定企業の情報や最新ニュースの見出しを例に挙げています。さらに、何を検索するかの大まかな方向は自分で示し、検索の実行と結果の分析は Claude に任せたい場合にも向くとしています。範囲が狭く、方向を自分で指示したいこの場面に合います。\n\n見分け方: Research(a)は 1〜3 分かけて 5 回以上のツール呼び出しを行う包括的な情報収集向けで、狭い確認には大がかりです。拡張思考だけ(b)は Web の最新情報を必要としない推論向けで、昨日の発表は調べられません。プロジェクト(d)は資料と指示をまとめる作業スペースで、最新情報を取りに行く機能ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research"
+  ],
+  "topics": [
+   "web-search-thinking-research"
   ]
  },
  {
@@ -68,10 +71,14 @@
   "answer": [
    "b"
   ],
-  "explanation": "Research は、5 回以上のツール呼び出しを要する包括的な情報収集に最適で、ウェブと連携先の情報を統合して出典付きの詳細レポートを作成します。競合比較や社内文書の更新が例として挙げられています。",
+  "explanation": "正解は b です。Research は、1〜3 分かけて 5 回以上のツール呼び出しを行う包括的な情報収集に向き、Web と連携先の複数の情報源をまとめて詳しいレポートを作ります。ヘルプセンターは例として、競合の比較や、Web の情報による古い社内文書の更新を挙げています。Research は Web と、Google Docs を含むチャットでオンにしたコネクタを調べ、出典を付けた長めのレポートにまとめます。\n\n見分け方: Web 検索(a)は 1〜2 回のツール呼び出しで済む単純な確認向けです。拡張思考だけ(c)は Web や連携を使わずに深く考えさせる場合向けで、社内文書や競合の最新動向は参照しません。競合名だけを入れる(d)のでは、社内文書との突き合わせや、出典付きのレポートという求める成果が伝わりません。",
   "refs": [
    "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research",
    "https://support.claude.com/en/articles/11088861-use-research-on-claude"
+  ],
+  "topics": [
+   "web-search-thinking-research",
+   "research"
   ]
  },
  {
@@ -106,9 +113,14 @@
   "answer": [
    "c"
   ],
-  "explanation": "拡張思考は、数学の問題や、コードのデバッグ、アルゴリズムの最適化など、ウェブの最新情報を必要としない複雑な推論に向きます。複数の角度から検討してから結論を出させられます。",
+  "explanation": "正解は c です。ヘルプセンターは、拡張思考を、Web の最新情報を必要としない複雑な推論に向くと説明し、「このアルゴリズムの性能を最適化して」を例に挙げています。結論の前に複数の角度から検討させられ、Web 検索や連携を使わずに深く考えさせたいだけなら、拡張思考を単独で使うのが最適とされています。モデルの設定の記事も、複雑な作業では effort を上げる、thinking をオンにする、またはその両方を勧めています。\n\n見分け方: 外部の情報が要らない、という条件が手がかりです。Research(a)は Web と連携先を横断する情報収集で、Web 検索のオンが前提です。Web 検索(b)は最新の事実確認向けです。コネクタ(d)は外部のデータに接続する仕組みで、推論を深める手段ではありません。",
   "refs": [
-   "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research"
+   "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research",
+   "https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings"
+  ],
+  "topics": [
+   "web-search-thinking-research",
+   "model-effort-thinking"
   ]
  },
  {
@@ -143,9 +155,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Cowork は Claude Code と同じエージェント的な仕組みを知識労働に広げたもので、成果を指示して任せると、Claude が計画を立てて実行し、書式の整った文書、Excel、PowerPoint などを返します。",
+  "explanation": "正解は c です。Claude Cowork は、Claude Code を動かすのと同じエージェントの仕組みを、コーディング以外の知識労働に広げたものです。プロンプトに 1 回ずつ答える代わりに、手順の多い複雑な作業を引き受けて実行し、成果を描写して離れると、書式の整った文書や整理されたファイルなどが仕上がっています。タスクを始めると、Claude は計画を立て、必要なら小さな作業に分けて実行し、動く数式付きの Excel や PowerPoint などの成果物を届けます。\n\n見分け方: 1 回の質問に 1 回答えるだけ(a)は、Cowork の説明と逆です。作業中に方向を修正することはできますが、毎ステップの指示が必須(b)ではなく、任せて離れることもできます。Cowork は有料プラン(Pro、Max、Ultra、Team、Enterprise)だけの機能で、無料プランでは使えません(d)。",
   "refs": [
    "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork"
+  ],
+  "topics": [
+   "cowork"
   ]
  },
  {
@@ -181,9 +196,12 @@
    "a",
    "d"
   ],
-  "explanation": "Research にはウェブ検索の有効化が必要です。また、モバイルで開始するとウェブのみが検索対象になり、コネクタが使われなかったことを示す表示もありません。連携先も調べたいときは Web 版かデスクトップで開始します。",
+  "explanation": "正解は a と d です。ヘルプセンターは、Research を機能させるには Web 検索がオンになっている必要があると明記しています。また、Claude Mobile で Research を始めると、Web だけを検索してコネクタは使わず、コネクタが飛ばされたことを示すエラーなどの表示も出ません。コネクタも使うには、Web 版の Claude か Claude Desktop で始めます。\n\n見分け方: Research は、チャットで選んだモデルに関係なく Claude Opus 5.5 で動き、必要に応じて Claude Opus 4.8 に切り替わるので、b は誤りです。利用上限は通常の会話と同じ扱いですが、複数の情報源を取得して包括的に答えるため、通常より早く上限に達することがあります。消費が少なくなる(c)わけではありません。",
   "refs": [
    "https://support.claude.com/en/articles/11088861-use-research-on-claude"
+  ],
+  "topics": [
+   "research"
   ]
  },
  {
@@ -212,15 +230,18 @@
    {
     "id": "d",
     "text": "ガイドの内容を暗記させるため、同じ質問を何度も送って学習させる",
-    "why": "チャットのやり取りでモデルが再学習されるわけではない。継続して使う文脈は、プロジェクトのナレッジや指示で与える。"
+    "why": "同じ質問を繰り返して資料を覚えさせる方法は、ヘルプセンターに説明がない。続けて使う資料と指示は、プロジェクトのナレッジとプロジェクト指示で与える。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "プロジェクトでは、ドキュメントなどをナレッジとして追加し、プロジェクトの指示で文体や役割を指定できます。各プロジェクトは独自のチャット履歴を持ち、その文脈の中で集中的に作業できます。",
+  "explanation": "正解は a です。プロジェクトは、独自のチャット履歴とナレッジベースを持つ作業スペースです。文書、テキスト、コードなどをナレッジベースに追加すると、そのプロジェクト内の各チャットで背景情報として使われます。さらにプロジェクト指示で、フォーマルな口調にする、特定の役割の視点で答える、といった振る舞いを指定できます。文体ガイドと過去の例をナレッジに、文体の指定を指示に置けば、毎月の貼り直しが要らなくなります。\n\n見分け方: 毎回貼り付ける(b)は今の手間そのものです。1 つのチャットを使い続ける(c)と、会話が長くなるほど利用上限の消費が増え、長さの制限にも近づきます。同じ質問を繰り返して覚えさせる方法(d)は、ヘルプセンターに説明がありません。続けて使う資料と指示は、ナレッジとプロジェクト指示で与えます。",
   "refs": [
    "https://support.claude.com/en/articles/9517075-what-are-projects"
+  ],
+  "topics": [
+   "projects"
   ]
  },
  {
@@ -255,9 +276,13 @@
   "answer": [
    "d"
   ],
-  "explanation": "コード実行が有効なら、会話が文脈の上限に近づくと、Claude が以前のメッセージを要約して会話を続けます。全履歴は保持されますが、そのぶん消費は増えるため、利用上限が近いなら新しい会話を始めることが勧められています。",
+  "explanation": "正解は d です。コード実行が有効な場合、会話がコンテキストウィンドウの上限に近づくと、Claude は以前のメッセージを要約して会話を続けます(自動的なコンテキスト管理)。チャットの全履歴は保持され、要約のあとも参照できます。ただし、自動的なコンテキスト管理が働く長い会話は利用上限を多く消費するため、ヘルプセンターは、利用上限が近いときは新しい会話を始めるよう勧めています。\n\n見分け方: 長さの制限は 1 つの会話の長さ、利用上限は一定期間の利用量で、別の制限です。会話が強制終了する(a)のではなく、要約して続きます。全履歴は保持されるので、二度と参照できない(b)は誤りです。長い会話ほど利用上限の消費は増え、上限が自動で引き上げられる(c)ことはありません。",
   "refs": [
    "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+  ],
+  "topics": [
+   "usage-and-length-limits",
+   "context-window"
   ]
  },
  {
@@ -292,9 +317,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "アーティファクトは、デザイン、スライド、文書、ダッシュボード、小さな対話型ツールなど、人に見せるものを指します。まとまりがあり単独で成立し、後で編集したり再利用したりしそうな内容のときに作られます。",
+  "explanation": "正解は b です。アーティファクトは、デザイン、デッキ、文書、ダッシュボード、小さな対話型ツールなど、Claude が作る「人に見せるもの」で、会話の横に開き、編集したり、後で戻ったり、共有したりできます。ヘルプセンターは、Claude がアーティファクトを作る条件として、意味のあるまとまりで単独で成立する(目安は 15 行超)、会話の外で編集や再利用をしそう、会話の文脈がなくても成り立つ、後で参照しそう、を挙げています。\n\n見分け方: 名前と役割の組み合わせで見分けます。プロジェクト(a)はナレッジと指示を持つ作業スペース、メモリ(c)は過去のチャットの文脈を新しい会話に持ち込む仕組み、コネクタ(d)は外部のアプリやサービスとの接続で、いずれも Claude が作る成果物を指す名前ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them"
+  ],
+  "topics": [
+   "artifacts"
   ]
  },
  {
@@ -307,7 +335,7 @@
   "choices": [
    {
     "id": "a",
-    "text": "最初のメッセージの前に、「+」メニューで「メモリ」をオフにする",
+    "text": "最初のメッセージの前に、「+」メニューで「Memory」をオフにする",
     "why": "正解。メモリのオフは最初のメッセージを送る前に設定する必要があり、開始後は変更できない。"
    },
    {
@@ -317,7 +345,7 @@
    },
    {
     "id": "c",
-    "text": "設定の「メモリをリセット」を選んで、すべてのメモリを削除してから話す",
+    "text": "設定の「Reset memory」を選んで、すべてのメモリを削除してから話す",
     "why": "リセットは、プロジェクトのメモリを含むすべてのメモリを恒久的に削除し、元に戻せない。1 つのチャットのための手段としては過剰である。"
    },
    {
@@ -329,9 +357,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "1 つのチャットだけメモリを使わせないには、新しいチャットで「+」メニューの「メモリ」をオフにします。最初のメッセージの送信前に設定する必要があり、後から変更できません。このチャットは履歴に残り、他のチャットからの検索対象にもなります。",
+  "explanation": "正解は a です。アカウントのメモリはオンのまま、1 つのチャットだけメモリを使わないようにするには、新しいチャットでメッセージ欄の「+」を開き、「Memory」をオフにします。そのチャットでは記憶を使わず、内容も記憶に保存されません。この設定は最初のメッセージを送る前に行う必要があり、チャットが始まったあとは変えられません。incognito チャットと違い、このチャットは履歴に残り、他の会話からの過去チャットの検索でも見つかります。\n\n見分け方: 途中でオフにする(b)ことはできず、変えたいなら新しいチャットを始めます。Reset memory(c)はプロジェクトのメモリを含むすべての記憶を完全に削除し、元に戻せません。依頼文に書く方法(d)は、ヘルプセンターが案内する手順ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context"
+  ],
+  "topics": [
+   "memory"
   ]
  },
  {
@@ -367,9 +398,12 @@
    "a",
    "d"
   ],
-  "explanation": "検索は有料プランが対象で、プロジェクトの会話はそのプロジェクト内に限って検索されます。incognito チャットは保存されない一時的な会話で、検索で参照されません。",
+  "explanation": "正解は a と d です。過去のチャットの検索は、プロジェクトの外のすべてのチャットと、個々のプロジェクトの会話が対象で、プロジェクトの会話の検索はそのプロジェクトの中に限られます。また、プロジェクトの外で新しいチャットを始めるときに右上のゴーストアイコンから開く incognito チャットは、チャット履歴に保存されない一時的な会話で、過去の会話を検索するときに Claude はここから情報を取りません。\n\n見分け方: 過去のチャットの検索は有料プラン(Pro、Max、Ultra、Team、Enterprise)の機能で、無料プランでは使えません(b)。incognito チャットはすべてのプランで使えるので、混同しないようにします。Personal Finance で連携したアカウントを使ったチャット(c)は、検索しないように設計されています。",
   "refs": [
    "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context"
+  ],
+  "topics": [
+   "memory"
   ]
  },
  {
@@ -404,9 +438,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "各プロジェクトは独自のメモリを持ち、通常はアカウントのメモリと併用されますが、他のプロジェクトのメモリは使われません。完全に分けたい場合は、プロジェクトのページで「Use account memory」をオフにします。",
+  "explanation": "正解は b です。各プロジェクトは独自のメモリを持ちます。プロジェクトで作業するとき、Claude はプロジェクトのメモリと、プロジェクトの外のチャットから得たメモリを併せて使いますが、他のプロジェクトのメモリは使いません。プロジェクトのメモリを完全に切り離したい場合は、プロジェクトのページの Memory で「Use account memory」をオフにします。\n\n見分け方: 他のプロジェクトのメモリは使われないので、「常に参照する」とする a は誤りです。Reset memory(c)はプロジェクトのメモリも含めてすべてを完全に削除し、元に戻せないので、切り離しの手段ではありません。プロジェクト単位の設定があるので、別のアカウントを作る(d)必要はありません。",
   "refs": [
    "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context"
+  ],
+  "topics": [
+   "memory",
+   "projects"
   ]
  },
  {
@@ -441,10 +479,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "effort が高いほど回答は丁寧になりますが、時間もトークンも増え、上限に早く達します。Low や Medium は日常的な作業に向き、利用を長持ちさせます。Opus 5.5 のように thinking が常にオンのモデルでは、思考を減らすには effort を下げます。",
+  "explanation": "正解は a です。effort は応答にかける労力を決める設定で、高いほど丁寧になりますが、時間とトークンが増え、利用上限に早く達します。Low と Medium は日常的な作業に向き、利用量を長持ちさせます。Claude Opus 5.5 は Claude で thinking をオフにできないモデルで、トグルも表示されません。ヘルプセンターは、こうしたモデルで思考を減らすには、低い effort を選ぶよう案内しています。\n\n見分け方: effort を最大にする(b)と、時間とトークンが増えて上限に早く達します。Opus 5.5 には thinking のトグルがない(c)ので、オフにする操作はできません。利用量は会話の長さだけでなく、使う機能、モデル、effort によっても変わるので、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings",
    "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+  ],
+  "topics": [
+   "model-effort-thinking",
+   "usage-and-length-limits"
   ]
  },
  {
@@ -479,9 +521,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "モデル選択の表では、最も低い遅延と価格を求める場合の出発点が Haiku 5.5 とされています。リアルタイム用途、大量処理、コスト重視の構成に向き、能力が不足する場合にだけ上位モデルへ移るのが効率重視の進め方です。",
+  "explanation": "正解は d です。公式ドキュメントの選択表では、最も低い遅延と価格が必要な場合の出発点が Claude Haiku 5.5 で、リアルタイム用途、大量の処理、コスト重視の構成などが例に挙がっています。効率優先の始め方でも、Haiku 5.5 で実装して十分に試し、特定の能力が足りない場合にだけ上位のモデルへ上げるとされ、遅延の要件が厳しい用途や、大量で単純な作業に向くと説明されています。\n\n見分け方: 選択表の「必要なもの」と組み合わせて覚えます。Fable 5.2(a)は利用可能な最高水準の能力、Opus 5.5(b)は複雑なエージェント的コーディングと企業の業務、Sonnet 5.5(c)は日常的な作業での速度と能力の両立のための出発点です。この問題の条件(低遅延、大量、単純、コスト重視)には Haiku 5.5 が合います。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+  ],
+  "topics": [
+   "choosing-a-model"
   ]
  },
  {
@@ -516,9 +561,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "選択表では、利用可能な最高水準の能力が必要な場合の出発点が Fable 5.2 で、数時間続くエージェント作業や、複数段階の深い調査、資料の完成までの分析が例として挙げられています。",
+  "explanation": "正解は c です。公式ドキュメントの選択表では、利用可能な最高水準の能力が必要な場合の出発点が Claude Fable 5.2 で、数時間続くエージェントのセッション、複数段階の深い調査、完成した文書や表計算やデッキまで仕上げる分析が例に挙がっています。Fable 5.2 は、すべての顧客が使えるモデルの中で最も能力が高く、高度な推論と長時間のエージェント作業のためのモデルと説明されています。\n\n見分け方: Opus 5.5(d)は複雑なエージェント的コーディングと企業の業務の出発点で、多くの作業はここから始めるとされていますが、能力優先の始め方でも、Opus 5.5 の xhigh や max で足りなければ Fable 5.2 に移るとされています。Sonnet 5.5(a)と Haiku 5.5(b)は、速度やコストとの両立を求める場合の候補です。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+  ],
+  "topics": [
+   "choosing-a-model"
   ]
  },
  {
@@ -553,9 +601,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Team プランの利用上限はチーム全体ではなくメンバーごとに適用されます。1 人が自分のシートの上限に達しても、ほかのメンバーは影響を受けずに使い続けられます。一方で、上限をメンバー間で移したり共有したりはできず、1 つのシートは名前の付いた 1 人のためのものです。上限後も作業を続けたい場合は、組織で usage credits(利用クレジット)を有効にします。",
+  "explanation": "正解は b です。Team プランの利用上限は、チーム全体ではなくメンバーごとに適用されます。各メンバーが自分の上限を持ち、1 人がシートに含まれる上限に達しても、ほかのメンバーの上限には影響せず、ほかのメンバーは使い続けられます。上限に達したあとも作業を続けたい場合は、組織で usage credits を有効にすると、すべての種類のシートのメンバーが続けられます。\n\n見分け方: チームで共有される(a)という説明は、メンバーごとという記述と逆です。上限はメンバー間で移したり共有したりできない(c)と、ヘルプセンターに明記されています。1 つのシートは名前の付いた 1 人のためのもので、同僚のアカウントを使う(d)ことは想定されていません。",
   "refs": [
    "https://support.claude.com/en/articles/9266767-what-is-the-team-plan"
+  ],
+  "topics": [
+   "team-enterprise-plans"
   ]
  },
  {
@@ -579,7 +630,7 @@
    {
     "id": "c",
     "text": "3 人にはそれぞれ個人の Max プランを契約させ、会社の仕事はその個人アカウントで続けてもらう運用にする",
-    "why": "組織の管理や請求の外で業務を行うことになり、Team プランが用意しているシートの使い分けで解決できる。"
+    "why": "Team プランでは、シートの種類を混在させて利用量の多い人に Premium シートを割り当てられる。個人のプランで会社の仕事を続けさせる運用は案内されていない。"
    },
    {
     "id": "d",
@@ -590,9 +641,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Team プランの Premium シートは Standard シートより大幅に多い利用量を持ち、負荷の高い作業をするパワーユーザーに向きます。組織はシートの種類を混在でき、必要な人だけに Premium シートを割り当て、ほかのメンバーは Standard シートのままにできます。",
+  "explanation": "正解は a です。Team プランの Premium シートは、Standard シートのすべての機能に加えて、Standard シートより大幅に多い利用量を持ち、負荷の高い作業をするパワーユーザーに向きます。セッションあたりの利用量は、Standard シートが Pro の 1.25 倍、Premium シートが 6.25 倍です。組織はシートの種類を混在でき、必要な人に Premium シートを割り当て、ほかのメンバーは Standard シートのままにできます。\n\n見分け方: シートの種類は混在できるので、全員をそろえる(d)必要はありません。Enterprise へのアップグレード(b)は、150 席を超える場合などに案内されているもので、3 人の不足のために組織全体を移す話ではありません。Team プラン自体に Premium シートという手段があるので、個人の Max プランに分ける(c)必要もありません。",
   "refs": [
    "https://support.claude.com/en/articles/9266767-what-is-the-team-plan"
+  ],
+  "topics": [
+   "team-enterprise-plans"
   ]
  },
  {
@@ -627,9 +681,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "usage-based の Enterprise プランでは、席の料金はプラットフォームへのアクセスだけをまかない、Chat、Claude Code、Cowork のすべての利用が標準の API 料金で別途請求されます。席ごとの上限やトークンの枠はありません。費用の見通しが必要なら、管理者が組織とユーザーの単位で支出上限を設定します。",
+  "explanation": "正解は c です。usage-based の Enterprise プランでは、席の料金はプラットフォームへのアクセスだけをまかない、利用量を含みません。Claude、Claude Code、Cowork のすべての利用は、実際の消費量に基づいて標準の API 料金で別途請求されます。席ごとの利用上限も、含まれるトークンの枠もありません。費用の見通しが必要な場合は、管理者が組織とユーザーの単位で支出上限(spend limits)を設定できます。\n\n見分け方: 席の料金にトークンが含まれる(a)、利用量が定額に含まれる(b)は、いずれも「席の料金には利用量が含まれない」という記述と合いません。席ごとの週次上限(d)は、Team プランや旧来の席課金の Enterprise(Standard と Premium のシート)の仕組みで、usage-based の Enterprise にはプランや席の単位の上限がありません。",
   "refs": [
    "https://support.claude.com/en/articles/9797531-what-is-the-enterprise-plan"
+  ],
+  "topics": [
+   "team-enterprise-plans"
   ]
  },
  {
@@ -664,10 +721,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "Ultra プラン(旧 Max 20x)は Pro の 10 倍の利用量を週単位で持ち、確認済み(verified)のアカウントには 5 時間ごとの上限がありません。まだ確認されていないアカウントには一時的な上限がかかりますが、確認が済むと自動で外れます。Max プランには 5 時間ごとの上限と週次の上限があります。",
+  "explanation": "正解は b です。Ultra プラン(旧 Max 20x)は、週ごとに Pro プランの 10 倍の利用量を持ち、確認済み(verified)のアカウントには 5 時間ごとの上限がありません。確認はアカウントや支払いの履歴などから自動で行われ、まだ確認されていないアカウントには一時的な上限がかかりますが、確認が済めば自動で外れます。週次の上限は残るので、週単位の利用量で働きたいという要件に合います。\n\n見分け方: Team プラン(a)は最低 2 人が必要です。Pro プラン(c)にも 5 時間の上限と週次の上限があります。Max プラン(d)は月払いのみで、5 時間の上限と週次の上限があり、支払い方法で上限の仕組みが変わるという説明はありません。",
   "refs": [
    "https://support.claude.com/en/articles/17728952-what-is-the-ultra-plan",
    "https://support.claude.com/en/articles/11049741-what-is-the-max-plan"
+  ],
+  "topics": [
+   "individual-plans"
   ]
  },
  {
@@ -686,7 +746,7 @@
    {
     "id": "b",
     "text": "Pro プランの週次上限のうち最大 50% までを、追加料金なしで Fable に使える",
-    "why": "週次上限の 50% まで Fable に使えるのは Max、Ultra、Team と席課金の Enterprise の Premium シート。Pro では含まれない。"
+    "why": "週次上限の 50% までを Fable に使えるのは、Max、Ultra と、Team や席課金の Enterprise の Premium シート。Pro には含まれない。"
    },
    {
     "id": "c",
@@ -702,9 +762,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Fable 5.2、5.1、5 はすべての有料プランで利用できますが、扱いはプランで異なります。Max、Ultra、Team と席課金の Enterprise の Premium シートでは、週次上限の 50% までを追加料金なしで Fable に使えます。Pro と Team の Standard シートでは Fable は利用上限に含まれず、最初から usage credits(従量課金)で使います。",
+  "explanation": "正解は c です。Fable 5.2、5.1、5 はすべての有料プランで使えますが、扱いはプランで異なります。Pro プラン、Team の Standard シート、旧来の席課金の Enterprise の Standard シートでは、Fable モデルはプランの利用上限に含まれず、最初から従量課金の usage credits で使います。Max、Ultra と、Team や席課金の Enterprise の Premium シートでは、週次上限の 50% までを追加料金なしで Fable に使えます。\n\n見分け方: Fable は Pro でも使えるので、a は誤りです。週次上限の 50% まで使える(b)のは Max、Ultra、Premium シートの扱いです。Fable 5 を上限に含めていたプロモーションは 2026 年 7 月 19 日に終わり、Fable 5.2 も usage credits で使えるので、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/15424964-claude-fable-models-on-your-plan"
+  ],
+  "topics": [
+   "fable-on-plans"
   ]
  },
  {
@@ -740,9 +803,12 @@
    "a",
    "b"
   ],
-  "explanation": "Max と Ultra のプラン(と Team、席課金 Enterprise の Premium シート)では、週次上限の 50% までを Fable に使えます。そこに達したら、usage credits を使って Fable を続けるか、別のモデルに切り替えてプランの上限内で作業を続けます。Fable 用に上限が上乗せされるわけではなく、ほかのモデルの利用も同じ週次上限から引かれます。",
+  "explanation": "正解は a と b です。Max、Ultra と、Team や席課金の Enterprise の Premium シートでは、週次上限の 50% までを追加料金なしで Fable モデルに使えます。そこに達したときの進め方として、ヘルプセンターは、usage credits を使って Fable を使い続けるか、別の Claude モデルに切り替えてプランの利用上限の範囲で作業を続けるか、の 2 つを挙げています。\n\n見分け方: FAQ は、Fable に週次上限の 50% までを使えるだけで、ほかのモデルの利用も同じ上限から引かれ、週次上限を超えて使えることはないと説明しています。50% が上乗せされる(c)ことはありません。Fable の枠は週次上限の一部で、5 時間ごとのリセットで戻る(d)という説明はありません。",
   "refs": [
    "https://support.claude.com/en/articles/15424964-claude-fable-models-on-your-plan"
+  ],
+  "topics": [
+   "fable-on-plans"
   ]
  },
  {
@@ -777,9 +843,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "有料プランのチャットでは、モデルごとにコンテキストウィンドウが異なります。Sonnet 5.5、Opus 5.5、Haiku 5.5、Fable 5.2 などは 1M トークン、Opus 4.8 や Sonnet 4.6 などは 500K トークンで、表にないモデルは 200K トークン(約 500 ページ以上の文章)です。長い資料を 1 つの会話で扱うときは、使うモデルの値を確かめます。",
+  "explanation": "正解は d です。有料プランのチャットのコンテキストウィンドウはモデルごとに異なり、表では Claude Sonnet 5.5 が 1M トークンです。表にないモデルは 200K で、約 500 ページ以上の文章を扱えると説明されています。チャットの表では、Fable 5.2、Opus 5.5、Haiku 5.5 なども 1M トークン、Opus 4.8 や Sonnet 4.6 などは 500K トークンです。\n\n見分け方: モデルによって 1M、500K、200K と分かれるので、一律 200K(a)は誤りです。1M はチャットの表にもあり、Claude Code だけの機能(b)ではありません。usage credits の条件(c)は、Claude Code で Opus 4.6 や Sonnet 4.6 の [1m] 付きのモデルを /model で選ぶ場合の注記で、チャットの表にはありません。",
   "refs": [
    "https://support.claude.com/en/articles/8606394-how-large-is-the-context-window-on-paid-claude-plans"
+  ],
+  "topics": [
+   "context-window"
   ]
  },
  {
@@ -814,9 +883,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Claude in Chrome は、Claude が Web サイトを読み、クリックし、移動するブラウザ拡張で、有料プランで使えます。サイドパネルを開くと、Claude は今のページを見て、読み取り、クリック、入力、フォームの記入を行えます。Web サイトを直接操作するため、使う前に安全な使い方の記事を確認することが勧められています。",
+  "explanation": "正解は a です。Claude in Chrome は、Claude が Web サイトを読み、クリックし、移動するブラウザ拡張で、有料プラン(Pro、Max、Ultra、Team、Enterprise)で使えます。Chrome のツールバーの Claude アイコンからサイドパネルを開くと、Claude は今見ているページの内容を見て、読み取り、クリック、入力、移動、フォームの記入を行えます。Web サイトを直接操作するため、使う前に安全な使い方の記事を確認するよう案内されています。\n\n見分け方: 必要なのは、開いているページを操作することです。Research(b)は調査とレポート作成、Web 検索(c)は Web 上の情報を探す機能で、どちらもブラウザ上でクリックや入力を行うものではありません。プロジェクト(d)は資料と指示をまとめる作業スペースで、ブラウザを操作する機能はありません。",
   "refs": [
    "https://support.claude.com/en/articles/12012173-get-started-with-claude-in-chrome"
+  ],
+  "topics": [
+   "claude-in-chrome"
   ]
  },
  {
@@ -851,9 +923,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "チャットと Cowork を統合した新しい体験では、Web 検索のトグルはなくなり、Claude が役に立つときに自分で Web を検索します。詳しい調査をしたい場合は、/deep-research と入力するか、入力欄の下の「+」から「Research」を選びます。",
+  "explanation": "正解は b です。チャットと Cowork を 1 つにした新しい Claude の体験では、いくつかの機能の場所が変わりました。ヘルプセンターの「新しい場所」の一覧には、Web 検索のトグルはなく、Claude が役に立つときに Web を検索する、と書かれています。詳しい調査をしたいときは、/deep-research と入力するか、入力欄の下の「+」から「Research」を選びます。\n\n見分け方: Web 検索がなくなった(a)のではなく、Claude が必要に応じて検索します。トグルが Settings > Capabilities に移った(c)という説明はなく、トグルそのものがありません。Web 検索をプランで制限した(d)という記述もありません。新しい体験は Pro、Max、Ultra に段階的に提供されています。",
   "refs": [
    "https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude"
+  ],
+  "topics": [
+   "unified-claude",
+   "research"
   ]
  },
  {
@@ -888,9 +964,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "2026 年 10 月 6 日から、Pro、Max、Ultra の新しい Cowork のタスクはクラウドで動き、「Only on your computer」の設定は削除されました。PC 上だけで動く新しいタスクには、デスクトップアプリの Claude Code を使うよう案内されています。Claude Code は PC 上で動き、フォルダと履歴も PC に残ります。",
+  "explanation": "正解は c です。2026 年 10 月 6 日から、Pro、Max、Ultra の新しい Cowork のタスクはクラウドで動き、Settings > General の「Only on your computer」は削除されました。これらのプランには、タスクを動かす場所を選ぶ設定はありません。ヘルプセンターは、PC 上だけで動く新しいタスクには、デスクトップアプリの Claude Code を使うよう案内しています。Claude Code は PC 上で動き、フォルダと履歴も PC に残ります。\n\n見分け方: 「Only on your computer」(a)は削除された設定です。Claude Desktop が開いている必要がある(b)のは、ローカルのファイル、ブラウザ、コンピューター操作を使う場合で、タスク自体はクラウドで動きます。メモリ(d)は記憶を使うかどうかの設定で、タスクを動かす場所とは関係がありません。",
   "refs": [
    "https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile"
+  ],
+  "topics": [
+   "cowork"
   ]
  },
  {
@@ -899,7 +978,7 @@
   "domain": "product-and-model-selection",
   "type": "single",
   "scenarioId": null,
-  "stem": "営業担当者が外出中にスマートフォンの Claude で、PC の「提案書」フォルダにあるファイルを整理するタスクを始めた。ローカルのフォルダを使うタスクについて、ヘルプセンターの説明に合うものはどれか。",
+  "stem": "営業担当者が PC の Claude Desktop で、接続済みの「提案書」フォルダのファイルを整理するクラウドのタスクを始めてから外出し、スマートフォンで進み具合を確認している。ローカルのフォルダを使うタスクについて、ヘルプセンターの説明に合うものはどれか。",
   "choices": [
    {
     "id": "a",
@@ -908,8 +987,8 @@
    },
    {
     "id": "b",
-    "text": "ローカルのファイルを使えるのは、タスクを PC の Claude Desktop から始めた場合だけで、スマートフォンからは使えない",
-    "why": "タスクを始める端末は問わない。PC のファイルに届くために、Claude Desktop が開いている必要がある。"
+    "text": "PC で始めたタスクなので、外出中に PC の Claude Desktop を閉じても、ローカルのファイルを引き続き読み書きできる",
+    "why": "アプリを閉じてもセッションは動き続けるが、ローカルのファイルには届かなくなる。デスクトップで始めたことは条件の 1 つにすぎない。"
    },
    {
     "id": "c",
@@ -918,17 +997,21 @@
    },
    {
     "id": "d",
-    "text": "PC のファイルやフォルダを使うタスクには、PC で Claude Desktop が開いている必要がある",
-    "why": "正解。ヘルプは、PC のファイルやアプリを使うタスクには Claude Desktop を開いておく必要があると説明している。"
+    "text": "タスクが PC のフォルダのファイルを読み書きするには、PC で Claude Desktop が開いている必要がある",
+    "why": "正解。クラウドのセッションが接続済みフォルダを読み書きできるのは、その PC でデスクトップアプリが開いている間だけである。"
    }
   ],
   "answer": [
    "d"
   ],
-  "explanation": "クラウドで動く Cowork のタスクは、PC を閉じても続き、スマートフォンからも始められます。ただし、Claude が PC のローカルファイル、組み込みブラウザ、コンピューター操作に届くのは、Claude Desktop が開いている間だけです。フォルダは PC に残り、タスクが必要とするファイルだけのコピーが取得されます。",
+  "explanation": "正解は d です。ヘルプセンターによると、クラウドのセッションが PC の接続済みフォルダのファイルを読み書きできるのは、その PC でデスクトップアプリが開いていて、かつセッションをデスクトップで始めたか予定タスク(scheduled task)である場合だけです。アプリが閉じていると、セッションは動き続けますが、ローカルのファイルには届きません。届くのは接続したフォルダだけで、すでに設定した権限の範囲に限られます。\n\n見分け方: デスクトップで始めたことは条件の 1 つで、アプリを閉じれば届かなくなります(b)。フォルダ全体をクラウドに同期する(a)という説明はありません。クラウドのタスクでも、条件を満たせばローカルのファイルを使えます(c)。",
   "refs": [
    "https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude",
    "https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile"
+  ],
+  "topics": [
+   "cowork",
+   "unified-claude"
   ]
  },
  {
@@ -963,9 +1046,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "2026 年 10 月 29 日に、Free、Pro、Max のチャット、Cowork、Claude Design のモデル選択画面から Haiku 4.5 が外れ、Haiku 5.5 に置き換わりました。過去のチャットは残っており、続けると Haiku 5.5 が応答します。Claude Code、Team と Enterprise プラン、API では Haiku 4.5 を引き続き使えます。",
+  "explanation": "正解は b です。2026 年 10 月 29 日、Free、Pro、Max のチャット、Claude Cowork、Claude Design のモデル選択画面から Claude Haiku 4.5 が外れ、Claude Haiku 5.5 に置き換わりました。Haiku 4.5 で始めたチャットは削除されずにアカウントに残っており、10 月 29 日以降に続けると Haiku 5.5 が応答します。モデルはチャットの途中でもいつでも切り替えられます。\n\n見分け方: Claude Code、Team と Enterprise プラン、API(Claude Platform)の Haiku 4.5 はこの変更の影響を受けていないので、すべてから提供を終えた(a)は誤りです。10 月 29 日以降は「More models」からも Haiku 4.5 を選べません(c)。過去のチャットは続けられるので、読み取り専用になる(d)こともありません。",
   "refs": [
    "https://support.claude.com/en/articles/17444146-claude-haiku-4-5-was-removed-from-the-model-selector"
+  ],
+  "topics": [
+   "haiku-4-5-removal"
   ]
  },
  {
@@ -994,16 +1080,19 @@
    {
     "id": "d",
     "text": "150 人を超える分のメンバーには、各自で Pro プランを契約させて共有プロジェクトに招待する",
-    "why": "個人プランのアカウントを組織のプロジェクトに招待する運用は案内されておらず、管理や請求も分断される。"
+    "why": "個人プランのアカウントを組織のプロジェクトに招待する運用は案内されていない。150 席を超える場合の案内は Enterprise へのアップグレードである。"
    }
   ],
   "answer": [
    "b"
   ],
-  "explanation": "Team プランは最低 2 人から最大 150 席までです。150 席を超える必要がある組織は、Enterprise プランへアップグレードできます。Enterprise は Team の機能に加えて、監査ログ、SCIM、独自のデータ保持期間などのセキュリティとコンプライアンスの機能を持ちます。",
+  "explanation": "正解は b です。Team プランは最低 2 人から最大 150 席までで、150 席を超える必要がある組織は Enterprise プランにアップグレードできます。Enterprise は Team のすべての機能を含み、監査ログ、SCIM、独自のデータ保持の設定、Compliance API などのセキュリティとコンプライアンスの機能が加わります。200 人に増やす計画なら、Enterprise への移行を検討します。\n\n見分け方: Team プランには 150 席の上限があるので、上限がない(c)は誤りです。150 席を超える場合にヘルプセンターが案内しているのは Enterprise へのアップグレードで、Team を 2 つの組織に分ける(a)方法や、個人の Pro プランのアカウントを組織のプロジェクトに招待する(d)方法は説明されていません。",
   "refs": [
    "https://support.claude.com/en/articles/9266767-what-is-the-team-plan",
    "https://support.claude.com/en/articles/9797531-what-is-the-enterprise-plan"
+  ],
+  "topics": [
+   "team-enterprise-plans"
   ]
  },
  {
@@ -1038,9 +1127,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Pro プランは Claude のチャットのための有料プランで、Claude Console を通じた API の利用は含まれません。チャットの機能と API の両方を使いたい場合は、Console を設定し、API の利用料を別に支払います。",
+  "explanation": "正解は c です。Pro プランは Claude のチャットのための有料プランで、Free より多い利用量、混雑時の優先アクセス、Claude Code などを含みます。一方、ヘルプセンターは、Pro プランには Claude Console を通じた API の利用が含まれないと明記しています。チャットの機能と Claude API の両方を使いたい場合は、Console を設定し、API の利用料を別に支払います。\n\n見分け方: API の利用は Pro プランに含まれないので、Pro の利用量の範囲で呼び出す(a)ことも、追加の支払いなしに使う(d)こともできません。Pro プランの契約者に API の割引がある(b)という説明もありません。なお、Claude API の月次クレジットが含まれると説明されているのは、Max、Ultra、Team の各プランです。",
   "refs": [
    "https://support.claude.com/en/articles/8325606-what-is-the-pro-plan"
+  ],
+  "topics": [
+   "individual-plans"
   ]
  }
 ]

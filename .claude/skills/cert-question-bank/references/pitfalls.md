@@ -52,3 +52,32 @@
 - UI の設定名を、本文にない日本語訳で書いた(「アカウントのメモリを使う」)。別の問題の表記ともずれた。設定名は本文の英語表記のまま書く。
 - 解説の締めに、出典にない一言を足していた(「意図的にできないようになっている」「〜に特化している」「回答は誤りを含みうる」など)。出典にない設計意図や性格づけは書かない。
 - 誤答の `why` で「〜は戻らない。出典にもそうした記述はない」のように、断定したあとで出典がないことにも触れ、自己矛盾していた。根拠がないなら「出典に〜という記述はない」とだけ書く。
+
+## トピック付けの試作で見つかったもの(2026-11-20)
+
+- `platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use` は `define-tools` に転送される。結果の返し方は `handle-tool-calls`、並列呼び出しは `parallel-tool-use`、strict は `strict-tool-use` に分かれた。参照先は内容に合うページに付け替える。
+- `www.anthropic.com/engineering/writing-tools-for-agents` は `www.anthropic.com/research/writing-tools-for-agents` に移った。
+- 並列ツール呼び出しで「アプリケーションは並行して実行する」と書いていた。実行の順番はアプリケーションが選ぶもので、API は決めない。結果を 1 つの user メッセージにまとめて返すことが要点。
+- `disable_parallel_tool_use` は `tool_choice` オブジェクトの中に書く。トップレベルのパラメータではない。
+- 記憶の Pause memory は「新しい記憶が作られなくなるだけ」ではなく、記憶の利用も止める。
+- Define tools は「不透明な内部参照ではなく、意味のある安定した識別子(slug や UUID)」を返すよう勧めている一方、記事 Writing effective tools for agents は uuid のような低水準の識別子を避けるよう勧めている。UUID について書くときは、どちらの出典の主張かを明示する。
+
+## CCAO-F・CCDV-F の全問トピック付けで見つかったもの(2026-11-21)
+
+移転したページ(参照先は移転先に付け替えた。CCAR-F と CCAR-P の問題には古い URL が残っている。転送されるので開けるが、内容が統合されて該当の記述が消えていることがある):
+
+- プロンプトの個別ページ(`prompt-engineering/use-xml-tags`、`multishot-prompting`、`long-context-tips`、`system-prompts`、`be-clear-and-direct`、`chain-of-thought`、`chain-prompts`、`prompt-templates-and-variables`)は `prompt-engineering/claude-prompting-best-practices` に統合された。旧ページにあった言い回し(「各段階に注意を集中できる」など)は新しいページにないことがある。
+- `about-claude/models/overview` → `models/overview`。`claude-on-vertex-ai` → `claude-models-on-google-cloud/google-managed`(ドキュメントの呼び名も「Vertex AI」ではなくなった)。
+- `www.anthropic.com/engineering/*` の記事はすべて `www.anthropic.com/research/*` に移った。
+- `test-and-evaluate/define-success` と `eval-tool` は `develop-tests` に転送される。
+
+現在の仕様と食い違っていたもの(問題文・選択肢を直した):
+
+- Cowork のクラウドのセッションが PC の接続済みフォルダを読み書きできるのは、デスクトップアプリが開いていて、かつセッションをデスクトップで始めたか予定タスクの場合だけ。「スマートフォンから始めたタスクでも、アプリが開いていれば使える」は誤り(asc-prod-025)。
+- Managed Agents の実行環境は、既定は Anthropic のクラウドのサンドボックスだが、セルフホストのサンドボックスも選べる。「両方を Anthropic が運用する」と言い切らない(dev-agent-026)。
+- 手動の chain-of-thought(`<thinking>` タグに推論を書かせる)は、思考がオフのときの代替。Fable 5.x、Opus 5.5、Opus 5、Sonnet 5.5 では思考に任せるよう勧められ、推論をタグで書かせるプロンプトは `reasoning_extraction` で断られることがある(dev-prompt-009)。
+- Messages API の文書に「最初のメッセージは user でなければならない」という規則はない。書かれているのは、user と assistant が交互に並ぶターンで訓練されていることと、連続する同じロールは 1 ターンに結合されること(dev-app-019)。
+- Claude Code の `-p` は、ドキュメントでは「非対話モード(non-interactive mode)」と呼ぶ。「ヘッドレスモード」は URL に残っているだけ(dev-cc-002)。
+- アーティファクトの共有で「閲覧者はチャットの添付ファイルにもアクセスできる」という注意は、旧来のアーティファクト(「Share & copy link」)の節にある(asc-eval-041)。
+- `temperature` などのサンプリング引数は、Claude 4.7 以降のモデルでは既定以外の値で 400 になり、API バージョン 2026-10-21 で削除された。
+- プロンプトキャッシュの読み出しの倍率はモデルで異なる(多くは 0.1 倍、Opus 5.5 と Sonnet 5.5 は 0.05 倍、Fable 5.2 などは 0.025 倍)。

@@ -31,10 +31,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "成功の基準は、具体的で、測定でき、達成可能で、用途に関連するものにします。評価は実際の入力の分布を反映させ、境界事例も含めます。",
+  "explanation": "正解は a です。公式ドキュメントのプロンプトエンジニアリングの概要は、プロンプトを改良する前提として、用途に合った成功の基準、その基準に照らして経験的に試す方法、改良する最初のプロンプトの 3 つを挙げ、なければまずそれを整えるよう勧めています。成功の基準は、具体的で、測定でき、達成でき、用途に関連するものにします。\n\n見分け方: 技法をすべて適用する(b)と、何が効いたのかを測れないまま複雑になります。少数の入力を手で試すだけ(c)では、評価の原則にある、実際の入力の分布や境界事例を反映した確認になりません。モデルの変更(d)は、遅延や費用の改善に役立つことがあると書かれていますが、基準と評価がなければ効果を判断できません。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/define-success",
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ],
+  "topics": [
+   "success-criteria-evals"
   ]
  },
  {
@@ -69,9 +72,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "評価は、量を優先して自動化します。LLM による採点を使う場合は、詳細な採点基準を与え、判定の前に理由を書かせると信頼性が上がります。",
+  "explanation": "正解は a です。公式ドキュメントは、採点方法は最も速く、確実で、規模を広げられるものを選ぶとしています。完全一致や文字列の一致などのコードによる採点は、最も速く確実ですが、複雑な判断には向きません。LLM による採点は速く柔軟で複雑な判断にも使えますが、まず信頼性を確かめてから規模を広げます。人による採点は最も柔軟で質が高い一方、遅く高価なので、できれば避けます。\n\n見分け方: すべてを人が採点する(b)のは遅く高価で、評価の原則「質より量」にも合いません。すべてを LLM に任せる(c)と、記事 Demystifying evals for AI agents が挙げる非決定性と、コードより高い費用を、機械的に判定できるものにまで持ち込みます。印象で判断する(d)のは、評価を自動で採点できる形にする原則に反します。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+   "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "eval-grading"
   ]
  },
  {
@@ -106,9 +113,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "採点基準は「〜に言及していれば正解」のように具体的に書きます。出力は「正解/不正解」や段階評価のように機械的に集計できる形にします。",
+  "explanation": "正解は a です。公式ドキュメントは LLM による採点のコツとして、詳細で明確な採点基準を与える、出力を「correct / incorrect」や 1〜5 の段階のように具体的にする、採点するモデルの thinking を有効にして評価の前に推論させる、を挙げています。記事 Demystifying evals for AI agents は、LLM の採点者を人の専門家と密に較正し、人とモデルの採点のずれが小さいことを確かめるよう勧めています。\n\n見分け方: 採点基準を与えない(b)と、記事が指摘するとおり、曖昧な基準は判定のぶれを生みます。採点のプロンプトを毎回変える(c)と、同じ条件で結果を比べられなくなります。採点結果を確かめずに信頼する(d)のは、まず信頼性を確かめてから規模を広げるという手順に反します。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+   "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "eval-grading",
+   "agent-evals"
   ]
  },
  {
@@ -143,9 +155,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "プロンプトの変更はコードの変更と同じように扱い、版を管理して、評価セットによる回帰テストを行います。評価セットには、過去に見つかった失敗例を追加していきます。",
+  "explanation": "正解は a です。記事 Demystifying evals for AI agents は、以前できていた課題を今もこなせるかを確かめる回帰の評価を、変更のたびに走らせるよう勧めています。能力の評価で改善を重ねるときは、変更が別の所で問題を起こしていないかを回帰の評価で確かめます。評価がないチームは、1 つの失敗を直すと別の失敗を生む繰り返しに陥り、本当の退行と雑音を区別できないとしています。\n\n見分け方: 修正に関係する入力だけを見る(b)と、まさにこの問題のような別の種類の入力での退行を見逃します。プロンプトの変更を禁止する(c)と、改善もできなくなります。報告を待って直す(d)のは、記事が本番の監視の短所として挙げる「利用者に問題が届いてから気付く」後追いの対応です。",
   "refs": [
+   "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "agent-evals",
+   "success-criteria-evals"
   ]
  },
  {
@@ -180,9 +197,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "評価は、実際の入力の分布を反映させます。手作りの事例が少ない場合は、Claude に事例の生成を手伝わせて、量を増やせます。",
+  "explanation": "正解は a です。公式ドキュメントは評価の設計の原則として、実際の課題の入力の分布を反映させ、境界事例を忘れないことを挙げています。境界事例の例は、関係のない入力や存在しない入力、長すぎる入力、(チャットでは)質の悪い・有害な・無関係な入力、人でも判断が分かれる曖昧な事例です。テストケースを手で多く書くのが難しいときは、基本の事例から Claude に追加の事例を作らせられます。\n\n見分け方: うまくいく典型的な入力だけ(b)では、境界事例での弱点が見つかりません。1 件だけ(c)では、質より量を優先するという原則に反します。本番で起こらない特殊な入力だけ(d)では、実際の入力の分布を反映しません。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "success-criteria-evals"
   ]
  },
  {
@@ -217,10 +237,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "デバッグでは、まず実際のやり取りを観察します。ツールの説明の不足、結果の分かりにくさ、指示の曖昧さが、よくある原因です。",
+  "explanation": "正解は a です。記事 Writing effective tools for agents は、評価の結果を分析するとき、エージェントの推論とフィードバックを読み、さらにツール呼び出しとツールの応答を含む生のトランスクリプトを確認して、推論に書かれていない振る舞いも見つけるよう勧めています。記事 Demystifying evals for AI agents も、失敗したときのトランスクリプトを読めば、エージェントの誤りか採点の誤りかが分かるとしています。\n\n見分け方: 最終的な出力だけを見る(b)と、途中のどのツール呼び出しや結果で判断を誤ったのかが分かりません。原因を確かめずにプロンプトを推測で書き換える(c)ことや、モデルを無作為に替える(d)ことは、実際のやり取りを観察して原因を特定する手順を飛ばしています。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents",
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+   "https://www.anthropic.com/research/writing-tools-for-agents",
+   "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "agent-evals"
   ]
  },
  {
@@ -255,9 +278,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "比較は、同じ入力、同じ採点基準で行います。差が小さい場合は、事例数を増やして確かめます。",
+  "explanation": "正解は a です。公式ドキュメントは、定量的な方法の例として、基準のモデルや以前の版と性能を比べる A/B テストを挙げています。比べるときは、同じ評価セットの入力に対して両方の案を実行し、同じ採点方法と採点基準で採点します。記事 Demystifying evals for AI agents は、モデルの出力は実行ごとに変わるため、複数回の試行で結果を安定させるとしています。\n\n見分け方: 別々の入力で 1 回ずつ試す(b)と、結果の差が入力の違いによるのかプロンプトの違いによるのかを区別できず、印象での判断は自動で採点できる形にする原則にも反します。長さ(c)や新しさ(d)は、成功の基準として定めた品質の指標ではありません。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "success-criteria-evals",
+   "eval-grading"
   ]
  },
  {
@@ -292,10 +319,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "調整用と確認用の事例を分けると、合わせ込みを検知できます。評価セットが本番の入力を反映しているかも、見直します。",
+  "explanation": "正解は a です。調整に使った評価セットの成績だけを見ていると、その事例に合わせ込んだだけの変更でも改善に見えます。記事 Writing effective tools for agents は、「訓練用」の評価に合わせ込みすぎないよう、held-out のテストセットで確かめたと述べています。公式ドキュメントの成功の基準の例も、held-out のテストセットでの F1 スコアを基準にしています。あわせて、評価セットが実際の入力の分布を反映しているかも見直します。\n\n見分け方: 評価セットが大きいこと(b)は原因ではなく、公式ドキュメントはむしろ質より量を優先するよう勧めています。コードによる採点(c)は、採点方法の第一候補とされています。評価の回数(d)を増やしても、同じ事例で測る限り合わせ込みは見抜けません。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
-   "https://platform.claude.com/docs/en/test-and-evaluate/define-success"
+   "https://www.anthropic.com/research/writing-tools-for-agents",
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "agent-evals",
+   "success-criteria-evals"
   ]
  },
  {
@@ -330,9 +361,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "成功の基準は、具体的で、測定でき、達成可能で、用途に関連するものにします。品質、速度、費用など、複数の観点を持つのが一般的です。",
+  "explanation": "正解は a です。良い成功の基準は、具体的(Specific)で、測定でき(Measurable)、達成でき(Achievable)、用途に関連する(Relevant)ものです。公式ドキュメントの例では、「感情をうまく分類すること」は悪い基準で、「多様な 10,000 件の投稿の held-out のテストセットで F1 スコア 0.85 以上」が良い基準です。多くの用途では、品質と応答時間のように複数の観点で基準を立てます。\n\n見分け方: 「良い感じに」(b)は具体的でも測定できるものでもありません。利用者の満足(c)を基準にするなら、タスクの完了率のような測り方を決める必要があります。「できるだけ速い」(d)には目標の値がなく、例のように「95% の応答が 200 ms 未満」と数値で示します。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/define-success"
+  ],
+  "topics": [
+   "success-criteria-evals"
   ]
  },
  {
@@ -367,9 +401,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "API はエラーを必ず JSON で返し、最上位の error オブジェクトには type と message が含まれます。429 の rate_limit_error や 529 の overloaded_error のように、ステータスコードと type の組で種類が決まります。本文の request_id は、問い合わせや調査のときにリクエストを特定するために使います。",
+  "explanation": "正解は c です。Claude API はエラーを決まった HTTP ステータスコードで返し、本文は常に JSON で、最上位の error オブジェクトには必ず type と message が入ります。例えば 429 は rate_limit_error、529 は overloaded_error、500 は api_error です。公式の SDK は、接続エラー、レート制限、5xx などの一時的な失敗を既定で 2 回、指数バックオフで自動的に再試行します。\n\n見分け方: 公式ドキュメントは、エラーメッセージの文字列を照合するのではなく、SDK の型付きの例外クラスで捕まえるよう勧めています(a は誤り)。所要時間(b)からはエラーの種類は分かりません。request-id(d)は応答ごとに一意の値で、サポートへの問い合わせのときにリクエストを特定するために使い、種類は表しません。",
   "refs": [
    "https://platform.claude.com/docs/en/api/errors"
+  ],
+  "topics": [
+   "api-errors"
   ]
  },
  {
@@ -404,9 +441,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "SDK は、処理の終わりに結果メッセージを返します。ターン数の上限内で完了すると subtype は success になり、上限に達すると error_max_turns になります。原因の切り分けでは、出力の文面ではなく、このような構造化された値を見ます。",
+  "explanation": "正解は b です。Agent SDK のループが終わると ResultMessage が返り、その subtype が終わり方を調べる主な手段です。上限内で通常に完了すると success、maxTurns の上限に達すると error_max_turns になります。ほかに error_max_budget_usd や error_during_execution があります。最終のテキストが入る result フィールドは success のときだけあるので、読む前に subtype を確かめます。\n\n見分け方: 最後のメッセージの文面(a)から終わった理由を推測する方法は、構造化された subtype を見る方法に比べて当てになりません。上限に達した場合は最終の応答がそもそもありません。429(c)はレート制限のエラーで、ターン数の上限とは別です。所要時間(d)からは止まった理由を特定できません。",
   "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/agent-loop",
    "https://code.claude.com/docs/en/agent-sdk/hosting"
+  ],
+  "topics": [
+   "agent-sdk-loop"
   ]
  }
 ]

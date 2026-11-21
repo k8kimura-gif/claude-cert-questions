@@ -13,6 +13,23 @@ for (const cert of ['developer', 'architect', 'architect-pro', 'associate']) {
   const mockSum = exam.domains.reduce((s, d) => s + d.mockCount, 0);
   if (mockSum !== exam.questions) err(`${cert}: mockCount の合計 ${mockSum} が問題数 ${exam.questions} と不一致`);
 
+  // トピック(公式資料の概要)。問題の topics から参照される
+  const tpath = `topics/${cert}.json`;
+  const topics = new Set();
+  if (existsSync(tpath)) {
+    for (const t of readJson(tpath)) {
+      const at = `${tpath} ${t.id}`;
+      if (!t.id || topics.has(t.id)) err(`${at}: id がない、または重複`);
+      topics.add(t.id);
+      if (!t.title || !t.summary) err(`${at}: title / summary がない`);
+      if (!Array.isArray(t.points) || !t.points.length || t.points.some((x) => typeof x !== 'string' || !x)) err(`${at}: points が不正`);
+      if (!Array.isArray(t.sources) || !t.sources.length || t.sources.some((x) => !x.title || !/^https:\/\//.test(x.url ?? ''))) err(`${at}: sources が不正`);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(t.checked ?? '')) err(`${at}: checked が日付でない`);
+    }
+  }
+  const usedTopics = new Set();
+  let withTopics = 0;
+
   let scenarios = {};
   if (exam.scenarioBased) {
     for (const s of readJson(`questions/${cert}/scenarios.json`)) {
@@ -49,6 +66,13 @@ for (const cert of ['developer', 'architect', 'architect-pro', 'associate']) {
         if (!q.stem.includes(`${q.answer?.length}つ`)) err(`${at}: multi の問題文に「${q.answer?.length}つ」がない`);
       }
       if (!Array.isArray(q.refs) || !q.refs.length || q.refs.some((r) => !/^https:\/\//.test(r))) err(`${at}: refs が不正`);
+      if (q.topics !== undefined) {
+        if (!Array.isArray(q.topics) || !q.topics.length) err(`${at}: topics が不正`);
+        else {
+          withTopics++;
+          for (const t of q.topics) { if (!topics.has(t)) err(`${at}: トピック ${t} が ${tpath} にない`); usedTopics.add(t); }
+        }
+      }
       if (exam.scenarioBased) {
         if (!(q.scenarioId in scenarios)) err(`${at}: scenarioId ${q.scenarioId} がない`);
         else scenarios[q.scenarioId]++;
@@ -56,6 +80,11 @@ for (const cert of ['developer', 'architect', 'architect-pro', 'associate']) {
     }
   }
   console.log(`  計 ${total} 問`);
+  if (topics.size) {
+    console.log(`  トピック ${topics.size} 件。トピック付きの問題 ${withTopics} / ${total} 問`);
+    if (withTopics !== total) err(`${cert}: トピックのない問題が ${total - withTopics} 問ある(${tpath} がある資格では全問に必要)`);
+    for (const t of topics) if (!usedTopics.has(t)) err(`${tpath} ${t}: どの問題からも参照されていない`);
+  }
   for (const [s, n] of Object.entries(scenarios)) console.log(`  シナリオ ${s}: ${n} 問`);
 }
 

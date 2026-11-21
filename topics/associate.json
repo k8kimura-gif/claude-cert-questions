@@ -1,0 +1,1926 @@
+[
+ {
+  "id": "projects",
+  "title": "プロジェクト",
+  "summary": "プロジェクトは、独自のチャット履歴とナレッジベースを持つ独立した作業スペースです。無料プランを含むすべての利用者が使え、無料プランでは最大 5 個まで作れます。ナレッジベースに文書、テキスト、コードなどを追加すると、そのプロジェクト内のすべてのチャットで背景情報として使われます。プロジェクト指示(project instructions)には、よりフォーマルな口調にする、特定の役割や業界の視点で答える、といった Claude の振る舞いを書きます。プロジェクト指示は、そのプロジェクト内のすべてのチャットに適用されます。一方、プロジェクトの名前と説明は Claude からは参照できません。また、同じプロジェクト内でも、チャット間で文脈は共有されません。共有したい情報はナレッジベースに追加します。なお、ヘルプセンターには Claude Code から段階的に提供が始まった新しい版のプロジェクト(ベータ)の説明もありますが、この概要は現行版のプロジェクトについてのものです。",
+  "points": [
+   "ナレッジベースに追加した資料は、そのプロジェクトのすべてのチャットで使われる",
+   "プロジェクト指示は、そのプロジェクト内のチャットにだけ適用される",
+   "プロジェクトの名前と説明は Claude からは参照できない",
+   "チャット間の文脈は、ナレッジベースに追加しない限り共有されない",
+   "各プロジェクトは独自の記憶(メモリ)を持つ。他と完全に分けるには、プロジェクトのページで「Use account memory」をオフにする",
+   "有料プランでは、ナレッジがコンテキストウィンドウの上限に近づくと RAG が自動で有効になる",
+   "アーカイブしても共有の設定やメンバーは変わらない。アーカイブ中のプロジェクトは削除できず、先にアーカイブを解除する"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/9517075-what-are-projects",
+    "title": "What are projects?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
+    "title": "How can I create and manage projects?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "project-rag",
+  "title": "プロジェクトの RAG(検索拡張生成)",
+  "summary": "有料プラン(Pro、Max、Ultra、Team、Enterprise)では、プロジェクトのナレッジがコンテキストウィンドウの上限に近づくと、Claude が自動で RAG モードに切り替えます。以前は、コンテキストウィンドウに基づく容量の上限に達すると資料を追加できませんでしたが、RAG によって容量が最大 10 倍に広がり、上限を超えても追加を続けられます。RAG モードでは、ナレッジ全体を一度に読み込む代わりに、Claude がプロジェクトナレッジの検索ツールで、質問に答えるのに必要な情報だけを取り出して使います。設定は不要で、いつ RAG を使うかを利用者が制御することもできません。ナレッジが閾値を下回れば、文脈に読み込む方式に自動で戻ることがあります。ヘルプセンターは、応答の品質は文脈に読み込む方式と変わらないと説明しています。",
+  "points": [
+   "対象は有料プラン。自動で有効になり、手動で設定したり切り替えたりする方法はない",
+   "容量は最大 10 倍になる。RAG が有効なことは画面の表示で分かる",
+   "回答するときに、Claude がプロジェクトナレッジの検索ツールを使う様子が見える",
+   "勧められている使い方: 関連する資料を最初から網羅的に追加する、説明的なファイル名を付ける、関連する文書を同じプロジェクトにまとめる、質問で文書を名前で指定する",
+   "Web 検索、拡張思考、Research など、他の機能と一緒に使える"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects",
+    "title": "Retrieval augmented generation (RAG) for projects"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/9517075-what-are-projects",
+    "title": "What are projects?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "project-sharing",
+  "title": "プロジェクトの共有と組織の制御",
+  "summary": "Team と Enterprise では、プロジェクトを組織内で共有できます。公開範囲は 2 種類で、公開(Everyone at [組織名])は組織の全員が閲覧・利用でき、非公開(Only people invited)は招待したメンバーだけが使えます。作成後にどちらにも切り替えられます。非公開プロジェクトに招待するときの権限は 2 つで、「Can view」はプロジェクトの内容、ナレッジ、指示を見てプロジェクト内でチャットできますが、編集はできません。「Can edit」は指示やナレッジを変更し、メンバー設定も更新できます。共有されるのはプロジェクトとナレッジで、自分のチャットは自分で共有しない限り非公開のままです。管理側では、Owner と Primary Owner が Organization settings > Data and privacy の Sharing にある 2 つの設定を使います。「Share projects」は組織内での共有そのものを、そのサブ設定である「Public projects」は組織全員への公開を制御します。どちらも既定はオンです。",
+  "points": [
+   "Share projects をオフ: 新しいユーザーやグループに共有できなくなる。既存の共有とアクセスは残り、既存のアクセスの変更や削除はできる。Public projects も同時にオフになり、既存の公開プロジェクトは非公開になる",
+   "Public projects だけをオフ: 既存の公開プロジェクトはすべて非公開になり、新しい公開プロジェクトも作れない。特定のユーザーやグループへの共有は続けられる",
+   "共有を再びオンにしても、非公開になったプロジェクトは非公開のまま",
+   "Enterprise ではロールごとに共有の可否を設定でき、グループへの共有(ベータ)もできる",
+   "公開プロジェクトでも、各自のチャットは手動で共有しない限り他のメンバーからは見えない",
+   "アーカイブしても共有の設定は変わらない。アクセスを外すには共有設定でメンバーを削除する"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/9519189-manage-project-visibility-and-sharing",
+    "title": "Manage project visibility and sharing"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/9927533-control-project-sharing-for-your-organization",
+    "title": "Control project sharing for your organization"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/9517075-what-are-projects",
+    "title": "What are projects?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "personalization",
+  "title": "指示の使い分け(アカウント全体の指示・プロジェクト指示・スキル)",
+  "summary": "Claude の振る舞いを調整する機能は、適用範囲で使い分けます。アカウント全体の指示(Settings > Your Claude の Instructions。古い画面では Account の Instructions for Claude)は、その人のすべての会話に適用されます。好みの進め方、よく使う用語、よくある場面、全般的な伝え方などを書きます。プロジェクト指示は、そのプロジェクト内のチャットにだけ適用され、プロジェクト固有の文脈、ワークフローの指針、特定の作業の要件、プロジェクト内で Claude が取るべき役割や視点を定めるのに向きます。スキルは、口調や形式の調整、特定の作業のための専門的な能力など、必要なときに有効になる振る舞いを加えます。これらは単独でも組み合わせても使えます。組織の全員に適用したい指示には、Owner が設定する組織指示を使います。",
+  "points": [
+   "アカウント全体の指示: その人のすべての会話に適用される",
+   "プロジェクト指示: そのプロジェクト内のチャットだけに適用される。役割や視点の定義に向く",
+   "スキル: 作業に関係するときだけ読み込まれる手順や能力",
+   "組織指示: Owner が設定し、組織の全員のすべての会話に適用される(別のトピックを参照)"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/10185728-understanding-claude-s-personalization-features",
+    "title": "Understanding Claude's personalization features"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "org-instructions",
+  "title": "組織指示(organization instructions)",
+  "summary": "組織指示は、Team と Enterprise の Owner と Primary Owner が設定し、組織の全員のすべての会話で Claude が従う指示です。伝え方の基準、書式の要件、コンプライアンス上の指針、業務領域の前提など、どこでも一貫して適用したい内容に使います。設定は Organization settings > Organization and access の Organization instructions で行い、最大 3,000 文字です。反映には最大 1 時間かかることがあります。個人の指示と両方がある場合は組織指示が優先され、直接矛盾するときは組織指示に従います。組織指示が扱っていない事柄には、個人の指示が引き続き適用されます。ただし、この優先順位はプロンプトとしての指示に基づくもので、直接矛盾するまれなケースでは動作が変わりうるため、テストで確かめることが勧められています。",
+  "points": [
+   "組織指示を見て編集できるのは Owner 以上だけ。個人の指示はその本人だけが見て編集できる",
+   "組織指示は全員の毎回のメッセージに含まれるため、簡潔で明確に書く",
+   "「プロフェッショナルに」のような曖昧な指示ではなく、具体的に書く",
+   "全会話に一貫して適用したい振る舞いに絞り、指示同士の矛盾を避ける",
+   "組織指示で Claude の安全上のガイドラインやコンテンツポリシーを無効にすることはできない",
+   "保存後は新しい会話で、いくつかの種類の質問を試して確認する。定期的に見直す"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/14546867-set-organization-instructions",
+    "title": "Set organization instructions"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "skills",
+  "title": "スキル(Skills)の仕組みと作り方",
+  "summary": "スキルは、指示、スクリプト、リソースをまとめたフォルダで、Claude が専門的な作業の精度を上げるために動的に読み込みます。ブランドガイドラインに沿った文書作成や、組織固有の手順でのデータ分析など、特定の作業を繰り返し同じやり方で行えるようにします。Free から Enterprise までのプランで使え、コード実行を有効にしておく必要があります。スキルは段階的な開示(progressive disclosure)で動きます。Claude は使えるスキルを確認して関連するものを判断し、作業に必要な情報だけを読み込むため、コンテキストウィンドウを圧迫しにくくなります。自作するときは、スキルのフォルダに skill.md を置き、先頭の YAML フロントマターに必須のメタデータである name(64 文字以内)と description(200 文字以内)を書きます。description は、何をするスキルで、いつ使うかを書く欄で、Claude が呼び出すかどうかを判断する材料になります。メタデータが段階的な開示の 1 段目で、本文の Markdown は必要になったときに参照される 2 段目です。",
+  "points": [
+   "スキルとプロジェクト: プロジェクトは常に読み込まれる静的な背景知識。スキルは必要なときに動的に有効になり、Claude のどこでも使える手順",
+   "スキルと MCP: MCP は外部のサービスやデータへの接続。スキルは作業の進め方の知識。組み合わせて使える",
+   "スキルとカスタム指示: カスタム指示はすべての会話に広く適用される。スキルは関係するときだけ読み込まれる",
+   "良いスキルは、特定の繰り返し作業に絞り、明確な指示と必要に応じた例を持ち、いつ使うかを定めている",
+   "補足資料は REFERENCE.md などの別ファイルに置いて skill.md から参照できる。実行可能なスクリプトも添付できる",
+   "アップロードは、スキルのフォルダを最上位に含む ZIP で行う。アップロード後は Customize > Skills で有効にし、呼び出されるかを複数のプロンプトで試し、必要なら description を直す",
+   "スクリプトに API キーやパスワードを直接書かない。ダウンロードしたスキルは有効にする前に中身を確認する"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/12512176-what-are-skills",
+    "title": "What are skills?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills",
+    "title": "How to create custom skills"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "org-skills",
+  "title": "組織でのスキルの配布と管理",
+  "summary": "Team と Enterprise では、Owner が Organization settings > Plugins & skills からスキルをアップロード(SKILL.md を含む .zip)または作成すると、すぐに組織の全員の Customize > Skills に配布されます。各自が同じスキルをアップロードする必要はありません。Owner が配布したスキルは既定で全員に有効になり、各ユーザーは個別にオフにできます(削除はできません)。前提として、Policy タブで Cloud code execution and file creation と Skills の両方がオンになっている必要があります。スキルはコード実行がないと動かないためです。Enterprise では、スキルをプラグインにまとめてグループに割り当てると、そのグループのメンバーだけにスキルを配れます。Policy タブでは、ユーザーが自分でスキルを作れるか(User-created skills)と、ユーザーが作ったスキルやプラグインを組織のライブラリに公開する方式(Publishing)も制御できます。",
+  "points": [
+   "User-created skills をオフ: ユーザーは自分でスキルを作成・アップロードできない。配布済みのスキルと Anthropic の組み込みスキルは引き続き使える。この組織の設定が主スイッチで、オフの間はロールにかかわらず作れない",
+   "Publishing の設定: Requires review(提出ごとに Owner が承認してから公開。以後の版も確認を通る)、Open(確認なしで公開)、Off(「Publish to org」ボタンが表示されない。Owner は直接追加できる)",
+   "Publishing の初期値はプランや既存の設定によって異なる",
+   "配布したスキルは、Claude アカウントでサインインした Claude Code にも読み込まれる",
+   "Enterprise ではスキルとプラグインのセキュリティスキャンを有効にでき、悪意のある内容を含むものはブロックされる",
+   "ベストプラクティス: 配布前に自分のアカウントで試す、特定のチーム向けのスキルはプラグインにまとめてグループに割り当てる、description を正確に書く"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization",
+    "title": "Provision and manage skills for your organization"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/12512176-what-are-skills",
+    "title": "What are skills?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "memory",
+  "title": "記憶(メモリ)と過去のチャットの検索",
+  "summary": "Claude は、過去のチャットを検索して参照することと、チャットから記憶を作って新しい会話に引き継ぐことができます。過去のチャットの検索は有料プランで使え、RAG で行われ、会話の中ではツール呼び出しとして表示されます。記憶は Free、Pro、Max、Ultra では既定でオンで、Team と Enterprise では組織で使えるかどうかを Owner が決めます。新しい記憶の仕組みでは、Claude は会話が終わってから要約するのではなく、会話中に個別のトピックとして記憶を保存します。保存された記憶は Settings > Your Claude の「Manage」からトピックごとに確認・編集・削除でき、変更は以降のすべての会話に反映されます。チャットで Claude に、覚えること・変えること・忘れることを伝えて更新することもできます。各プロジェクトは独自の記憶を持ち、プロジェクト内では、そのプロジェクトの記憶とプロジェクト外の自分の記憶が使われ、他のプロジェクトの記憶は使われません。",
+  "points": [
+   "記憶をオフにするときの選択肢は 2 つ。Pause memory は既存の記憶を残したまま、記憶の利用と新しい記憶の作成を止める。Reset memory はプロジェクトの記憶を含むすべての記憶を完全に削除し、元に戻せない",
+   "1 つのチャットだけ記憶を使わないときは、最初のメッセージを送る前に「+」メニューで Memory をオフにする。そのチャットは履歴に残る",
+   "シークレット(incognito)チャットは、記憶にもチャット履歴にも保存されない",
+   "会話を削除しても、そこから作られた記憶のエントリは削除されない。記憶は個別に削除する",
+   "プロジェクトの記憶を完全に分けるには、プロジェクトのページで「Use account memory」をオフにする",
+   "健康や宗教などの機微な話題は既定では保存されない。政府発行の ID 番号や金融口座の番号などは、頼まれても保存されない",
+   "組織で記憶をオフにすると、全員で記憶の利用と保存が止まる(既存の記憶は削除されない)。Owner は個人の記憶を見ることも編集することもできない",
+   "他の AI サービスの記憶を取り込む機能と、Claude の記憶を書き出す方法がある(実験的な機能)"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
+    "title": "Use Claude's chat search and memory to build on previous context"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
+    "title": "How can I create and manage projects?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/12123587-import-and-export-your-memory-from-claude",
+    "title": "Import and export your memory from Claude"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "connectors",
+  "title": "コネクタ(Connectors)",
+  "summary": "コネクタは、Claude がアプリやサービスにアクセスしてデータを取得し、そのサービスの中で操作を行えるようにする仕組みです。Claude は接続先サービスでの各人の権限を引き継ぐため、元のシステムで本人が見られないファイルやチャンネル、レコードには、Claude からも届きません。ただし、共有の認証情報を使うカスタムコネクタは、その認証情報が届く範囲にアクセスします。コネクタは Connectors Directory から追加でき、MCP に対応した任意のサービスにはカスタムコネクタで接続できます。Team と Enterprise では、Owner か Primary Owner が Organization settings > Connectors でコネクタを組織に追加(「Add to your team」)してから、各メンバーが個別に認証して使います。組織で有効にしても、誰かに自動でアクセスが与えられるわけではありません。会話で使うときは、「+」メニューの Connectors で使いたいサービスをオンにします。",
+  "points": [
+   "組織での有効化は「使える状態にする」だけで、認証は各メンバーが行う(Enterprise-managed auth を使う場合を除く)",
+   "Owner は組織全体でコネクタの操作を制限できる(Always allow / Needs approval / Blocked)。元のシステムの権限より広げることはできない",
+   "Enterprise では、カスタムロールの設定と組織の設定のうち、厳しいほうが適用される",
+   "コネクタが 10 個以上有効なときは、Tool access を On demand にすると会話の余裕が増える",
+   "接続するのは信頼できる必要なサービスだけにし、使わなくなったものは切断する"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities",
+    "title": "Use connectors to extend Claude's capabilities"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "custom-connectors",
+  "title": "カスタムコネクタ(リモート MCP)",
+  "summary": "カスタムコネクタは、既存のリモート MCP サーバーや自分で作ったリモート MCP サーバーに Claude を接続する機能で、Free から Enterprise までのプランで使えます(Free は 1 個まで)。重要なのは接続元です。Claude はリモート MCP サーバーに、利用者の端末ではなく Anthropic のクラウドから接続します。これは claude.ai、Claude Desktop、Cowork、モバイルアプリのどれでも同じです。そのため、サーバーは Anthropic の IP 範囲から公開インターネット経由で到達できる必要があり、社内ネットワークや VPN の内側、ファイアウォールで遮られたサーバーには、自分の PC から届いても接続できません。非公開ネットワークのサーバーは、ファイアウォールで Anthropic の IP アドレスを許可します。また、標準の HTTPS ポート(443)で到達できる必要があり、別のポートを指定した URL には接続できません。",
+  "points": [
+   "Team では Owner と Primary Owner が組織に追加し、その後に各メンバーが接続して認証する",
+   "認証は OAuth が一般的。OAuth の代わりに、API キーなどの固定の認証情報を Request headers で送ることもできる。この場合、組織の全員が同じ認証情報でサービスに届く",
+   "Claude Desktop の claude_desktop_config.json で設定するローカル MCP サーバーは別の仕組みで、ローカルのネットワークを使う",
+   "Anthropic が検証していないサービスにつなぐ機能なので、信頼できる組織のサーバーだけに接続し、要求される権限を確認する",
+   "悪意のあるサーバーは、Claude に意図しない操作をさせる隠れた指示(プロンプトインジェクション)を含みうる。ツールの入出力に注意し、ツールの動作の変化を監視する",
+   "設定を変えるには、いったん削除して追加し直す"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp",
+    "title": "Get started with custom connectors using remote MCP"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities",
+    "title": "Use connectors to extend Claude's capabilities"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "google-workspace",
+  "title": "Google Workspace コネクタ",
+  "summary": "Gmail、Google Calendar、Google Drive のコネクタを使うと、メールの検索や送信、予定の管理、文書の読み込みや保存を会話の中で行えます。Team と Enterprise では、Owner か Primary Owner が組織で有効にしたあとに、各ユーザーが自分の Google アカウントで認証します。Claude は接続した Google アカウントのデータだけにアクセスし、Google Workspace での既存の権限を引き継ぎます。Google ドキュメントは、URL の貼り付けか最近のドキュメントからの選択で、チャットやプロジェクトに追加できます。追加したドキュメントは Google Drive と同期し、常に最新版が使われます。ただし、Drive からプロジェクトのファイルに追加できるのは非公開のプロジェクトだけで、共有プロジェクトではこの選択肢が無効になります。",
+  "points": [
+   "Drive のファイルを読むとき、Claude が取り出すのはテキストだけで、文書に埋め込まれた画像は処理されない",
+   "メールの送信・返信・転送などは、Auto モード以外では既定で毎回承認を求める",
+   "コネクタで取得したデータはチャットに結び付いて保存され、チャットを削除すれば消せる",
+   "組織で接続できないときは、Google Workspace の管理者が Claude を信頼できるアプリとして許可する必要がある"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors",
+    "title": "Use Google Workspace connectors"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "enterprise-managed-auth",
+  "title": "Enterprise-managed auth(コネクタの一括認可)",
+  "summary": "Enterprise-managed auth は、各人がコネクタを個別に認証する代わりに、管理者がコネクタのアクセスを組織としてまとめて用意する仕組みで、Team と Enterprise で使えます。管理者がコネクタを一度認可して組織で有効にすると、メンバーは最初にログインした時点から自動でそのコネクタを使えます。ユーザーの識別の方法は 2 つあります。IdP-managed(一般提供)は、Claude とコネクタでシングルサインオン(SSO)が有効になっていることを前提に、ID プロバイダー(IdP)がユーザーをコネクタにサインインさせます。Claude-issued(ベータ)は IdP や SSO を使わず、Claude がサインインしたユーザーをコネクタに伝え、メールアドレスで照合します。管理者は、どのコネクタを有効にするか、どのロールに与えるか、どの権限(スコープ)を要求させるかを決められます。",
+  "points": [
+   "IdP-managed では、IdP でプロビジョニングを解除すると、コネクタへのアクセスも同時に外れる",
+   "Claude-issued では、組織から外すと Claude はその人をサインインさせなくなるが、接続先サービス側のアカウントも別に削除する",
+   "ロールを選んで特定のチームで試験的に導入し、あとから対象を広げられる",
+   "ブラウザでのサインインと併用すると、管理された認可を先に試し、失敗したら個別のサインインを求める",
+   "対応するコネクタと IdP は限られている(IdP は現在 Okta)",
+   "メンバーは、組織が用意したもの以外に個人のコネクタを追加できる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/15537633-auto-connect-your-organization-s-apps-to-claude",
+    "title": "Auto-connect your organization's apps to Claude"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities",
+    "title": "Use connectors to extend Claude's capabilities"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "org-model-settings",
+  "title": "組織のモデル設定(既定モデルとモデルのアクセス管理)",
+  "summary": "Enterprise では、Organization settings > Models で、新しい会話が始まるモデル(既定モデル)と、メンバーが使えるモデル(Model access)を管理します。管理できるのは Primary Owner、Owner と、Identity & Access の権限を持つカスタムロールのメンバーです。既定モデルは、「Use Anthropic’s recommended default」(新しいモデルの公開に合わせて自動で更新される推奨モデル)か、「Choose a specific model」(新しいモデルが出ても変わらない固定のモデル)から選びます。既定では、各ユーザーの次の会話は最後に使ったモデルで始まります。「Always start with the default model and effort level」をオンにすると、新しい会話は常に既定のモデルと既定の effort で始まります。既定モデルとモデルのアクセスは、組織とカスタムロールの 2 つの階層で設定できます。",
+  "points": [
+   "カスタムロールの既定モデルは、そのロールのメンバーについて組織の既定より優先される。複数のロールで異なる場合は、最も能力の高いモデルが既定になる",
+   "モデルのアクセスは組織の設定が上限。組織で無効にしたモデルは Owner や Admin を含む全員が使えず、ロールで許可することもできない",
+   "effort の上限も組織の設定が上限で、ロールの上限は組織の上限を超えられない",
+   "Haiku のモデルは常に全員が使え、無効にできない",
+   "カスタムロールの設定が効くのは、ロールが「Custom」のメンバーだけ",
+   "特定のモデルを既定にするときは、Model access で有効にしたモデルからしか選べない",
+   "複数のロールに属するメンバーは、使えるモデルは足し合わせ、effort の上限は最も高いものになる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/15330088-set-a-default-model-for-your-organization",
+    "title": "Set a default model for your organization"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/15694740-manage-model-access-for-your-organization",
+    "title": "Manage model access for your organization"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "hallucinations",
+  "title": "Claude の誤った回答(幻覚)と確認の仕方",
+  "summary": "ヘルプセンターは、Claude が役に立とうとして誤った回答や誤解を招く回答を返すことがあり、これを「幻覚(hallucinating)」と呼ぶと説明しています。Claude のような最先端の生成 AI モデルの現在の限界から生じるもので、例として、分野によっては最新の情報で学習されておらず時事の質問で混乱すること、権威的に見えたり説得力があったりしても事実に基づかない引用を示すことが挙げられています。そのため、Claude を唯一の情報源として頼らず、影響の大きい(high-stakes)助言は注意深く精査するよう求めています。Web search の結果を使うときは、Claude が引用した情報源を確認します。元のサイトには Claude のまとめに含まれない重要な文脈や詳細があることがあり、回答の質は参照した情報源の質に左右されるためです。Claude は自分の能力についても幻覚を起こすことがあり、本人がそう言っても、明示的に連携されていないメールなどのツールにはアクセスできません。計算についても、複雑な計算や業務上重要な計算は、専用の数学ソフトや手作業で確かめるよう勧められています。",
+  "points": [
+   "誤った回答や誤解を招く回答を返すことを「幻覚」と呼ぶ。最先端の生成 AI モデルの現在の限界から生じる",
+   "分野によっては最新の情報で学習されておらず、時事の質問で混乱することがある",
+   "権威的に見えたり説得力があったりしても、事実に基づかない引用を示すことがある",
+   "Claude を唯一の情報源として頼らず、影響の大きい(high-stakes)助言は注意深く精査する",
+   "Web search の結果は、引用された情報源を確認する。元のサイトにはまとめにない文脈や詳細があることがあり、回答の質は情報源の質に左右される",
+   "能力についても幻覚を起こす。明示的に連携されていないツール(メール、ワープロ、ファイル転送など)には、本人が使えると言ってもアクセスできない",
+   "複雑な計算や業務上重要な(mission-critical)計算は、専用の数学ソフトや手作業で確かめる",
+   "役に立たなかった回答は、低評価(thumbs down)ボタンで Anthropic に知らせられる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on",
+    "title": "Claude is providing incorrect or misleading responses. What’s going on?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/8241188-claude-is-producing-links-that-don-t-work-and-falsely-claiming-that-it-has-sent-emails-or-produced-external-documents-what-s-going-on",
+    "title": "Claude is producing links that don’t work and falsely claiming that it has sent emails or produced external documents. What’s going on?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/10366421-how-does-claude-handle-mathematical-equations-and-calculations",
+    "title": "How does Claude handle mathematical equations and calculations?"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "reduce-hallucinations",
+  "title": "幻覚を減らすプロンプトの手法(Reduce hallucinations)",
+  "summary": "Claude のドキュメント「Reduce hallucinations」は、事実と異なる内容や、与えた文脈と矛盾する内容を生成する「幻覚」を減らす手法をまとめています。基本の手法(Basic hallucination minimization strategies)は 3 つです。1 つ目は、Claude が「分からない」と認めることを明示的に許可する方法で、誤情報を大きく減らせるとされています。2 つ目は、長い文書(20k トークン超)を扱うタスクで、作業の前に一字一句の引用を抜き出させる方法で、回答が実際の文面に基づくようになります。3 つ目は、各主張に引用と出典を付けさせて回答を検証できる形にする方法で、回答を書いた後に各主張を裏付ける引用を探させ、見つからない主張は撤回させることもできます。発展的な手法(Advanced techniques)には、Chain-of-thought verification、同じプロンプトを複数回実行して出力を比べる Best-of-N verification、Iterative refinement、提供した文書の情報だけを使わせる External knowledge restriction があります。これらで幻覚は大きく減りますが、完全にはなくならないので、重要な情報は常に検証するよう注意書きがあります。",
+  "points": [
+   "基本の手法 1: 「分からない」と認めることを明示的に許可する(Allow Claude to say “I don’t know”)",
+   "基本の手法 2: 長い文書(20k トークン超)では、タスクの前に一字一句の引用を抜き出させ、その引用に基づいて作業させる",
+   "基本の手法 3: 各主張に引用と出典を付けさせる。生成後に各主張を裏付ける引用を探させ、見つからなければ撤回させる",
+   "発展的な手法: Best-of-N verification。同じプロンプトを複数回実行して出力を比べ、不一致は幻覚の可能性を示す",
+   "発展的な手法: External knowledge restriction。提供した文書の情報だけを使い、一般知識を使わないよう明示的に指示する",
+   "ほかの発展的な手法: Chain-of-thought verification(thinking の要約を確認する)、Iterative refinement(出力を検証・展開させる)",
+   "これらの手法でも幻覚は完全にはなくならない。重要な情報、特に影響の大きい判断では常に検証する"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+    "title": "Reduce hallucinations"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "knowledge-cutoff",
+  "title": "学習データの期限(knowledge cutoff)",
+  "summary": "ヘルプセンターによると、Claude のデータは継続して更新されていますが、各モデルには学習データの期限(knowledge cutoff)があります。一覧では、Claude Fable 5.2、Haiku 5.5、Sonnet 5.5、Opus 5.5、Fable 5.1 は 2026 年 6 月まで、Opus 5 は 2026 年 5 月まで、Sonnet 5、Fable 5、Opus 4.8、Opus 4.7 は 2026 年 1 月まで、Sonnet 4.6 と Opus 4.6 は 2025 年 8 月まで、Haiku 4.5 は 2025 年 7 月まで、Opus 3 は 2023 年 8 月までのデータで学習しています。これらのモデルは期限より後に起きた出来事や情報を知らない可能性があり、最近の出来事を尋ねると正確な情報を持っていないことがあります。誤った回答についての記事でも、分野によっては最新の情報で学習されておらず、時事の質問で混乱することがあると説明されています。最新の情報が必要なときは Web search を使うと、Claude がライブの Web を検索して回答に使い、回答には引用が付きます。モデルの詳しい情報は、Claude Docs の Models overview にあります。",
+  "points": [
+   "各モデルに学習データの期限があり、値はモデルごとに異なる。期限より後の出来事や情報は知らない可能性がある",
+   "Fable 5.2、Haiku 5.5、Sonnet 5.5、Opus 5.5、Fable 5.1 は 2026 年 6 月まで。Opus 5 は 2026 年 5 月まで",
+   "Sonnet 5、Fable 5、Opus 4.8、Opus 4.7 は 2026 年 1 月まで。Sonnet 4.6 と Opus 4.6 は 2025 年 8 月まで、Haiku 4.5 は 2025 年 7 月まで、Opus 3 は 2023 年 8 月まで",
+   "最近の出来事を尋ねると、正確な情報を持っていないことがある",
+   "Web search はリアルタイムのデータで Claude の知識を広げる。ライブの Web を検索して回答に使い、回答には引用が付く",
+   "ヘルプセンターは、分野によっては最新の情報で学習しておらず時事の質問で混乱することを、誤った回答(幻覚)の例として挙げている",
+   "モデルの詳しい情報は、Claude Docs の Models overview にある"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/8114494-how-up-to-date-is-claude-s-training-data",
+    "title": "How up-to-date is Claude's training data?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on",
+    "title": "Claude is providing incorrect or misleading responses. What’s going on?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/10684626-enable-and-use-web-search",
+    "title": "Enable and use web search"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "web-search",
+  "title": "Web search(web search と web fetch)",
+  "summary": "Web search を使うと、Claude はインターネットを検索して最新の情報を回答に使います。Team と Enterprise では、まず Owner か Primary Owner が Organization settings > Capabilities でワークスペース全体の Web search を有効にし、その後メンバーがチャットの「+」ボタンから「Web search」をオンにします。新しい Claude の体験には Web search のトグルはなく、Claude が役立つときに検索します。現在の情報が役立つ話題では Claude が検索ツールを呼び出し、回答には毎回、出典への直接の引用、出典のリンク、必要に応じて引用文が付くので、利用者が情報源を自分で確かめられます。Web search がオンのとき、URL を示すと、Claude はそのページの内容を直接取得して分析できます(web fetch)。画像の検索結果も Web search の一部で、別の設定は不要です。ヘルプセンターは、重要な情報は引用元を相互に照合し、重大な判断には権威ある情報源を使うよう勧めています。制限として、接続状況によって検索できないことがある、リンクがときどき機能しない、などが挙げられ、Web search と web fetch の利用は利用上限に数えられます。",
+  "points": [
+   "Team / Enterprise: Owner か Primary Owner が Organization settings > Capabilities でワークスペース全体を有効にしてから、メンバーがチャットの「+」で「Web search」をオンにする",
+   "新しい Claude の体験には Web search のトグルがなく、Claude が役立つときに検索する",
+   "回答には毎回引用(出典への直接の引用、出典のリンク、必要に応じて引用文)が付き、情報源を自分で確認できる",
+   "web fetch: Web search がオンなら、示された URL のページの内容を直接取得して分析できる",
+   "無料プランでは、長い記事を URL で要約させると記事全体がコンテキストに入り、利用上限を多く使う",
+   "画像の検索結果は Web search の一部(Bing を使う)で、別の設定は不要",
+   "確実に検索させたいときは、プロンプトに「Search the web」などと書く。使わないよう指示することもできる",
+   "重要な情報は引用元を相互に照合し、重大な判断には権威ある情報源を使う",
+   "制限: 検索の可否は接続状況による、リンクがときどき機能しない、地域に応じた結果のために IP アドレスから推定した位置を使うことがある、検索時間は質問の複雑さによる",
+   "Web search と web fetch の利用は利用上限に数えられる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/10684626-enable-and-use-web-search",
+    "title": "Enable and use web search"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "research",
+  "title": "Research(リサーチ)",
+  "summary": "Research では、Claude が質問を深く調べます。互いに積み重なる複数の検索を行い、分かったことに基づいて次に調べることを決め、質問のさまざまな側面を体系的に検討します。有料プラン(Pro、Max、Ultra、Team、Enterprise)で、Claude on the web、Claude Desktop、Claude Mobile から使え、動作には Web search がオンになっている必要があります。Research は Web と、Google Workspace(Gmail、Google Calendar、Google Docs)を含む、そのチャットでオンにしたコネクタを調べ、その間はコネクタのツールを毎回の承認なしで使います。ただし、Claude Mobile で始めると Web だけを検索してコネクタを使わず、コネクタが飛ばされたことを示すエラーなども表示されません。コネクタを含めるには Web 版か Claude Desktop で始めます。Research はチャットで選んだモデルにかかわらず Claude Opus 5.5 で動き、必要に応じて Claude Opus 4.8 に切り替わります。ヘルプセンターの使い分けでは、Research は 1〜3 分かけて 5 回以上のツール呼び出しを行う包括的な情報収集に向きます。",
+  "points": [
+   "有料プラン(Pro、Max、Ultra、Team、Enterprise)で、Web 版、Claude Desktop、Claude Mobile から使える",
+   "Web search がオンでないと動かない。「+」から「Research」を選ぶ。新しい Claude の体験では /deep-research と入力するか「+」から「Research」を選ぶ",
+   "Web と、Google Workspace を含むチャットでオンにしたコネクタを調べ、その間はコネクタのツールを毎回の承認なしで使う",
+   "Claude Mobile で始めると Web だけを検索し、コネクタは使わない。エラーなどの表示も出ない。コネクタを含めるには Web 版か Claude Desktop で始める",
+   "Claude Desktop に設定したローカル MCP サーバーのツールは使えない",
+   "調査が始まらないときは「Claude, please use the research tool to…」と促す",
+   "Claude Opus 5.5 で動き、必要に応じて Claude Opus 4.8 に切り替わる。チャットで選んだモデルには左右されない。Team / Enterprise でロールに対して両方がオフにされていると動かない",
+   "利用上限は通常の会話と同じ扱いだが、複数の情報源を取得するため早く上限に達することがある",
+   "使い分け: Web search は 1〜2 回のツール呼び出しで済む単純な事実確認、Research は 1〜3 分で 5 回以上のツール呼び出しを行う包括的な情報収集(Web と連携先をまとめた詳しいレポート)",
+   "Research と extended thinking は組み合わせられ、進め方を計画したうえで包括的な情報収集ができる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11088861-use-research-on-claude",
+    "title": "Use research on Claude"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research",
+    "title": "When should I use web search, extended thinking, and research?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude",
+    "title": "Claude Cowork and chat are one Claude"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "artifacts",
+  "title": "アーティファクト(Artifacts)",
+  "summary": "アーティファクトは、デザイン、デッキ、文書、ダッシュボード、小さな対話型ツールなど、Claude が作る「人に見せるもの」で、会話の横に開き、編集し、後で戻り、共有できます。すべてのプランで使え、Settings > Capabilities(Team と Enterprise は Organization settings > Capabilities)で Cloud code execution and file creation(新しい設定画面では Create and edit files)がオンになっている必要があります。Claude は、内容が重要で自己完結している(通常 15 行超)などの条件を満たすときにアーティファクトを作ります。Docs、Slides、Design などのテンプレートから始めることもでき、作ったものはサイドバーの Artifacts タブに保存されます。Claude を呼び出すアーティファクトは小さなアプリとして Anthropic の基盤で動き、使う人は自分の Claude アカウントでサインインし、利用量は使う人それぞれのプランの上限に数えられます。Pro 以上のプランでは Claude に接続済みのアプリを読み書きでき、共有や公開をしたアーティファクトでも、使う人はそれぞれ自分のアプリを接続します。",
+  "points": [
+   "作られる条件: 重要で自己完結(通常 15 行超)、編集や再利用をしそう、会話の文脈なしで成立する、後で参照しそう",
+   "テンプレート: Docs、Slides、Design(すべてのプラン)、Data、Sheets(beta)、Whiteboards(beta)、Motion(beta)",
+   "Export: Docs は Word、PDF、Markdown、Google Docs。デッキは PowerPoint と PDF(Google Slides にも直接送れる)",
+   "部分的な編集: Doc や Markdown の文章をハイライトして「Edit with Claude」。どの節かを説明しなくてよい。前のメッセージを編集すると、独自のアーティファクトを持つ別バージョンのチャットになる",
+   "「Try fixing with Claude」でエラーの詳細を新しいメッセージにコピーして修正させられるが、成功は保証されない",
+   "アーティファクトは最初は自分だけに非公開で、共有できる",
+   "Claude を使うアーティファクト: API キー不要、作成者の費用なし、利用量は使う人それぞれのプランの上限に数える",
+   "アプリの接続は Pro、Max、Ultra、Team、Enterprise の Web とデスクトップで使える。操作ごとに承認が必要なコネクタのツールは使えない。Team と Enterprise では Owner が組織全体でオフにできる",
+   "データの保存には個人用(personal)と共有用(shared)がある。既定の上限は 100 MB と 25,000 件のいずれか先に達するほう",
+   "旧来のアーティファクト(legacy)は 2026 年 9 月 16 日より前にチャットで作られたもの。公開や共有はできるが、新しくは作れない"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them",
+    "title": "What are artifacts and how do I use them?"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "file-creation",
+  "title": "ファイルの作成とコード実行(Code execution and file creation)",
+  "summary": "Claude は隔離されたサンドボックスでコードを実行し、会話の中でファイルを作成・編集できます。自然言語で頼むと、Excel(.xlsx)、PowerPoint(.pptx)、Word(.docx)、PDF のファイルを作り、ダウンロードしたり Google Drive に直接保存したりでき、Excel では動作する数式を含む財務モデルも作れます。すべてのプラン(Free、Pro、Max、Ultra、Team、Enterprise)で、Web、Claude Desktop、Claude Mobile で使えます。個人のプランでは Settings > Capabilities の Code execution and file creation(新しい画面では Create and edit files)で切り替え、Team と Enterprise では Owner が Organization settings > Capabilities で機能のオン・オフとネットワークの外向き通信(network egress)を設定します。ネットワークが使えると、プロンプトインジェクションなどによって Claude がだまされ、データを外部のサーバーに送るおそれがあるため、慎重に進める組織には、ネットワークをオフで始めて段階的に広げる進め方が勧められています。",
+  "points": [
+   "作れるファイル: Excel(.xlsx)、PowerPoint(.pptx)、Word(.docx)、PDF。PNG のグラフや Python スクリプトも作れる",
+   "すべてのプランで、Web、Claude Desktop、Claude Mobile で使える",
+   "依頼のコツ: 簡単な作業から始め、構造・内容・書式を具体的に伝える。出力を見直して調整する必要がある場合がある",
+   "作ったファイルはダウンロードするか、Google Drive に直接保存できる。上限はアップロードとダウンロードとも 1 ファイル 30MB",
+   "ネットワークの選択肢(Team / Enterprise): オフ(事前に入っているパッケージだけ)、パッケージマネージャーだけ、パッケージマネージャーと指定したドメイン、All domains(Anthropic の法的なブロックリストにあるドメイン以外にアクセスでき、最もリスクが高い)",
+   "ネットワークをオフにすればデータがサンドボックスの外に出ず、Excel のモデルやプレゼン資料の作成などの機能はそのまま使える。サンドボックスの脆弱性やプロンプトインジェクションがあっても最後の防壁になる",
+   "段階的な進め方: (1) オフで始める、(2) パッケージマネージャー(pip、npm など)を許可する、(3) 業務上必要な特定のドメインを許可リストに加える",
+   "MCP の連携を有効にしている場合は、egress の設定にかかわらず、その接続を通じた通信が可能なままなので、別に評価する",
+   "Claude がだまされて漏らしうるのは、その会話でアクセスできるデータ(プロンプト、プロジェクト、有効にした接続)に限られる。使っている間は監視し、予期しない動きがあれば止める",
+   "ファイルの作成は通常のチャットより利用上限を多く使う"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude",
+    "title": "Create and edit files with Claude"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "custom-visuals",
+  "title": "カスタムビジュアル(Custom visuals)",
+  "summary": "カスタムビジュアルは、Claude が質問に合わせて会話の中に直接作る図、グラフ、対話型のビジュアルです。文章より図のほうが分かりやすいときに Claude が判断して作り、「図にして」などと頼むこともできます。オンにする操作は不要です。ベータとして、Web と Desktop のすべての利用者がチャットと Cowork の両方で使えますが、Claude for iOS と Claude for Android では表示されません。写真やイラストではなく、Web ページと同じ HTML で作られるため対話的で、ボタンやスライダーを操作したり、全画面に広げたりできます。カスタムビジュアルは既定では一時的なもので、回答の一部としてその場に表示され、会話が進んでも別に保存されません。残したいときは、Copy as image(静止画のスナップショット)、Download(.svg または .html で保存)、Save as artifact(保持・公開・改善を続けられるアーティファクトに変換)のいずれかを使います。アーティファクトは最初から永続的で共有できるのに対し、カスタムビジュアルはその場で考えるためのもので、残すことを選んだときだけ残る、という点が主な違いです。",
+  "points": [
+   "設定は不要。Claude が役立つと判断したときに作り、明示的に頼むこともできる",
+   "Web と Desktop のチャットと Cowork で使える(ベータ)。iOS / Android のアプリでは表示されない",
+   "HTML で作られ、ボタンやスライダーの操作や全画面表示ができる",
+   "既定では一時的で、自動では保存されない。残す方法: Copy as image、Download(.svg / .html)、Save as artifact",
+   "ツール、アプリ、共有する文書など永続的なものを作りたいなら、アーティファクトを頼む",
+   "Cowork との違い: 共有リンクではほかの人に表示されない。図の中をクリックして追加の質問を送る機能はまだない(入力すれば質問できる)",
+   "チャットを共有すると、受け取った人には Web とデスクトップでだけ表示され、ログインが必要",
+   "ベータのため品質や複雑さにはばらつきがあり、期待した場面で Claude が作らないこともある",
+   "複雑な図には、可視化が最も得意な Opus を選ぶよう勧めている。「すべての可視化をピンクに」のような好みを伝えると Claude が覚える"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/13979539-custom-visuals-in-chat-and-cowork",
+    "title": "Custom visuals in chat and Cowork"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/13641943-visual-and-interactive-content",
+    "title": "Visual and interactive content"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "prompting-best-practices",
+  "title": "プロンプトのベストプラクティス(明確な指示・出力形式・調査)",
+  "summary": "公式の Prompting best practices は、最新のモデル向けのプロンプトの手法をまとめています。Claude は明確で明示的な指示によく応え、望む出力を具体的に伝えると結果が良くなります。Claude を「職場の慣習や進め方の文脈を持たない、優秀な新任の社員」と考え、作業の文脈をほとんど知らない同僚が迷うプロンプトなら Claude も迷う、という基準で確かめます。出力の形式と制約は具体的に指定し、指示の理由や背景を添えると、Claude は目的をつかんで的確に応えやすくなります。出力の書式を誘導する方法としては、してほしくないことではなく、してほしいことを伝える、XML の形式指示を使う、プロンプトの書き方を望む出力の形式に合わせる、細かい好みは詳しい指示で伝える、の 4 つが挙げられています。調査と情報収集については、明確な成功基準を示す、複数の情報源で情報を確認するよう依頼する、複雑な調査では競合する仮説を立てて確信度を記録するなどの構造化した進め方を使う、の 3 つが勧められています。ヘルプセンターも、明確で具体的な指示、できるだけ多くの文脈、複雑な依頼の分割、追加の指示やフィードバックを勧めています。",
+  "points": [
+   "「分析ダッシュボードを作って」だけより、含めてほしい機能の範囲まで明示した依頼のほうが効果的",
+   "出力の形式と制約を具体的に指定する。順番が大事な手順は番号付きリストや箇条書きで示す",
+   "指示の理由を添えると、Claude はその説明から一般化できる(例: 読み上げエンジンで読むので省略記号を使わない)",
+   "形式の指示は「〜しないで」より「〜してほしい」で伝える(「Do not use markdown」ではなく「smoothly flowing prose paragraphs で書いて」)",
+   "XML の形式指示(散文の部分を特定のタグで囲ませるなど)を使える",
+   "プロンプトの書き方を望む出力の形式に合わせる。プロンプトから Markdown を除くと出力の Markdown が減ることがある",
+   "Claude Opus 5 は既定の応答が長めで、effort を上下しても見える応答の長さは確実には変わらない。簡潔さはプロンプトで明示する",
+   "調査では、明確な成功基準を示し、複数の情報源で情報を確認するよう依頼する",
+   "複雑な調査では、競合する仮説を立てて確信度を記録するなど、構造化した進め方を指示する",
+   "ヘルプセンター: 背景知識のない人に指示するつもりで文脈を書き、複雑な依頼は小さな手順に分ける"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/7996857-my-prompt-isn-t-giving-me-a-helpful-answer",
+    "title": "My prompt isn’t giving me a helpful answer."
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "ai-content-marking",
+  "title": "AI 生成コンテンツの表示(透かしと Content Credentials)",
+  "summary": "Anthropic は、EU AI Act 第 50 条 2 項の AI 生成コンテンツの透明性に関する行動規範(Code of Practice)に署名しています。EU で 2026 年 8 月 2 日以降に提供を始めた Claude のモデルは、提供開始の時点から機械で読み取れる表示に対応し、それより前のモデルにも対応を広げています。表示の方法は 2 つあります。対応するモデルが生成した文章には、目に見えず、意味や品質を変えない透かしが埋め込まれます。透かしはモデルの段階で付くため、どの製品から出た文章にも入り、コピーして貼り付けても文章と一緒に残ります。Claude が PNG や JPEG などのファイルを作ると、C2PA の標準に沿った署名付きの来歴情報(Content Credentials)が付きます。表示は、Claude Platform(API)、Claude、Claude Code、Claude Cowork、Claude Tag をまたいで、Claude が提供されている世界中で適用されます。透かしの検出は private preview で、規制当局、法執行機関、報道機関、ファクトチェッカーなど、対象となる組織に提供されています。",
+  "points": [
+   "AWS、Google Cloud、Microsoft Foundry 経由で使う対応モデルの出力にも透かしが入る。Content Credentials はファイル生成の機能がある場所でだけ付く",
+   "透かしの検出の対象は、規制当局、法執行機関、報道機関、ファクトチェッカー、独立した研究者、教育機関、EU の市民団体などと、自社の出力を確かめる義務がある一部の企業",
+   "ファイルの Content Credentials は、無料の Claude Content Checker で確かめられる",
+   "表示が見つかっても、Claude が処理した可能性を示すだけで、来歴を確定するものではない(校正、翻訳、要約でも表示は付く)",
+   "表示が見つからなくても、AI 生成ではないとは言えない(大きく編集された、短すぎる、メタデータが消えた、など)",
+   "Opus 4.6、Sonnet 4.6、Haiku 4.5 など一部のモデルは、temperature、top_p、top_k を既定以外にすると、透かしが確実には入らないことがある"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content",
+    "title": "How Claude marks AI-generated content"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "visual-content",
+  "title": "視覚的な回答と対話的な入力",
+  "summary": "Claude は、文章よりも分かりやすい場合に視覚的な内容で答えます。天気やレシピのように実際のデータを表示するものと、図や対話的なグラフのように Claude が質問に合わせて作るもの(カスタムビジュアル)があります。また、文字で答えてもらう代わりに、選択肢をクリックして答える対話的な入力(interactive inputs)を示すこともあります。視覚的な回答と対話的な内容はすべての利用者が使えますが、データを表示するウィジェット(天気とレシピ)には Web 検索の有効化が必要です。天気の視覚的な表示は Web とデスクトップで使え、iOS と Android では同じ情報が会話の中に文章で示されます。気温は、米国の地点では華氏、それ以外では摂氏で表示されます。レシピカードでは、人数や単位を変えたり、「Get cooking」で手順を順に表示したりできます。スポーツのデータは、すべての環境で文章で示されます。特別な操作は不要で、Claude が質問に応じて視覚的な回答にするかを決めます。",
+  "points": [
+   "データ表示のウィジェット(天気、レシピ)には Web 検索の有効化が必要",
+   "天気とレシピの視覚的な表示は Web とデスクトップだけ。モバイル(iOS、Android)では文章で示される",
+   "気温は、米国の地点では華氏、それ以外では摂氏",
+   "スポーツのデータは、すべての環境で文章で示される",
+   "対話的な入力(複数選択、ランキングなど)が出ても、使わずに文章で答えてよい",
+   "文章で返ってきたときは、「Show me a recipe for ...」のように言い換えて頼む"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/13641943-visual-and-interactive-content",
+    "title": "Visual and interactive content"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "artifact-sharing",
+  "title": "アーティファクトの共有",
+  "summary": "アーティファクトは最初は自分だけのもので、共有するまで誰にも見えません。共有は「Share」から行います。Pro、Max、Ultra では「Only you」か「Anyone with the link」を選び、特定の人はメールで招待します(ベータ)。Team と Enterprise では「Only people invited」「Anyone at [組織名]」「Anyone with the link」を選べ、既定では組織の中にとどまります。「Anyone with the link」は、Owner が External sharing をオンにしたか、そのアーティファクトを個別に許可したときだけ使え、灰色のときは Owner か Primary Owner に相談します。権限は Can view、Commenter、Can edit の 3 段階です。接続済みのアプリからデータを取る部分は、作成者ではなく閲覧者の接続を使い、閲覧者がアクセスできなければ、その部分はエラーを表示します。組織外やサインインしていない人がリンクで開くと、アーティファクトは見えますが、接続済みのアプリや Claude を使う部分は動かず、コメントも見たり追加したりできません。",
+  "points": [
+   "Owner が External sharing をオフにすると、「Anyone with the link」のリンクは、個別に許可されたもの以外、オンに戻すまで使えなくなる",
+   "例外として、Claude Data のダッシュボードを live sharing(ベータ)で共有すると、組織の人に作成者の接続での結果を見せる",
+   "旧来のアーティファクト(Free、Pro、Max、Ultra)は「Publish」で公開する。「Unpublish」すると同じアーティファクトは再公開できず、個人用と共有用の保存データも完全に削除される",
+   "公開した旧来のアーティファクトは、Claude アカウントなしで閲覧・利用できる。Claude を使う機能は、使う人自身の利用上限に数えられる",
+   "Team と Enterprise の旧来のアーティファクトは「Share & copy link」で共有する。チャットで作ったものを共有すると、閲覧者はそのチャットの添付やファイルにもアクセスできる",
+   "プロジェクトで作った旧来のアーティファクトは、閲覧者にそのプロジェクトへのアクセスも必要",
+   "共有の設定は iOS と Android のアプリでは変えられない"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/9547008-share-artifacts",
+    "title": "Share artifacts"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "live-artifacts",
+  "title": "Cowork のライブアーティファクト",
+  "summary": "ライブアーティファクトは、2026 年 8 月 19 日より前に Claude Cowork で作られたアーティファクトです。Artifacts の一覧に残って動き続け、開いたり共有したりできますが、その場で編集することはできません。8 月 19 日以降に Cowork で作ったアーティファクトは、ほかのアーティファクトと同じように扱えます。サイドバーの「Artifacts」では「Cowork」のラベルが付き、右上の「Filter by」で絞り込めます。修正したいときは、ライブアーティファクトを開いて「Share」を選び、新しいアーティファクトとして公開し直します。すでに共有していた場合は既存のリンクが表示され、そのリンクを持つ人には、新しいリンクなしで新しい版が表示されます。以後は、ほかのアーティファクトと同じように編集できます。ライブアーティファクトの共有は組織の中に限られ、外部や公開のリンク、個人ごとの共有先の指定はありません。共有されたアーティファクトは閲覧者のアクセス権と接続を使います。CMEK、ZDR、HIPAA 対応の構成を使う組織では、引き続きライブアーティファクトを使います。",
+  "points": [
+   "2026 年 8 月 19 日より前に Cowork で作られたもの。開いて共有はできるが、その場では編集できない",
+   "修正は「Share」から新しいアーティファクトとして公開し直す。既存のリンクの閲覧者には新しい版が表示される",
+   "共有は組織内だけ。外部や公開のリンク、個人ごとの共有先の指定はない",
+   "閲覧者の接続とアクセス権を使い、アクセスできないデータの部分はエラーになる",
+   "CMEK、ZDR、HIPAA 対応の構成の組織は、ライブアーティファクトを使い続ける"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/14729249-use-live-artifacts-in-claude-cowork",
+    "title": "Use live artifacts in Claude Cowork"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "claude-sheets",
+  "title": "Claude Sheets",
+  "summary": "Claude Sheets は Claude に組み込まれた表計算で、Pro、Max、Ultra、Team、Enterprise のプランでベータとして提供されています。Team では既定でオン、Enterprise では Organization settings > Artifacts でオンにされるまでオフです。シートはアーティファクトの一種で、自分、チーム、Claude が同じセルを編集します。Claude はタブの追加、タブをまたぐ数式、書式や条件付き書式、プルダウン、チェックボックス、グラフを使えます。数式はセルに残るので、各数字の計算方法を確かめられます。Claude の編集は 1 つずつ枠で示されます。Claude for Excel と Claude for Google Workspace は、それらのアプリにあるファイルに Claude を持ち込むもので、Claude Sheets は Claude と作る軽い共有の表に向きます。ファイルがすでに Excel や Google スプレッドシートにある場合や、それらのアプリのすべての機能が必要な場合は、そちらを使うか、シートを書き出します。",
+  "points": [
+   "より良い結果のコツ: 表の用途と追跡したいことを伝える。数字があれば渡して、自分のデータから作らせる",
+   "Version history で以前の版を復元できるが、その版より後の編集も取り除かれる",
+   "取り込みは CSV、Google Sheets、Excel から。書き出しは .xlsx か CSV",
+   "組織での切り替えは Organization settings > Artifacts の Templates。組織の Artifacts もオンである必要がある",
+   "まだない機能: ピボットテーブル、保護された範囲、PDF 書き出しなど。マクロ、VBA、Power Query、DAX は非対応",
+   "接続済みのアプリからライブデータは取り込めない。ベータのため HIPAA と ZDR にはまだ対応していない",
+   "利用はプランの利用上限に数えられる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/18324300-get-started-with-claude-sheets",
+    "title": "Get started with Claude Sheets"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them",
+    "title": "What are artifacts and how do I use them?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "claude-docs",
+  "title": "Claude Docs",
+  "summary": "Claude Docs は、Claude や一緒に働く人と「生きた文書」を書く機能で、Free から Enterprise まですべてのプランで使え、既定でオンです(Enterprise では 2026 年 10 月 15 日に既定でオンになります)。文書を頼むと、Claude は書き始める前にいくつか質問し、画面上で下書きを作り、判断の理由をコメントに残します。ファイル、記憶、プロジェクト、スキル、接続済みのアプリなど、すでにある文脈も使います。ヘルプセンターは、良い依頼には文書の目的、読み手、扱う内容が含まれるとし、「a launch brief」より「販売チーム向けに、価格、時期、顧客からの上位 3 つの質問を扱う 2 ページのローンチ概要」のほうが良い結果になると例示しています。Claude の作業中も何もロックされず、利用者はいつでも並んで編集できます。コメントで @Claude と書くと、Claude はスレッドで返信して変更し、何をなぜ変えたかを説明します。Claude は常に依頼した人の権限で動くため、閲覧権限しかない人のために文書を編集することはできません。",
+  "points": [
+   "良い依頼は、目的、読み手、扱う内容を含む。内容の元がある場合は、ファイルや接続済みのアプリの名前を示す",
+   "変更は、人か Claude かを問わず、行った人に帰属して記録される",
+   "共有先の権限: Viewers は読む、Commenters は読んでコメントする、Editors は編集、コメント、書き出しもできる。名前の変更と削除は所有者だけ",
+   "文書の削除は取り消せない(ゴミ箱はない)",
+   "グラフや図は自動では更新されない。最新のデータを取るよう Claude に頼む",
+   "書き出しは Word、PDF、Markdown、Google Docs"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/16923645-get-started-with-claude-docs",
+    "title": "Get started with Claude Docs"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "usage-policy",
+  "title": "Usage Policy(利用ポリシー)の構成と共通の禁止事項",
+  "summary": "Usage Policy(Acceptable Use Policy、AUP とも呼ばれます)は、Anthropic の製品やサービスに入力を送るすべての人に適用されます。Claude.ai や Claude Code などのアプリの利用者、API を使う開発者や企業、クラウドプロバイダーや認定販売店を通じた顧客、Claude を組み込んだ製品のエンドユーザーも含まれます。ポリシーは 3 つに分かれます。Universal Usage Standards は、すべての利用者と用途に適用される禁止事項です。High-risk Use Case Requirements は、個人に害が及ぶリスクの高い特定の用途に適用される要件です。Additional Use Case Guidelines は、消費者向けのチャットボットやエージェント、未成年者向けの製品、エージェント的な利用、ディレクトリに掲載されるソフトウェアに適用されます。Safeguards チームが検知と監視を行い、違反が疑われる場合は、警告や、アクセスの制限、停止などを行うことがあります。エージェントの利用も Usage Policy に従う必要があり、ヘルプセンターの記事が具体的な禁止の例を挙げています。",
+  "points": [
+   "Universal Usage Standards には、人種、民族、宗教、国籍、性別、性的指向、カースト、障害などの保護された属性に基づく差別的な慣行を行うことや促進することの禁止が含まれる",
+   "外部の利用者と直接やり取りする消費者向けのチャットボットや AI エージェントは、AI と会話していることを、少なくとも各チャットセッションの冒頭か製品の画面上で開示する。Anthropic、Claude、モデル名を示す必要はない",
+   "利用者は、自分が作ったり使ったりするエージェントが、ツール、ブラウザ、接続したシステムを通じて行う操作も含めて、Usage Policy に沿うようにする責任を負う",
+   "エージェントの禁止例(ヘルプセンター): 本人への通知や同意なしに個人のオンライン活動を監視・追跡する、検知を逃れたり安全策を回避したりするために複数のアカウントを作成・管理する、オンライン投票を操作する",
+   "エージェントの禁止例(続き): 正規の Web ページをまねたサイトを作る、フィッシングや詐欺につながる内容を生成する、同意なしに個人になりすます、許可なくマルウェアを入れたり他人の認証情報でアカウントにアクセスしたりする",
+   "ポリシーは特定の業種を一律に禁止するものではなく、使い方が Usage Policy に沿っていればよい"
+  ],
+  "sources": [
+   {
+    "url": "https://www.anthropic.com/legal/aup",
+    "title": "Usage Policy"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/12005017-using-agents-according-to-our-usage-policy",
+    "title": "Using agents according to our Usage Policy"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "usage-policy-high-risk",
+  "title": "Usage Policy の高リスク用途の要件",
+  "summary": "個人の健康、法的な権利、金銭、生計、住宅・教育・不可欠なサービスへのアクセスに影響しうる用途について、Usage Policy は High-risk Use Case Requirements を定めています。High-risk AI Recommendation を行う場合の要件は 2 つです。1 つ目は Qualified human-in-the-loop で、資格のある人(その分野の出力を評価できる訓練や経験があり、法律が求める場合は免許を持つ人)が、変更する権限を持って、助言として届ける前、または判断の実行に使う前に、推奨を実質的に見直します。その人が、届けた内容や判断の正確さと適切さに責任を持ちます。2 つ目は Disclosure で、助言を受ける個人や判断の対象となる個人に、AI が使われたことを明確に伝えます。Anthropic、Claude、モデル名を示す必要はありません。高リスク領域は、Legal、Medical、Finance、Credit、Insurance、Housing、Employment、Education and credentials、Healthcare access、Public benefits and services、Legal status and adjudication の 11 です。",
+  "points": [
+   "Employment: 応募者の選考、順位付け、昇進、不採用、採用、シフト・勤務時間・給与の設定や変更、勤務評価や懲戒・停職・解雇など",
+   "Housing: 賃貸や購入の申込の承認、却下、順位付け、賃貸借の終了、立ち退きや差し押さえの開始",
+   "Finance: 特定の投資商品(証券、ファンド、デジタル資産、年金保険など)の売買・保有・配分についての個人向けの推奨、本人の税務についての助言、税務申告書の作成",
+   "要件は現地の法的要件に代わるものではない。法律と矛盾したり、法律が追加の要件を課したりする場合は法律に従う",
+   "対象外の例: 個人の状況に当てはめない一般的な情報や教育的な内容、最終的な推奨ではない社内の下書き・調査・要約・分析、特定の個人について助言や判断をしない業務",
+   "保険金の支払いなど個人に全面的に有利な一部の判断では、法律が許す範囲で事前の人による見直しは不要。一部承認や減額は「全面的に有利」に当たらない",
+   "法執行や刑事司法の判断に使うことは Universal Usage Standards で禁止されており、High-risk AI Recommendation の扱いにはならない"
+  ],
+  "sources": [
+   {
+    "url": "https://www.anthropic.com/legal/aup",
+    "title": "Usage Policy"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "model-training-data",
+  "title": "モデルの学習へのデータ利用(個人向けプランと商用プラン)",
+  "summary": "個人向けプラン(Free、Pro、Max など)では、次の場合に会話とコーディングセッションが利用されます。(1)Claude の改善への利用を許可した場合、(2)会話が安全性の審査のためにフラグを付けられた場合(Usage Policy の検知と執行の能力を高めるために利用・分析されうる。Safeguards チームが使うモデルの学習を含む)、(3)Trusted Tester Program への参加など、明示的に学習に同意した場合です。改善に使うデータには関連する会話全体やカスタムスタイルなどが含まれますが、コネクタ(リモートとローカルの MCP サーバーを含む)の生の内容は含まれません。Incognito chat は、Model Improvement を許可していても改善に使われません。改善に使う場合は、確認の前にデータをユーザー ID から自動で切り離し、アクセスを学習に関わる少数の担当者に限ります。商用製品(Claude for Work、API など)の入出力は、既定では学習に使われません。どちらでも、評価ボタン(👍/👎)でフィードバックを送ると、関連する会話全体が最大 5 年間保存され、学習に使われることがあります。",
+  "points": [
+   "個人向け: 改善への利用の許可、安全性の審査でのフラグ、明示的な参加のいずれかに当たると利用される",
+   "コネクタや MCP サーバーの生の内容は含まれない(会話に直接コピーした場合は含まれうる)",
+   "改善に使う場合の保護: ユーザー ID から自動で切り離す、アクセスは少数の担当者に限る、機微なデータを除外・難読化するツールを使う、連絡・プロファイル作成・販売や営業には使わない",
+   "それでも、金融情報、健康情報、パスワード、機密文書などの非常に機微な情報の共有には慎重になるよう勧められている",
+   "商用製品: 既定では入出力を学習に使わない。評価ボタンなどで明示的にフィードバックやバグを報告した場合などは使われうる",
+   "Team と Enterprise の Primary Owner と Owner は、Organization settings > Data and Privacy の Rate chats で、メンバーが評価ボタンからフィードバックを送る機能を無効にできる",
+   "フィードバックはユーザー ID から切り離してから使われ、他の会話とは結び付けられない"
+  ],
+  "sources": [
+   {
+    "url": "https://privacy.claude.com/en/articles/10023580-is-my-data-used-for-model-training",
+    "title": "Is my data used for model training?(Consumers)"
+   },
+   {
+    "url": "https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training",
+    "title": "Is my data used for model training?(Commercial Customers)"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/8325621-i-would-like-to-input-sensitive-data-into-my-chats-with-claude-who-can-view-my-conversations",
+    "title": "I would like to input sensitive data into my chats with Claude. Who can view my conversations?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "incognito-chats",
+  "title": "Incognito chat(シークレットチャット)",
+  "summary": "Incognito chat は、チャット履歴にも Claude の記憶(メモリ)にも保存されない一時的な会話で、Free、Pro、Max、Ultra、Team、Enterprise のすべてのプランで使えます。学習には使われません。プロジェクトの外で新しいチャットを始めるときに、画面右上のゴーストアイコンをクリックして有効にします。プロジェクト内ではゴーストアイコンが表示されず、使えません。始めた後に通常のチャットへ変換したり履歴に保存したりはできず、閉じると再び開けません。既存の記憶は使われず、今後の記憶にも含まれず、過去のチャットを検索するときの対象にもなりません。ただし、履歴に保存されないことと保持されないことは別です。Incognito chat は 30 日間(既定)、または組織のカスタムのデータ保持設定(Enterprise)に従ってそれより長く保持されます。Team と Enterprise では、Owner が利用できる組織のデータエクスポートに含まれ、Enterprise の Compliance API にも含まれます。",
+  "points": [
+   "プロジェクト外の新しいチャットでゴーストアイコンをクリックする。黒い枠と「Incognito chat」の表示が出る",
+   "記憶だけを使わずにチャットは履歴に残したい場合は、最初のメッセージを送る前に「+」メニューで Memory をオフにする。この方法はプロジェクト内でも使える",
+   "通常のチャットへの変換も、閉じた後に再び開くこともできない",
+   "プロフィールの情報(カスタムスタイル、個人の設定など)は Incognito chat でも使われる",
+   "保持: 30 日間(既定)、または組織のデータ保持設定に従ってそれより長く",
+   "Team と Enterprise: 組織のデータエクスポートに含まれる。Enterprise の Compliance API にも含まれる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/12260368-use-incognito-chats",
+    "title": "Use incognito chats"
+   },
+   {
+    "url": "https://privacy.claude.com/en/articles/10023580-is-my-data-used-for-model-training",
+    "title": "Is my data used for model training?(Consumers)"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "data-retention",
+  "title": "データの保持期間(個人向けプランと Enterprise のカスタム保持)",
+  "summary": "個人向けプランでは、チャットを削除すると履歴から直ちに消え、バックエンドの保存場所から 30 日以内に削除されます。改善への利用を許可した場合は、非識別化した形で最長 5 年間、学習用のパイプラインに保持されることがあります(設定を有効にした後の新規または再開したチャットが対象)。自動の安全性システムで Usage Policy 違反とフラグが付いた場合は、入出力が最長 2 年間、安全性の分類スコアが最長 7 年間保持されます。フィードバックのデータは 5 年間保持されます。どの場合も、法律が求める場合などは保持されることがあります。Enterprise プランでは、Primary Owner または Owner が Organization settings > Data and Privacy でカスタムの保持期間を設定できます。最小は 30 日で、1 か月は 30 日として数えます。チャットの保持期間は最後の活動から数え、チャットを開くことも活動に含まれます。プロジェクト内のチャットにはプロジェクトの保持期間が常に優先され、プロジェクトの保持期間を設定していなければ、プロジェクトは既定で無期限に保持されるため、中のチャットはチャットの保持期間では削除されません。",
+  "points": [
+   "個人向け: 削除したチャットは履歴から即時、バックエンドから 30 日以内に削除される",
+   "個人向け: Model Improvement をオフにすると、以前と新しいチャットは今後の学習に使われない。ただし進行中の学習や学習済みのモデルには含まれたまま",
+   "Enterprise: カスタムの保持期間を設定しなければ、データは既定で無期限に保持される",
+   "Enterprise: 期間を短くすると、新しい期間の外にあるデータは保存した時点で完全な削除が予定され、日次の処理で削除される。期間を過ぎたデータは復元できない",
+   "Enterprise: チャットをプロジェクトに移すとプロジェクトの保持期間に従い、プロジェクトから出すと単独のチャットとしてチャットの保持期間の対象になる",
+   "保持に関する操作と設定の変更は監査ログに自動で記録される"
+  ],
+  "sources": [
+   {
+    "url": "https://privacy.claude.com/en/articles/10023548-how-long-do-you-store-my-data",
+    "title": "How long do you store my data?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/10440198-configure-custom-data-retention-controls-for-enterprise-plans",
+    "title": "Configure custom data retention controls for Enterprise plans"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "hipaa-ready",
+  "title": "HIPAA 対応の Enterprise プラン",
+  "summary": "HIPAA 対応の Claude は Enterprise プラン(セルフサービスと営業経由の両方)だけで提供され、保護対象の医療情報(PHI)を Claude で扱う組織向けです。ビジネスアソシエイト契約(BAA)と、HIPAA の要件を支える機能と安全策が含まれます。対象の Enterprise 組織は、営業や法務の手続きなしに組織設定から有効にでき、BAA はクリックで承諾する形です。BAA に承諾して HIPAA を有効にできるのは組織の Primary Owner だけで、他の Owner や Admin は代わりに完了できません。手順は、Organization settings > Data and privacy の HIPAA Compliance で「Enable」をクリックし、BAA と Implementation Guide をダウンロードして確認し、「Accept and enable HIPAA」をクリックします。これは一方向の決定で、組織設定から元に戻せず、一部の設定は既定に戻ります。有効にしても、すべての機能が BAA の対象になるわけではなく、機能は BAA の対象、利用できるが対象外、無効の 3 つに分かれます。PHI は対象の機能でだけ扱います。",
+  "points": [
+   "Team プランと個人向けプラン(Free、Pro、Max、Ultra)では HIPAA を有効にできない",
+   "各機能の区分の正式な情報源は、Trust Center の Implementation Guide for HIPAA Entities",
+   "HIPAA の有効化だけでは Claude Code と Cowork は BAA の対象にならない。Primary Owner が Claude Code(ローカルモード)と Cowork(ローカルモード)に HIPAA の構成を適用する必要がある。この構成は現在、Anthropic のアカウントチームがある組織だけが使える",
+   "構成の適用前: Cowork は利用できるが BAA の対象外。Claude Code は ZDR を有効にした場合だけ対象",
+   "構成の適用後: 両方のローカルモードが BAA の対象になり、Cowork in the cloud などのクラウド機能は使えなくなる。Primary Owner は構成を外せない",
+   "Claude in Chrome は HIPAA を有効にした組織では既定でオフ。Owner がオンにしても、特定のサイトを許可するか既定のサイトポリシーを変えるまでどのサイトも開けない。オンにした後も BAA の対象外",
+   "2025 年 12 月 2 日より前に署名した API の BAA は、API の利用だけが対象"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/13296973-hipaa-ready-enterprise-plans",
+    "title": "HIPAA-ready Enterprise plans"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/12902428-use-claude-in-chrome-safely",
+    "title": "Use Claude in Chrome safely"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "chat-sharing",
+  "title": "チャットの共有(公開リンクと特定の人への共有)",
+  "summary": "チャットは既定で非公開で、共有すると、共有した時点のスナップショットが見られるようになります。スナップショットには共有前に送ったすべてのメッセージがアーティファクトを含めて入りますが、共有後のメッセージは、スナップショットを更新しない限り含まれません。添付したファイルそのものと、コネクタや MCP ツールの呼び出しで取得した生のデータも含まれず、見えるのは会話と Claude の最終的な応答です。共有の方法は 2 つあります。特定の人への共有は既定の方法で、すべてのプランで使えます。メールアドレスで招待し、招待は入力したメールアドレスでしか開けません。公開リンクは Free、Pro、Max、Ultra で使え、リンクを持つ誰でも、Claude のアカウントがなくても閲覧できます。どちらも閲覧のみで、受け取った人は会話を続けられません。Team と Enterprise では共有は組織の中に限られ、公開リンクは作れません。",
+  "points": [
+   "公開リンクは「公開として扱う」。1 人にだけ送っても転送や投稿ができ、公開リンクを特定の人に限る方法はない",
+   "共有ページには noindex の指示が付き、共有チャットの一覧やサイトマップも公開されない。ただし、リンクの投稿先、コピー、すべてのクローラーの挙動は制御できない",
+   "公開リンクをオフにするとリンクは動かなくなるが、他の人が作ったコピーやスクリーンショットは消えない",
+   "特定の人への共有: 招待された人は返信、自分のアカウントへのコピー、会話の継続ができない。組織外への共有では添付ファイルも見られない",
+   "新しいメッセージを見せるには「Update shared chat」でスナップショットを置き換える。旧来の共有リンクでは、共有を解除して再び共有すると更新される",
+   "共有の一覧の確認や停止は Settings > Privacy の Shared chats から行う"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/10593882-share-and-unshare-chats",
+    "title": "Share and unshare chats"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/16762437-public-links-for-shared-chats",
+    "title": "Public links for shared chats"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/16762496-share-a-chat-with-specific-people",
+    "title": "Share a chat with specific people"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "org-roles-and-data",
+  "title": "組織のロールとメンバーのデータ(Team・Enterprise)",
+  "summary": "Team と Enterprise の組織では、ロール(User、Admin、Owner、Primary Owner)によって、見られることとできることが決まります。Primary Owner は組織に 1 人だけで、そのシートはプランのライセンスを 1 つ使います。個人に結び付かないサービスアカウントを Primary Owner にすることもでき、誰が Primary Owner かは Settings > Account で確認できます。請求書の閲覧と支払い、支払い方法の追加と変更は Owner と Primary Owner ができ、データエクスポートの要求は Primary Owner だけができます。Claude for Work のアカウントと関連データは組織の Primary Owner が管理し、データエクスポートには会話、アップロードしたファイル、利用状況が含まれることがあります。利用には Anthropic と組織の間の契約が適用され、個人向けの Consumer Terms of Service と Privacy Policy は適用されません。メンバーを組織から外しても、そのアカウントとデータは削除されません。",
+  "points": [
+   "外したメンバーのプロジェクト: 非公開だったものは他のメンバーがアクセスできない。組織全体や特定のユーザーに共有されていたものは、権限に応じて引き続き使える",
+   "外したメンバーのチャットは、組織に共有したスナップショットも含めて、残りのメンバーが見られなくなる",
+   "外したメンバーのデータも、Primary Owner が実行する組織のデータエクスポートに含まれる。Enterprise ではカスタムのデータ保持設定も引き続き適用される",
+   "同じメールアドレスで同じ組織に再び追加すると、以前のチャット、プロジェクト、スキルが戻る",
+   "完全に削除するには、Owner か Primary Owner が Support に依頼する。削除は元に戻せない。SCIM を使う組織は IdP でもユーザーを外す(外さないと再びプロビジョニングされることがある)",
+   "Enterprise ではカスタムロールを使え、ロールが Custom のメンバーは既定の権限を持たない"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/9267276-roles-and-permissions",
+    "title": "Roles and permissions"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/9265372-who-owns-and-manages-the-data-of-my-team",
+    "title": "Who owns and manages the data of my Team?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/12053672-what-happens-to-a-user-s-data-when-they-are-removed-from-a-team-or-enterprise-organization",
+    "title": "What happens to a user's data when they are removed from a Team or Enterprise organization?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "verified-domain-connectors",
+  "title": "Restrict verified-domain connectors to your enterprise",
+  "summary": "Restrict verified-domain connectors to your enterprise は Enterprise プランの設定で、Enterprise 組織の外にある Claude アカウント(従業員の個人アカウントなど)が、検証済みドメインのメールアドレスを使って特定のコネクタ(Gmail、Slack など)を接続することを防ぎます。オンにすると、対応するコネクタを検証済みドメインのメールアドレスで接続できるのは組織内の Claude アカウントだけになり、組織外からの接続はサインイン時に失敗します。設定できるのは Owner、Primary Owner、Identity & Access の権限を Manage にしたカスタムロールで、少なくとも 1 つの検証済みドメインが必要です。Organization settings > Organization and access の Connector domain restriction でオンにします。親組織で管理し、すべての子組織に適用されます。いつでもオフにでき、一度有効にすると戻せないドメインキャプチャとは別の設定です。ドメインの claim は既存の個人アカウントを閉じますが、この設定はアカウントをそのままにします。",
+  "points": [
+   "逆方向は制限しない。組織のアカウントに個人の Gmail などを接続することはできる",
+   "データ損失防止(DLP)の代わりにはならない。仕事用のアカウントを誤ったアカウントに接続することへの安全策で、意図的なデータの移動を防ぐ制御ではない",
+   "既存の接続は切断しない。設定をオンにした後の新しい接続の試みにだけ適用される",
+   "管理者には通知されない。接続に失敗したときのメッセージは、接続しようとした本人にだけ表示される",
+   "接続先のサービスがアカウントの ID を共有しない場合は確認できず、接続はそのまま許可される"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/15402193-restrict-verified-domain-connectors-to-your-enterprise",
+    "title": "Restrict verified-domain connectors to your enterprise"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "cowork-safety",
+  "title": "Claude Cowork の安全な使い方(プロンプトインジェクションと承認モード)",
+  "summary": "Cowork では、Claude がファイルの読み取り、Web の閲覧、コードの実行、アプリの操作を行います。問題が起きたときの影響は、Claude が何を読めるかと、何を許されているかの 2 点でほぼ決まります。ツールは、内容を読む Read tools と、環境で操作を行う Write tools に分けられ、Write tools のほうがリスクが高くなります。信頼境界(自分で安全とみなし管理している情報源)の外の内容を読むと、攻撃者が仕込んだ悪意ある指示に出会うことがあり、この攻撃をプロンプトインジェクションと呼びます。攻撃が成功するには、Claude が信頼境界の外の情報を読めることと、ユーザーに不利益を及ぼしうる操作を実行できることが同時に成り立つ必要があり、どちらかが欠ければ攻撃は難しくなります。タスクは Anthropic のサーバー上の隔離された一時的な環境で動きますが、隔離はコードの実行場所を限るもので、Claude が何を読み、何をするかは限りません。安全策として、モデルの学習、コンテンツ分類器、Automatically approve での操作の審査、永久削除の前の確認などがありますが、攻撃の可能性はゼロではありません。",
+  "points": [
+   "Automatically approve: 実行前に Claude が各操作を審査する(Always allow にしたコネクタのツールは、破壊的とマークされたもの以外は審査されない)。Skip all approvals: 操作を確認する仕組みがない",
+   "どちらのモードでも、タスクの途中で悪意ある内容を読めば、気づく前に指示どおりに動く可能性がある",
+   "Manually approve に切り替える場面: 機微なファイル・アカウント・サイトに触れる、初めてのツール・プラグイン・サイトを使う、メッセージの送信や購入のように誤りを取り消しにくい",
+   "既定では永久削除の前に許可を求めるが、コンピューターの操作(computer use)はこの保護の対象外",
+   "機微な情報を含むローカルファイルへのアクセスを避け、Claude 専用の作業フォルダを使う。インターネットアクセスは信頼できるサイトだけに広げる",
+   "個々のコマンドではなくタスクの動きを見守り、想定外の動きがあればすぐにタスクを止める",
+   "Claude が代わりに行った操作の責任は利用者にある"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/13364135-use-claude-cowork-safely",
+    "title": "Use Claude Cowork safely"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "claude-in-chrome-safety",
+  "title": "Claude in Chrome の安全な使い方と組織の管理",
+  "summary": "Claude in Chrome は、Claude がユーザーに代わって Web サイトを読み、クリックし、移動するブラウザ拡張機能です。ブラウザを使う AI の最大のリスクは、Web サイト、メール、文書などの Web 上の内容に隠された悪意ある指示で、Claude が意図しない操作をするプロンプトインジェクションです。安全分類器があり、1 つは入ってくる内容を、もう 1 つは Claude の各操作を実行前に調べ、リスクがあれば操作をブロックするか承認を求めて止めます。ほかにも、モデルの学習、細かな権限、高リスクのサイトのブロックリスト、ファイルのダウンロードや機微な情報の入力など特定の高リスクの操作の前の確認、操作の自動審査があります。それでもリスクはゼロではありません。また、Claude は作業中のタブのスクリーンショットを撮って判断するため、タブに表示されている内容は会話の一部になります。Team と Enterprise の Owner は、Organization settings > Claude in Chrome で拡張機能の有効・無効と、Claude がアクセスできるサイトの許可リストとブロックリストを管理します。",
+  "points": [
+   "機微なサイトでは使わず、機微なアカウントにアクセスできない別のブラウザプロファイルの利用を検討する",
+   "予期しない振る舞いに注意し、機微な作業では信頼できるサイトを使う",
+   "許可リストとブロックリストは、Claude in Chrome と Cowork の内蔵ブラウザの両方に適用される。内蔵ブラウザ用の別のリストはない",
+   "最初は制限の強い許可リストで始め、拡張機能の挙動に慣れてから広げることが勧められている",
+   "既定: Team は有効、Enterprise はオン(既に無効にしていなければ)。HIPAA を有効にした組織では Owner がオンにするまでオフ",
+   "Claude in Chrome と Cowork は別に管理される。Cowork の内蔵ブラウザは Organization settings > Capabilities で管理する",
+   "Claude in Chrome では ZDR は使えない(Cowork と同じ)"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/12902428-use-claude-in-chrome-safely",
+    "title": "Use Claude in Chrome safely"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/13065128-claude-in-chrome-admin-controls",
+    "title": "Claude in Chrome admin controls"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "safeguards-appeals",
+  "title": "アカウントの停止と異議申し立て(Safeguards)",
+  "summary": "Anthropic は安全上の手続きとして、Usage Policy への繰り返しの違反、サポート対象外の地域からのアカウント作成、利用規約違反などを理由にアカウントを停止することがあります。誤って停止されたと考える場合は、claude.ai に停止されたアカウントでログインし、案内されている異議申し立て(appeal)のフォームを送ります。フォームはログインしていないと開けません。Safeguards チームが、アカウントが無効になった理由を調べます。Usage Policy 違反で停止された Free、Pro、Max、Ultra のアカウントでも、ログインしてデータのエクスポートやアカウントの削除ができ、Anthropic に連絡する必要はありません。また、自分のアカウントに問題がなくても、所属する組織が通常と異なる活動のために一時停止(on hold)されることがあります。その場合はログイン時の制限された画面に一時停止中の組織が一覧で表示されるので、影響を受けた組織の「Request a review」をクリックして、Safeguards チームに見直しを依頼します。",
+  "points": [
+   "異議申し立ては、停止されたアカウントでログインした状態でフォームから送る",
+   "停止されたすべての利用者は自分でアカウントを削除できる。データのエクスポートは、違反の内容によって範囲が制限されることがある",
+   "組織の一時停止は、組織ごとの「Request a review」で見直しを依頼する",
+   "プロンプトが Usage Policy に違反していると判断されると警告が出ることがある。API の顧客では、警告は API アカウント全体での違反の閾値に結び付いている",
+   "警告が誤りだと考える場合は、状況とアカウント情報を添えてメールで連絡する"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/8241253-safeguards-warnings-and-appeals",
+    "title": "Safeguards warnings and appeals"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "enterprise-security-controls",
+  "title": "Enterprise の管理機能(監査ログ・IP 許可リスト・US-only inference)",
+  "summary": "Enterprise の組織には、ガバナンスのための管理機能があります。監査ログは Enterprise の組織だけで使え、Owner と Primary Owner が Organization settings > Data and Privacy の「Export logs」から書き出します。書き出しには過去 180 日分の組織の監査ログがまとめられ、依頼した Owner に、24 時間有効なダウンロードリンクがメールで届きます。チャットやプロジェクトのタイトルと内容は書き出されず、一意の ID だけが出力されます。チャットの入出力は、Primary Owner がデータエクスポートで書き出せます。IP 許可リストは、組織が承認した IP アドレスからだけ Claude にアクセスできるようにする機能で、Enterprise プランと Claude Platform の組織で公開ベータとして使えます。US-only inference は利用量課金の Enterprise プランで使える組織全体の設定で、組織の推論(Claude が応答を生成する処理)をすべて米国内のサーバーで行います。",
+  "points": [
+   "監査ログ: 顧客管理の暗号鍵を使う Enterprise 組織では「Export logs」で書き出せない。監査ログのイベントは Compliance API でも取得できる",
+   "IP 許可リスト: Enterprise の Owner と Claude Platform の Admin が、Anthropic を通さずに自分で設定・管理できる",
+   "IP 許可リスト: 組織の外に共有したアーティファクトは許可リストの制限を受けない",
+   "US-only inference: 変更できるのは Primary Owner、Owner、Privacy の権限を「Can manage」にしたカスタムロール",
+   "US-only inference: Claude Opus 4.6、Claude Sonnet 4.6 以降のモデルの利用料が標準の API 料金の 1.1 倍になる。席の料金は変わらない",
+   "US-only inference: 対象は推論だけ。データの保存場所や、Slack や Google Drive などのコネクタ先のサービスの処理は制御しない",
+   "Team プランや従来の席課金の Enterprise プランでは、US-only inference の設定は表示されない"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/9970975-access-audit-logs",
+    "title": "Access audit logs"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/13200993-restrict-access-to-claude-with-ip-allowlisting",
+    "title": "Restrict access to Claude with IP allowlisting"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/15422948-enable-us-only-inference-for-your-organization",
+    "title": "Enable US-only inference for your organization"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "legal-work-confidentiality",
+  "title": "法務での利用(秘匿特権と機密保持)",
+  "summary": "ヘルプセンターの記事「Using Claude for legal work」は、法務で Claude を使うときの秘匿特権と機密保持について、Anthropic の見解をまとめたものです。法的助言ではないと明記されています。記事によると、商用の条件では、Team と Enterprise プラン、Claude Platform、API の顧客のコンテンツは既定で学習に使われません。保持期間は設定でき、Enterprise では Primary Owner と Owner が組織全体の保持期間を設定でき、API では標準の 30 日の保持か、対象のエンドポイントとモデルでゼロデータ保持(ZDR)を使えます。人によるレビューは、自動の安全システムがフラグを付けた内容に限られます。データを自社のクラウド環境内にとどめる方針の組織は、AWS Bedrock や Google Cloud Vertex AI で Claude を使えます。記事は、この分野の法は動いており、挙げた判断はいずれも控訴審のものではなく、他の法域では判断が異なりうるため、導入の判断は自らの弁護士と相談するよう勧めています。",
+  "points": [
+   "検討を勧める点 1: DPA と学習に使わない約束を含む商用の条件で使っているか(法務技術の基本の前提)",
+   "検討を勧める点 2: 案件の機微さに応じて、ZDR や自社クラウド内(in-tenancy)での利用が必要か",
+   "検討を勧める点 3: 弁護士の関与、一次資料での出力の確認、AI 利用の記録をどう保つか",
+   "検討を勧める点 4: 依頼者の同意や委任契約書での扱い(ABA 512 を含む複数の弁護士会の意見が扱っている)",
+   "in-tenancy の利用はデータの所在と契約相手を変えるが、それだけで安全監視が止まるわけではない"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/15707726-using-claude-for-legal-work-privilege-confidentiality-and-how-to-think-about-configuration",
+    "title": "Using Claude for legal work: privilege, confidentiality, and how to think about configuration"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "prompt-principles",
+  "title": "プロンプト作成の基本原則(ヘルプセンター)",
+  "summary": "ヘルプセンターは、Claude は明確で具体的な指示を与えたときに最もよく働くとし、プロンプトを書くときの原則を挙げています。依頼を簡潔かつ明確に説明する、プロンプトにできるだけ多くの文脈を含める、依頼内容について背景知識のない人に指示するつもりで書く、複雑な依頼をサブステップに分ける、Claude にフィードバックを返す(フォローアップの指示や明確化を伝える、回答の書き直しを求める)、の 5 つです。入門記事「Introduction to prompt design」は、Claude を新しく雇った委託先(contractor)にたとえます。Claude はあなた、あなたの作業、あなたの組織についての文脈を持たないため、何をしてほしいかを非常に具体的に指示します。また、回答が短すぎる、または一部しか完結していない場合について、ヘルプセンターは、Claude のコンテキストウィンドウは与えたプロンプトに適用され、生成する出力には適用されないと説明したうえで、プロンプトを練り直す(retool)ことを勧めています。具体的には、前回のプロンプトと回答を次のプロンプトに含めて、続きから書かせます。",
+  "points": [
+   "依頼は簡潔かつ明確に説明し、文脈はできるだけ多く含める",
+   "依頼内容について背景知識のない人に指示するつもりで書く",
+   "複雑な依頼はサブステップに分ける",
+   "期待と違う回答には、フォローアップの指示や明確化を返すか、書き直しを求める(フィードバック)",
+   "Claude は新しく雇った委託先のように、あなた、作業、組織についての文脈を持たない。非常に具体的に指示する",
+   "コンテキストウィンドウはプロンプトに適用され、生成する出力には適用されない",
+   "回答が短すぎる・途中までのときは、前回のプロンプトと回答を次のプロンプトに含めて、続きから書かせる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/7996857-my-prompt-isn-t-giving-me-a-helpful-answer",
+    "title": "My prompt isn’t giving me a helpful answer."
+   },
+   {
+    "url": "https://support.claude.com/en/articles/7996853-introduction-to-prompt-design",
+    "title": "Introduction to prompt design"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/8114518-claude-s-response-to-my-prompt-is-too-brief",
+    "title": "Claude’s response to my prompt is too brief."
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "claude-use-cases",
+  "title": "Claude の主な使い方と画像の扱い",
+  "summary": "ヘルプセンターの「What are some things I can use Claude for?」は、Claude の使い方として、さまざまな形式と文体での執筆(テキストメッセージやメールから脚本や小説まで)、新しいことの学習、長い記事、文書、会話、書籍などの要約、コーディング(ペアプログラマーとして。最も得意なのは Python で、主要なプログラミング言語すべてを扱える)、議論やブレインストーミングの相手、翻訳、画像の分析を挙げています。ブレインストーミングでは、アイデアを投げかける相手になり、異なる視点を出し、推薦を行えます。翻訳は、学習データのため英語が最も得意で、十数の言語を知っており、英語以外ではポルトガル語、フランス語、ドイツ語が特に得意とされています。画像については、Claude は画像生成ツールのように写真やイラストを生成しません。その代わり、HTML と SVG を使った図、グラフ、インタラクティブな図解を会話の中で作れ、追加の質問に応じて調整もできます。この機能は Claude の web 版とデスクトップ版でベータです。アップロードされた画像を見て分析することもできます。",
+  "points": [
+   "使い方の例: 執筆、学習、要約、コーディング、議論やブレインストーミングの相手、翻訳、画像の分析",
+   "ブレインストーミング: アイデアの壁打ち、異なる視点の提示、推薦",
+   "要約: 長い記事、ニュース、文書、会話、書籍などを簡潔にまとめる",
+   "画像の分析: グラフのデータの分析や、写っているものの説明など",
+   "写真やイラストは、画像生成ツールのようには生成しない",
+   "HTML と SVG による図、グラフ、インタラクティブな図解は会話の中で作れる(web 版とデスクトップ版でベータ)"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/7996845-what-are-some-things-i-can-use-claude-for",
+    "title": "What are some things I can use Claude for?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/9002504-can-claude-produce-images",
+    "title": "Can Claude produce images?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "be-clear-and-direct",
+  "title": "明確で直接的な指示と、理由を添えた文脈",
+  "summary": "Prompting best practices は、Claude が明確で明示的な指示によく応え、求める出力を具体的に書くと結果が良くなると述べています。作業に厳密に必要な以上のことをしてほしい場合は、あいまいなプロンプトから推測させるのではなく、明示的に頼みます。例として、「Create an analytics dashboard」よりも、関連する機能や操作をできるだけ含め、基本を超えた充実した実装にするよう求めるほうが効果的とされています。Claude は、優秀だが職場の規範やワークフローについての文脈を持たない新しい社員のように考えます。重要なテスト(Key test)は、課題について文脈がほとんどない同僚にプロンプトを見せ、その指示に従ってもらうことで、同僚が混乱するなら Claude も混乱します。出力の形式と制約は具体的に書き、手順の順序や網羅性が重要なときは番号付きリストや箇条書きで順に指示します。また「Add context to improve performance」は、指示の背景や動機(なぜその振る舞いが重要か)を説明すると、Claude が目的をよく理解し、より的確な応答を返せるとしています。Claude は説明から一般化できます。",
+  "points": [
+   "作業に必要な以上のことを望むなら、あいまいなプロンプトから推測させず、明示的に頼む",
+   "Claude を、優秀だが職場の規範やワークフローの文脈を持たない新しい社員として扱う",
+   "Key test: 文脈の少ない同僚にプロンプトを見せて従ってもらう。同僚が混乱するなら Claude も混乱する",
+   "出力の形式と制約を具体的に書く",
+   "順序や網羅性が重要な手順は、番号付きリストや箇条書きで順に示す",
+   "理由を添える: 「NEVER use ellipses」より、音声読み上げエンジンが発音できないので省略記号を使わない、と書くほうが効果的",
+   "Claude は説明から一般化できる",
+   "システムプロンプトで役割を設定すると、振る舞いと口調が用途に合わせて絞られる。1 文でも効果がある"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "few-shot-examples",
+  "title": "例(few-shot)の使い方",
+  "summary": "例は、Claude の出力の形式、口調、構成を導く最も確実な方法の 1 つです。よく作られた少数の例(few-shot または multishot プロンプティング)は、正確さと一貫性を高めます。Prompting best practices は、例を入れるときの条件を 3 つ挙げています。関連性(Relevant: 実際の用途を忠実に反映する)、多様性(Diverse: 境界的なケースを含め、Claude が意図しないパターンを拾わない程度に変化をもたせる)、構造化(Structured: 例を <example> タグで、複数の例は <examples> タグで囲み、Claude が指示と区別できるようにする)です。最良の結果を得るには 3〜5 個の例を入れることが勧められています。また、Claude に例の関連性や多様性を評価させたり、最初の例をもとに追加の例を作らせたりすることもできます。",
+  "points": [
+   "例は出力の形式、口調、構成を導く最も確実な方法の 1 つ。正確さと一貫性を高める",
+   "Relevant: 実際の用途を忠実に反映する",
+   "Diverse: 境界的なケースを含め、意図しないパターンを拾わない程度に変化をもたせる",
+   "Structured: <example> タグで囲み、複数なら <examples> タグに入れて、指示と区別させる",
+   "3〜5 個の例が推奨",
+   "Claude に例の関連性や多様性を評価させたり、追加の例を作らせたりできる"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "xml-tags",
+  "title": "XML タグによるプロンプトの構造化",
+  "summary": "XML タグは、特に指示、文脈、例、可変の入力が混在するプロンプトで、Claude が曖昧さなく解釈する助けになります。Prompting best practices は、内容の種類ごとに <instructions>、<context>、<input> のような専用のタグで囲むと誤解釈が減ると述べています。推奨事項は、プロンプト全体で一貫した説明的なタグ名を使うこと、内容に自然な階層があるときはタグを入れ子にすること(文書を <documents> の中に入れ、それぞれを <document index=\"n\"> で囲むなど)です。同じページの別の節でも、例を <example> タグ(複数なら <examples> タグ)で囲んで指示と区別させること、複数の文書を <document> タグで囲み、<source> や <document_content> のサブタグでメタデータと本文を分けることが勧められています。出力形式の制御でも、散文の部分を <smoothly_flowing_prose_paragraphs> タグの中に書かせるような、XML の形式指示が有効な方法の 1 つとして挙げられています。",
+  "points": [
+   "指示、文脈、例、可変の入力が混在するプロンプトで特に有効",
+   "内容の種類ごとに <instructions>、<context>、<input> などのタグで囲むと誤解釈が減る",
+   "一貫した説明的なタグ名を使う",
+   "自然な階層があればタグを入れ子にする(<documents> の中に <document index=\"n\">)",
+   "例は <example> / <examples> タグで囲む",
+   "出力形式の指定にも XML の形式指示が使える"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "long-context-prompting",
+  "title": "長い文書を扱うプロンプト(Long context prompting)",
+  "summary": "大きな文書やデータの多い入力(20k トークン以上)を扱うときは、プロンプトの構成に注意します。Prompting best practices は 3 つの方法を挙げています。第一に、長い文書や入力をプロンプトの上部、つまりクエリ、指示、例より上に置きます。これはすべてのモデルで性能を高めるとされ、テストでは、末尾に置いたクエリが、特に複数文書を含む複雑な入力で応答の質を最大 30% 高めました。第二に、複数の文書を使うときは、それぞれを <document> タグで囲み、<document_content> と <source>(ほかのメタデータも)のサブタグで分けます。例では <documents> の中に <document index=\"1\"> のように文書を並べています。第三に、長い文書の作業では、作業の前に文書の関連部分を引用させます(Ground responses in quotes)。こうすると、Claude が関連する内容に集中し、文書の残りを無視しやすくなります。",
+  "points": [
+   "対象は 20k トークン以上の大きな文書やデータの多い入力",
+   "長い文書はクエリ、指示、例より上(プロンプトの上部)に置く。すべてのモデルで性能が上がる",
+   "末尾のクエリは、特に複数文書の複雑な入力で応答の質を最大 30% 高めた(テスト)",
+   "複数の文書は <document> タグで囲み、<document_content> と <source> などのサブタグで分ける",
+   "作業の前に関連部分を引用させると、関連する内容に集中しやすい"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "output-format-control",
+  "title": "出力形式と応答の簡潔さの制御",
+  "summary": "Prompting best practices は、出力の書式を導く特に効果的な方法として 4 つを挙げています。(1) してはいけないことではなく、何をするかを伝える(「Do not use markdown in your response」ではなく「Your response should be composed of smoothly flowing prose paragraphs.」)。(2) XML の形式指示を使う。(3) プロンプトの書式を望む出力に合わせる。プロンプトの書式が応答の書式に影響しうるため、プロンプトから Markdown を減らすと、出力の Markdown も減らせます。(4) 書式の好みを詳しく指示する。また、最新のモデルは以前より簡潔で自然な伝え方をし、効率のために詳しいまとめを省くことがあります。ツールの呼び出しの後に言葉でのまとめを書かず、次の操作に直接進むこともあるため、作業を見えやすくしたいなら、ツールを使う作業の後に簡単なまとめを書くよう指示します。ただし傾向はモデルによって異なり、Claude Opus 5 は既定の応答が以前のモデルより長く、effort を上下しても見える応答の長さは確実には変わらないため、簡潔さはプロンプトで明示的に求めます。",
+  "points": [
+   "してはいけないことではなく、何をするかを伝える",
+   "XML の形式指示を使う(<smoothly_flowing_prose_paragraphs> タグの中に書かせるなど)",
+   "プロンプトの書式を望む出力に合わせる。プロンプトの Markdown を減らすと出力の Markdown も減らせる",
+   "細かい書式の好みは、詳しいプロンプトで明示する",
+   "最新のモデルは、ツール呼び出しの後のまとめを省いて次の操作に進むことがある。必要ならまとめを書くよう指示する",
+   "Claude Opus 5 は既定の応答が長く、effort では見える長さが確実には変わらない。簡潔さはプロンプトで求める"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "prompting-research-tasks",
+  "title": "調査・情報収集を依頼するプロンプト",
+  "summary": "Prompting best practices の「Research and information gathering」は、最新のモデルが複数の情報源から情報を見つけて統合できるとし、調査の結果を最適にする方法を 3 つ挙げています。明確な成功基準を示す(調査の質問に対して、何をもって成功した回答とするかを定義する)、情報源の検証を促す(複数の情報源で情報を確かめるよう頼む)、複雑な調査では構造的な進め方を使う、の 3 つです。構造的な進め方のサンプルプロンプトは、情報を構造的に検索し、集めながら競合する複数の仮説を立て、進捗メモに信頼度を記録して較正を高め、進め方と計画を定期的に自己批判し、仮説ツリーや調査メモのファイルを更新して情報を残し透明性をもたせ、複雑な調査を体系的に分解するよう求めています。この進め方は、大量の資料を順序立てて反復的に処理し、見つけたことを批判的に見直す助けになるとされています。",
+  "points": [
+   "成功基準を明確にする: 何をもって成功した回答とするかを定義する",
+   "情報源の検証を促す: 複数の情報源で確かめるよう頼む",
+   "複雑な調査では構造的な進め方を使う",
+   "構造的な進め方の例: 競合する仮説を立てる、進捗メモに信頼度を記録する、計画を自己批判する、仮説ツリーや調査メモを更新する"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "web-search-thinking-research",
+  "title": "Web search・extended thinking・Research の使い分け",
+  "summary": "ヘルプセンターは、情報を探して問題を解くための 3 つの機能の使い分けを説明しています。Web search は、天気の確認、特定企業の情報、最新ニュースの見出し、「昨夜の Lakers の試合は誰が勝ったか」のような、1〜2 回のツール呼び出しで答えられる単純な事実の質問に最適です。何を検索するかを大まかに指示しつつ、検索の実行と結果の分析は Claude に任せたいときにも役立ちます。extended thinking は、数学の問題、コードのデバッグ、哲学的な概念の分析など、Web の最新情報を必要としない複雑な推論に向き、結論の前に複数の角度から検討できます。Web 検索や連携を使わず、Claude によく考えさせたいだけなら extended thinking 単体が最適です。Research は、1〜3 分かけて 5 回以上のツール呼び出しを要する包括的な情報収集に最適で、Web と連携先の複数の情報源を統合して詳しいレポートを作ります。extended thinking と Research を併用すると、進め方を計画してから包括的な情報収集を実行でき、Research は適切な引用とともに、より長い最終レポートを出します。",
+  "points": [
+   "Web search: 1〜2 回のツール呼び出しで答えられる単純な事実の質問(天気、特定企業の情報、最新ニュースの見出し、最新の詳細)",
+   "Web search は、何を検索するかを大まかに指示しつつ、検索の実行と結果の分析は Claude に任せたいときにも向く",
+   "extended thinking: Web の最新情報を必要としない複雑な推論(数学の問題、コードのデバッグ、アルゴリズムの最適化、哲学的な概念の分析など)。結論の前に複数の角度から検討する",
+   "Web 検索や連携を使わず、Claude によく考えさせたいだけなら extended thinking 単体が最適",
+   "Research: 1〜3 分かけて 5 回以上のツール呼び出しを要する包括的な情報収集。Web と連携先の複数の情報源を統合して詳しいレポートを作る",
+   "Research の用途の例: 競合の比較、古い社内文書を Web の情報で更新する、カレンダーとメールから優先順位を付ける",
+   "併用すると、進め方を計画してから包括的な情報収集を実行できる。Research は引用付きで、より長い最終レポートを出す",
+   "Team と Enterprise では、Owner または Primary Owner が Organization settings > Capabilities で Web search を有効にしてから、各メンバーがチャットでオンにできる",
+   "新しい Claude の体験には Web search のトグルがなく、役立つときに Claude が Web を検索する"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research",
+    "title": "When should I use web search, extended thinking, and research?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/10684626-enable-and-use-web-search",
+    "title": "Enable and use web search"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "file-uploads",
+  "title": "ファイルのアップロード(対応形式・上限・PDF の処理)",
+  "summary": "Claude にアップロードできる文書は PDF、DOCX、CSV、TXT、HTML、ODT、RTF、EPUB、JSON、XLSX で、XLSX はアカウントでコード実行とファイル作成を有効にする必要があります。画像は JPEG、PNG、GIF、WebP に対応します。ファイルは個々のチャットか、会話をまたいで参照できるプロジェクトの Files セクションにアップロードできます。チャットへのアップロードは 1 ファイル 500MB、1 つのチャットで 20 ファイル、画像は 8000×8000 ピクセル、PDF は 1000 ページまでです。プロジェクトのファイルは 1 ファイル 30MB で、数は無制限ですが内容の合計が Claude のコンテキストウィンドウに収まる必要があり、処理はテキストの抽出のみです(マルチモーダルの PDF を除く)。PDF は 100 ページ以下なら本文に加えて画像、グラフ、図などの視覚的な要素も解析し、101〜1000 ページはテキストだけを処理します。1000 ページを超える PDF はアップロードできず、「Uploaded file is too large」というエラーになります。",
+  "points": [
+   "チャット: 1 ファイル 500MB、1 チャット 20 ファイル、画像 8000×8000 ピクセル、PDF 1000 ページまで",
+   "プロジェクトのファイル: 1 ファイル 30MB、数は無制限(合計はコンテキストウィンドウ内)、テキストの抽出のみ(マルチモーダルの PDF を除く)",
+   "PDF は 100 ページ以下なら視覚的な要素も解析、101〜1000 ページはテキストのみ",
+   "PDF 以外の文書はテキストだけを抽出し、埋め込まれた画像は読めない",
+   "画像は 1000×1000 ピクセル以上を使い、小さい画像や低解像度の画像は避ける",
+   "PDF のページを指すときは、文書に印刷された番号ではなく PDF ビューアに表示される番号を使う",
+   "大きなファイルは、上限に収まるよう小さな部分に分ける"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/8241126-upload-files-to-claude",
+    "title": "Upload files to Claude"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "language-settings",
+  "title": "表示言語と会話の言語",
+  "summary": "Claude の web 版とデスクトップ版は複数の表示言語に対応し、英語、フランス語、ドイツ語、ヒンディー語、インドネシア語、イタリア語、日本語、韓国語、ポルトガル語(ブラジル)、スペイン語(ラテンアメリカ)、スペイン語(スペイン)を選べます。変更は左下のプロフィールアイコンから「Language」の項目で行い、画面は自動で切り替わります。表示言語を変えても、Claude とはどの言語でも会話でき、Claude は使った言語で応答します。音声モードは表示言語とは別の言語設定を持ちます。音声モードで Claude が話し、聞き取る言語を変えるには、Settings > Capabilities で Voice > Spoken language を選びます。Voice が見当たらない場合は Settings > General の Voice > Language で選びます。音声モードのヘルプも、アプリの表示言語を変えても音声の言語は変わらないと説明しており、音声の会話中に Claude に言語を切り替えるよう頼むこともできます。音声モードでの英語以外の言語への対応はベータです。",
+  "points": [
+   "表示言語は web 版とデスクトップ版で、プロフィールアイコンの「Language」から変える。日本語を含む 11 の言語",
+   "表示言語にかかわらず、どの言語でも会話でき、Claude は使った言語で応答する",
+   "音声モードの言語は表示言語とは別。Settings > Capabilities の Voice > Spoken language で選ぶ",
+   "Voice が見当たらない場合は Settings > General の Voice > Language",
+   "音声の会話中に、言語を切り替えるよう Claude に頼むこともできる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/10769299-how-to-use-claude-in-your-preferred-language",
+    "title": "How to use Claude in your preferred language"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/11101966-use-voice-mode",
+    "title": "Use voice mode"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "voice-mode",
+  "title": "音声モード(Voice mode)",
+  "summary": "音声モードでは、Claude に話しかけて応答を音声で聞く、完全な音声の会話ができます。Free、Pro、Max、Ultra、Team、Enterprise のすべてのプランで、Claude Mobile(iOS と Android)、Claude Desktop、web で使えるベータ機能で、スマートフォンで最もよく動くように作られています。使い方は 2 つあります。既定のハンズフリーモード(Hands-free mode)は、Claude が聞き続け、話の自然な間で応答する方式で、静かな環境で最もよく動きます。騒がしい環境や、Claude が声と背景の音を区別しにくい場合は、プッシュ・トゥ・トークモード(Push-to-talk mode)に切り替えます。話している間ボタンを押し続け、終わったら離す方式で、Claude がいつ聞くかを制御しやすく、人通りの多い通りや混んだ部屋などでも確実に使えます。同じ会話の中で文字と音声を切り替えられ、文脈は引き継がれます。接続した Gmail、Google Calendar、Google Docs、Slack などのツールや web search も音声の会話中に使えます。音声の会話は通常の利用制限に数えられます。",
+  "points": [
+   "すべてのプランで使えるベータ機能。Claude Mobile、Claude Desktop、web で使える",
+   "ハンズフリーモードが既定。静かな環境で最もよく動く",
+   "騒がしい場所や、声と背景の音を区別しにくいときはプッシュ・トゥ・トークモードに切り替える",
+   "Claude が割り込むときは、間を空けすぎない、プッシュ・トゥ・トークに切り替える、静かな場所に移る",
+   "既定では音声は保存されず、文字起こしがチャット履歴に保存される",
+   "音声の言語は表示言語とは別に設定する(Settings > Capabilities の Voice > Spoken language)",
+   "Claude Fable は現在音声モードで使えない。Claude Cowork と Claude Code ではディクテーションは使えるが音声モードは使えない"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11101966-use-voice-mode",
+    "title": "Use voice mode"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "cowork",
+  "title": "Claude Cowork の仕組みと承認モード",
+  "summary": "Claude Cowork は、Claude Code を動かすのと同じエージェントの仕組みを、端末なしでコーディング以外の知識労働に使えるようにしたものです。有料プラン(Pro、Max、Ultra、Team、Enterprise)だけで使えます。成果を描写して離れ、戻ると、書式の整った文書、整理されたファイル、まとめた調査などが仕上がっている、という使い方ができます。タスクを始めると、Claude は依頼を分析して計画を立て、必要なら小さな作業に分け、Anthropic のサーバー上の隔離された環境でコードやシェルコマンドを実行し、成果物をセッションに届けます。作業中は進み具合が見え、途中で方向を修正することも、そのまま任せることもできます。セッションはクラウドで動くため、ノート PC を閉じても作業が続き、同じセッションを別の端末から開けます。ローカルのファイル、ブラウザ、コンピューター操作を使うには、その PC で macOS か Windows の Claude Desktop が開いて接続されている必要があります。行動の前に許可を求める頻度は 3 つのモード(Manually approve、Automatically approve、Skip all approvals)から選び、チャットボックスのモードセレクターでいつでも変えられます。",
+  "points": [
+   "Manually approve(Manual): 操作ごとに一時停止して承認を求め、利用者が Allow か Deny を選ぶ",
+   "Automatically approve(Auto): 各手順で止まらず、各操作を安全性の観点で確認し、危険と判断したものを止める。「Always allow」にしたコネクタのツールは例外",
+   "Skip all approvals(Skip): 承認を求めず、自動の確認もない。関わる操作、コネクタ、ファイル、アプリなどをすべて完全に信頼できる場合にだけ使う",
+   "どのモードも利用者の判断の代わりにはならない。お金、本人名義で送るメッセージ、重要なファイルなど結果の大きい作業では、近くで確認するか Manually approve に戻す",
+   "ファイルを完全に削除する前には、明示的な許可(Allow)を求める",
+   "2026 年 10 月 6 日から、Pro、Max、Ultra の新しいタスクはクラウドで動く。Settings > General の「Only on your computer」は削除され、動かす場所を選ぶ設定はない",
+   "PC 上だけで動く新しいタスクには、デスクトップアプリの Claude Code を使うよう案内されている(PC 上で動き、フォルダと履歴も PC に残る)",
+   "フォルダは PC に残り、クラウドでファイルが必要になるとそのファイルだけのコピーを取得する。接続済みフォルダの読み書きは、デスクトップアプリが開いていて、セッションがデスクトップで始められたか予定タスクである場合に限られる",
+   "Dispatch(限定ベータ、新規利用者には提供されない)は、スマートフォンから依頼してデスクトップの PC でタスクを動かす機能。PC が起動していて Claude Desktop が開いている必要があり、1 つの継続したスレッドで前のタスクの文脈を引き継ぐ",
+   "手順の多い作業は、短い質問より多くの利用量を使う"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork",
+    "title": "Get started with Claude Cowork"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile",
+    "title": "Use Claude Cowork on web, desktop, and mobile"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/13947068-assign-tasks-from-anywhere-in-claude-cowork",
+    "title": "Assign tasks from anywhere in Claude Cowork"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "usage-and-length-limits",
+  "title": "使用量の上限と長さの上限",
+  "summary": "Claude を使うときの上限には、使用量の上限(usage limits)と長さの上限(length limits)の 2 種類があります。使用量の上限は一定期間にどれだけ Claude を使えるかを決めるもので、有料プランでは 5 時間ごとにリセットされるセッション上限と、週に 1 回リセットされる週間上限があります。claude.ai、Claude Code、Claude Desktop の利用は同じ上限に数えられます。使用量は、会話の長さと複雑さ、使う機能、モデル、effort などで変わります。長さの上限は、1 つのチャットで扱える情報量であるコンテキストウィンドウに関するものです。コード実行を有効にしていると自動的なコンテキスト管理が働き、会話が上限に近づくと Claude が以前のメッセージを要約して会話を続けます。全履歴は保持され、要約後も参照できます。ただし長い会話は使用量を多く消費するため、上限が近いときは新しい会話を始めることが勧められています。使用量の上限に達したらリセットを待つかプランを上げ、usage credits を有効にしていれば作業は止まらずに続きます。",
+  "points": [
+   "使用量の上限はすべての会話を通じた期間あたりの量、長さの上限は 1 つの会話がどこまで長くなれるか",
+   "5 時間の上限は最初のメッセージから始まり、5 時間後に満額に戻る。確認済み(verified)の Ultra アカウントには 5 時間の上限がない",
+   "週間上限は、利用を始めた時期に関係なく、アカウントに割り当てられた決まった曜日と時刻にリセットされる",
+   "使った量と残り時間は Settings > Usage の Current session で確認できる",
+   "上限に達したら、リセットを待つかプランを上げる(新しいプランの上限はすぐに適用される)。usage credits を有効にしていれば、止まらずに usage credits で続く",
+   "自動的なコンテキスト管理にはコード実行の有効化が必要。非常に大きい最初のメッセージなど、まれに長さの上限に当たることがある",
+   "長さの上限に達したら、新しい会話を始めるか、プロジェクトなどの機能を使う",
+   "節約の工夫: 思考のトグルがあるモデルでは不要なときにオフ。常にオンのモデル(Opus 5.5、Sonnet 5.5 など)では effort を下げる。不要なツールやコネクタを切る",
+   "コンテキストを有効に使う工夫: プロジェクトの活用、プロジェクト指示を簡潔に保つ、使わないファイルの削除"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work",
+    "title": "How do usage and length limits work?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages",
+    "title": "Troubleshoot Claude error messages"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "context-window",
+  "title": "有料プランのコンテキストウィンドウ",
+  "summary": "有料プラン(Pro、Max、Ultra、Team、Enterprise)のコンテキストウィンドウは、モデルと使う場所(チャット、Claude Code、Claude Cowork)によって異なります。チャットでは、Fable 5.2、Fable 5.1、Opus 5.5、Opus 5、Sonnet 5.5、Sonnet 5、Haiku 5.5 が 1M トークン、Fable 5、Opus 4.8、Opus 4.7、Opus 4.6、Sonnet 4.6 が 500K トークンです。表にないモデルは 200K で、約 500 ページ以上の文章を扱えます。Claude Code では表のモデルがすべて 1M トークンですが、Opus 4.6 と Sonnet 4.6 は /model で [1m] 付きのモデルを選ぶ必要があり、usage credits の有効化が条件になる場合があります。Cowork では Haiku 5.5 が 500K など、チャットと値が違うモデルがあります。コード実行が有効なら、上限に近づくと以前のメッセージが要約され、会話を続けられます。",
+  "points": [
+   "チャット: Sonnet 5.5、Opus 5.5、Haiku 5.5、Fable 5.2 などは 1M。Opus 4.8、Sonnet 4.6 などは 500K",
+   "チャットの表にないモデルは 200K(約 500 ページ以上の文章)",
+   "Claude Code の Opus 4.6 と Sonnet 4.6 の 1M は、[1m] 付きのモデルを /model で選ぶ。Opus 4.6 は Pro で、Sonnet 4.6 は usage-based Enterprise 以外で usage credits の有効化が必要",
+   "Cowork では Haiku 5.5 は 500K、Opus 4.6 と Sonnet 4.6 は 200K",
+   "コンテキストの一部は Claude の応答のために常に確保されるので、会話の最大長は表の値より少し小さい",
+   "文脈を有効に使う工夫: プロジェクト(RAG)の活用、簡潔なプロジェクト指示、ツールとコネクタの管理"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/8606394-how-large-is-the-context-window-on-paid-claude-plans",
+    "title": "How large is the context window on paid Claude plans?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work",
+    "title": "How do usage and length limits work?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "model-effort-thinking",
+  "title": "モデル・effort・thinking の設定",
+  "summary": "送信ボタンの横のモデルメニューで、使うモデル、effort、thinking の 3 つを設定します。どれも会話の途中で変えられ、Claude の次の応答から適用されます。effort は、応答にどれだけ思考を使うかを決める設定です。高いほど丁寧になりますが、時間がかかってトークンを多く使うため、利用上限に早く達します。各モデルには推奨の effort があり、メニューで「Default」と表示されます。Low と Medium は定型の作業に向き、利用量を長持ちさせます。High は品質と速さのバランスが最も良く、Extra high(xhigh)は長時間のコーディングやエージェントの作業向け(Opus 4.7 以降)、Max は最も深い推論が必要な作業向けです。thinking は effort とは別の設定で、応答の前に、展開できる欄で推論を行うかどうかを決めます。Fable 5.2、Haiku 5.5、Sonnet 5.5、Opus 5.5、Fable 5.1、Opus 5 では Claude で thinking をオフにできず、トグルも表示されません。これらのモデルで思考を減らしたいときは effort を下げます。簡単な質問や一般的な文章には既定の設定で十分で、複雑な作業では effort を上げるか thinking をオンにするか、その両方を使います。",
+  "points": [
+   "モデル、effort、thinking は会話の途中でも変えられ、次の応答から反映される",
+   "各モデルには推奨の effort があり、メニューに「Default」と表示される",
+   "Low と Medium は定型の作業向けで利用量を長持ちさせる。High は品質と速さのバランスが最も良い",
+   "xhigh は Opus 4.7 以降。複雑なコーディングやエージェントの作業でまず試す",
+   "Max は最も深い推論が必要な、正確さが最も重要な難しい作業向けで、応答に時間がかかる",
+   "thinking が常にオンのモデル(Fable 5.2、Haiku 5.5、Sonnet 5.5、Opus 5.5、Fable 5.1、Opus 5)ではトグルが出ない。思考を減らすには effort を下げる",
+   "日常的な作業は既定の設定で十分。数学の証明、競技レベルのコーディング、詳細な文書分析などの複雑な作業では effort を上げるか thinking をオンにする",
+   "Enterprise では、管理者がロールごとにモデルや effort をオフにしていることがある",
+   "思考が途中で止まるのは、安全の仕組みが危害や悪用のリスクを含む情報を特定した場合。プロンプトを別の角度から言い換えるとよいことがある"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings",
+    "title": "Change the model, effort, and thinking settings"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "choosing-a-model",
+  "title": "モデルの選び方(Choosing the right model)",
+  "summary": "公式ドキュメントは、能力、速度、コストに加えて effort も考えてモデルを選ぶよう説明しています。effort は 1 つのモデルの中で知能と遅延やコストを交換する手段で、モデルを替えるより効果的なことが多いとされています。始め方は 2 通りあります。効率優先では Claude Haiku 5.5 で実装し、十分に試して、特定の能力が足りない場合にだけ上位のモデルに上げます。試作、遅延の要件が厳しい用途、コスト重視の実装、大量で単純な作業に向きます。能力優先では Claude Opus 5.5 で実装してプロンプトを最適化し、後から effort を下げたりモデルを下げたりして効率を上げます。xhigh や max でも高度な推論や長時間のエージェント作業に足りなければ Claude Fable 5.2 に移ります。モデルの選択表では、多くの作業は Opus 5.5 から始めるとしたうえで、必要なものごとに出発点を示しています。",
+  "points": [
+   "選択表: 利用可能な最高水準の能力 → Fable 5.2(数時間のエージェントのセッション、複数段階の深い調査、完成した文書・表計算・デッキまでの分析)",
+   "複雑なエージェント的コーディングと企業の業務 → Opus 5.5(数時間の自律的なコーディング、大規模なリファクタリング、コンピューター操作など)",
+   "日常的なコーディング、エージェント、企業の作業での速度と能力の両立 → Sonnet 5.5",
+   "最も低い遅延と価格 → Haiku 5.5(リアルタイム用途、大量の処理、コスト重視の構成、サブエージェントの作業)",
+   "効率優先は Haiku 5.5 から始め、能力が足りない場合にだけ上げる。能力優先は Opus 5.5 から始め、後で効率化する",
+   "Fable 5.2 は、すべての顧客が使えるモデルの中で最も能力が高い",
+   "既定の effort は、Fable 5.2、Fable 5.1、Opus 5、Sonnet 5.5 が high、Opus 5.5 と Haiku 5.5 が medium",
+   "モデルを替えるか決めるには、用途に合ったベンチマークを作り、実際のプロンプトとデータで比べる"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
+    "title": "Choosing the right model"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "individual-plans",
+  "title": "個人向けプラン(Pro・Max・Ultra)",
+  "summary": "Pro は Claude のチャットのための有料プランで、Free よりセッションあたりの利用量が多く、混雑時の優先アクセスや Claude Code を含みます。米国では月額 20 ドルで、年払いにすると割引になります。Pro には Claude Console を通じた API の利用は含まれず、API も使いたい場合は Console を設定して別に支払います。Pro には 5 時間の上限と、全モデル共通の週次の上限があります。Max は月額 100 ドルで、5 時間ごと・週ごとに Pro の 5 倍の利用量があり、5 時間の上限、全モデル共通の週次の上限、Fable 用の別の週次の上限があります。Ultra は旧 Max 20x で月額 200 ドル、週ごとに Pro の 10 倍の利用量があり、確認済み(verified)のアカウントには 5 時間の上限がありません。未確認のアカウントには一時的な上限がかかり、確認が済むと自動で外れます。Max と Ultra は月払いだけで、Claude API の月次クレジットが含まれます。",
+  "points": [
+   "Pro: Console を通じた API の利用は含まれない。API は Console を設定して別に支払う",
+   "Pro: 5 時間の上限と週次の上限がある。usage credits を有効にすると、含まれる上限を超えて使い続けられる",
+   "Max: Pro の 5 倍(5 時間ごと・週ごと)。月払いのみ",
+   "Ultra(旧 Max 20x): 週ごとに Pro の 10 倍。確認済みのアカウントには 5 時間の上限がない。月払いのみ",
+   "Ultra の確認は、アカウントや支払いの履歴などから自動で行われる。チェックアウト時の電話番号の確認とは別",
+   "Max と Ultra には、全モデル共通の週次の上限とは別に Fable 用の週次の上限がある"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/8325606-what-is-the-pro-plan",
+    "title": "What is the Pro plan?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/11049741-what-is-the-max-plan",
+    "title": "What is the Max plan?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/17728952-what-is-the-ultra-plan",
+    "title": "What is the Ultra plan?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "team-enterprise-plans",
+  "title": "Team プランと Enterprise プラン",
+  "summary": "Team プランはチーム向けの有料プランで、最低 2 人から最大 150 席までです。シートは Standard と Premium の 2 種類で、セッションあたりの利用量は Standard が Pro の 1.25 倍、Premium が 6.25 倍です。組織はシートの種類を混在でき、利用量の多いパワーユーザーに Premium シートを割り当て、ほかのメンバーは Standard シートのままにできます。利用上限はチーム全体ではなくメンバーごとに適用され、1 人が上限に達してもほかのメンバーは使い続けられます。上限をメンバー間で移したり共有したりはできず、1 シートは名前の付いた 1 人のためのものです。150 席を超える場合は Enterprise プランにアップグレードできます。Enterprise は Team のすべてに、監査ログ、SCIM、独自のデータ保持の設定、Compliance API などが加わります。現行の usage-based の Enterprise では、席の料金はアクセスだけをまかない、Claude、Claude Code、Cowork の利用はすべて標準の API 料金で別途請求されます。",
+  "points": [
+   "Team: 最低 2 人、最大 150 席。150 席を超えるなら Enterprise へアップグレードできる",
+   "Team の料金(米国): Standard は月払い 25 ドル・年払い 20 ドル、Premium は月払い 125 ドル・年払い 100 ドル(1 人あたり月額)",
+   "Team の上限はメンバーごと。移したり共有したりはできない。上限後も続けるには組織で usage credits を有効にする",
+   "usage-based の Enterprise: 席ごとの上限も、含まれるトークンの枠もない。管理者は組織とユーザーの単位で支出上限を設定できる",
+   "Enterprise の購入は self-serve(最低 20 席)と sales-assisted(最低 50 席)の 2 通り",
+   "Standard と Premium のシートを使う旧来の席課金の Enterprise には、席ごとの上限がある"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/9266767-what-is-the-team-plan",
+    "title": "What is the Team plan?"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/9797531-what-is-the-enterprise-plan",
+    "title": "What is the Enterprise plan?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "fable-on-plans",
+  "title": "Fable モデルとプランごとの扱い",
+  "summary": "Claude Fable 5.2、Fable 5.1、Fable 5 は、すべての有料プラン(Pro、Max、Ultra、Team、Enterprise)で使えますが、扱いはプランで異なります。Max、Ultra と、Team や旧来の席課金の Enterprise の Premium シートでは、Fable はプランの標準の一部で、週次の上限の 50% までを追加料金なしで Fable に使えます。Fable はほかのモデルより早く上限を消費します。Fable の上限に達したら、usage credits で Fable を使い続けるか、別のモデルに切り替えてプランの上限の範囲で作業を続けます。50% が上乗せされるわけではなく、ほかのモデルの利用も同じ上限から引かれます。Pro、Team の Standard シート、席課金の Enterprise の Standard シートでは、Fable はプランの上限に含まれず、最初から従量課金の usage credits で使います。usage-based の Enterprise と API では、標準の API 料金で請求されます。Fable 5 を上限に含めていたプロモーションは 2026 年 7 月 19 日に終わりました。",
+  "points": [
+   "Fable 5.2、5.1、5 はすべての有料プランで利用できる。Free では使えない",
+   "Max、Ultra、Premium シート: 週次の上限の 50% までを追加料金なしで Fable に使える",
+   "Fable の上限に達したら: usage credits で Fable を続ける、または別のモデルに切り替える",
+   "50% が上乗せされるのではなく、ほかのモデルと同じ週次の上限から引かれる",
+   "Pro と Standard シート: Fable は最初から usage credits で使う",
+   "Fable 5 を Pro などの上限に含めていたプロモーションは 2026 年 7 月 19 日に終了。Fable 5.2 と 5.1 は対象外だった",
+   "Fable 5.2 の発売後の期間限定で、対象の有料プランに追加の Fable の利用量がある"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/15424964-claude-fable-models-on-your-plan",
+    "title": "Claude Fable models on your plan"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "claude-in-chrome",
+  "title": "Claude in Chrome(使い方とトラブルシューティング)",
+  "summary": "Claude in Chrome は、Claude が Web サイトを読み、クリックし、移動するブラウザ拡張で、Chrome のサイドパネル、Claude Cowork、Claude Code から使えます。有料プラン(Pro、Max、Ultra、Team、Enterprise)が対象です。サイドパネルを開くと、Claude は今のページの内容を見て、読み取り、クリック、入力、移動、フォームの記入を行えます。サイドパネルは Cowork のセッションとして動き、既定は「Automatically approve」モードで、会話は履歴に保存されます。トラブルシューティングの記事は症状ごとに対処を示しています。ページを見られないときは、ページを再読み込みし、拡張機能が有効か、そのサイトへの権限を与えているかを確かめます。操作がうまくいかないときは、最新の Chrome を使い、干渉しうる他の拡張機能を無効にします。サイトにアクセスできないときは、権限に加えて、既定でブロックされるカテゴリや管理者による制限に当たっていないかを確かめます。Claude in Chrome の利用は Claude や Claude Code と同じプランの上限に数えられ、ブラウザでの操作は通常のチャットより計算量が多いため、上限を多めに使います。",
+  "points": [
+   "有料プラン(Pro、Max、Ultra、Team、Enterprise)で利用できる。Chrome 以外の Chromium 系ブラウザやモバイル端末には対応していない",
+   "サイドパネルは今のタブを追加の設定なしで読める。Cowork のセッションとして動き、既定は「Automatically approve」。「Switch back to classic」で以前のサイドパネルに戻せる",
+   "Enterprise では、Owner が Claude in Chrome と Cowork in the cloud を有効にする必要がある。それまでサイドパネルは classic の体験になる",
+   "ページを見られない: ページを再読み込みし、拡張機能が有効か、そのサイトへの権限を与えているかを確認する。JavaScript の重いサイトは読み込みに時間がかかることがある",
+   "操作がうまくいかない: 最新の Chrome を使い、干渉しうる他の拡張機能を無効にし、再読み込みしてやり直す。動作が重いときは不要なタブを閉じ、作業を小さな手順に分ける",
+   "サイトにアクセスできない: 権限を確認する。金融サービス、銀行、投資プラットフォーム、暗号資産取引所、成人向けコンテンツ、海賊版コンテンツは既定でブロックされるカテゴリ。Team / Enterprise では管理者が制限していることもある",
+   "インストールやサインインができない: 有料プランかを確認し、Team と Enterprise では管理者に有効化を確認する。claude.ai のキャッシュと Cookie を削除し、サインインし直す",
+   "使用量の上限は画面をまたいで適用され、Claude や Claude Code と同じプランの上限に数えられる。長時間続くワークフローでは、さらに多く使うことがある",
+   "Claude Code と組み合わせると、ビルド、ブラウザでのテストと検証、コンソールログを使ったデバッグができる",
+   "予期しない挙動は、プロンプトインジェクションの疑いとして報告できる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/12012173-get-started-with-claude-in-chrome",
+    "title": "Get started with Claude in Chrome"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/12902405-claude-in-chrome-troubleshooting",
+    "title": "Claude in Chrome troubleshooting"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "haiku-4-5-removal",
+  "title": "Claude Haiku 4.5 のモデル選択画面からの削除",
+  "summary": "2026 年 10 月 29 日に、Free、Pro、Max の各プランのチャット、Claude Cowork、Claude Design のモデル選択画面(Claude Desktop と Claude Mobile を含む)から Claude Haiku 4.5 が外れ、Claude Haiku 5.5 に置き換わりました。この変更は 10 月 15 日に告知されました。10 月 29 日以降は「More models」からも Haiku 4.5 を選べず、Haiku 4.5 を選んでいた人は Haiku 5.5 に切り替えられました。Claude Code、Team と Enterprise の各プラン、Claude Platform(API)の Haiku 4.5 は、この変更の影響を受けていません。Haiku 4.5 で始めたチャットは削除されずにアカウントに残っており、10 月 29 日以降に続けると Haiku 5.5 が応答します。モデルはチャットの途中でもいつでも切り替えられ、その変更は次の応答から反映されます。",
+  "points": [
+   "対象: Free、Pro、Max のチャット、Cowork、Claude Design のモデル選択画面",
+   "影響なし: Claude Code、Team と Enterprise プラン、API",
+   "「More models」からも選べない",
+   "過去の Haiku 4.5 のチャットは残り、続けると Haiku 5.5 が応答する",
+   "チャットを手元に残したいときは、いつでもデータをエクスポートできる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/17444146-claude-haiku-4-5-was-removed-from-the-model-selector",
+    "title": "Claude Haiku 4.5 was removed from the model selector"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "usage-best-practices",
+  "title": "使用量を節約する工夫",
+  "summary": "ヘルプセンターの Usage limit best practices は、使用量に影響する要素として、メッセージの長さ、添付ファイルの大きさ、現在の会話の長さ、ツールの利用(Research や Web 検索など)、モデルの選択、effort、アーティファクトの作成と利用、コードの実行やファイルの作成、Web の閲覧のような複数の手順からなる作業を挙げています。節約の方法としては、会話を計画して関連する質問を 1 つのメッセージにまとめる、具体的かつ簡潔に書く、同じ情報を繰り返さずに会話内の文脈や過去のチャットを使う、送信前に見直して追加のやり取りを減らす、などがあります。特に効果が大きいのがプロジェクトです。プロジェクトにアップロードした文書はキャッシュされ、キャッシュされている間に再び参照すると、新しい内容より上限への数え方が少なくなります。ただし、キャッシュは一定期間使わないと切れ、長い休みの後の最初のメッセージでは内容が全量で数えられます。How do usage and length limits work? は、定型の作業では effort を下げる、不要なコネクタや Web 検索をオフにする、ことも勧めています。",
+  "points": [
+   "関連する複数の作業や質問は 1 つのメッセージにまとめる(例: 数学の問題を 1 問ずつではなくまとめて送る)",
+   "繰り返し参照する資料はプロジェクトのナレッジに入れる。毎回アップロードするより少ない使用量で済む",
+   "キャッシュは一定期間使わないと切れる。長い休みの後の最初のメッセージでは、内容が全量で数えられる",
+   "有料プランでは、過去のチャットの検索や記憶を使うと、同じ情報を繰り返し伝えずに済む",
+   "ツールとコネクタはトークンを多く使う。不要なときはオフにし、最新情報が要らなければ Web 検索をしないよう頼む",
+   "定型の作業では effort を下げる。高い effort ほどトークンを多く使う",
+   "Settings > Usage で、セッション上限と週間上限の消費を確認できる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/9797557-usage-limit-best-practices",
+    "title": "Usage limit best practices"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work",
+    "title": "How do usage and length limits work?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "error-messages",
+  "title": "エラーメッセージとその対処",
+  "summary": "Troubleshoot Claude error messages は、よく見るエラーと対処をまとめています。上限に近づくと「Approaching session limit」などの警告が出て、usage credits を有効にしないまま上限に達すると、「5-hour limit reached - resets [time]」のように次に使える時刻が示されます。長さの上限のエラー「Your message will exceed the length limit for this chat.」には、内容を小さく分ける、重要な部分を要約・抽出して送る、関連部分を Claude にまず特定させる、新しい会話を始める、で対処します。ログインのエラーには、VPN を使わない、ブラウザの拡張機能を無効にする、キャッシュと Cookie を削除する、を試します。「Due to unexpected capacity constraints」は、システム全体の需要が高いときの一時的な制約で、障害ではなく、status ページにも載りません。数分後に再試行し、実際の障害は status.claude.com で確認します。別の記事は、「Output blocked by content filtering policy」が、既存の資料の再現を防ぐ取り組みから一般に生じると説明しています。",
+  "points": [
+   "上限の警告は「Approaching session limit」「Approaching weekly limit」。割合が分かるときは使用率で表示される",
+   "長さの上限のエラーは、コード実行を有効にした有料プランではまれ。非常に大きい最初のメッセージなどで起きる",
+   "容量の制約(capacity constraints)は障害ではなく通常の負荷管理。一時的で、status ページには出ない",
+   "サービスの障害は status.claude.com で、範囲、影響、復旧の進み具合を確認する",
+   "「Output blocked by content filtering policy」は、内容の適切さについての Anthropic の判断を示すものではない。Claude の目的は新しい内容を生み出すことで、既存の内容の再現ではない",
+   "著作権のある内容を引き出そうとしてこのメッセージを受けている場合は、警告や、違反を繰り返せばアカウントの停止・解約もありうる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages",
+    "title": "Troubleshoot Claude error messages"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/10023638-why-am-i-receiving-an-output-blocked-by-content-filtering-policy-error",
+    "title": "Why am I receiving an 'Output blocked by content filtering policy' error?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "usage-credits",
+  "title": "使用量クレジット(usage credits)",
+  "summary": "usage credits は、有料プラン(Pro、Max、Ultra)の個人が、プランに含まれる上限に達した後も Claude を使い続けるための仕組みです。上限で止められる代わりに、標準の API 料金での従量課金に切り替わり、作業を中断せずに続けられます。Settings > Usage の Usage credits でトグルをオンにし、支払い方法と毎月の支出上限(Adjust limit、または Set to unlimited)を設定してから、クレジットを購入します。残高が設定した閾値を下回ったら自動で購入する auto-reload もあります(web のみ)。切り替わる瞬間は、上限に近いという通知が残っていて止められたように見えることがありますが、作業は続いており、次の要求がクレジットで通ると表示が「Now using credits」に変わります。利用は、毎月の支出上限に達するか、auto-reload がオフで残高がなくなるまで続きます。セッション上限と週間上限は通常どおりリセットされ、usage credits はそのタイミングを変えません。usage credits は、Max と Ultra に含まれる毎月の API クレジットとは別のものです。",
+  "points": [
+   "上限に達した後の利用は標準の API 料金で、サブスクリプションとは別に請求される",
+   "毎月の支出上限、auto-reload、使用量のアラートで支出を管理できる",
+   "2026 年 12 月 7 日以降に購入したクレジットは、原則として購入から 12 か月で失効する。それより前の購入分は失効しない",
+   "購入は原則として返金されない(サブスクリプションの解約やアカウントの削除でも)",
+   "Max と Ultra の毎月の API クレジットは、Claude、Claude Code、Claude Cowork での usage credits には充当されない",
+   "Claude での会話と Claude Code のターミナルでの利用の両方に適用される",
+   "Settings > Usage でいつでもオフにでき、オフにするとプランに含まれる使用量だけになる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans",
+    "title": "Manage usage credits for paid Claude plans"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages",
+    "title": "Troubleshoot Claude error messages"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "limit-reset",
+  "title": "limit reset(上限の無料リセット)",
+  "summary": "limit reset は、対象のプランにときどき付与される、上限を無料で戻す仕組みです。種類によって、5 時間のリセットはセッション上限を、週次のリセットは週間上限を、すぐに満タンに戻します。Fable のリセットは Fable のモデルに使った週間の使用量を戻し、5 時間の上限があるアカウントではそれも満タンにします。週間上限は、リセットを使っても通常の曜日と時刻にリセットされます。上限に達するまで待たずに使えますが、一度使うと取り消せません。期限がある場合は Settings > Usage に表示され、使わなかったリセットは提示された日時に失効します。使うときは、web、Claude Desktop、Claude Mobile の Settings > Usage にある Limit resets で「Reset for free」をクリックして確認します。上限に達したときのメッセージにも同じボタンが出ます。このボタンは現在、ターミナルや IDE の Claude Code では使えません。ただし使用量の上限はアカウントで共通なので、戻した分は Claude Code でも使えます。",
+  "points": [
+   "種類は 5 時間のリセット、週次のリセット、Fable の limit reset",
+   "上限に達する前でも使える。使うと取り消せない",
+   "期限がある場合は Settings > Usage に表示される",
+   "すでに請求された追加の利用は返金されず、usage credits の残高も変わらない",
+   "使う前にダウングレードや解約をすると、使えなくなる",
+   "「Reset for free」は web、Desktop、モバイルで使う。ターミナルや IDE の Claude Code では使えない"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/17007452-what-is-a-limit-reset",
+    "title": "What is a limit reset?"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "tool-access",
+  "title": "ツールアクセスのモード(Tool access)",
+  "summary": "多くのサービスを Claude に接続しているときは、コネクタを会話にどう読み込むかを Tool access の設定で選べます。コネクタはそれぞれ会話の中の場所を占めるため、数が増えると、文書、コード、会話履歴に使える余地が減ります。モードは 3 つです。Auto(既定)は、作業の内容に応じて Claude が読み込むコネクタを動的に決め、ほとんどの利用者にとって最適な出発点とされています。Always available は、すべてのコネクタを会話の開始時に読み込み、追加の手順なしにすぐ使えますが、最初から多くの場所を使います。常に使う 10 個未満のコネクタに向きます。On demand は、要求に応じて Claude が適切なコネクタを探し、関連するものだけを読み込みます。10 個以上のコネクタがある場合や、会話の長さの問題が起きている場合に向きますが、コネクタを使う前に探す手順が 1 つ増えることがあります。設定は会話ごとで、チャットの「+」ボタン(または「/」)から Connectors > Tool access で選びます。",
+  "points": [
+   "10 個未満のコネクタをすべて頻繁に使う: Always available",
+   "10〜30 のツールを混在して使う: Auto",
+   "30 以上のツール: On demand か Auto",
+   "特定のコネクタを毎回確実に使わせたい: Always available(またはそのコネクタだけ個別に設定)",
+   "会話が長さの上限に当たる: On demand",
+   "選択はその会話にだけ適用され、いつでも変えられる",
+   "Claude、Cowork、Claude Desktop、Claude Mobile のすべての利用者が使える"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/13730515-manage-claude-s-tool-access",
+    "title": "Manage Claude’s tool access"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "model-fallback",
+  "title": "安全策によるモデルの自動切り替え(フォールバック)",
+  "summary": "Claude Opus 5、Opus 5.5、Sonnet 5.5 は、すべての要求に自動の安全チェック(分類器)をかけます。チェックは最新のメッセージだけでなく、記憶、コネクタの内容、Web 検索の結果、ファイルなど、モデルが読むものすべてが対象です。大半の要求は影響を受けませんが、リスクの高い一部の要求は、能力の低いモデルに切り替わるか、直接ブロックされます。たとえば、エクスプロイトの生成やペネトレーションテストなどの攻撃的なサイバーセキュリティの要求では、Opus 5 と Opus 5.5 は Opus 4.8 に、Sonnet 5.5 は Sonnet 5 に切り替わります。モデル内部の推論を抽出しようとする要求(distillation)は、切り替えずに直接ブロックされます。自動の切り替えは既定で有効で、同じ会話の中で別のモデルが再実行し、通知と回答のラベルで分かります。その後、モデルピッカーは会話の残りで切り替え後のモデルのままになります。いつでも元のモデルに戻せますが、元の要求が会話に残っていると再び切り替わることがあり、前のメッセージを編集してから再試行すると解消しやすくなります。Settings > Capabilities の「Switch models when a message is flagged」をオフにすると、切り替えの代わりに会話が一時停止します。",
+  "points": [
+   "サイバー: Opus 5 / Opus 5.5 は Opus 4.8 に、Sonnet 5.5 は Sonnet 5 に切り替わる。ソースコードの脆弱性スキャンなど安全なコーディングには使える",
+   "生物: Sonnet 5.5 は直接ブロック、Opus 5.5 は Opus 5 に切り替わる。Opus 5 は生物の質問では切り替わらない",
+   "distillation: 推論をそのまま繰り返させる、思考の全文を外部に書き出させる要求はブロックされる。推論の説明、概念の解説、コードレビューの説明、「why did you do that?」のような会話的な依頼は影響を受けない",
+   "自動切り替えをオフにした場合は、メッセージを編集して再試行するか、別のモデルに手動で送る",
+   "Claude Code では Config > MODEL & OUTPUT で同じ設定を変える",
+   "Claude API では自動切り替えは既定で無効。フォールバックを設定するまで、stop reason 付きの 200 応答が返る",
+   "切り替え後の応答は、応答したモデルの料金で別に課金される。フォールバックのキャッシュミスの分はクレジットで補われる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/16049681-why-claude-switched-models-in-your-conversation-with-opus-5-or-opus-5-5",
+    "title": "Why Claude switched models in your conversation with Opus 5 or Opus 5.5"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/17161993-why-claude-switched-models-in-your-conversation-with-sonnet-5-5",
+    "title": "Why Claude switched models in your conversation with Sonnet 5.5"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "claude-code-subscription",
+  "title": "Claude Code を Pro・Max・Ultra プランで使う",
+  "summary": "Pro、Max、Ultra のプランでは、1 つのサブスクリプションで Claude(web、デスクトップ、モバイル)とターミナルの Claude Code の両方を使えます。Claude Code をインストールし、初めて使うときに Claude と同じ資格情報でログインすると、プランが Claude Code に結び付きます。すでに Claude Console の従量課金(PAYG)でログインしている場合は、Claude Code の中で /login を実行してサブスクリプションに切り替えます。注意点として、システムに ANTHROPIC_API_KEY の環境変数が設定されていると、Claude Code はサブスクリプションではなくその API キーで認証し、プランに含まれる使用量ではなく API の利用料が発生します。VS Code、Cursor、JetBrains などの IDE からの利用もプランに含まれ、ターミナルと同じ資格情報でログインすれば、Claude と Claude Code で共通の使用量の上限に数えられます。上限に達したときは、上位プランへの変更、usage credits の有効化、Claude Console の API クレジットへの切り替え、リセットを待つ、から選べます。",
+  "points": [
+   "希望のアカウントで認証する選択肢が出ないとき: /logout、claude update、ターミナルの再起動、claude を実行して正しいアカウントを選ぶ",
+   "Pro と Max には 5 時間のセッション上限と週間上限がある。Max と Ultra には Fable 用の別の週間上限もある",
+   "5 時間の上限に応答の途中で達すると、進行中の手順を終えるために少しだけ作業を続けることがある(「Usage limit reached · wrapping up」)",
+   "プランの範囲に留めるには、API クレジットの選択肢を断ってリセットを待つ。残りは /status で確認する",
+   "API クレジットの選択肢を出さないようにするには、claude logout のあと claude login でプランの資格情報だけで認証する",
+   "auto-reload は Claude Console の機能で、Claude Code の中では管理しない"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-max-or-ultra-plan",
+    "title": "Use Claude Code with your Pro, Max, or Ultra plan"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "model-deprecations",
+  "title": "モデルの提供終了への備え",
+  "summary": "モデルの提供終了(deprecation)と退役(retirement)は、モデルのライフサイクルの通常の一部です。ヘルプセンターは、特定のモデルの個性や能力に価値を感じてきた利用者に向けて、移行を滑らかにする方法を挙げています。提供終了が発表されたら、できるだけ早く新しいモデルを試し、自分にとって重要な種類のプロンプトや会話で並べて比べ、退役の前に最適な代わりのモデルを見つけるよう勧めています。記憶を有効にし、過去のチャットの検索を許可すると、新しいモデルが好みやコミュニケーションの仕方を学んで、すぐに適応しやすくなります。プロジェクトも、独自の指示や文脈を入れられる個人設定の手段です。こうした個人設定は、新しいモデルへのフィードバックと考えられます。望む性質をうまく言葉にできなければ、気に入った会話を Claude に見直してもらい、自分向けの指示を作らせることもできます。新しいモデルがもたらす改善を試すことも勧められています。ただし、これらの方法には限界があり、特定のモデルとの体験を完全に保存・再現できるわけではありません。",
+  "points": [
+   "発表後できるだけ早く新しいモデルを試し、重要なプロンプトや会話で並べて比べる",
+   "記憶と過去のチャットの検索で、新しいモデルが好みや話し方に適応しやすくなる",
+   "プロジェクトには独自の指示と文脈を入れられる",
+   "話し方の違いは、会話内、プロジェクト内、アカウント全体で調整できる",
+   "気に入った会話をもとに、Claude に自分向けの指示を作らせることもできる",
+   "これまで Anthropic は、多くのモデルを最初の公開から約 1 年で提供終了にしてきた",
+   "これらの方法で、以前のモデルとの体験を完全に再現できるわけではない"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/12738598-adapt-to-new-model-personas-after-deprecations",
+    "title": "Adapt to new model personas after deprecations"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "cowork-scheduled-tasks",
+  "title": "Cowork の定期タスク(scheduled tasks)",
+  "summary": "定期タスクは、作業を一度説明しておくと、Claude が決まった頻度で、または必要なときに実行して、レポート、ブリーフィング、要約などの成果物を届ける機能です。有料プラン(Pro、Max、Ultra、Team、Enterprise)の Claude Cowork と新しい Claude の体験で使えます。作成すると、Claude はプロンプトをタスクの指示として保存し、選んだ頻度で実行します。各回は独立した Cowork のセッションとして動き、通常のタスクと同じように結果を確認できます。定期タスクは通常の Cowork のタスクと同じく、コネクタ、スキル、インストール済みのプラグインを使えます。定期タスクはリモートで実行されるため、コンピューターがスリープ中でも Claude Desktop が閉じていても、設定した頻度で動きます。ただし、手動で作るときに作業フォルダを選ぶと Require this computer がオンになり、コンピューターが起動していて Claude Desktop が開いている間だけ実行されます。",
+  "points": [
+   "頻度は hourly、daily、weekly、on weekdays、manually から選ぶ。モデルと作業フォルダは任意",
+   "左のサイドバーの「Scheduled」から、一覧の確認、予定と過去の実行の確認、指示・頻度・承認モードの編集、一時停止、再開、削除、オンデマンド実行ができる",
+   "Personal Finance でリンクしたアカウントは定期タスクでは使えない",
+   "コネクタのツールを「Always ask」にしていると、定期タスクは回答を待つか、そのツールを使わずに終わることがある",
+   "Cowork では「Create with Claude」で Claude に質問されながら作るか、「Set up manually」で自分で入力して作る。任意の Cowork のタスクで /schedule と入力しても作れる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork",
+    "title": "Schedule recurring tasks in Claude Cowork"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork",
+    "title": "Get started with Claude Cowork"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "unified-claude",
+  "title": "新しい Claude の体験(チャットと Cowork の統合)",
+  "summary": "新しい Claude の体験では、チャットと Claude Cowork の区別がなくなり、1 つの会話にまとめられます。作業の前にどちらを使うかを選ぶ必要はなく、Claude が使うツールを判断します。簡単な質問にはすぐ答え、調査、レポート、スプレッドシート、プレゼンテーションのような複雑な作業も同じ会話で引き受けて、編集できるファイルとして返します。Pro、Max、Ultra に段階的に提供されており、Team と Enterprise では Chat and Cowork unified がオンの組織で使えます。メッセージボックスに「Chat」と「Cowork」の選択肢が表示されなくなっていれば、新しい体験になっています。移行後は元に戻せません。いくつかの機能は場所が変わり、Web search にはトグルがなく Claude が役立つときに検索し、Research は /deep-research と入力するか「+」から「Research」を選びます。Cowork の Global instructions は、Settings > Your Claude の Instructions for Claude に統合されました。ヘルプセンターは、同僚に頼むように説明し、望む成果、形式、Claude が使うべき入力を含めると良い結果になると案内しています。",
+  "points": [
+   "依頼に含めるとよいもの: 望む成果(「1 ページの要約」など)、形式(Word の文書、スライド、Slack に貼れるメッセージなど)、入力(ファイル、リンク、アプリ)",
+   "権限の設定は 2 つ。Auto(Pro、Max、Ultra、Team で既定として展開中)は各手順で止まらずに進み、ほとんどの操作の前に自動の安全チェックが走る。Manual(Enterprise の既定。Chrome の Cowork サイドパネルを除く)は操作の前に確認を求める",
+   "権限の設定は会話全体に適用され、いつでも変えられる。作業中の Claude を止めたり方向を変えたりもできる",
+   "メッセージの送信や重要なファイルの変更など、結果の大きい作業では近くで確認する",
+   "時間のかかるタスクはクラウドで動き続け、スマートフォンからも始められる",
+   "PC のファイルやアプリを使うタスクには Claude Desktop が開いている必要がある。ローカルファイル、組み込みブラウザ、コンピューター操作に届くのは Claude Desktop が開いている間だけ",
+   "Web search のトグルはなく、Claude が必要に応じて検索する。Research は /deep-research か「+」から「Research」",
+   "Cowork の Global instructions は、Settings > Your Claude の Instructions for Claude に統合された",
+   "現在の制限: incognito チャットではファイルの作成やコードの実行ができない、会話の途中からの分岐ができない、など"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude",
+    "title": "Claude Cowork and chat are one Claude"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "desktop-extensions",
+  "title": "リモートコネクタとデスクトップ拡張(ローカル MCP)",
+  "summary": "Claude をツールにつなぐ方法は 2 つあります。リモートコネクタ(Web)と、Claude Desktop のデスクトップ拡張です。ほとんどのコネクタはリモートで、これが既定の選択です。Slack、Notion、Linear、GitHub、自社の SaaS などログインして使うクラウドサービスや、Connectors Directory にあるものはリモートコネクタを使い、Web、モバイル、Cowork、Desktop、Claude Code のどこでも使えます。一方、ローカルのファイル、localhost 上のデータベース、デスクトップアプリなど自分の PC で動くもの、ファイルシステムなど OS レベルのアクセスが必要なもの、クラウド版がないものには、デスクトップ拡張を使います。デスクトップ拡張はローカルで動き、Claude Desktop と Claude Code でだけ使えます。デスクトップ拡張(.mcpb)は、JSON の設定ファイルを手で書かずに、ローカルの MCP サーバーをワンクリックで導入できるパッケージです。",
+  "points": [
+   "自作でも、公開 URL があるものはリモートコネクタ(カスタム)として追加し、ローカルで動くものはデスクトップ拡張にする",
+   "プラグインはリモートとローカルの MCP サーバーのどちらも含められる。ローカル MCP を含むものは Cowork と Claude Code で動き、チャットでは動かない",
+   "Team と Enterprise の Owner と Primary Owner は、公開のデスクトップ拡張の有効・無効を管理し、自社のデスクトップ拡張をアップロードしてチームがワンクリックで導入できるようにできる",
+   "導入は Settings > Desktop app の Extensions の「Manage」から行う。独自の拡張は .mcpb ファイルを選んで入れる",
+   "API キーなどは manifest.json で \"sensitive\": true にすると、OS の安全な保存領域で暗号化される"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/11725091-when-to-use-desktop-and-web-connectors",
+    "title": "When to use desktop and web connectors"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop",
+    "title": "Getting Started with Local MCP Servers on Claude Desktop"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "claude-for-google-workspace",
+  "title": "Claude for Google Workspace(Docs・Sheets・Slides のサイドバー)",
+  "summary": "Claude for Google Workspace は、Google ドキュメント、スプレッドシート、スライドに Claude のサイドバーを追加する拡張機能です。Pro、Max、Ultra、Team、Enterprise でベータとして提供されています。Claude は開いているファイル(と選択範囲)を読み、そのファイルを直接編集します。Claude の編集は利用者の名前で記録され、通常の編集と同じくバージョン履歴に残るため、直前の変更は Undo で、それ以前は過去の版の復元で戻せます。サイドバーのモードは 2 つで、既定の「Ask before edits」では、Claude がこれから行うことを説明し、「Allow」を押すまで待ちます。「Accept all edits」では通常の内容の編集を止まらずに行いますが、リンク、外部の画像、Web アドレス、ファイルへのアクセスに関わることは承認を求めます。Google Drive のコネクタ(claude.ai から Drive を検索する機能)とは別のもので、こちらは Claude が開いているファイルの中に来て作業します。",
+  "points": [
+   "どのモードでも、Web アドレスからの画像の挿入、リンクの追加、アクセスの削除の前には承認を求める(「Security review」の表示。常に許可する選択肢はない)",
+   "ファイルの共有、アクセス権の付与、所有者の変更はできない。メニューやスケジュールされた自動化の作成もできない。頼まれても拒否する",
+   "Sheets ではトリガー、カスタムメニュー、スケジュールされた更新を作れない",
+   "Docs では Claude の編集は提案ではなく直接の編集として入る。依頼すれば、テキストの変更案をカードとして示させ、1 件ずつ承認・却下することもできる",
+   "Docs のタブは作成・名前の変更・並べ替えはできないが、すべてのタブの内容を読み、編集できる",
+   "サイドバーを閉じると作業が止まる。1 回の長い操作は最大 6 分で Google に止められる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/16951679-use-claude-in-google-docs-sheets-and-slides",
+    "title": "Use Claude in Google Docs, Sheets, and Slides"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "plugins",
+  "title": "プラグイン(Plugins)",
+  "summary": "プラグインは、職種、チーム、会社に合わせて Claude の動き方を整えるもので、スキル、コネクタ、サブエージェントを 1 つのパッケージにまとめています。一つずつ設定しなくても、最初の会話から使える構成が手に入ります。有料プラン(Pro、Max、Ultra、Team、Enterprise)で使えます。営業、財務、法務、マーケティング、人事などの職種向けのプラグインが用意されており、Salesforce in Claude のようにパートナーが作ったものもあります。追加したプラグインはアカウントに保存され、Web のチャット、Claude Desktop、Cowork、同じアカウントでサインインした Claude Code で使えます。フックとサブエージェントは Cowork と Claude Code でだけ動きます。2026 年 10 月 29 日から順に(Enterprise は 11 月 30 日から)、プラグイン、スキル、コネクタを 1 つの Plugins ページで探し、追加し、管理できるようになり、サイドバーの Customize は Plugins に名前が変わります。",
+  "points": [
+   "Plugins ページへの統合後も、既存のコネクタ、スキル、プラグインはそのまま残る",
+   "スキルとコネクタをまとめたプラグインを削除しても、そのコネクタは切断されない。不要なら別に切断する",
+   "Salesforce in Claude は、Salesforce が作った営業向けのスキルと、Salesforce と Slack のコネクタをまとめたプラグイン。Claude が見られるのは、その人の既存の Salesforce の権限で許される範囲だけ",
+   "Salesforce in Claude は既定で、変更を書き込む前に提案を示し、「Allow once」「Always allow」「Deny」から選ばせる",
+   "Team と Enterprise では、Owner がマーケットプレイスで組織にプラグインを配布できる。既定でインストールされるものはオフにできるが、必須(Required)のものはオフにも削除もできない",
+   "ローカルの MCP サーバーを含むプラグインは、その PC で他のプログラムと同じ権限で動く。信頼できる提供元のものだけを入れる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/13837440-use-plugins-in-claude",
+    "title": "Use plugins in Claude"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/17740565-manage-plugins-skills-and-connectors-from-one-plugins-page",
+    "title": "Manage plugins, skills, and connectors from one Plugins page"
+   },
+   {
+    "url": "https://support.claude.com/en/articles/16952186-use-salesforce-in-claude",
+    "title": "Use Salesforce in Claude"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "interactive-connectors",
+  "title": "インタラクティブなコネクタ",
+  "summary": "一部のコネクタは、テキストだけの回答の代わりに、分析ダッシュボード、タスクボード、デザインツールなどの操作できる画面を会話の中に表示できます。たとえばプロジェクトの状況を尋ねると、Claude が Asana のボードを会話の中で開き、タスクにチェックを付けたりステータスを更新したりしながら、そのまま Claude と話を続けられます。表示の形は 3 つで、インラインのカード(短い要約や確認、1 つの操作向け)、サイドパネル(会話の横に開いたまま更新を見られる)、全画面表示(データの可視化や文書の編集など複雑な操作向け)です。どの形でも会話の入力欄は使えます。Connectors Directory では「Interactive」のバッジが付いています。関連するコネクタを有効にしていれば既定でオンで、追加の設定は不要です。",
+  "points": [
+   "インタラクティブなコネクタは、Claude のナビゲーションから Claude に頼まずに開き、サイドバーにピン留めできる(新しい Claude の体験の Web 版と Claude Desktop で展開中)",
+   "ピンはブラウザごとに保存されるため、Web で付けたピンは Claude Desktop には表示されない",
+   "Claude が実行できるのは、コネクタの開発者が用意した操作だけ。操作の承認は通常のコネクタと同じ",
+   "Team と Enterprise の Owner は、インタラクティブな表示を行うツール呼び出しだけを Organization settings > Connectors で無効にできる。テキストのツールは引き続き使える",
+   "コネクタの会話の中の表示を通じた購入はサポートされていない"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/13454812-use-interactive-connectors-in-claude",
+    "title": "Use interactive connectors in Claude"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "connected-app-suggestions",
+  "title": "接続済みアプリの提案",
+  "summary": "Spotify や Instacart のようなアプリを Claude に接続すると、毎回名前を出さなくても、会話の内容に合うときに Claude がそのアプリを提案します。たとえば Instacart を接続して夕食の準備の相談をすると、Claude がカートを作り始めることがあります。Claude は記憶を通じて以前の会話の文脈も使い、提案をより適したものにします。予約、購入、予約確保の前には必ず確認を求め、利用者が詳細を確かめてから確定します。Claude が自分だけで取引を行うことはありません。接続したアプリから得たデータはモデルの学習に使われず、アプリから他の会話は見えません。複数のアプリが使える場合は、Claude はどちらかを黙って選ばず、両方を示して利用者に選ばせます。",
+  "points": [
+   "アプリの推薦に対価は受け取らず、スポンサー順位、有料の掲載、広告はない。複数を示す順番は、利用者に役立ちそうな順で、提携関係ではない",
+   "1 つの会話だけで使わせないときは、「+」の Connectors でそのアプリをオフにする",
+   "完全に止めるときは、Customize > Connectors でアプリを切断する。Claude はすぐにアクセスをやめる"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/14730684-how-claude-suggests-connected-apps",
+    "title": "How Claude suggests connected apps"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "computer-use",
+  "title": "コンピューター操作(computer use)",
+  "summary": "コンピューター操作を有効にすると、必要なコネクタやツールがないときに、Claude が画面を直接操作し、クリック、入力、アプリの起動を人と同じように行います。Pro、Max、Ultra では macOS と Windows の Claude Desktop の Cowork と Claude Code で使え、Team と Enterprise ではベータで、Owner がオンにした組織の新しい Claude の体験でだけ使えます。Cowork では Claude は最も正確な手段から使います。まずコネクタ(Gmail、Google Drive、Microsoft 365、Slack など)、なければ Claude Desktop の組み込みブラウザか Claude in Chrome、それもなければ画面の操作です。Slack のコネクタなら数秒で済む作業も、画面の操作では時間がかかり、誤りも起きやすくなります。コネクタのない社内のダッシュボードやチーム専用のツールの操作が、コンピューター操作の例として挙がっています。",
+  "points": [
+   "Claude はアプリごとに、最初に使う前に許可を求める。許可したアプリは、そのセッションの中では続けて使える",
+   "Claude は画面のスクリーンショットを撮って操作するため、画面に表示されている情報が見える。機微な情報のあるファイルやアプリは閉じてから使う",
+   "銀行、医療、行政などの機微なアプリには権限を与えない。株や暗号資産の取引、機微なデータの入力を避けるよう訓練されているが、絶対ではなく、アクセスを止める代わりにはならない",
+   "macOS 15 以降の既定では、Claude は背景のウィンドウで作業し、ポインタやキーボードを奪わない。画面全体が必要になったときは、セッションごとに最初に許可を求める。画面を占有させたいときは「Full control」を選ぶ",
+   "PC が起動していて Claude Desktop が開いている必要がある",
+   "コンピューター操作は接続したフォルダに限られず、Cowork の削除の保護も及ばない"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork",
+    "title": "Let Claude use your computer in Cowork"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "cowork-built-in-browser",
+  "title": "Cowork の組み込みブラウザと Claude in Chrome",
+  "summary": "Claude Cowork には、Claude Desktop に組み込まれたブラウザがあります。Web サイトを使うタスクでは、タスクの横のサイドパネルにブラウザが開き、Claude がサイトを開き、読み、クリックし、入力し、フォームを埋めます。組み込みブラウザは自分のブラウザとは別のもので、インストールは不要で、自分のタブやログインには触れません。Web の部分を任せて自分の作業を続けたいときに向きます。Claude in Chrome は、拡張機能を通じて自分の Chrome の、今開いているページで、ログイン済みのアカウントを使って作業させたいときに向きます。優先するブラウザは Settings > Cowork の Preferred browser でいつでも切り替えられます。組み込みブラウザは Claude Desktop の中にあるため、Cowork のセッションがクラウドで動いていても、Claude Desktop が開いてオンラインである必要があります。",
+  "points": [
+   "組み込みブラウザを優先にしている場合、Web やモバイルから始めたタスクも、デスクトップアプリが開いてオンラインならそのブラウザを使う",
+   "Cookie をインポートしない限り、Claude は保存済みのログインを見られない。インポートはサイトごとに選べる",
+   "Team と Enterprise では、Owner が組織の Cookie のインポートをオフにできる",
+   "組み込みブラウザでログインしたものは、その PC での以後の Cowork のセッションでも Claude が使える。お金や個人情報を扱うサイトでは、どこにログインするかを慎重に選ぶ",
+   "Claude in Chrome と同じ安全策(サイトで初めて操作する前の許可、高リスクのサイトのブロック、操作ごとの安全チェック)が働くが、プロンプトインジェクションの危険はなくならない"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/16607400-use-the-built-in-browser-in-claude-cowork",
+    "title": "Use the built-in browser in Claude Cowork"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "cloud-browser",
+  "title": "クラウドブラウザ",
+  "summary": "クラウドブラウザは、Anthropic のサーバーで動くブラウザです。ベータとして Pro、Max、Ultra のプランに Web、デスクトップ、モバイルで段階的に提供されており、Free、Team、Enterprise では使えません。利用者は「Take control」で操作を一時的に引き取り、サイトへのログインなどを行ってから「Hand back to Claude」で Claude に返せます。操作を引き取っている間は Claude はブラウザを使えませんが、利用者が入力した内容は見られます。返したときに開いているページも Claude から見えます。パスワード、カード番号、セキュリティコード、ワンタイムコードは隠す試みがありますが、サイトの作りに左右されるため頼らないよう注意されています。",
+  "points": [
+   "サイトにログインすると、その会話やタスクの中で Claude はそのサイトにログインしたままになり、利用者として操作できる",
+   "望まないなら、サイトと、ログインに使ったアカウント(Google や Apple など)からサインアウトしてから返す",
+   "パネルを閉じたときや時間切れでも制御は Claude に戻るため、先にサインアウトする。すでに戻っていたら、もう一度操作を引き取ってサインアウトする",
+   "「Take control」は、クラウドブラウザでページが開いているときだけ表示される"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/18442783-use-the-cloud-browser-in-claude",
+    "title": "Use the cloud browser in Claude"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "claude-meetings",
+  "title": "Claude Meetings",
+  "summary": "Claude Meetings は、Google Meet の通話に Claude を見える参加者として加える機能です。Claude はメモを取り、質問に答え、通話中にドキュメント、ホワイトボード、スライドなどを作ります。Team と Enterprise のプランでベータとして提供されています。Team では既定でオンで Owner がオフにでき、Enterprise では Owner が組織の全体か一部(カスタムロールを使う)でオンにします。ベータの間は、ZDR、HIPAA-ready、CMEK の組織などでは使えません。会議に Claude を追加するには、Meetings で Google Calendar を接続し(Owner が組織で Google Calendar を有効にしておく必要がある)、会議を選んで「Add Claude」を押します。Claude を追加したり自動参加をオンにしたりする前に、通話の全員が文字起こしされることに問題がないかを確認します。",
+  "points": [
+   "Claude が Meet のチャットに書いた内容は通話の全員に見える。Claude の会議ページのチャットは組織内だけのもので、外部のゲストからは見えない",
+   "Claude は通話中に接続済みのツール(Slack のメッセージ送信など)を使える。各人のツールは、その人の許可を得て使い、最初に確認して、一度許可するとそれ以降に適用される",
+   "外部のゲストがいる通話への参加は、Team では既定で可能(Owner がオフにできる)、Enterprise では Owner が許可する必要がある。外部のゲストがいる通話では、Claude はメモを取るが Meet のチャットでは返答しない",
+   "自動参加は Settings > Capabilities > Meetings > Auto-join で各自が設定する。Owner が代わりに設定することはできない",
+   "Claude は音声ではなく、文字起こし、要約、画面の説明を保存する"
+  ],
+  "sources": [
+   {
+    "url": "https://support.claude.com/en/articles/18325154-use-claude-meetings",
+    "title": "Use Claude Meetings"
+   }
+  ],
+  "checked": "2026-11-20"
+ }
+]

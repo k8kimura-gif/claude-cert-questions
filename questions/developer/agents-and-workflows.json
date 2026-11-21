@@ -31,9 +31,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ワークフローは予測可能で一貫した動作が得られ、手順が明確なタスクに向きます。エージェントは柔軟性が必要で、手順を事前に決められないタスクに向きます。",
+  "explanation": "正解は a です。Anthropic の記事「Building effective agents」は、ワークフローとエージェントをどちらも「エージェント的システム」に含めたうえで、構造上の区別を置いています。ワークフローは、LLM とツールをあらかじめ定めたコードの経路で動かすシステムです。エージェントは、LLM が自分の処理の進め方とツールの使い方を動的に決め、タスクをどう達成するかの制御を持つシステムです。\n\n見分け方: 区別の基準は「経路を決めるのがコードか LLM か」です。どちらもツールを使えます(b)。記事のワークフローには複数の呼び出しを連ねるものがあり、呼び出しの回数(c)やモデルの大きさ(d)は区別の基準ではありません。手順が明確なタスクにはワークフローが、柔軟さとモデルによる判断が必要なときはエージェントが向きます。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "building-effective-agents"
   ]
  },
  {
@@ -68,9 +71,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "エージェント的な構成は、遅延と費用を払ってタスクの成績を上げるものです。多くの用途では、1 回の呼び出しを最適化するだけで足ります。",
+  "explanation": "正解は a です。記事は、LLM を使うアプリケーションでは、できるだけ単純な解決策を探し、必要なときだけ複雑さを増すよう勧めています。エージェント的システムは遅延と費用を払ってタスクの成績を上げるもので、多くの用途では、検索と文脈内の例で 1 回の LLM 呼び出しを最適化すれば足ります。エージェント的システムをまったく作らないことも選択肢です。\n\n見分け方: 最初からマルチエージェントにする(b)のは、必要が示される前に複雑さを足すことになります。フレームワークについて記事は、抽象化の層がプロンプトと応答を見えにくくしてデバッグを難しくしうるとし、内部のコードを理解するよう勧めています(c)。手順が決まった処理には予測可能なワークフローが向き、すべてを自律エージェントに任せる(d)理由はありません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "building-effective-agents"
   ]
  },
  {
@@ -105,10 +111,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "プロンプトチェーンは、タスクをきれいに固定のサブタスクへ分解できる場合に向きます。1 回の呼び出しを簡単にすることで、遅延と引き換えに精度を上げます。",
+  "explanation": "正解は a です。プロンプトチェーンは、タスクを順番の段階に分け、各 LLM 呼び出しが前の段階の出力を処理するワークフローです。途中の段階には、処理が正しく進んでいるかを確かめるプログラムによる検査(ゲート)を置けます。記事は、マーケティング文を作ってから別の言語に翻訳する処理を、このパターンの例に挙げています。Prompting best practices も、途中の出力を確かめたいときは明示的なチェーンが役立つとしています。\n\n見分け方: 段階が固定で順番に進み、段階の間で確かめたい、という条件がチェーンに当たります。ルーティング(b)は入力を分類して振り分けるもの、オーケストレーターとワーカー(c)はサブタスクを事前に予測できないときのもの、投票(d)は同じタスクを複数回動かして多様な出力を得るものです。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts"
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -143,9 +152,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ルーティングは、入力に明確な種類があり、種類ごとに別の扱いをした方がよい場合に向きます。簡単な質問を小型モデルに、難しい質問を上位モデルに振り分ける使い方もできます。",
+  "explanation": "正解は a です。ルーティングは、入力を分類して、それに特化した後続の処理に振り分けるワークフローで、関心を分けて種類ごとに専用のプロンプトを作れます。記事は、カスタマーサポートの問い合わせ(一般的な質問、返金依頼、技術サポート)を、別々の後続処理、プロンプト、ツールへ送る例を挙げています。別々に扱うほうがよい明確な種類があり、分類を正確に行えるときに向きます。\n\n見分け方: ルーティングがないと、ある種類の入力に合わせた最適化が他の入力の成績を下げることがあります。評価者と最適化器(b)は生成と評価を繰り返して出力を磨くもの、プロンプトチェーン(c)はすべての入力が同じ順番の段階を通るもの、分割(d)は 1 つのタスクを独立した部分に分けて同時に処理するものです。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -180,9 +192,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "並列化には、タスクを独立した部分に分ける「分割」と、同じタスクを複数回実行する「投票」があります。複数の観点が必要な判定や、信頼性を高めたい判定に投票が向きます。",
+  "explanation": "正解は a です。並列化には、タスクを独立したサブタスクに分けて並行して動かす「分割」と、同じタスクを複数回動かして多様な出力を得る「投票」の 2 種類があります。記事は投票の例として、コードの脆弱性を複数の異なるプロンプトで審査し、問題を見つけたら指摘する使い方を挙げています。並列化は、信頼度の高い結果を得るために複数の視点や試行が必要なときに有効です。\n\n見分け方: 同じ対象を複数のプロンプトで同時に審査し、結果をまとめる点が投票に当たります。プロンプトチェーン(b)は段階を順番に実行するもの、ルーティング(c)は入力を 1 つの経路に振り分けるもの、評価者と最適化器(d)は 1 つの出力を評価とフィードバックで繰り返し改善するものです。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -217,9 +232,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "オーケストレーターとワーカーは形の上では並列化に似ていますが、サブタスクがあらかじめ定義されておらず、入力に応じてオーケストレーターが決める点が異なります。",
+  "explanation": "正解は a です。オーケストレーターとワーカーでは、中心の LLM がタスクを動的に分解してワーカーの LLM に任せ、その結果を統合します。必要なサブタスクを予測できない複雑なタスクに向き、記事は、変更するファイルの数や各ファイルの変更の内容が依頼によって変わるコーディングを例に挙げています。並列化と形は似ていますが、サブタスクが事前に定義されておらず、入力に応じてオーケストレーターが決める点が違います。\n\n見分け方: 「何をどう変えるかは依頼を見るまで分からない」が決め手です。分割(b)は独立したサブタスクがあらかじめ決まっている場合、プロンプトチェーン(c)は固定のサブタスクにきれいに分解できる場合、ルーティング(d)は入力を既知の種類に振り分ける場合のパターンです。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -254,9 +272,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "評価者と最適化器は、明確な評価基準があり、反復による改善に測定可能な価値がある場合に有効です。人が具体的な指摘をすれば出力が良くなる、という状況が目安になります。",
+  "explanation": "正解は a です。評価者と最適化器は、一方の LLM 呼び出しが応答を生成し、もう一方が評価とフィードバックを返すことをループで繰り返すワークフローです。明確な評価基準があり、反復による改善に測れる価値があるときに特に有効です。向いている目安は、人が具体的に指摘すると応答が明らかに良くなることと、LLM がそうした指摘を出せることの 2 つで、記事は文学作品の翻訳を例に挙げています。\n\n見分け方: 「批評をもとに訳し直すと品質が上がる」が、この目安に当たります。ルーティング(b)は入力を振り分けるだけで反復しません。分割(c)は独立した部分を同時に処理するものです。1 回の呼び出しの temperature を変えても(d)、評価とフィードバックによる反復にはなりません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -292,10 +313,17 @@
    "a",
    "b"
   ],
-  "explanation": "エージェントは、環境からの結果(ツールの実行結果)を各ステップで受け取りながら進みます。停止条件、人による確認の機会、サンドボックスでのテストを用意して、自律性に伴う費用と誤りの連鎖に備えます。",
+  "explanation": "正解は a と b です。クライアントツールを使うエージェントループの基本形は、stop_reason が \"tool_use\" の間、ツールを実行して tool_result を返し、会話を続けるというもので、\"end_turn\" など他の stop_reason でループを抜けます。また記事「Building effective agents」は、タスクは完了で終わるのが普通だとしつつ、制御を保つために停止条件(最大反復回数など)を入れることもよくあると述べています。\n\n見分け方: ツールが失敗したときも、is_error: true を付けた tool_result を返します。Claude はそれを見て再試行するか、利用者に事情を伝えられます(c)。次のリクエストには、元のメッセージ、assistant の応答、tool_result を入れた user メッセージを含めます。Messages API はステートレスで、会話の履歴をすべて送ります(d)。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works",
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+   "https://platform.claude.com/docs/en/build-with-claude/working-with-messages"
+  ],
+  "topics": [
+   "autonomous-agents",
+   "tool-use-basics",
+   "handle-tool-calls"
   ]
  },
  {
@@ -330,9 +358,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "エージェントを選ぶ前に、タスクの複雑さ、成果の価値、モデルにとっての実現可能性、誤りの検知と回復のしやすさを確認します。",
+  "explanation": "正解は a です。記事によると、ワークフローは手順が明確なタスクに予測可能性と一貫性をもたらし、エージェントは、必要なステップ数の予測が難しく固定の経路をハードコードできない問題に向きます。エージェントの自律性は費用の増加と誤りの連鎖の可能性を伴い、その判断をある程度信頼できることが前提です。手順が決まっていて誤りを回収できない処理は、エージェントの柔軟さが生きる場面ではありません。\n\n見分け方: 探索的な調査(b)や、入力によってステップ数が大きく変わる作業(d)は、経路を事前に決められないという、エージェントが向く条件に当たります。コードの修正(c)について記事は、自動テストで解を検証でき、テストの結果をフィードバックに反復できるため、エージェントが特に効果的だとしています。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "autonomous-agents",
+   "building-effective-agents"
   ]
  },
  {
@@ -367,9 +399,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "拡張された LLM は、自分で検索の問い合わせを作り、適切なツールを選び、残すべき情報を判断します。ワークフローもエージェントも、これを組み合わせて作ります。",
+  "explanation": "正解は a です。記事は、エージェント的システムの基本部品を、検索(retrieval)、ツール、メモリといった拡張を加えた LLM(augmented LLM)としています。現在のモデルはこれらの機能を積極的に使い、自分で検索の問い合わせを作り、適切なツールを選び、残す情報を決められます。実装では、拡張を用途に合わせることと、LLM にとって使いやすく文書化されたインターフェースにすることを重視し、その方法の 1 つに Model Context Protocol があります。\n\n見分け方: ここでいう拡張は、LLM が情報を取り、行動し、記憶するための手段です。GPU やストレージ(b)、ファインチューニングや蒸留(c)、認証や監査ログ(d)は、記事が挙げる拡張ではありません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "building-effective-agents"
   ]
  },
  {
@@ -404,9 +439,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "フレームワークは始めやすくしてくれますが、内部の仕組みについての誤った思い込みが、失敗の原因になりやすいとされています。",
+  "explanation": "正解は a です。記事は、Claude Agent SDK などのフレームワークについて、LLM の呼び出しやツールの定義と解析などの低水準の作業を簡単にして始めやすくする一方、抽象化の層が内部のプロンプトと応答を見えにくくし、デバッグを難しくすることがあると述べています。そのため、まず LLM の API を直接使うことを勧め、フレームワークを使うなら内部のコードを理解しておくよう求めています。内部についての誤った思い込みは、よくある誤りの原因とされています。\n\n見分け方: 記事は、多くのパターンは数行のコードで実装できるとしており、必ず採用する(b)ことは勧めていません。成功の鍵は成績を測って改善を繰り返すことで、評価を省ける(c)とは書かれていません。使用を禁じて(d)もいません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "building-effective-agents"
   ]
  },
  {
@@ -441,9 +479,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "エージェントは、各ステップで環境からの「正解の手がかり」を得ながら進みます。コードの実行結果やテストは、その代表です。",
+  "explanation": "正解は a です。記事は、エージェントが実行中に、各ステップで環境から「正解の手がかり(ground truth)」を得て進み具合を評価することが重要だとしています。手がかりの例は、ツール呼び出しの結果やコードの実行です。付録でも、コーディングエージェントが特に効果的な理由として、自動テストで解を検証でき、テストの結果をフィードバックに反復できることを挙げています。\n\n見分け方: エージェント自身の確信(b)は、環境から得た事実ではありません。経過した時間(c)や消費したトークンの量(d)は、作業が正しく進んでいるかを示すものではありません。記事が進み具合の根拠に挙げるのは、環境から返る実際の結果です。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "autonomous-agents"
   ]
  },
  {
@@ -478,9 +519,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "分割は、独立して処理できる観点を、それぞれ専用の呼び出しに任せる方法です。ガードレールを本体の処理と分けるのが、典型的な使い方です。",
+  "explanation": "正解は a です。並列化の「分割」は、タスクを独立したサブタスクに分けて並行して動かす方法です。記事は分割の例として、1 つのモデルのインスタンスが利用者の問い合わせを処理し、別のインスタンスが不適切な内容や要求でないかを審査するガードレールを挙げ、同じ呼び出しでガードレールと本来の応答の両方を扱うより成績が良い傾向があるとしています。観点ごとに別の呼び出しで評価する自動評価も分割の例です。\n\n見分け方: 同じタスクを複数回動かして結果を集約する(b)のは「投票」です。入力を分類して担当の処理へ振り分ける(c)のはルーティング、下書きを批評して書き直す(d)のは評価者と最適化器です。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -515,10 +559,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "チェーンでは、段階ごとに出力を確認できます。形式の検査や、基準に達しているかの判定を挟むと、全体の信頼性が上がります。",
+  "explanation": "正解は a です。プロンプトチェーンでは、各 LLM 呼び出しが前の段階の出力を処理します。記事は、途中のどの段階にもプログラムによる検査を加えて、処理がまだ正しく進んでいるかを確かめられるとし、図ではこれを「ゲート」と呼んでいます。例として、文書のアウトラインを書き、アウトラインが基準を満たすかを確かめてから本文を書く処理が挙げられています。\n\n見分け方: ゲートの役割は、途中の出力を検査して処理が正しく進んでいるかを確かめることです。モデルを無作為に選び直す(b)、途中の出力を暗号化する(c)、課金する(d)は、記事がゲートとして説明するものではありません。Prompting best practices も、途中の出力を確かめたいときに明示的なチェーンが役立つとしています。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts"
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -553,9 +600,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "生成と評価の反復は、明確な評価基準があるときに効果を発揮します。終了の条件を決めておかないと、費用が膨らみます。",
+  "explanation": "正解は a です。記事によると、評価者と最適化器は、一方の呼び出しが応答を生成し、もう一方が評価とフィードバックを返すループで、明確な評価基準があるときに特に有効です。また記事は、エージェントのループについて、制御を保つために停止条件(最大反復回数など)を入れることがよくあると述べています。合格の基準と反復の上限は、生成と評価のループを終わらせる条件になります。\n\n見分け方: 生成と評価は役割が違うので、プロンプトは別になります(b)。毎回モデルを替えること(c)を求める記述は記事にありません。評価役のフィードバックを生成役に返すことがこのパターンの仕組みで、伝えない(d)と改善できません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "agentic-workflow-patterns",
+   "autonomous-agents"
   ]
  },
  {
@@ -590,9 +641,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "マルチエージェントは、成果の価値が費用に見合う、難しく幅の広いタスクに向きます。単純なタスクには過剰です。",
+  "explanation": "正解は a です。記事「How we built our multi-agent research system」によると、エージェントはチャットの約 4 倍、マルチエージェントシステムはチャットの約 15 倍のトークンを使います。そのため、費用に見合うには、性能の向上に見合うだけタスクの価値が高い必要があるとしています。一方で、マルチエージェントが効く主な理由は、問題を解くのに十分なトークンを使えることで、BrowseComp の評価では成績のばらつきの 80% をトークンの使用量だけで説明できました。\n\n見分け方: (b)(c)(d)はいずれも、マルチエージェントの構成はトークンを速く使い果たすという記事の記述と合いません。コンテキストを分けても消費は減らず、チャットの何倍にもなります。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "multi-agent-systems"
   ]
  },
  {
@@ -627,9 +681,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "マルチエージェントは、並列化しやすく、情報量が単一のコンテキストを超えるタスクで効果を発揮します。依存の強い作業では、調整の負担が利点を上回ります。",
+  "explanation": "正解は a です。記事によると、マルチエージェントの調査システムは、複数の独立した方向を同時に追う幅優先の問い合わせで特に優れています。全体としては、並列化しやすく、1 つのコンテキストウィンドウを超える情報を扱い、多数の複雑なツールを使う、価値の高いタスクに向くとしています。サブエージェントはそれぞれのコンテキストウィンドウで並行して調べ、重要な内容を圧縮して主エージェントに返します。\n\n見分け方: すべてのエージェントが同じ文脈を共有する必要があるタスクや、エージェント間の依存が多いタスク(b)は、現時点では向かないとされています。1 回の呼び出しで終わる分類(c)や決まった順番の定型処理(d)は、記事「Building effective agents」の考え方では、1 回の呼び出しやプロンプトチェーンのような単純な構成で足ります。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "multi-agent-systems"
   ]
  },
  {
@@ -664,10 +721,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "サブエージェントは、関心の分離を実現します。それぞれが大量のトークンを使って調べ、圧縮した結果だけを返します。",
+  "explanation": "正解は a です。記事「Effective context engineering for AI agents」によると、サブエージェントの構成では、専門のサブエージェントがまっさらなコンテキストウィンドウで集中した作業を行います。各サブエージェントは数万トークン以上を使って調べても、主エージェントに返すのは要約(多くは 1,000〜2,000 トークン)だけです。詳しい探索の文脈はサブエージェントの中に閉じ、主エージェントは結果の統合と分析に集中できます。\n\n見分け方: サブエージェントは自分のコンテキストウィンドウで動くので、主エージェントは目的、出力の形式、使うツール、作業の境界を明確に伝える必要があります(b)。サブエージェントも自分のコンテキストでトークンを使います(c)。主エージェントのウィンドウが広がるわけではありません(d)。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system",
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "multi-agent-systems",
+   "context-engineering"
   ]
  },
  {
@@ -703,11 +764,14 @@
    "a",
    "b"
   ],
-  "explanation": "長時間の作業には、コンパクション、構造化したメモ、サブエージェントが使われます。どれも、限られたコンテキストに重要な情報だけを残すための手段です。",
+  "explanation": "正解は a と b です。記事「Effective context engineering for AI agents」は、トークン数がコンテキストウィンドウを超える長時間のタスクのための手法として、コンパクション、構造化したメモ、サブエージェントの構成の 3 つを挙げています。コンパクションは、上限に近づいた会話を要約し、その要約で新しいコンテキストを始める方法です。構造化したメモは、エージェントがコンテキストの外にメモを書き残し、後で読み戻す方法で、API では memory tool がファイルを使ったこの仕組みを提供します。\n\n見分け方: 何も管理しない(c)と、作業が上限で途中で終わります。同じ内容を繰り返させる(d)のは、限られたコンテキストを浪費するだけです。記事は、望む結果につながる、できるだけ少ない情報量の多いトークンを選ぶことを指針にしています。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
    "https://platform.claude.com/docs/en/build-with-claude/compaction",
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool"
+  ],
+  "topics": [
+   "context-engineering"
   ]
  },
  {
@@ -742,9 +806,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "エージェントを作る方法には、API でループを自作する、SDK のツールランナーを使う、Agent SDK を使う、Managed Agents を使う、といった選択肢があります。",
+  "explanation": "正解は a です。Agent SDK は、Claude Code を動かしているのと同じツール、エージェントループ、コンテキスト管理を、Python と TypeScript で使えるようにしたライブラリです。自分で運用するプロセスの中で Claude Code のバイナリを動かし、組み込みツール(ファイルの読み書きと編集、コマンドの実行、Web 検索)、権限、セッション、フックなどを使えます。\n\n見分け方: Claude API を直接呼ぶのは Client SDK で、ツールのループは自分で書くか、ツールランナーに任せます。Agent SDK は Messages API の別名(b)でも、ツールを持たない薄いラッパー(d)でもありません。Anthropic がエージェントをホストし、ループを回すハーネスを運用するのは Managed Agents です(c)。",
   "refs": [
    "https://code.claude.com/docs/en/agent-sdk/overview"
+  ],
+  "topics": [
+   "agent-sdk"
   ]
  },
  {
@@ -779,10 +846,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールランナーは、ツール定義と実行関数をまとめて渡すと、Claude が終了するまでの往復を自動で処理します。ループを完全に制御したい場合は、手書きします。",
+  "explanation": "正解は a です。ツールランナーは、API のクライアント SDK に含まれるベータの機能で、エージェントのループ、エラーの包み込み、型の安全性を自動で扱います。SDK の補助機能で定義したツールを渡すと、Claude がツールを呼んだときに実行し、結果を返し、会話の状態を管理します。Claude がツールを使わないメッセージを返すか、max_iterations に達するまで続きます。人による承認や独自のログ、条件付きの実行が必要なときは、手動のループを使います。\n\n見分け方: Message Batches API(b)、Files API(c)、トークンカウント(d)は別の目的の機能で、ツールの実行と結果の返送を代わりに行うものではありません。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls"
+  ],
+  "topics": [
+   "tool-runner"
   ]
  },
  {
@@ -817,10 +887,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールの設計は、人間向けのインターフェースと同じくらいの労力をかける価値があるとされています。",
+  "explanation": "正解は a です。記事は、エージェントを実装するときの 3 つの原則として、設計を単純に保つこと、エージェントの計画の手順を明示して透明性を優先すること、ツールの十分な文書化とテストによってエージェントとコンピューターのインターフェース(ACI)を丁寧に作ることを挙げています。人間とコンピューターのインターフェースにかけるのと同じだけの労力を、ACI にかけるよう勧めています。\n\n見分け方: 記事は、複雑さは結果が明らかに良くなるときだけ足すよう述べています(b)。計画の過程は隠すのではなく明示します(c)。ツールの定義には、使用例、境界的な場合、入力形式の要件、他のツールとの境界を書くよう勧めており、説明を最小限にする(d)のは逆です。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://www.anthropic.com/research/writing-tools-for-agents"
+  ],
+  "topics": [
+   "building-effective-agents",
+   "writing-tools-for-agents"
   ]
  },
  {
@@ -855,9 +929,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "エージェントは、信頼できる環境で、範囲を限定して使い始め、実績に応じて任せる範囲を広げます。",
+  "explanation": "正解は a です。記事は、エージェントの自律性は費用の増加と誤りの連鎖の可能性を伴うとして、サンドボックス環境での十分なテストと、適切なガードレールを勧めています。また、エージェントは多くのターンを動くため、その判断をある程度信頼できる必要があり、自律性は信頼できる環境でタスクを広げるのに向くとしています。制御を保つための停止条件(最大反復回数など)を入れることもよくあります。\n\n見分け方: テストを省いて本番で直す(b)のは、サンドボックスでの十分なテストという推奨に反します。最初から最大の権限を与える(c)のは、記事がテストと合わせて求めるガードレールを外すことになります。停止条件を外す(d)と、自律的なループの制御を失います。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "autonomous-agents"
   ]
  },
  {
@@ -892,9 +969,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "自律的な処理では、誤りが積み重なります。区切りごとに検証を入れ、必要なら人が介入できる点を設けます。",
+  "explanation": "正解は a です。記事「Building effective agents」は、エージェントの自律性には誤りの連鎖の可能性が伴うとし、各ステップで環境から「正解の手がかり」(ツール呼び出しの結果やコードの実行など)を得て進み具合を評価することが重要だとしています。チェックポイントで人のフィードバックを待つこともできます。マルチエージェントの記事も、エージェントは状態を持ち誤りが積み重なるため、再試行や定期的なチェックポイントのような決定的な安全策を組み合わせると述べています。\n\n見分け方: 手順を増やす(b)と、誤る機会が増えます。最後に 1 回だけ検証する(c)と、途中の誤りが後の段階に伝わるのを止められません。慎重に進めるよう指示する(d)だけでは、環境の結果で誤りを確かめる仕組みになりません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "autonomous-agents",
+   "multi-agent-systems"
   ]
  },
  {
@@ -929,9 +1011,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "人による確認は、区切りのよい点や、障害にぶつかった点に置きます。確認が多すぎても少なすぎても、うまく機能しません。",
+  "explanation": "正解は a です。記事によると、エージェントはタスクが明確になると自分で計画して動き、必要に応じて追加の情報や判断を求めて人に戻ります。また、チェックポイントや障害に当たったときに、人のフィードバックを待つことができます。a の場面は、この「情報や判断を求めて戻る」「チェックポイントで待つ」「障害に当たったときに待つ」に対応します。\n\n見分け方: すべてのツール呼び出しの前に確認する(b)と、自分で計画して動くというエージェントの性質が生かせません。一切確認しない(c)と、記事が勧める人による意味のある監督を組み込めません。人に戻るのは順調なとき(d)ではなく、情報が足りないときや障害に当たったときです。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "autonomous-agents"
   ]
  },
  {
@@ -944,13 +1029,13 @@
   "choices": [
    {
     "id": "a",
-    "text": "エージェントのループと、ツールを実行する隔離環境の両方を、Anthropic が運用する",
-    "why": "自分でループや実行環境を持たずに、長時間のエージェントを動かせる。"
+    "text": "エージェントのループを Anthropic が運用し、ツールを実行する環境は、既定では Anthropic が管理するクラウドのサンドボックスになる",
+    "why": "正解。環境の既定は Anthropic が管理するクラウドのサンドボックスで、自社の基盤上のセルフホストのサンドボックスも選べる。"
    },
    {
     "id": "b",
     "text": "ループは Anthropic が運用するが、ツールを実行する環境は必ず利用者が自分で用意する",
-    "why": "それは、API でツールを使う場合や Agent SDK の場合である。"
+    "why": "環境は、Anthropic が管理するクラウドのサンドボックス(既定)か、自社の基盤上のセルフホストのサンドボックスから選ぶ。必ず利用者が用意するわけではない。"
    },
    {
     "id": "c",
@@ -966,10 +1051,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "Managed Agents は、エージェントの設定を保存し、セッションごとに隔離された作業環境を用意して実行する、サーバー管理型の仕組みです。実行環境を自分で持ちたい場合は、API や Agent SDK を使います。",
+  "explanation": "正解は a です。Claude Managed Agents は、構成済みのエージェントのハーネスを管理された基盤で動かす仕組みです。エージェントのループ、ツールの実行、実行環境を自分で作る代わりに、Claude がファイルを読み、コマンドを実行し、コードを安全に実行できる環境が提供されます。環境の既定は、Anthropic がセッションごとに用意するクラウドのサンドボックスです。ただし現在は、ツールの実行だけを自社の基盤で行うセルフホストのサンドボックスも選べます。\n\n見分け方: 環境を必ず利用者が用意する(b)わけではなく、既定は Anthropic が運用します。Managed Agents のセッションは状態を持ち、会話の履歴やサンドボックスの状態をサーバー側に保存するので、単発の Messages API(c)とは違います。設定ファイルの名前(d)でもありません。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview",
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+   "https://platform.claude.com/docs/en/managed-agents/overview",
+   "https://platform.claude.com/docs/en/managed-agents/choosing-an-environment",
+   "https://code.claude.com/docs/en/agent-sdk/overview"
+  ],
+  "topics": [
+   "managed-agents",
+   "agent-sdk"
   ]
  },
  {
@@ -1004,10 +1094,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "ルーティングは、種類ごとの専用プロンプトへの振り分けだけでなく、モデルの使い分けにも使えます。分類の精度が、全体の品質を左右します。",
+  "explanation": "正解は a です。記事は、ルーティングの使い方の例として、簡単でよくある質問を小型で費用効率のよいモデルに、難しく珍しい質問を高性能なモデルに振り分けて、成績と費用を最適化する方法を挙げています(記事の例は Claude Haiku 4.5 と Claude Sonnet 4.5)。モデル選びのページも、Claude Haiku 5.5 を最も低い遅延と価格のモデルとして、費用を重視する用途に挙げています。\n\n見分け方: すべてを高性能なモデルに送る(b)と、簡単な質問にも同じ費用がかかります。すべてを 2 つのモデルに送る(c)のは振り分けではなく、費用が増えます。無作為に振り分ける(d)のは、入力を分類して専用の処理に送るというルーティングの考え方に合いません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://www.anthropic.com/research/building-effective-agents",
    "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+  ],
+  "topics": [
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -1042,10 +1135,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "オーケストレーターは、入力に応じてサブタスクを決めます。割り振りの指示が曖昧だと、ワーカーの作業が重複したり、抜けたりします。",
+  "explanation": "正解は a です。記事「Building effective agents」によると、オーケストレーターとワーカーでは、中心の LLM がタスクを動的に分解し、ワーカーの LLM に任せ、その結果を統合します。サブタスクは事前に決まっておらず、入力に応じてオーケストレーターが決めます。マルチエージェントの記事は、主エージェントが各サブエージェントに目的、出力の形式、ツールと情報源の指針、作業の境界を渡す必要があり、説明が足りないと作業の重複や抜けが起きると述べています。\n\n見分け方: すべてを自分で実行する(b)なら、ワーカーに任せる意味がありません。結果を検査せずに連結する(c)のは、内容を踏まえた統合ではありません。入力をそのまま転送する(d)のは、タスクを分解して割り振っていません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "agentic-workflow-patterns",
+   "multi-agent-systems"
   ]
  },
  {
@@ -1080,10 +1177,15 @@
   "answer": [
    "b"
   ],
-  "explanation": "Managed Agents は、エージェントのループを Anthropic が運用します。環境(Environment)は、セッションがどこで動くかの設定で、Anthropic が管理するクラウドのサンドボックスか、自社の基盤上のセルフホストのサンドボックスを選べます。ループそのものを自社で動かしたい場合は、Agent SDK のホスティングが選択肢になります。",
+  "explanation": "正解は b です。Managed Agents の環境(Environment)は、セッションが動く場所の設定で、Anthropic が管理するクラウドのサンドボックス(既定)か、自社の基盤上のセルフホストのサンドボックスを選べます。セルフホストのサンドボックスでは、Claude は Anthropic 側で動いて次に呼ぶツールを決め、自社で動かすワーカーが bash やファイルのツールの呼び出しを実行して結果を返します。会話の履歴とツールの結果は Anthropic 側に届きます。\n\n見分け方: 環境は選べるので、Messages API でループを自作するしかない(a)わけではありません。ループを自社で、ツールの実行を Anthropic で行う(c)のは、求める構成と逆です。Agent SDK を自社のコンテナで動かす(d)のは、ループそのものを自社で動かす別の選択肢です。",
   "refs": [
+   "https://platform.claude.com/docs/en/managed-agents/choosing-an-environment",
+   "https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes",
    "https://platform.claude.com/docs/en/managed-agents/overview",
    "https://code.claude.com/docs/en/agent-sdk/hosting"
+  ],
+  "topics": [
+   "managed-agents"
   ]
  },
  {
@@ -1118,9 +1220,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "continue と resume は、どちらも既存のセッションを続けます。continue は、現在のディレクトリで最も新しいセッションを探します。resume は、指定したセッション ID のセッションを続けます。利用者ごとにセッションがある場合のように、複数のセッションを扱うときは、ID を自分で管理して resume を使います。fork は、元を変えずに履歴の写しから新しいセッションを作ります。",
+  "explanation": "正解は d です。Agent SDK の continue と resume は、どちらも既存のセッションを続けて追記しますが、セッションの見つけ方が違います。continue は現在のディレクトリで最も新しいセッションを探し、resume は指定したセッション ID のセッションを続けます。ドキュメントは、利用者ごとに 1 つのセッションを持つ複数利用者のアプリのように複数のセッションがある場合は、ID を管理して resume を使う必要があるとしています。\n\n見分け方: continue(a)は 1 度に 1 つの会話を扱うアプリに向き、複数の利用者がいると別の人のセッションを続けるおそれがあります。fork(b)は元の履歴の写しから新しいセッションを作り、元を残して別の方向を試すためのものです。resume すれば以前の文脈が戻るので、履歴を自分でプロンプトに貼る(c)必要はありません。",
   "refs": [
    "https://code.claude.com/docs/en/agent-sdk/sessions"
+  ],
+  "topics": [
+   "agent-sdk-sessions"
   ]
  },
  {
@@ -1155,10 +1260,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "Agent SDK では、会話の記録を含むエージェントの状態が、既定でコンテナのファイルシステムにあります。これらは、コンテナの再起動、スケールダウン、別のノードへの移動のあとには残りません。記録をホストをまたいで保つには、SessionStore のアダプターを設定します。アイドル時に止めて必要なときに起動する構成では、この設定が必須です。",
+  "explanation": "正解は a です。Agent SDK では、セッションの記録、CLAUDE.md のメモリファイル、作業ディレクトリの成果物が既定でコンテナのファイルシステムにあり、コンテナの再起動、スケールダウン、別のノードへの移動のあとには残りません。記録をホストをまたいで保つには、SessionStore のアダプターを設定します。アイドル時にコンテナを止め、利用者が戻ったら起動するハイブリッドの型では、SessionStore がないと記録が失われるため、必須とされています。\n\n見分け方: 記録の既定の置き場所はコンテナのローカルディスクで、API キーを同じにしても戻りません(b)。SessionStore を使えば止めても再開でき、常時起動しかない(c)わけではありません。max_turns(d)はループのターン数の上限で、記録が消えることとは関係がありません。",
   "refs": [
    "https://code.claude.com/docs/en/agent-sdk/hosting",
    "https://code.claude.com/docs/en/agent-sdk/sessions"
+  ],
+  "topics": [
+   "agent-sdk-hosting",
+   "agent-sdk-sessions"
   ]
  }
 ]

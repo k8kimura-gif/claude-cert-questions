@@ -22,6 +22,8 @@ iPhone では Safari で開き、共有メニューから「ホーム画面に�
 | `index.html` `app.js` `styles.css` `sw.js` | アプリ本体。ビルド不要の静的ファイル |
 | `exams/*.json` | 試験定義(ドメイン、配点、問題数、制限時間、試験日の初期値) |
 | `questions/<資格>/<ドメイン>.json` | 問題バンク |
+| `topics/<資格>.json` | 問題が扱う話題ごとの、公式資料の概要。問題の `topics` から参照する |
+| `scripts/apply-topics.mjs` | トピックの追加と、解説の書き換えをまとめて適用する |
 | `scripts/validate.mjs` | 問題バンクの検証 |
 | `docs/design.md` | 設計 |
 | `docs/quiz-prompt.md` | AI アシスタントに出題させるときの手順書 |

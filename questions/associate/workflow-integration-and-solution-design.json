@@ -31,10 +31,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "スキルは、Claude が特定のタスクを繰り返し同じやり方で行えるようにする手順と資料のまとまりで、関連する場面で必要な分だけ読み込まれます。Project は常に読み込まれる静的な背景知識、カスタム指示は全会話に広く適用される設定、という位置づけの違いがあります。",
+  "explanation": "正解は b です。スキルは、指示、スクリプト、リソースをまとめたフォルダで、ブランドガイドラインに沿った文書作成や組織固有の手順での作業など、特定の作業を繰り返し同じやり方で行えるようにします。Claude は使えるスキルを確認し、作業に関係するものを読み込んで、その指示を適用します。チームの手順をスキルにしておけば、誰が依頼しても同じ手順が使われます。\n\n見分け方: ヘルプセンターは、プロジェクトは常に読み込まれる静的な背景知識、スキルは必要なときに有効になる手順、と対比しています。過去のレポートをナレッジに入れる(a)のは背景知識の追加で、手順の再現にはなりません。カスタム指示(c)はすべての会話に広く適用されるもので、各自が書けばばらつきも残ります。毎回の貼り付け(d)は、手順を一度書いて再利用するというスキルの目的に合いません。",
   "refs": [
    "https://support.claude.com/en/articles/12512176-what-are-skills",
    "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills"
+  ],
+  "topics": [
+   "skills"
   ]
  },
  {
@@ -69,10 +72,14 @@
   "answer": [
    "d"
   ],
-  "explanation": "公式ページは、MCP は外部サービスやデータに Claude をつなぎ、スキルは作業をどう進めるかという手順の知識を与えるとし、両方を併用できると述べています。スキルの例にも、チームの規約に沿って社内ツールにタスクを作るものが挙がっています。",
+  "explanation": "正解は d です。ヘルプセンターは、MCP は Claude を外部のサービスやデータにつなぎ、スキルは作業の進め方という手順の知識を与えると説明し、両方を組み合わせて使えるとしています。MCP の接続がツールへのアクセスを与え、スキルがそのツールをどう使うかを教えます。カスタムスキルの例にも、チームの規約に沿って JIRA、Asana、Linear などの社内ツールにタスクを作るものが挙がっています。\n\n見分け方: 「アクセスはコネクタ、使い方の決まりはスキル」と役割を分けて考えます。スキルだけ(a)では課題管理ツールに接続できません。コネクタだけ(b)ではサービスにアクセスできても、チームの命名規則までは伝わりません。ナレッジに規則を書くだけ(c)では、ツールに実際にチケットを作るための接続がありません。",
   "refs": [
    "https://support.claude.com/en/articles/12512176-what-are-skills",
    "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities"
+  ],
+  "topics": [
+   "skills",
+   "connectors"
   ]
  },
  {
@@ -107,9 +114,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "description は Claude がスキルを使うかどうかを判断する材料です。公式のテスト手順にも、期待どおり使われない場合は description を見直すとあります。",
+  "explanation": "正解は a です。skill.md の description は、スキルが何をするか、いつ使うかを書く必須の欄で、Claude はこれを見てスキルを呼び出すかどうかを判断します。ヘルプセンターのテスト手順も、アップロード後にいくつかの異なるプロンプトで試し、Claude の思考でスキルが読み込まれているかを確かめ、期待どおりに使われないときは description を見直す、という流れです。\n\n見分け方: 呼び出されるかどうかを決めるのは description です。本文(b)は、メタデータを読んだあとに必要に応じて参照される 2 段目の情報なので、長くしても呼び出しの判断は変わりません。複数のスキルの統合(c)は、焦点を絞った複数のスキルのほうが組み合わせやすいというベストプラクティスに反します。手書きに戻す(d)のは、原因を確かめずにスキルの利点を捨てる対応です。",
   "refs": [
    "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills"
+  ],
+  "topics": [
+   "skills"
   ]
  },
  {
@@ -145,9 +155,12 @@
    "a",
    "d"
   ],
-  "explanation": "公式のベストプラクティスは、焦点を絞る、明確な description を書く、簡単なものから始める、例を使う、少しずつテストする、というものです。機密情報のハードコードは避けるべき点として挙げられています。",
+  "explanation": "正解は a と d です。カスタムスキルのベストプラクティスとして、ヘルプセンターは、焦点を絞る(ワークフローごとに別のスキルを作る。焦点を絞った複数のスキルは、1 つの大きなスキルより組み合わせやすい)、明確な description を書く、簡単なものから始める、例を使う(入力と出力の例を skill.md に含め、何をもって成功とするかを示す)、少しずつテストする、を挙げています。\n\n見分け方: API キーを skill.md に書く(b)のは、セキュリティ上の注意として挙がっている「API キーやパスワードなどの機密情報をハードコードしない」に反します。外部サービスへのアクセスには適切な MCP 接続を使うよう勧められています。最初から大型のスキルを作り込んでまとめてテストする(c)のは、まず Markdown の簡単な指示から始め、大きな変更のたびにテストするという方針の逆です。",
   "refs": [
    "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills"
+  ],
+  "topics": [
+   "skills"
   ]
  },
  {
@@ -182,10 +195,14 @@
   "answer": [
    "b"
   ],
-  "explanation": "Team・Enterprise プランの Owner はスキルを組織全体にプロビジョニングでき、メンバーの一覧に自動で現れます。公式は、承認済みの手順を全従業員に一貫して配布できる点を利点に挙げています。",
+  "explanation": "正解は b です。Team と Enterprise では、組織の Owner がスキルを組織の全ユーザーにプロビジョニングできます。こうして配られたスキルは、全メンバーのスキルの一覧に自動で表示され、既定で有効か無効かを設定できます。ヘルプセンターは、承認済みの手順を全従業員に一貫して配れること、各自のアップロードなしで新しい機能を展開できることを利点に挙げています。\n\n見分け方: 「全社員に、個別のアップロードなしで」が組織へのプロビジョニングを示す手がかりです。特定の人への共有(a)では、受け取った人が自分で有効にするまでスキルは灰色の無効の状態で表示されます。ZIP を配って各自にアップロードさせる(c)のは避けたい運用そのものです。Anthropic のスキル(d)は Excel や Word などの文書作成の機能で、自社のブランド規定は含まれません。",
   "refs": [
    "https://support.claude.com/en/articles/12512176-what-are-skills",
    "https://support.claude.com/en/articles/12512180-use-skills-in-claude"
+  ],
+  "topics": [
+   "org-skills",
+   "skills"
   ]
  },
  {
@@ -220,10 +237,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "公式ページは、定期タスクはリモートで実行され、コンピューターがスリープ中でも Claude Desktop アプリが閉じていても、設定した頻度で動くと説明しています。ローカルのファイルやアプリを必要とするタスクは、ローカルでのみ実行される点は別の条件です。",
+  "explanation": "正解は b です。ヘルプセンターは、定期タスクはリモートで実行されるため、コンピューターがスリープ中でも Claude Desktop が閉じていても、設定した頻度で動くと説明しています。各回は独立した Cowork のセッションとして実行され、結果は通常のタスクと同じように、準備ができたら確認できます。この問題の定期タスクは Slack のコネクタだけを使い、ローカルのファイルやアプリを使わないので、この条件に当てはまります。\n\n見分け方: PC の状態に左右されるのは、手動で作るときに作業フォルダを選んで Require this computer がオンになった場合です。そのときはコンピューターが起動していて Claude Desktop が開いている間だけ実行されます。この問題はその条件ではないので、復帰まで保留(a)、Desktop が開いている間だけ進む(c)、スリープ中は飛ばされる(d)は、いずれも当てはまりません。",
   "refs": [
    "https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork",
    "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork"
+  ],
+  "topics": [
+   "cowork-scheduled-tasks"
   ]
  },
  {
@@ -259,9 +279,12 @@
    "c",
    "d"
   ],
-  "explanation": "定期タスクは、説明を一度書けば決まった頻度で成果物を届けてくれる機能です。頻度の選択、手動実行、一時停止と再開など、運用に関する機能が公式ページに挙がっています。",
+  "explanation": "正解は c と d です。定期タスクを作ると、Claude はプロンプトをタスクの指示として保存し、選んだ頻度で実行します。各回は独立した Cowork のセッションとして動きます。左のサイドバーの「Scheduled」からは、タスクの一覧、予定と過去の実行の確認、指示や頻度の編集、一時停止、再開、削除、オンデマンドでの実行ができます。\n\n見分け方: 対象のプランと、使えないものを押さえます。定期タスクは有料プラン(Pro、Max、Ultra、Team、Enterprise)の機能で、Free では使えません(a)。また、ヘルプセンターは、定期タスクでは Personal Finance でリンクしたアカウントを使えないと明記しているので、個人口座のデータを集計するタスク(b)は組めません。",
   "refs": [
    "https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork"
+  ],
+  "topics": [
+   "cowork-scheduled-tasks"
   ]
  },
  {
@@ -296,9 +319,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Cowork の承認モードは、Claude が行動の前に許可を求める頻度を決めます。影響の大きい作業では、結果を人が確認できる Manually approve が公式の推奨に沿います。",
+  "explanation": "正解は a です。Manually approve では、Claude は操作の前に一時停止して承認を求め、利用者が各要求を確認して Allow か Deny を選びます。ヘルプセンターは、どのモードも利用者の判断の代わりにはならないとしたうえで、お金、本人名義で送るメッセージ、重要なファイルなど結果の大きい作業では、近くで確認するか Manually approve に戻すよう勧めています。取引先へのメール送信と共有ドライブのファイル削除は、まさにこの種の作業です。\n\n見分け方: Automatically approve(b)は各操作を安全性の観点で確認して危険なものを止めますが、見落としもありうるため、結果の確認が不要になるわけではありません。Skip all approvals(c)は承認も自動の確認もなく、関わるすべてを完全に信頼できる場合に限られます。モードはチャットボックスのモードセレクターでいつでも変えられるので、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork"
+  ],
+  "topics": [
+   "cowork"
   ]
  },
  {
@@ -333,9 +359,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Cowork のセッションはクラウドで動きますが、ローカルファイルなど手元のコンピューターにあるものに触れるときは、Claude Desktop アプリが開いて接続されている必要があります。",
+  "explanation": "正解は c です。Cowork はセッションをクラウドで動かしますが、ローカルのファイルやブラウザなど手元のコンピューターにあるものを使うときは、そのコンピューターの Claude Desktop を通じてアクセスします。ヘルプセンターは、ローカルのファイル、ブラウザ、コンピューター操作には、macOS か Windows の Claude Desktop が開いて接続されている必要があると説明しています。また、Claude が読み書きできるのは、接続したフォルダの中のファイルだけです。\n\n見分け方: 「セッションはクラウド、手元のものには Desktop」と分けて覚えます。モバイルアプリだけ(a)やブラウザの claude.ai だけ(b)では PC のフォルダに届きませんし、b の「任意のフォルダを自由に」も、接続したフォルダに限るという説明に反します。Desktop では手動のアップロードやダウンロードなしにローカルのファイルを読み書きできるので、事前のアップロード(d)は必要ありません。",
   "refs": [
    "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork"
+  ],
+  "topics": [
+   "cowork"
   ]
  },
  {
@@ -370,10 +399,13 @@
   "answer": [
    "c"
   ],
-  "explanation": "Team・Enterprise プランでは、Project を特定のメンバーや組織全体に共有でき、権限は Can view と Can edit の 2 段階です。見て使うだけの人には Can view が適しています。",
+  "explanation": "正解は c です。Team と Enterprise では、非公開のプロジェクトにメンバーを招待するときに権限を選びます。「Can view」のメンバーは、プロジェクトの内容、ナレッジ、指示を見て、プロジェクトの中でチャットできますが、編集はできません。「Can edit」のメンバーは、プロジェクトの指示やナレッジを変更し、メンバーの設定も更新できます。共有されるのはプロジェクトとナレッジで、自分のチャットは自分で共有しない限り非公開のままです。\n\n見分け方: 「使わせたいが書き換えさせたくない」は Can view に当たります。Can edit(a)は指示やナレッジを変更できてしまいます。PDF を配る(b)や毎回貼り付けさせる(d)は、プロジェクトの中でチャットするという要件を満たさず、内容が更新されるたびに手間も残ります。",
   "refs": [
    "https://support.claude.com/en/articles/9517075-what-are-projects",
    "https://support.claude.com/en/articles/9519189-manage-project-visibility-and-sharing"
+  ],
+  "topics": [
+   "project-sharing"
   ]
  },
  {
@@ -408,10 +440,13 @@
   "answer": [
    "d"
   ],
-  "explanation": "有料プランの Project は、ナレッジがコンテキストの上限に近づくと自動で RAG モードに切り替わり、関連する情報だけを検索して使います。ファイル名を分かりやすくするなどの工夫が検索を助けます。",
+  "explanation": "正解は d です。有料プラン(Pro、Max、Ultra、Team、Enterprise)では、プロジェクトのナレッジがコンテキストウィンドウの上限に近づくと、Claude が自動で RAG モードを有効にします。RAG モードでは、すべてを一度に読み込む代わりに、プロジェクトナレッジの検索ツールで、質問に答えるのに必要な情報だけを取り出します。容量は最大 10 倍に広がり、RAG が有効なことは画面の表示で分かります。設定は不要です。\n\n見分け方: 「自動」「設定不要」「容量が広がる」の 3 点が手がかりです。上限で追加できなくなる(a)のは、ヘルプセンターが「以前は」と説明している RAG 導入前の動作です。古いファイルの自動削除(b)の説明はありません。RAG は管理者が手動で有効にするもの(c)ではなく、利用者がいつ使うかを制御することもできません。",
   "refs": [
    "https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects",
    "https://support.claude.com/en/articles/9517075-what-are-projects"
+  ],
+  "topics": [
+   "project-rag"
   ]
  },
  {
@@ -446,10 +481,14 @@
   "answer": [
    "b"
   ],
-  "explanation": "プロジェクトのメモリは、そのプロジェクト内の作業の文脈を覚えるためのものです。他のプロジェクトには引き継がれませんが、アカウントのメモリとは共有されるため、完全に分けるにはオフにする設定が必要です。",
+  "explanation": "正解は b です。Cowork のプロジェクトでは記憶(メモリ)が有効で、Claude はプロジェクトで行ったタスクの文脈を覚え、同じプロジェクトの以後のタスクに使います。あるプロジェクトで学んだことは、他のプロジェクトには持ち越されません。ただし、プロジェクトはプロジェクト外のチャットとも記憶を共有します。プロジェクトの記憶を完全に分けるには、プロジェクトのページの Memory で「Use account memory」をオフにします。\n\n見分け方: 「プロジェクト間では混ざらない、アカウントの記憶とはつながる」の 2 点を押さえます。すべてのプロジェクトで記憶が共通(a)ではありません。Cowork のプロジェクトでは記憶が有効なので、c も誤りです。アーカイブ(d)はプロジェクトのメタデータを UI から外す操作で、記憶の引き継ぎとは関係がありません。",
   "refs": [
    "https://support.claude.com/en/articles/14116274-organize-your-tasks-with-projects-in-claude-cowork",
    "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context"
+  ],
+  "topics": [
+   "projects",
+   "memory"
   ]
  },
  {
@@ -484,10 +523,13 @@
   "answer": [
    "d"
   ],
-  "explanation": "公式ページは、Web 検索は単純な事実確認、拡張思考は Web を使わない複雑な推論、Research は 5 回以上のツール呼び出しで多様な情報源から深いレポートを作る調査に向くと整理しています。",
+  "explanation": "正解は d です。ヘルプセンターは、Web 検索は 1〜2 回のツール呼び出しで答えられる単純な事実の確認(特定の会社の情報や最近のニュースなど)に、Research は 5 回以上のツール呼び出しを要する包括的な情報収集に向くと整理しています。Research は Web と連携先の複数の情報源をまとめて詳しいレポートを作り、競合の比較も例に挙がっています。(ア)は 1 社の発表の確認、(イ)は Web と社内の Google ドキュメントを横断する比較レポートです。\n\n見分け方: ツール呼び出しの回数と、情報源の広さで選びます。a は対応が逆です。b は(ア)に Research を使っており、単純な確認には過剰で、利用上限も早く消費します。拡張思考(c)は Web の最新情報を必要としない推論に向き、最新の発表の確認や Web の調査には使えません。",
   "refs": [
    "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research",
    "https://support.claude.com/en/articles/11088861-use-research-on-claude"
+  ],
+  "topics": [
+   "research"
   ]
  },
  {
@@ -522,9 +564,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Research は Web と、有効にしたコネクタを横断して調べます。モバイルで開始すると Web のみが対象になり、スキップされたことは表示されないため、社内情報が必要な調査は Web か Desktop で始めます。",
+  "explanation": "正解は b です。Research は Web と、Google Workspace(Gmail、Google Calendar、Google Docs)などチャットで有効にしたコネクタを調べます。ただし、Claude Mobile で始めた Research は Web だけを検索し、コネクタを使いません。コネクタがスキップされても、エラーやその他の表示は出ません。コネクタを含めるには、Web 版か Claude Desktop で Research を始めます。\n\n見分け方: 「モバイルで開始した」「エラーは出なかった」が手がかりです。依頼の言い方を変えても(a)、モバイルで始める限りコネクタは使われません。ローカル MCP サーバー(c)は、Research が使えないとヘルプセンターに明記されています。コネクタが使われなくてもエラーは出ないので、エラーの有無で原因を判断する d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/11088861-use-research-on-claude"
+  ],
+  "topics": [
+   "research"
   ]
  },
  {
@@ -559,10 +604,14 @@
   "answer": [
    "c"
   ],
-  "explanation": "公式の使い分けでは、Slack や Notion などのクラウドサービスはリモートコネクタ、PC 上のファイルやローカルのツールはデスクトップ拡張です。後者は Claude Desktop と Claude Code でのみ使えます。",
+  "explanation": "正解は c です。ヘルプセンターは、Slack、Notion、Linear、GitHub、自社の SaaS などログインして使うクラウドサービスにはリモートコネクタを使い、Web、モバイル、Cowork、Desktop、Claude Code のどこでも使えると説明しています。一方、ローカルのファイル、localhost 上のデータベース、デスクトップアプリなど自分の PC で動くものには、デスクトップ拡張を使います。デスクトップ拡張はローカルで動き、Claude Desktop と Claude Code でだけ使えます。\n\n見分け方: 「クラウドのサービスか、自分の PC で動くものか」で分けます。a は対応が逆です。b のように Slack や Notion をデスクトップ拡張で扱う方法は、ヘルプセンターの使い分けに沿いません。カスタムのリモートコネクタは Anthropic のクラウドから MCP サーバーに接続するため、PC の localhost にしかないツールには届かず、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/11725091-when-to-use-desktop-and-web-connectors",
    "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities"
+  ],
+  "topics": [
+   "desktop-extensions",
+   "connectors"
   ]
  },
  {
@@ -597,9 +646,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Owner はコネクタのアクションを組織単位で制限できます。ただし、Claude で許可しても元のサービスの権限は広がらず、制限は狭める方向にだけ働きます。",
+  "explanation": "正解は a です。Team と Enterprise の Owner は、接続したサービスで行える操作を組織全体で制限できます。Organization settings > Connectors でコネクタを選び、Tools タブで、読み取り系や書き込み・削除系などの区分または個々の権限ごとに、Always allow、Needs approval、Blocked を選びます。この制限はコネクタを使う全員に適用され、個人は上書きできません。ヘルプセンターも「メールの検索と要約は許可し、送信は防ぐ」を典型的な使い方に挙げています。\n\n見分け方: 必要な操作は残し、不要な操作だけを組織で止めるのが要点です。コネクタを無効にする(b)と、検索と要約もできなくなります。各メンバーへの依頼(c)では組織全体への強制になりません。スキルに書いた指示(d)は、コネクタの権限で操作を止める方法ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities"
+  ],
+  "topics": [
+   "connectors"
   ]
  },
  {
@@ -618,7 +670,7 @@
    {
     "id": "b",
     "text": "Claude の編集はすべて「提案」として入るため、1 件ずつ承認または却下する運用になる",
-    "why": "Claude の編集は提案ではなく直接の編集として入る。確認したいときは「Ask before edits」を使う。"
+    "why": "Docs での Claude の編集は、提案ではなく直接の編集として入る。依頼すればテキストの変更案をカードとして示させ、1 件ずつ承認・却下することもできるが、すべての編集が提案になるわけではない。変更を 1 件ずつ確認したいときは「Ask before edits」を使う。"
    },
    {
     "id": "c",
@@ -634,9 +686,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "Claude for Google Workspace は、既定で「Ask before edits」で動き、編集は通常の編集としてバージョン履歴に記録されます。確認と巻き戻しの手段が用意されているため、提出前の文書にも安全に使えます。",
+  "explanation": "正解は d です。Claude for Google Workspace のサイドバーの既定のモードは「Ask before edits」で、Claude はこれから行うことを分かりやすく説明し、利用者が「Allow」を押すまで待ちます。Claude の編集は利用者の名前で記録され、通常の編集と同じくバージョン履歴に残るため、直前の変更は Undo で、それ以前の状態は過去の版の復元で戻せます。\n\n見分け方: 「Accept all edits」(a)でも、リンク、外部の画像、Web アドレス、ファイルへのアクセスに関わる操作は承認を求められます。Docs での Claude の編集は提案ではなく直接の編集として入るので、b は誤りです(依頼すれば変更案をカードで示させることはできますが、既定の動作ではありません)。編集はバージョン履歴に残るので、c も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/16951679-use-claude-in-google-docs-sheets-and-slides"
+  ],
+  "topics": [
+   "claude-for-google-workspace"
   ]
  },
  {
@@ -672,9 +727,12 @@
    "b",
    "d"
   ],
-  "explanation": "この拡張機能は、開いているファイルを読んで編集するために使います。公式ページは、ファイルの共有、アクセス権の付与、所有者の変更、メニューやトリガー、スケジュールされた自動化の作成はできないと説明しています。",
+  "explanation": "正解は b と d です。ヘルプセンターは、Claude はファイルの共有、他の人へのアクセスの付与、所有者の変更ができず、メニューやスケジュールされた自動化の作成もできないと説明しています。これらは頼まれても拒否されます。スプレッドシートについても、トリガー、カスタムメニュー、スケジュールされた更新は作れないと書かれています。\n\n見分け方: この拡張機能は、開いているファイルを読んで、そのファイルを編集するためのものです。選択したセルの数式の説明(a)は、「列 F は何を計算しているか」のような質問の例として挙がっている基本的な使い方です。ドキュメントのタブ(c)は、作成、名前の変更、並べ替えはできませんが、すべてのタブの内容を読み、編集することはできます。",
   "refs": [
    "https://support.claude.com/en/articles/16951679-use-claude-in-google-docs-sheets-and-slides"
+  ],
+  "topics": [
+   "claude-for-google-workspace"
   ]
  },
  {
@@ -709,9 +767,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "ファイル作成は、会話の中でコードを実行して Excel や PowerPoint などを作る機能です。具体的に頼むほど意図に近い成果物になり、出力を確認して調整する工程は残ります。",
+  "explanation": "正解は c です。Claude は会話の中でコードを実行し、Excel、PowerPoint、Word、PDF のファイルを作れます。Excel では動く数式を含む財務モデルも作れます。ヘルプセンターは、作りたいものの構成、内容、書式を具体的に伝えること、そして要件を満たすには出力を確認して手直しが必要になる場合があることを案内しています。\n\n見分け方: 「作れるもの」と「運用の前提」の両方が合っている選択肢を選びます。数式なしの CSV だけ(a)は、動く数式を含む Excel を作れるという説明に反します。確認の工程が不要(b)は、出力を確認して手直しするという案内に反します。ネットワークアクセスをオフにしても、MCP の連携が有効ならその接続を通じた通信は可能なままで、MCP の設定は別に評価するよう求められているため、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude"
+  ],
+  "topics": [
+   "file-creation"
   ]
  },
  {
@@ -746,9 +807,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "プラグインは、職種・チーム・会社に合わせて Claude を動かすための、スキル・コネクタ・サブエージェントのまとまりです。営業、財務、法務など職種ごとのものが用意されており、追加するだけで設定が整います。",
+  "explanation": "正解は d です。プラグインは、職種、チーム、会社に合わせて Claude の動き方を整えるもので、スキル、コネクタ、サブエージェントを 1 つのパッケージにまとめています。ヘルプセンターは、一つずつ設定する代わりに、最初の会話から使える構成が手に入ると説明しています。営業、財務、法務、マーケティング、人事などの職種向けのプラグインが用意されており、それぞれに関係するスキルとコネクタがあらかじめ設定されています。\n\n見分け方: 「スキルとコネクタを 1 つずつ設定せずに」がプラグインを示す手がかりです。プロジェクトの指示(a)やアカウント全体の指示(b)は Claude への指示で、スキルやコネクタの設定は含まれません。スキルを自作してコネクタも個別に接続する(c)のは、避けたい手間そのものです。",
   "refs": [
    "https://support.claude.com/en/articles/13837440-use-plugins-in-claude"
+  ],
+  "topics": [
+   "plugins"
   ]
  },
  {
@@ -783,9 +847,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "一部のコネクタは、テキストの回答の代わりに、分析ダッシュボードやタスクボードなどのアプリの画面を会話の中に表示できます(インタラクティブなコネクタ)。たとえばプロジェクトの状況を尋ねると Claude が Asana のボードを開き、タスクのチェックやステータスの更新をしながら会話を続けられます。表示の形は、インラインのカード、サイドパネル、全画面の 3 種類です。",
+  "explanation": "正解は a です。一部のコネクタは、テキストだけの回答の代わりに、分析ダッシュボード、タスクボード、デザインツールなどの操作できる画面を会話の中に表示します。ヘルプセンターの例では、プロジェクトの状況を尋ねると Claude が Asana のボードを会話の中で開き、タスクにチェックを付けたりステータスを更新したりしながら、そのまま Claude と話を続けられます。表示の形は、インラインのカード、サイドパネル、全画面の 3 つです。\n\n見分け方: 「実際のボードを会話の中で操作する」のがインタラクティブなコネクタです。Research(b)は調査してレポートを作る機能です。Claude が作った画面(c)は Asana のデータとつながっていません。プロジェクトのナレッジ(d)は参照される資料で、ボードを操作する機能ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/13454812-use-interactive-connectors-in-claude"
+  ],
+  "topics": [
+   "interactive-connectors"
   ]
  },
  {
@@ -820,9 +887,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "インタラクティブなコネクタは、Claude に頼まなくてもナビゲーションから開き、サイドバーにピン留めできます。ピンはブラウザごとに保存されるため、Web 版で付けたピンは Claude Desktop には表示されません。使う場所ごとにピンを付けます。",
+  "explanation": "正解は a です。インタラクティブなコネクタは、Claude に頼まなくても Claude のナビゲーションから開き、サイドバーにピン留めできます。ヘルプセンターは、ピンはブラウザごとに保存されるため、Web で付けたピンは Claude Desktop には表示されないと注記しています。\n\n見分け方: ピンが消えた理由は保存場所にあります。時間で外れる(b)という記述はありません。インタラクティブなコネクタは Claude Desktop でも使えるので、c も誤りです。コネクタの接続が切れた(d)という説明も当てはまらず、接続し直してもピンの保存場所は変わりません。",
   "refs": [
    "https://support.claude.com/en/articles/13454812-use-interactive-connectors-in-claude"
+  ],
+  "topics": [
+   "interactive-connectors"
   ]
  },
  {
@@ -857,9 +927,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Cowork では、Claude は最も正確な手段から使います。コネクタ(Gmail、Google Drive、Microsoft 365、Slack など)があればそれを使い、なければ Claude Desktop の組み込みブラウザか Claude in Chrome を使い、それもなければコンピューター操作で画面を直接操作します。Slack のコネクタなら数秒で済む作業も、画面の操作では時間がかかり、誤りも起きやすくなります。",
+  "explanation": "正解は c です。Cowork では、Claude は最も正確な手段から使います。まず、Gmail、Google Drive、Microsoft 365、Slack などのコネクタがあればそれを使います。これが最も速く確実な方法です。コネクタがなければ、Claude Desktop の組み込みブラウザか、優先ブラウザにしていれば Claude in Chrome で作業します。それもなければ、コンピューター操作で画面を直接操作します。\n\n見分け方: ヘルプセンターは、Slack のコネクタなら数秒で済む作業も、画面の操作では時間がかかり、誤りも起きやすいと説明しています。画面の操作を先にする(a)のは逆です。コネクタがあるのにブラウザを先に使う(b)のも順番が違います。3 つの手段を同時に使う(d)という記述はなく、Claude は通常いちばん速い方法を優先します。",
   "refs": [
    "https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork"
+  ],
+  "topics": [
+   "computer-use"
   ]
  },
  {
@@ -895,9 +968,12 @@
    "a",
    "b"
   ],
-  "explanation": "コンピューター操作では、Claude は画面のスクリーンショットを撮って操作するため、表示されている情報が見えます。機密情報のあるファイルやアプリは閉じてから使い、銀行、医療、行政などの機微なアプリには権限を与えないよう勧められています。Claude は株取引や機微なデータの入力を避けるよう訓練されていますが、これは絶対ではなく、アクセスを制限する代わりにはなりません。",
+  "explanation": "正解は a と b です。コンピューター操作では、Claude は画面のスクリーンショットを撮って操作するため、画面や許可したアプリに表示されている個人情報や機密文書も見えます。ヘルプセンターは、機微な情報のあるファイルやアプリを閉じてから使うこと、銀行、医療、行政などの機微なアプリにはコンピューター操作の権限を与えないことを勧めています。\n\n見分け方: Claude は株や暗号資産の取引、機微なデータの入力を避けるよう訓練されていますが、ヘルプセンターはこの仕組みは絶対ではなく、機微なアプリへのアクセスを止める代わりにしてはならないと説明しています(c)。また、Claude はアプリごとに、使う前に許可を求めます。許可したアプリを続けて使えるのはそのセッションの中であり、以後のすべてのタスクで使われる(d)わけではありません。",
   "refs": [
    "https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork"
+  ],
+  "topics": [
+   "computer-use"
   ]
  },
  {
@@ -932,9 +1008,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "macOS 15 以降では、Claude は既定で背景のウィンドウで作業し、ポインタやキーボードを奪わないため、利用者は作業を続けられます。入力中は Claude が待つことが多く、タスクで画面全体が必要になったときは、セッションごとに最初に許可を求めます。画面を占有させたい場合は、設定で「Full control」を選びます。",
+  "explanation": "正解は b です。macOS 15 以降では、Claude は既定で背景のウィンドウで作業し、利用者のポインタやキーボードを奪いません。利用者が入力している最中は、たいてい待ちます。タスクで画面全体が必要になったときは、セッションごとに最初に許可を求めてから画面を使います。そのため、利用者は Claude の作業中も自分の作業を続けられます。\n\n見分け方: 画面を占有させたいときに選ぶのが、Settings の Computer use にある「Full control」です。画面の占有が既定(a)ではありません。背景で作業させるために Full control を選ぶ(c)のは、設定の意味が逆です。コンピューター操作は macOS と Windows の Claude Desktop で使えるので、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork"
+  ],
+  "topics": [
+   "computer-use"
   ]
  },
  {
@@ -969,9 +1048,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Cowork の Web 作業には 2 つの方法があります。組み込みブラウザは Claude 専用のブラウザで、インストール不要で、自分のタブやログインに触れません。Web の部分を任せて自分は作業を続けたいときに向きます。Claude in Chrome は自分の Chrome の、今開いているページで、ログイン済みのアカウントを使って作業するときに向きます。優先するブラウザは Settings > Cowork で切り替えられます。",
+  "explanation": "正解は b です。組み込みブラウザは Claude Desktop に組み込まれた Claude 専用のブラウザで、インストールは不要で、利用者のタブやログインには触れません。ヘルプセンターは、Web の部分を任せて自分は作業を続けたいときに組み込みブラウザを使うよう案内しています。Claude in Chrome は、自分の Chrome の今開いているページで、ログイン済みのアカウントを使って作業させるときに向きます。\n\n見分け方: 「自分のタブやログインに触れてほしくない」が組み込みブラウザを示す手がかりです。Claude in Chrome(a)は、まさに自分の Chrome とログインを使います。組み込みブラウザは自分のブラウザとは別なので、タブが必ず操作される(c)ことはありません。優先するブラウザは Settings > Cowork でいつでも切り替えられるので、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/16607400-use-the-built-in-browser-in-claude-cowork"
+  ],
+  "topics": [
+   "cowork-built-in-browser"
   ]
  },
  {
@@ -1006,9 +1088,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "組み込みブラウザは自分のブラウザとは別のもので、Cookie をインポートしない限り Claude は保存済みのログインを見られません。組み込みブラウザでログインしたものは、その PC での以後の Cowork のセッションでも Claude が使えます。お金や個人情報を扱うサイトでは、どこにログインするかを慎重に選びます。Team と Enterprise では Owner が Cookie のインポートをオフにできます。",
+  "explanation": "正解は b です。組み込みブラウザでは、作業しながらサイトにログインでき、Claude は Cowork のセッションをまたいでログインを覚えています。ヘルプセンターは、組み込みブラウザでログインしたものは、その PC での以後の Cowork のセッションでも Claude が使えるとし、特にお金や個人情報を扱うサイトでは、どこにログインするかを慎重に選ぶよう注意しています。\n\n見分け方: ログインは毎回消える(a)のではなく、セッションをまたいで残ります。組み込みブラウザは自分のブラウザとは別で、Cookie をインポートしない限り保存済みのログインは見えないので、c も誤りです。Team と Enterprise では、Owner が組織の Cookie のインポートをオフにできるため、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/16607400-use-the-built-in-browser-in-claude-cowork"
+  ],
+  "topics": [
+   "cowork-built-in-browser"
   ]
  },
  {
@@ -1043,9 +1128,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "組み込みブラウザは Claude Desktop の中にあるため、Cowork のセッションがクラウドで動いていても、Claude が組み込みブラウザを使うには Claude Desktop が開いてオンラインである必要があります。組み込みブラウザを優先ブラウザにしている場合、Web やモバイルから始めたタスクも、デスクトップアプリが開いていればそのブラウザを使います。",
+  "explanation": "正解は c です。組み込みブラウザは Claude Desktop の中にあるため、Cowork のセッションがクラウドで動いていても、Claude が組み込みブラウザを使うには Claude Desktop が開いてオンラインである必要があります。組み込みブラウザを優先ブラウザにしている場合、Web やモバイルから始めたタスクも、デスクトップアプリが開いてオンラインであればそのブラウザを使います。\n\n見分け方: 「ブラウザは Desktop の中にある」と押さえます。PC の電源を切ってよい(a)は、この条件に反します。組み込みブラウザは自分のブラウザに依存せず、スマートフォンに Claude in Chrome を入れる(b)必要もありません。クラウドのセッションは他の画面から開き直せるもので、スマートフォンの画面を表示し続ける(d)ことはヘルプセンターが挙げる条件ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/16607400-use-the-built-in-browser-in-claude-cowork"
+  ],
+  "topics": [
+   "cowork-built-in-browser"
   ]
  },
  {
@@ -1080,9 +1168,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Claude Meetings では、Claude が Google Meet の通話に見える参加者として加わり、メモを取り、質問に答え、ドキュメントなどを作ります。Claude を追加したり自動参加をオンにしたりする前に、通話の全員が文字起こしされることに問題がないかを確認します。Claude が Meet のチャットに書いた内容は通話の全員に見えますが、Claude の会議ページのチャットは組織内だけのもので、外部のゲストからは見えません。",
+  "explanation": "正解は b です。Claude Meetings では、Claude が Google Meet の通話に見える参加者として加わり、参加したときに通話のチャットに通知を投稿します。ヘルプセンターは、Claude を追加したり自動参加をオンにしたりする前に、通話の全員が文字起こしされることに問題がないかを確認するよう求めています。また、Claude が Meet のチャットに書いた内容は通話の全員に見えると注意しています。\n\n見分け方: Claude は見えない形で参加する(a)のではなく、見える参加者です。Claude の会議ページのチャットは組織内だけのもので、外部のゲストからは見えないので、c も誤りです。Claude Meetings は Team と Enterprise でベータとして提供されているので、d も誤りです。なお、Team では外部のゲストがいる通話への参加が既定で許可されています。",
   "refs": [
    "https://support.claude.com/en/articles/18325154-use-claude-meetings"
+  ],
+  "topics": [
+   "claude-meetings"
   ]
  },
  {
@@ -1117,9 +1208,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Claude Meetings は Team と Enterprise のプランでベータとして提供されています。Team プランでは既定でオンで、Owner がオフにできます。Enterprise プランでは Owner が組織の全体か一部でオンにします。会議に Claude を追加するには Google Calendar を接続する必要があり、Owner が組織で Google Calendar を有効にしておく必要があります。ベータの間は、ZDR や HIPAA-ready の組織などでは使えません。",
+  "explanation": "正解は a です。Claude Meetings は Team と Enterprise でベータとして提供されています。Team では既定でオンで、Owner がオフにできます。Enterprise では、Owner が組織の全体か一部(カスタムロールを使う)でオンにします。会議に Claude を追加するには、Meetings で Google Calendar を接続し、会議を選んで「Add Claude」を押します。その前提として、Owner が組織で Google Calendar を有効にしておく必要があります。\n\n見分け方: 既定でオンなのは Team で、Enterprise は Owner がオンにします(b)。追加の手順は Google Calendar の接続から始まり、Meet の URL を貼り付ける方法(c)は説明されていません。ベータの間は、ZDR、HIPAA-ready、CMEK の組織などでは使えないので、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/18325154-use-claude-meetings"
+  ],
+  "topics": [
+   "claude-meetings"
   ]
  },
  {
@@ -1154,9 +1248,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Claude Meetings では、通話中に Claude が接続済みのツール(Slack のメッセージ送信など)を使えます。Claude は各人の接続済みツールを、その人の許可を得て使います。最初に確認があり、一度許可するとそれ以降にも適用されます。",
+  "explanation": "正解は b です。Claude Meetings では、通話中に Claude が Slack のメッセージ送信などの接続済みのツールを使えます。Claude は各人の接続済みのツールを、その人の許可を得て使います。最初に確認があり、一度許可するとそれ以降にも適用されます。なお、通話中に声で頼まれた場合は、今のところ話している人を確かめるために毎回確認します。\n\n見分け方: 「ツールの持ち主本人の許可」が要点です。会議を追加した人のツールだけが使われる(a)のではありません。通話中にツールを使えると説明されているので、会議後に実行される(c)も誤りです。ツールを使うたびに全員の同意を Meet のチャットで集める(d)という記述はありません。",
   "refs": [
    "https://support.claude.com/en/articles/18325154-use-claude-meetings"
+  ],
+  "topics": [
+   "claude-meetings"
   ]
  },
  {
@@ -1191,9 +1288,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Claude は、接続済みのアプリが会話の内容に合うと、名前を出さなくても提案します。予約や購入の前には確認を求め、利用者が詳細を確かめてから確定します。アプリの推薦に対価は受け取らず、有料の掲載や広告もありません。1 つの会話だけで使わせたくない場合は「+」のコネクタの一覧でオフにし、完全に止めたい場合は Customize > Connectors で切断します。",
+  "explanation": "正解は c です。接続済みのアプリが会話の内容に合うと、Claude は名前を出されなくてもそのアプリを提案します。ヘルプセンターは、Claude が予約や購入をする前には必ず確認を求め、購入の流れがあるアプリでは利用者が詳細を確かめてから確定すると説明しています。1 つの会話だけで使わせたくない場合は、チャットの「+」の Connectors でそのアプリをオフにし、完全に止めたい場合は Customize > Connectors で切断します。\n\n見分け方: Claude が自分だけで取引を行うことはないので、a は誤りです。アプリの推薦に対価は受け取らず、有料の掲載や広告もなく、複数を示す順番も提携関係によるものではありません(b)。接続したアプリから他の会話は見えないので、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/14730684-how-claude-suggests-connected-apps"
+  ],
+  "topics": [
+   "connected-app-suggestions"
   ]
  },
  {
@@ -1228,9 +1328,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "デスクトップ拡張(.mcpb)を使うと、ローカルの MCP サーバーを JSON の手作業の設定なしにワンクリックで導入できます。Team と Enterprise の Owner と Primary Owner は、公開のデスクトップ拡張を有効・無効にでき、自社用の拡張をアップロードしてチームがワンクリックで導入できるようにできます。",
+  "explanation": "正解は c です。デスクトップ拡張(.mcpb)は、JSON の設定ファイルを手で書かずに、ローカルの MCP サーバーをワンクリックで導入できるパッケージです。Team と Enterprise の Owner と Primary Owner は、組織のセキュリティ基準に合わせて公開のデスクトップ拡張を有効・無効にでき、自社用のデスクトップ拡張をアップロードしてチームがワンクリックで導入できるようにできます。\n\n見分け方: 「ワンクリックで導入」「公開の拡張は使わせない」の 2 つを Owner の管理機能で満たします。JSON の手作業の設定(a)は、デスクトップ拡張によって不要になった手間です。プロジェクトのナレッジ(b)は MCP サーバーを導入する仕組みではありません。ローカルの MCP サーバーはデスクトップ拡張として Claude Desktop で使えるので、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop"
+  ],
+  "topics": [
+   "desktop-extensions"
   ]
  },
  {
@@ -1265,9 +1368,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Salesforce in Claude は、Salesforce の取引先や商談のデータと、Salesforce が作った営業向けのスキル、Salesforce と Slack のコネクタをまとめたプラグインです。Claude が見られるのは、その人の既存の Salesforce の権限で許される範囲だけです。既定では、変更を書き込む前に提案を表示し、「Allow once」「Always allow」「Deny」から選ばせます。",
+  "explanation": "正解は b です。Salesforce in Claude は、Salesforce が作った営業向けのスキルと、Salesforce と Slack のコネクタをまとめたプラグインです。ヘルプセンターは、Claude が見られるのは利用者の既存の Salesforce の権限で許される範囲だけで、既定では、提案した変更を書き込む前に 1 件ずつ承認を求めると説明しています。変更の内容が表示され、「Allow once」「Always allow」「Deny」から選びます。\n\n見分け方: Claude はすべてのデータを見られるわけではなく、その人の権限の範囲に限られるので、a は誤りです。既定では書き込む前に承認を求めるので、自動で書き込む c も誤りです。承認するのは提案を受けた本人で、管理者に送る(d)という説明はありません。",
   "refs": [
    "https://support.claude.com/en/articles/16952186-use-salesforce-in-claude"
+  ],
+  "topics": [
+   "plugins"
   ]
  },
  {
@@ -1302,9 +1408,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "クラウドブラウザは Anthropic のサーバーで動くブラウザで、「Take control」で一時的に操作を引き取れます。Claude は入力された内容と、返したときに開いているページを見られます。パスワードやコードを隠す試みはサイトの作りに左右されるため頼れません。サイトにログインすると、その会話やタスクの中で Claude があなたとして操作できるので、望まない場合はサインアウトしてから返します。パネルを閉じても時間切れでも制御は戻るため、先にサインアウトします。",
+  "explanation": "正解は b です。クラウドブラウザでサイトにログインすると、Claude はその会話やタスクの中でそのサイトにログインしたままになり、利用者として操作できます。ヘルプセンターは、それを望まないなら、そのサイトと、ログインに使ったアカウント(Google や Apple など)からサインアウトしてから返すよう案内しています。パネルを閉じたときや時間切れでも制御は Claude に戻るため、先にサインアウトします。\n\n見分け方: パスワードやコードを隠す試みはサイトの作りに左右されるため頼らないよう注意されており、Claude は入力された内容を見られます(a)。返してもログインは解除されません(c)。クラウドブラウザは Pro、Max、Ultra に段階的に提供されているもので、Team と Enterprise では使えません(d)。",
   "refs": [
    "https://support.claude.com/en/articles/18442783-use-the-cloud-browser-in-claude"
+  ],
+  "topics": [
+   "cloud-browser"
   ]
  },
  {
@@ -1339,9 +1448,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "新しい体験では、作業を手順に分けたりモードを選んだりせずに、望む結果を伝えれば Claude が手順を進めます。良い結果を得るには、望む成果(「1 ページの要約」など)、形式(Word の文書、スライド、Slack に貼れる文など)、Claude が使うべき入力(ファイル、リンク、アプリ)を含めるよう勧められています。",
+  "explanation": "正解は b です。新しい Claude の体験では、望む成果を伝えると、Claude が Web の検索、ファイルの読み込み、コードの実行などの手順を自分で進めます。ヘルプセンターは、同僚に頼むように説明し、望む成果(「1 ページの要約」など)、形式(Word の文書、スライド、Slack に貼れるメッセージなど)、Claude が使うべき入力(ファイル、リンク、アプリ)を含めると良い結果になると案内しています。\n\n見分け方: 新しい体験では、作業を手順に分けたりモードを選んだりする必要はないと説明されているので、a は当てはまりません。「Chat」と「Cowork」の選択肢はなくなっており、Claude が使うツールを判断します(c)。所要時間の見積もりや報告の回数(d)は、ヘルプセンターが挙げている要素ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude"
+  ],
+  "topics": [
+   "unified-claude"
   ]
  },
  {
@@ -1354,7 +1466,7 @@
   "choices": [
    {
     "id": "a",
-    "text": "Auto では、Claude は各手順で確認を求めずに進め、操作の前に自動の安全チェックが走る。メッセージの送信などの影響が大きい作業では近くで確認する",
+    "text": "Auto では、Claude は各手順で確認を求めずに進め、ほとんどの操作の前に自動の安全チェックが走る。メッセージの送信などの影響が大きい作業では近くで確認する",
     "why": "正解。ヘルプの説明どおり。Manual では各操作の前に確認を求める。"
    },
    {
@@ -1376,9 +1488,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "権限の設定には Auto と Manual があります。Auto では、Claude は各手順で確認を求めずに進め、操作の前に自動の安全チェックが走ります(Pro、Max、Ultra、Team で既定として展開中)。Manual では、Claude が操作の前に確認を求め、許可するかを選びます(Enterprise の既定)。設定は会話全体に適用され、いつでも変えられ、作業中に止めたり方向を変えたりもできます。メッセージの送信や重要なファイルの変更など影響の大きい作業では、近くで確認することが勧められています。",
+  "explanation": "正解は a です。新しい Claude の体験のメッセージボックスには権限の設定があり、Auto では Claude は各手順で止まらずに進み、ほとんどの操作の前に自動の安全チェックが走ります。Manual では、Claude は操作の前に確認を求め、利用者が許可するかを選びます。ヘルプセンターは、メッセージの送信や重要なファイルの変更など結果の大きい作業では、近くで Claude の作業を確認するよう勧めています。\n\n見分け方: 既定は、Auto が Pro、Max、Ultra、Team で展開中、Manual が Enterprise(Chrome の Cowork サイドパネルを除く)なので、b は誤りです。設定は会話全体に適用され、いつでも変えられるので、c も誤りです。どの設定でも作業中の Claude を止めたり方向を変えたりできるので、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude"
+  ],
+  "topics": [
+   "unified-claude",
+   "cowork"
   ]
  },
  {
@@ -1413,9 +1529,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Plugins のページでは、プラグイン、スキル、コネクタを 1 か所で探し、追加し、管理できます。既存のコネクタ、スキル、プラグインはそのまま残ります。スキルとコネクタをまとめたプラグインを削除しても、コネクタは切断されないため、不要なら別に切断します。",
+  "explanation": "正解は b です。プラグイン、スキル、コネクタは 1 つの Plugins ページにまとめられ、サイドバーの Customize は Plugins に名前が変わります。ヘルプセンターは、既存のコネクタ、スキル、プラグインはインストールされたまま残り、スキルとコネクタをまとめたプラグインを削除してもそのコネクタは切断されないので、別に切断する必要があると説明しています。\n\n見分け方: 「プラグインを消しても、コネクタの接続は残る」と押さえます。自動で切断される(a)のは逆です。コネクタは接続されたままで、使えない状態になる(c)わけではなく、必要なら別に切断できます。取得したデータが会話から削除される(d)という説明はありません。",
   "refs": [
    "https://support.claude.com/en/articles/17740565-manage-plugins-skills-and-connectors-from-one-plugins-page"
+  ],
+  "topics": [
+   "plugins"
   ]
  },
  {
@@ -1450,9 +1569,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Dispatch は、スマートフォンから Claude に依頼し、デスクトップの PC でタスクを動かす機能です。PC で動くため、PC が起動していて Claude Desktop が開いている必要があります(Anthropic のサーバーで動くクラウドのセッションとは異なります)。1 つの継続したスレッドで前のタスクの文脈を引き継ぎます。限定ベータで、新しい利用者には提供されていません。",
+  "explanation": "正解は b です。Dispatch は、スマートフォンから Claude に依頼し、デスクトップの PC で、ローカルのファイル、コネクタ、プラグイン、アプリを使って作業させる機能です。タスクは PC で動くため、PC が起動していて Claude Desktop が開いている必要があります。ヘルプセンターは、Anthropic のサーバーで動き、PC の電源が切れていても作業を続けるクラウドのセッションとは違う、と説明しています。\n\n見分け方: Dispatch は PC で動くので、電源を切っていても処理できる(a)は誤りです。Dispatch は一部の Pro、Max、Ultra で限定ベータとして提供されており、新しい利用者には提供されていません(c)。Dispatch は 1 つの継続したスレッドで、前のタスクの文脈を引き継ぎ、新しいスレッドは作れないので、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/13947068-assign-tasks-from-anywhere-in-claude-cowork"
+  ],
+  "topics": [
+   "cowork"
   ]
  },
  {
@@ -1481,15 +1603,18 @@
    {
     "id": "d",
     "text": "ネットバンキングで振込を行う。人の操作と同じ手順で確実に実行できるため",
-    "why": "Claude は送金などの危険な操作を避けるよう訓練されており、銀行のアプリに権限を与えないよう勧められている。"
+    "why": "ヘルプセンターは、銀行などの機微なアプリにコンピューター操作の権限を与えないこと、金融口座の管理などに使わないことを勧めている。Claude は株や暗号資産の取引、パスワードやカード番号の入力などの高リスクな操作を避けるよう訓練されているが、これも絶対ではない。"
    }
   ],
   "answer": [
    "b"
   ],
-  "explanation": "コンピューター操作では、Claude が画面をクリックし、入力し、デスクトップのアプリを操作します。Claude はコネクタ、ブラウザ、画面の操作の順に、より正確で速い手段を優先するため、コンピューター操作が役立つのは、社内のダッシュボードや専門的なツールなど、コネクタのないアプリを扱う場面です。銀行などの機微なアプリには権限を与えないよう勧められています。",
+  "explanation": "正解は b です。コンピューター操作では、Claude が画面をクリックし、入力し、デスクトップのアプリを操作します。ヘルプセンターは使い方の例として、コネクタのないアプリ、たとえば社内のダッシュボードやチームが使う専門的なツールの操作を挙げています。Cowork では、Claude はコネクタ、ブラウザ、画面の操作の順に、より正確な手段を使います。\n\n見分け方: Gmail(a)や Slack(c)にはコネクタがあり、コネクタが最も速く確実な手段です。ヘルプセンターも、Slack を画面で操作するとずっと時間がかかり、誤りも起きやすいと説明しています。銀行などの機微なアプリにはコンピューター操作の権限を与えないよう勧められており、金融口座の管理などにコンピューター操作を使わないよう強く勧められているので、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork"
+  ],
+  "topics": [
+   "computer-use"
   ]
  }
 ]

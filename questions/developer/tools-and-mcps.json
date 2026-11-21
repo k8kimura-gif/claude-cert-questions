@@ -31,10 +31,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールの説明には、機能、使うべき場面と使うべきでない場面、各パラメータの意味、制約や注意点を書きます。似たツールが複数ある場合は、使い分けが分かるように書きます。",
+  "explanation": "正解は a です。公式ドキュメントは、ツールの性能を左右する要素として、極めて詳しい説明を書くことを「群を抜いて最も重要」としています。説明には、ツールが何をするか、いつ使うべきか(使うべきでないか)、各パラメータの意味と動作への影響、注意点や制限を書き、1 つのツールにつき少なくとも 3〜4 文を目安にします。似たツールが複数あるときは、使い分けが分かるように書きます。\n\n見分け方: Claude が見ているのはツールの定義(名前、説明、スキーマ)なので、適切な場面で呼ばれないときは、まず説明を疑います。名前は短さより分かりやすさが大切です(b)。max_tokens は出力の長さの上限で、ツールの選択には関係しません(c)。定義の順序(d)を変える方法は、公式の推奨にありません。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+   "https://www.anthropic.com/research/writing-tools-for-agents"
+  ],
+  "topics": [
+   "define-tools",
+   "writing-tools-for-agents"
   ]
  },
  {
@@ -69,9 +73,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "tool_use ブロックを含む assistant メッセージの直後に、tool_result ブロックを含む user メッセージを置きます。各 tool_result は tool_use_id で呼び出しと対応付けます。",
+  "explanation": "正解は a です。Claude がツールを呼び出した応答(stop_reason が tool_use)を受け取ったら、次のリクエストで、それまでのメッセージに応答の content をそのまま assistant メッセージとして加え、続く user メッセージに tool_use ブロックごとの tool_result ブロックを入れます。各 tool_result には、対応する tool_use ブロックの id を tool_use_id として指定します。結果は tool_use の直後に置き、間に別のメッセージを挟めません。\n\n見分け方: Claude の API には tool や function のような専用のロールはなく、ツールの結果は user メッセージの中のブロックとして返します(d は誤り)。assistant ロールは Claude の発言です(b)。システムプロンプト(c)は結果の受け渡しに使いません。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls"
+  ],
+  "topics": [
+   "handle-tool-calls"
   ]
  },
  {
@@ -106,9 +113,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "並列ツール呼び出しは既定で有効です。アプリケーションは複数の呼び出しを並行して実行し、すべての結果を 1 つの user メッセージで返します。",
+  "explanation": "正解は a です。Claude は既定で 1 回の応答で複数のツールを呼び出すことがあります。そのときは、tool_use ブロックごとに tool_result を 1 つずつ、tool_use_id で対応付けて、次の 1 つの user メッセージにまとめて返します。tool_result はテキストより前に置きます。実行の順番(並行か順番どおりか)は、ツールの性質に合わせてアプリケーションが選べます。\n\n見分け方: 結果を別々の user メッセージに分けて返す(b)のは、公式ドキュメントが並列呼び出しの問題の最も多い原因として挙げる誤りで、Claude に並列呼び出しを避けることを「教えて」しまいます。実行しない呼び出しがあっても、is_error: true を付けた tool_result は返します(c)。結果は呼び出しごとに分けて返します(d)。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls"
+  ],
+  "topics": [
+   "parallel-tool-use",
+   "handle-tool-calls"
   ]
  },
  {
@@ -143,9 +155,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールの失敗は、is_error を付けた tool_result で返します。エラーメッセージには、原因と、次に取れる行動の手がかりを含めます。",
+  "explanation": "正解は a です。クライアントツールが失敗したり、呼び出しが不正だったりしたときは、tool_result に is_error: true を付け、エラーの内容を content に入れて返します。Claude はそれを見て、ツールを呼び直すか、利用者に事情を伝えられます。エラーメッセージは \"failed\" のような汎用の文言ではなく、何が起きたか、次に何を試すべきかを書きます。Claude が再試行することがあるため、ループには再試行の上限を設けます。\n\n見分け方: すべての tool_use には対応する tool_result が必要で、呼び出しを履歴から消す(b)とリクエストの形が崩れます。空文字列を成功として返す(c)と、Claude は誤った前提で先に進みます。アプリケーションを止める(d)と、回復できる失敗まで致命的になります。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls"
+  ],
+  "topics": [
+   "handle-tool-calls"
   ]
  },
  {
@@ -180,9 +195,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "MCP は、AI アプリケーションを外部のデータやツールにつなぐための公開規格です。ホスト(AI アプリケーション)の中のクライアントが、サーバーと 1 対 1 で接続します。サーバーはツール、リソース、プロンプトを公開します。",
+  "explanation": "正解は a です。MCP サーバーが公開する中核のプリミティブは、ツール(操作を行う実行可能な関数)、リソース(文脈を与えるデータ。ファイルの内容やデータベースのレコードなど)、プロンプト(やり取りを組み立てる再利用可能なひな形)の 3 つです。たとえばデータベース用のサーバーなら、問い合わせのツール、スキーマを載せたリソース、ツールの使い方の例を含むプロンプトを公開できます。\n\n見分け方: ホスト、クライアント、トランスポート(d)は MCP の構成要素や層の用語で、サーバーが公開する機能ではありません。ホストは AI アプリケーション、クライアントはホストの中でサーバーとの接続を保つ部品、トランスポートは通信の経路です。b と c は MCP の機能の分類ではありません。",
   "refs": [
    "https://modelcontextprotocol.io/docs/learn/architecture"
+  ],
+  "topics": [
+   "mcp-architecture"
   ]
  },
  {
@@ -217,10 +235,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "MCP の標準トランスポートは stdio と Streamable HTTP です。stdio はクライアントがサーバーを子プロセスとして起動する形で、ローカルのツールに向きます。Streamable HTTP は複数のクライアントから接続されるリモートサーバーに向き、認証には OAuth などを使います。",
+  "explanation": "正解は a です。MCP の標準のトランスポートは 2 つです。stdio は、クライアントが起動したサブプロセスの標準入出力でメッセージをやり取りする方式で、同じマシン上のローカルなプロセス間の通信に使います。Streamable HTTP は、各メッセージを HTTP POST で送り、応答を JSON か SSE のストリームで受け取る方式で、リモートのサーバーとの通信に使います。ベアラートークンや API キーなどの HTTP の認証方式を使え、MCP はトークンの取得に OAuth を推奨しています。\n\n見分け方: 「ローカルは stdio、リモートは Streamable HTTP」の対応を覚えます。リモートには HTTP 系のトランスポートを使えます(b)。FTP や共有メモリ(c)は標準のトランスポートではありません。どのトランスポートでも、JSON-RPC のメッセージの形式は同じです。",
   "refs": [
    "https://modelcontextprotocol.io/docs/learn/architecture",
-   "https://modelcontextprotocol.io/specification/latest"
+   "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports"
+  ],
+  "topics": [
+   "mcp-transports-auth"
   ]
  },
  {
@@ -255,9 +276,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツール定義は、name、description、input_schema で構成します。各引数にも説明を付けると、正しい値が渡されやすくなります。",
+  "explanation": "正解は a です。利用者が定義するツールは、name、description、input_schema を持ちます。input_schema は、ツールが受け取る引数(型、説明、必須かどうか)を JSON Schema で表すもので、Claude はこれに沿って tool_use ブロックの input を作ります。各引数にも説明を付けると、正しい値が渡されやすくなります。入力が複雑なツールには、任意の input_examples でスキーマに合う入力例を示せます。\n\n見分け方: Claude が受け取るのはスキーマと結果だけで、実装コード(b)はアプリケーション側にあります。input_schema は入力の構造であり、返り値の定義(c)ではありません。呼び出し回数の上限(d)をスキーマで指定する仕組みはありません。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools"
+  ],
+  "topics": [
+   "define-tools"
   ]
  },
  {
@@ -292,9 +316,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールが多いときは、名前の接頭辞でまとまりを示します。似た機能のツールは、名前と説明で違いを明確にします。",
+  "explanation": "正解は a です。公式ドキュメントは、ツールが複数のサービスや資源にまたがるときは、github_list_prs や slack_send_message のように、サービス名を接頭辞にした名前を付けるよう勧めています。ツールが増えても選択に迷わなくなり、ツール検索を使うときには特に重要です。記事「Writing effective tools for agents」も、サービス別(asana_search、jira_search)や資源別(asana_projects_search、asana_users_search)の名前空間が、適切なツールの選択を助けるとしています。\n\n見分け方: 連番(b)や 1 文字の名前(d)では、名前から役割が分かりません。同じ名前(c)では区別できません。なお、記事は接頭辞と接尾辞のどちらがよいかはモデルによって異なり、自分の評価で選ぶよう勧めています。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://www.anthropic.com/research/writing-tools-for-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools"
+  ],
+  "topics": [
+   "writing-tools-for-agents",
+   "define-tools"
   ]
  },
  {
@@ -329,9 +358,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールの結果には、次の判断に役立つ、意味のある情報を優先して含めます。技術的な識別子だけでは、誤りが増えます。",
+  "explanation": "正解は a です。記事「Writing effective tools for agents」は、ツールの応答では判断に役立つ情報を優先し、uuid のような低水準の技術的な識別子は避けるよう勧めています。エージェントは意味の分かる名前や用語のほうをはるかにうまく扱えるとされ、意味のない英数字の UUID を意味のある言葉に置き換えるだけで、検索タスクの精度が大きく上がったと報告されています。次のツール呼び出しに ID が必要な場合は、詳しさを選べる引数(concise / detailed)などで、両方を返せるようにします。\n\n見分け方: 問題は ID の長さ(b)や符号化(c)ではなく、意味が読み取れないことです。結果を返さない(d)と作業が進みません。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://www.anthropic.com/research/writing-tools-for-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools"
+  ],
+  "topics": [
+   "writing-tools-for-agents"
   ]
  },
  {
@@ -366,9 +399,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールの応答は、トークンの効率を考えて設計します。既定で適度な件数に制限し、Claude が必要に応じて範囲を広げられるようにします。",
+  "explanation": "正解は a です。記事「Writing effective tools for agents」は、大量のコンテキストを使いうるツールの応答には、ページ分割、範囲の指定、絞り込み、切り詰めを、適切な既定値とともに組み合わせて入れるよう勧めています。切り詰めた場合は、その旨と、絞り込みや細かい検索など、より効率のよい進め方を応答の中で伝えます。例として、Claude Code はツールの応答を既定で 25,000 トークンに制限しています。\n\n見分け方: 全件を返す(b)と、エージェントの限られたコンテキストを無関係な情報で使い切ります。無作為の間引き(c)では必要な情報が欠けます。エラーにして何も返さない(d)と作業が進みません。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://www.anthropic.com/research/writing-tools-for-agents"
+  ],
+  "topics": [
+   "writing-tools-for-agents"
   ]
  },
  {
@@ -403,9 +439,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールは、API をそのまま包むのではなく、エージェントが行う作業に合わせて設計します。関連する操作は、操作の種類を引数で指定する 1 つのツールにまとめると、選択の迷いが減ります。",
+  "explanation": "正解は a です。記事「Writing effective tools for agents」は、既存のソフトウェアの機能や API のエンドポイントをそのまま包んだツールを、よくある誤りとして挙げています。影響の大きいワークフローに絞り、よく連続して行う複数の操作を 1 つのツールにまとめるよう勧めています(例: list_users、list_events、create_event の代わりに、空き時間を探して予定を入れる schedule_event)。公式ドキュメントの Define tools も、関連する操作を action パラメータを持つ 1 つのツールにまとめると選択の迷いが減るとしています。\n\n見分け方: さらに細かく分ける(b)と呼び出しが増えます。名前だけを変えても(c)呼び出しの回数は変わりません。説明を消す(d)と選択できなくなります。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://www.anthropic.com/research/writing-tools-for-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools"
+  ],
+  "topics": [
+   "writing-tools-for-agents",
+   "define-tools"
   ]
  },
  {
@@ -440,10 +481,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "strict は、ツール定義の最上位に指定します。スキーマのオブジェクトには、追加のプロパティを許さない指定(additionalProperties: false)が必要です。",
+  "explanation": "正解は a です。ツール定義に strict: true を指定すると、トークンの生成をスキーマに合う出力だけに制約する仕組みによって、tool_use ブロックの input が input_schema に必ず合うようになり、ツール名も必ず有効になります。strict がないと、\"2\" のような型の違う値や、必須のフィールドの欠落が起こりえます。strict は、ツール定義の最上位に name、description、input_schema と並べて指定します。スキーマのオブジェクトでは、additionalProperties を false にする必要があります。\n\n見分け方: strict が保証するのは「入力の形」です。ツールを必ず呼ばせる(b)のは tool_choice の役割です。速度(c)や暗号化(d)の機能ではありません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "strict-tool-use"
   ]
  },
  {
@@ -478,9 +522,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "並列のツール呼び出しは既定で有効で、通常は速度の面で有利です。順序に依存する処理があるときだけ、無効にします。",
+  "explanation": "正解は a です。並列のツール呼び出しは既定で有効です。止めるには、tool_choice オブジェクトの中に disable_parallel_tool_use: true を指定します(トップレベルのパラメータではありません)。tool_choice が auto のときは、1 回の応答で呼び出すツールが最大 1 つになり、ツールを呼ばずに文章で答えることもできます。any や tool のときは、ちょうど 1 つになります。なお、並列の呼び出しを受け取っても、実行の順番はアプリケーションが選べるため、順に実行するという対処もあります。\n\n見分け方: ツールを 1 つしか定義しなくても(c)、同じツールを 1 回の応答で複数回呼ぶことがあります。max_tokens(b)や stop_sequences(d)は、ツール呼び出しの数を制御する設定ではありません。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use"
+  ],
+  "topics": [
+   "parallel-tool-use"
   ]
  },
  {
@@ -515,9 +562,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツール検索ツールを使うと、Claude が必要なツールを検索して読み込みます。検索ツール自体と、よく使うツールは、遅延させずに残します。",
+  "explanation": "正解は a です。ツール検索ツールを使うと、すべてのツールの定義を最初からコンテキストに読み込む代わりに、Claude が必要なツールを検索して読み込みます。tools に検索ツールを入れ、最初に読み込まなくてよいツールに defer_loading: true を付けます。検索ツール自体には defer_loading を付けず、よく使う 3〜5 個のツールも遅延させずに残すと、検索せずに呼び出せます。公式ドキュメントは、ツールが 30〜50 個を超えると選択の精度が落ちることも、この仕組みを使う理由に挙げています。\n\n見分け方: 説明を空にする(b)と選択できなくなります。無作為に送る(c)と必要なツールが欠けます。システムプロンプトに書いた一覧(d)は、ツールとして呼び出せません。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool"
+  ],
+  "topics": [
+   "tool-search"
   ]
  },
  {
@@ -552,9 +602,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ホストの例は、Claude Code や Claude Desktop です。サーバーは、ローカルでもリモートでも動きます。",
+  "explanation": "正解は a です。MCP はクライアントとサーバーの構成で、ホスト(Claude Code や Claude Desktop のような AI アプリケーション)が 1 つ以上の MCP サーバーに接続します。そのとき、ホストはサーバーごとに MCP クライアントを 1 つ作り、各クライアントが対応するサーバーと専用の接続を保ちます。公式の例では、VS Code が Sentry のサーバーに接続するとクライアントを 1 つ作り、さらにファイルシステムのサーバーに接続すると、もう 1 つクライアントを作ります。\n\n見分け方: 「クライアントとサーバーは 1 対 1」「クライアントはホストの中の部品」の 2 点です。1 つのクライアントがすべてのサーバーにつながる(c)のではありません。サーバーがホストを起動する(b)のでもありません。ホストとサーバーは別の参加者で、クライアントは画面のことではありません(d)。",
   "refs": [
    "https://modelcontextprotocol.io/docs/learn/architecture"
+  ],
+  "topics": [
+   "mcp-architecture"
   ]
  },
  {
@@ -589,9 +642,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールは行動、リソースは読み取るデータ、プロンプトは再利用できるひな形です。",
+  "explanation": "正解は a です。MCP の公式ドキュメントは、サーバーの 3 つの機能を「誰が制御するか」で区別しています。ツールはモデルが制御し、LLM が利用者の依頼に基づいていつ使うかを判断します。リソースはアプリケーションが制御する、文脈のための読み取り専用のデータです。プロンプトは利用者が制御する、あらかじめ用意された指示のひな形です。\n\n見分け方: 「ツール=モデル、リソース=アプリケーション、プロンプト=利用者」と覚えます。3 つともモデルが自由に呼ぶ(b)、3 つとも利用者が手動で実行する(c)、ツールとプロンプトの主体が逆(d)は、いずれもこの区別に合いません。なお MCP の仕様は、ツールはモデルが制御するものとしつつ、安全のため、呼び出しを人が拒否できるようにしておくべきだとしています。",
   "refs": [
+   "https://modelcontextprotocol.io/docs/learn/server-concepts",
    "https://modelcontextprotocol.io/docs/learn/architecture"
+  ],
+  "topics": [
+   "mcp-architecture"
   ]
  },
  {
@@ -626,10 +683,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "MCP は、JSON-RPC 2.0 のメッセージを、stdio か Streamable HTTP のトランスポートで運びます。",
+  "explanation": "正解は a です。MCP のデータ層は、JSON-RPC 2.0 に基づくやり取りの取り決めで、メッセージの構造と意味を定めます。クライアントがリクエストを送り、サーバーが応答します。応答を必要としないものは通知として送ります。トランスポート層(stdio や Streamable HTTP)はメッセージを運ぶ経路で、どのトランスポートでも同じ JSON-RPC 2.0 の形式が使われます。\n\n見分け方: MCP の仕様の概要にも、プロトコルが JSON-RPC 2.0 のメッセージでホスト、クライアント、サーバーの間の通信を行うと書かれています。SOAP(b)、GraphQL(c)、Protocol Buffers(d)は使われません。",
   "refs": [
    "https://modelcontextprotocol.io/docs/learn/architecture",
    "https://modelcontextprotocol.io/specification/latest"
+  ],
+  "topics": [
+   "mcp-protocol"
   ]
  },
  {
@@ -664,10 +724,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "現行の仕様(2026-07-28 版)では、クライアントが server/discover を送って、サーバーの対応バージョンと機能を受け取ります。各リクエストにもバージョンと機能の情報が付き、プロトコルはステートレスです。それ以前の仕様では、接続の最初に initialize のやり取りで同じ確認を行っていました。試験では、どちらの用語で問われてもよいように、両方を押さえておきます。",
+  "explanation": "正解は a です。現行の仕様(2026-07-28 版)の MCP はステートレスで、すべてのリクエストが _meta にプロトコルのバージョンとクライアントの機能を載せます。サーバーは必須の server/discover リクエストで、対応するバージョン、機能、識別情報を返し、クライアントは他のリクエストの前にこれを送れます。対応していないバージョンを指定されたサーバーは、対応するバージョンを載せたエラーを返し、クライアントは合うバージョンで送り直します。それ以前の仕様では、接続の最初に initialize のやり取りでセッションを確立していました。試験ではどちらの用語で問われてもよいように、両方を押さえておきます。\n\n見分け方: 機能はサーバーに問い合わせて確かめます。ツールを試しに実行する(b)、ソースコードを解析する(d)、モデルを学習し直す(c)ことはしません。",
   "refs": [
    "https://modelcontextprotocol.io/docs/learn/architecture",
-   "https://modelcontextprotocol.io/specification/latest"
+   "https://modelcontextprotocol.io/specification/latest",
+   "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports"
+  ],
+  "topics": [
+   "mcp-protocol"
   ]
  },
  {
@@ -702,9 +766,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "MCP は、要求と応答に加えて、通知をサポートします。ツールの一覧が変わると、サーバーが変更の通知を送り、クライアントが一覧を取り直します。現行の仕様では、クライアントが受け取りたい通知の種類を指定して購読します。通知の到達は保証されないため、定期的な取り直しも併用します。",
+  "explanation": "正解は a です。MCP は、サーバーの状態の変化をクライアントに知らせる通知に対応しています。ツールの一覧が変わると、サーバーは notifications/tools/list_changed を送り、クライアントは通常 tools/list で一覧を取り直します。現行の仕様では変更通知は購読制で、クライアントが subscriptions/listen で受け取りたい通知の種類を指定し、ツールの一覧の変更に対応すると宣言したサーバーだけが送ります。通知の到達は保証されないため、クライアントは定期的な取り直しも併用します。\n\n見分け方: 通知の仕組みがあるので、再接続しか方法がない(b)は誤りです。ツールを毎秒試しに呼ぶ(c)のは無駄で、副作用の危険もあります。メール(d)はプロトコルの仕組みではありません。",
   "refs": [
    "https://modelcontextprotocol.io/docs/learn/architecture"
+  ],
+  "topics": [
+   "mcp-protocol"
   ]
  },
  {
@@ -739,10 +806,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "リモートの MCP サーバーは、HTTP の標準的な認証を使います。仕様では、OAuth によるトークンの取得が推奨されています。",
+  "explanation": "正解は a です。リモートのサーバーに使う Streamable HTTP のトランスポートでは、ベアラートークン、API キー、独自ヘッダーなどの標準的な HTTP の認証方式を使え、MCP は認証トークンの取得に OAuth を使うことを推奨しています。MCP の仕様の認可は任意の機能ですが、HTTP 系のトランスポートで実装する場合は仕様に従うべきとされ、OAuth 2.1 などの標準に基づいています。サーバーは OAuth 2.1 のリソースサーバー、クライアントは OAuth 2.1 のクライアントとして振る舞います。\n\n見分け方: 利用者ごとのデータを守るには、利用者を区別して認可する必要があります。認証なしの公開(b)や共有パスワード(c)では区別できません。ツールの説明に書いた情報(d)はモデルと利用者に見えます。",
   "refs": [
    "https://modelcontextprotocol.io/docs/learn/architecture",
-   "https://modelcontextprotocol.io/specification/latest"
+   "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization"
+  ],
+  "topics": [
+   "mcp-transports-auth"
   ]
  },
  {
@@ -777,10 +847,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールの説明の小さな変更が、成績を大きく変えることがあります。評価用のタスクを用意し、失敗の記録を読んで改善します。",
+  "explanation": "正解は a です。記事「Writing effective tools for agents」は、現実の使い方に基づく評価タスクを多数用意し、プログラムで評価を回して、ツールの変更の効果を測るよう勧めています。正答率のほかに、ツール呼び出しの回数、トークンの消費、ツールのエラーなどの指標も集め、エージェントの推論や生の記録を読んで、どこでつまずいたかを確かめます。記事は、ツールの説明の小さな改善でも成績が大きく変わることがあると述べています。\n\n見分け方: 説明が長くなったこと(b)は改善の証拠になりません。1 回だけの手での確認(c)では、偶然の成功と区別できません。変更が悪化を招くこともあるので、確かめないという選択(d)は誤りです。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents",
+   "https://www.anthropic.com/research/writing-tools-for-agents",
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "writing-tools-for-agents"
   ]
  },
  {
@@ -815,10 +888,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "外部の MCP サーバーは、自分のデータや権限に触れる入口になります。信頼性の確認、権限の最小化、重要な操作の承認を組み合わせます。",
+  "explanation": "正解は a です。Claude Code の公式ドキュメントは、MCP サーバーを接続する前に、各サーバーを信頼できるか確かめるよう警告しています。外部のコンテンツを取得するサーバーは、プロンプトインジェクションの危険をもたらしうるからです。MCP の仕様も、安全のため、ツールの呼び出しを人が拒否できるようにし、機微な操作の前に利用者に確認するべきだとしています。Claude Code も、対話型のセッションでは、プロジェクトの .mcp.json のサーバーを使う前に承認を求めます。\n\n見分け方: 規格に沿っていること(b)は、中身の安全性を保証しません。すべての操作を無条件に許可する(c)と、人が拒否する機会がなくなります。管理者権限のトークン(d)は必要以上の権限を与えます。",
   "refs": [
    "https://code.claude.com/docs/en/mcp",
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
    "https://modelcontextprotocol.io/docs/learn/architecture"
+  ],
+  "topics": [
+   "claude-code-mcp",
+   "mcp-tools-spec"
   ]
  },
  {
@@ -853,9 +931,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールは、コードがどこで動くかで分かれます。クライアントツールは自分のアプリケーションで動きます。利用者が定義したツールのほか、bash や text_editor のように Anthropic がスキーマを定義するものも含みます。Claude は tool_use ブロックを返し、アプリケーションが実行して tool_result を返します。web_search や code_execution などのサーバーツールは Anthropic の基盤で動き、実行を自分で扱う必要はありません。",
+  "explanation": "正解は a です。ツールは、コードがどこで動くかで分かれます。利用者が定義するツールと、Anthropic がスキーマを定義するツール(memory、bash、text_editor、computer、browser)は、どちらも自分のアプリケーションで実行するクライアントツールです。Claude が tool_use ブロックを返し、アプリケーションが実行して tool_result を返します。web_search、web_fetch、code_execution、tool_search はサーバーで実行されるツールで、Anthropic が実行し、アプリケーションは tool_result を作りません。\n\n見分け方: 「誰がスキーマを作ったか」ではなく「どこで実行するか」で区別します(b は誤り)。自分で定義するツールには input_schema を渡します(c)。サーバーツールの一部には、トークンとは別に利用量に応じた料金が加わりますが、月額の固定料金ではありません(d)。",
   "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works",
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+  ],
+  "topics": [
+   "tool-use-basics"
   ]
  },
  {
@@ -890,9 +972,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "MCP は、Claude を外部のサービスにつなぎ、ツールとデータへのアクセスを提供します。接続と認証は、サーバーが受け持ちます。スキルは、そのツールをうまく使うための知識や手順を与えます。公式も、MCP でデータベースに接続し、スキルにスキーマとクエリのパターンを書く組み合わせを例に挙げています。",
+  "explanation": "正解は c です。Claude Code の公式ドキュメントは、MCP を外部のサービスへの接続、スキルを知識やワークフローとして区別しています。MCP は外部システムのためのツールを与え、接続と認証はサーバーが受け持ちます。スキルは、そのツールをうまく使うための知識を与えます。公式も、チームのデータベースのスキーマとクエリのパターンをスキルに書く例を挙げています。\n\n見分け方: スキルは接続や認証を受け持ちません(a)。CLAUDE.md は毎回読み込まれる文脈で、ツールや接続を提供しません(b)。フックはイベントのたびに決まった処理を実行する仕組みで、接続の提供には使いません(d)。",
   "refs": [
    "https://code.claude.com/docs/en/features-overview"
+  ],
+  "topics": [
+   "claude-code-extensions"
   ]
  },
  {
@@ -927,9 +1012,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "MCP のツールには、2 種類のエラーがあります。プロトコルエラーは、未知のツールなど、リクエストの構造そのものの問題を表します。ツール実行エラーは、API の失敗、入力データの検証エラー、業務ロジックのエラーを表し、ツールの結果に isError: true を付けて返します。モデルは、その内容をもとに引数を直して再試行できます。",
+  "explanation": "正解は d です。MCP の仕様は、ツールのエラーの伝え方を 2 種類に分けています。プロトコルエラーは、未知のツールや不正な形式のリクエストなど、リクエストの構造そのものの問題で、通常の JSON-RPC のエラーとして返します。ツール実行エラーは、API の失敗、入力値の検証エラー、業務ロジックのエラーで、ツールの結果に isError: true を付けて返します。クライアントはツール実行エラーをモデルに渡すべきとされ、モデルはその内容をもとに引数を直して再試行できます。\n\n見分け方: 「入力の形は正しいが業務の規則に反する」は業務ロジックのエラーで、ツール実行エラーとして返します(a は誤り)。成功として返す(b)、黙って数量を丸める(c)と、モデルは誤った前提で先に進みます。",
   "refs": [
    "https://modelcontextprotocol.io/specification/2026-07-28/server/tools"
+  ],
+  "topics": [
+   "mcp-tools-spec"
   ]
  }
 ]
