@@ -31,10 +31,13 @@
   "answer": [
    "c"
   ],
-  "explanation": "公式ガイドは、Claude を「職場の慣習や進め方を知らない、有能な新任の社員」にたとえ、求める内容を正確に説明するほど結果が良くなると述べている。出力の形式と制約を具体的に指定することが推奨されている。長すぎる、形式が合わないといった問題は、まず指示の曖昧さを疑い、条件を明示して直す。",
+  "explanation": "正解は c です。公式の Prompting best practices は、Claude を「職場の慣習や進め方の文脈を持たない、優秀な新任の社員」にたとえ、求めることを正確に説明するほど結果が良くなると述べ、出力の形式と制約を具体的に指定するよう勧めています。ヘルプセンターも、できるだけ多くの文脈を入れ、背景知識のない人に指示するつもりで書くよう勧めています。読み手、形式、文字数の目安を書けば、長さと形式のずれを直接直せます。\n\n見分け方: 原因は指示の曖昧さなので、指示を直す選択肢を選びます。effort(a)は思考の量の設定で、公式は Opus 5 について、effort を上下しても見える応答の長さは確実には変わらないと書いています。送り直し(b)では原因が残り、依頼を短くする(d)と文脈がさらに減ります。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
    "https://support.claude.com/en/articles/7996857-my-prompt-isn-t-giving-me-a-helpful-answer"
+  ],
+  "topics": [
+   "prompting-best-practices"
   ]
  },
  {
@@ -69,9 +72,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "公式ガイドは、書式を整える有効な方法の 1 つとして「してはいけないことではなく、すべきことを伝える」ことを挙げている。例として、「markdown を使わないで」の代わりに「なめらかな文章の段落で構成してください」と書く。プロンプト自体の書式を望む出力に近づけると、出力の書式にも影響することがある。",
+  "explanation": "正解は a です。公式の Prompting best practices は、出力の書式を誘導する方法の最初に「してほしくないことではなく、してほしいことを伝える」を挙げています。例として、「Do not use markdown in your response」の代わりに「Your response should be composed of smoothly flowing prose paragraphs.」と書くよう示しています。ほかに、XML の形式で示す、プロンプトの書式を望む出力に近づける、詳しい指示を書く、といった方法もあります。\n\n見分け方: 禁止の言い方を繰り返す(b)は、公式が勧める「すべきことを伝える」形になっていません。effort(c)は思考の量の設定で、書式の指示の言い換えにはなりません。英語に書き換える(d)ことは、書式を誘導する方法として挙げられていません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "prompting-best-practices"
   ]
  },
  {
@@ -106,10 +112,14 @@
   "answer": [
    "d"
   ],
-  "explanation": "使用量の上限(5 時間ごとのセッション上限と週間上限)は、一定期間にどれだけ Claude を使えるかを決めるもので、claude.ai、Claude Code、Claude Desktop の利用が合算される。上限に達した場合は、リセットを待つか、プランを上げるか、使用量クレジットを有効にして続けられる。クレジットを有効にしていれば、上限に達しても従量課金で作業が止まらない。",
+  "explanation": "正解は d です。有料プランの使用量の上限には、5 時間ごとにリセットされるセッション上限と、週に 1 回リセットされる週間上限があります。ヘルプセンターは、上限に達したらリセットを待つかプランを上げることができ、プランを上げると新しいプランの上限がすぐに適用される、usage credits を有効にしていれば作業は止まらずに usage credits で続く、と説明しています。\n\n見分け方: 使用量の上限は、すべての会話を通じた期間あたりの量なので、新しいチャットを始めても数え直されません(a)。claude.ai、Claude Code、Claude Desktop の利用は同じ上限に数えられます(b)。チャットを削除すると使用量が戻るという説明はありません(c)。",
   "refs": [
    "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work",
    "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages"
+  ],
+  "topics": [
+   "usage-and-length-limits",
+   "usage-credits"
   ]
  },
  {
@@ -144,10 +154,14 @@
   "answer": [
    "b"
   ],
-  "explanation": "使用量の上限(期間あたりの総量)と長さの上限(1 回の会話に入る量)は別のもの。メッセージが長すぎる場合は、内容を小さな塊に分ける、重要な部分を要約・抽出してから送る、Claude にまず関連する部分を特定させる、新しい会話を始める、といった方法がある。",
+  "explanation": "正解は b です。「Your message will exceed the length limit for this chat.」は、メッセージが入力の最大の長さを超えたことを示す、長さの上限のエラーです。ヘルプセンターは、非常に大きい最初のメッセージなどでこのエラーが出たときの対処として、内容を小さく分けて別々に処理する、重要な部分を要約・抽出してから送る、Claude にまず関連する部分を特定させる、新しい会話を始める、を挙げています。\n\n見分け方: 長さの上限は 1 つの会話に入る量の問題で、期間あたりの使用量の上限とは別です。時間を待っても(a)メッセージの長さは変わりません。effort(c)は思考の量の設定です。Web 検索(d)のようなツールはトークンを多く使うもので、入力の長さの問題を解消しません。",
   "refs": [
    "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages",
    "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+  ],
+  "topics": [
+   "error-messages",
+   "usage-and-length-limits"
   ]
  },
  {
@@ -182,10 +196,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "コネクタは 1 つずつ会話の余白を占めるため、数が増えるほど、資料や会話履歴に使える余白が減る。ツールアクセスの設定には Auto(既定)、Always available、On demand がある。会話が長さの上限に当たる場合や 10 個以上の場合は On demand が向く。ただし Claude が関連するコネクタを探す手順が 1 つ増える。",
+  "explanation": "正解は a です。コネクタはそれぞれ会話の中の場所を占めるため、数が増えると文書や会話履歴に使える余地が減ります。Manage Claude’s tool access は、On demand を、10 個以上のコネクタがある場合や、会話が長さの上限に当たっている場合に勧めています。On demand では、要求に応じて Claude が関連するコネクタを探し、それだけを読み込みます。その代わり、使う前に探す手順が 1 つ増えることがあります。\n\n見分け方: Always available(b)は全コネクタを最初から読み込むので場所を多く使い、常に使う 10 個未満のコネクタ向けです。プロジェクト指示は簡潔に保つよう勧められており(c)、書き足してもコネクタの読み込みは減りません。思考の設定(d)はコネクタの読み込みと関係がありません。",
   "refs": [
    "https://support.claude.com/en/articles/13730515-manage-claude-s-tool-access",
    "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+  ],
+  "topics": [
+   "tool-access",
+   "connectors"
   ]
  },
  {
@@ -220,9 +238,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Team と Enterprise では、オーナーがコネクタを組織で有効にしても、メンバーへアクセスが自動的に付与されるわけではない。各メンバーは、自分で認証して初めて使える(Enterprise-managed auth の場合は組織で一度承認すればよい)。使えないときは、本人の認証状況から確かめる。",
+  "explanation": "正解は c です。Team と Enterprise では、Owner か Primary Owner がコネクタを組織に追加して初めてメンバーが使えるようになります。ただしヘルプセンターは、有効にしても誰にも自動でアクセスが与えられるわけではなく、各人が個別に認証する必要があると説明しています。組織に追加済みなら、まず本人が Slack に認証しているかを確かめます。なお、Enterprise-managed auth を使う場合は、組織で一度認可すれば、メンバーは最初のログインで自動的にアクセスを引き継ぎます。\n\n見分け方: Let members request connectors(a)は、自分で追加できないメンバーが追加を依頼するための設定です。プランの切り替え(b)は前提として挙げられていません。組織への追加をやり直しても(d)、本人の認証は済みません。",
   "refs": [
    "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities"
+  ],
+  "topics": [
+   "connectors"
   ]
  },
  {
@@ -258,9 +279,12 @@
    "b",
    "d"
   ],
-  "explanation": "コネクタを使うには、会話ごとに「+」メニューから使うサービスをオンにする。また、Claude は各人が元のサービスで持つ権限を引き継ぐため、本人がアクセスできないファイルやフォルダは Claude からも参照できない。",
+  "explanation": "正解は b と d です。ヘルプセンターは、接続したサービスを会話で使う手順として、「+」ボタンから Connectors を開き、その会話で使いたいサービスをオンにする、と説明しています。また、Claude は接続先サービスでの各人の権限を引き継ぐため、元のシステムで本人がアクセスできないファイル、チャンネル、レコードには、コネクタからも届きません。会話でオンになっているかと、本人の Google Drive 上の権限の両方を確かめます。\n\n見分け方: effort(a)は応答の思考の量の設定で、コネクタが使えるかどうかを決めるものではありません。プロジェクトの指示の長さ(c)とコネクタの読み込みの関係は、出典に書かれていません。元のシステムで見られないものは Claude からも見られない、と覚えておきます。",
   "refs": [
    "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities"
+  ],
+  "topics": [
+   "connectors"
   ]
  },
  {
@@ -295,9 +319,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "Sonnet 5.5 は、攻撃的なサイバーセキュリティ(ペネトレーションテストなど)に当たる一部の要求を Sonnet 5 に切り替える。切り替えは通知とモデル名の表示で分かり、そのチャットのモデルピッカーは Sonnet 5 のままになる。戻すときはモデルピッカーで選び直すが、元の要求が会話に残っていると再び切り替わるおそれがあるので、前のメッセージを編集して再試行すると良い。",
+  "explanation": "正解は d です。Sonnet 5.5 は、ペネトレーションテストなどの攻撃的なサイバーセキュリティの要求を分類器が検知すると、同じ会話で Sonnet 5 に切り替えて再実行します。切り替えは通知と回答のラベルで分かり、モデルピッカーはそのチャットの残りで Sonnet 5 のままになります。いつでも Sonnet 5.5 に戻せますが、元の要求が会話に残っていると同じ安全策で再び切り替わることがあり、ヘルプセンターは前のメッセージを編集してから再試行すると解消しやすいと説明しています。\n\n見分け方: 再読み込みで戻る(a)という説明はありません。「Switch models when a message is flagged」をオフにする(b)と、切り替えの代わりにチャットが一時停止するだけです。effort(c)で分類器の判定が変わるという記述はありません。",
   "refs": [
    "https://support.claude.com/en/articles/17161993-why-claude-switched-models-in-your-conversation-with-sonnet-5-5"
+  ],
+  "topics": [
+   "model-fallback"
   ]
  },
  {
@@ -332,9 +359,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "このエラーは、Anthropic が Claude に既存の資料の再現(そのままの出力)をさせないよう取り組んでいることから、一般に生じる。内容の適切さについての判断ではない。意図せず当たることもあるため、既存の文章をそのまま出させる依頼になっていないかを見直す。",
+  "explanation": "正解は b です。ヘルプセンターによると、「Output blocked by content filtering policy」は、Claude が既存の資料の複製や再現に使われるのを防ぐ Anthropic の取り組みから一般に生じます。Claude の目的は新しい内容やアイデアを生み出すことで、既にある内容を再現することではない、と説明されています。意図せずに当たることもあるので、既存の文章をそのまま書き起こさせる依頼になっていないかを見直します。\n\n見分け方: この拒否は内容の適切さについての Anthropic の判断を示すものではないと明記されています(a)。障害(c)や使用量の上限(d)とも別のものです。使用量の上限に達したときは「5-hour limit reached - resets [time]」のような別のメッセージが出ます。",
   "refs": [
    "https://support.claude.com/en/articles/10023638-why-am-i-receiving-an-output-blocked-by-content-filtering-policy-error"
+  ],
+  "topics": [
+   "error-messages"
   ]
  },
  {
@@ -369,10 +399,14 @@
   "answer": [
    "c"
   ],
-  "explanation": "プロジェクトに資料を入れておくと、その内容はキャッシュされ、再利用するときは新しい内容より使用量が少なく数えられる。繰り返し参照する資料は、プロジェクトの知識に入れるのが良い。トーンなどの一般的な指針はプロジェクトの指示に書き、個別の指示はチャットに書く。なお、キャッシュは一定期間使わないと切れる。",
+  "explanation": "正解は c です。Usage limit best practices によると、プロジェクトにアップロードした文書はキャッシュされ、キャッシュされている間に再び参照すると、新しい内容より上限への数え方が少なくなります。繰り返し参照する資料は、プロジェクトのナレッジに入れるよう勧められています。トーンなどの全体の指針はプロジェクトの指示に書き、作業ごとの指示はチャットに書くと、毎回書き直す手間もなくなります。\n\n見分け方: 1 つの長いチャットで続ける(a)と、会話の長さが使用量に影響し、長さの上限にも近づきます。全文を毎回貼る(b)のは毎回アップロードするのと同じで、プロジェクトのキャッシュを生かせません。シークレットチャット(d)は、資料や指示を再利用する手段ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/9797557-usage-limit-best-practices",
    "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+  ],
+  "topics": [
+   "usage-best-practices",
+   "projects"
   ]
  },
  {
@@ -407,10 +441,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "effort は、応答でどれだけ思考するかを決める設定で、高いほど丁寧になる一方、時間とトークンがかかり、使用量の上限に早く達する。公式は、Low と Medium は定型の作業に向いており、使用量を長く保てると述べている。複雑な作業のときだけ effort を上げる。",
+  "explanation": "正解は a です。Change the model, effort, and thinking settings によると、effort は応答にどれだけ思考を使うかを決める設定で、高いほど丁寧になる一方、時間がかかってトークンを多く使うため、使用量の上限に早く達します。Low と Medium は定型の作業に向き、使用量を長く保てると説明されています。定型の文面を整えるなら effort を下げ、複雑な作業のときだけ上げます。\n\n見分け方: 原因は effort の高さなので、それを変えない選択肢は外れます。チャットを分けても(b)、1 回ごとの使用量は減りません。思考(c)は effort とは別の設定で、Opus 5.5 や Sonnet 5.5 など多くの現行モデルでは Claude で思考をオフにできず、思考を減らすには effort を下げます。使用量の上限はすべての会話に共通なので、新しい会話(d)では解消しません。",
   "refs": [
    "https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings",
    "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+  ],
+  "topics": [
+   "model-effort-thinking",
+   "usage-best-practices"
   ]
  },
  {
@@ -446,10 +484,13 @@
    "a",
    "c"
   ],
-  "explanation": "使用量は、メッセージの長さ、添付ファイルの大きさ、会話の長さ、ツールの利用、モデル、effort などで変わる。関連する依頼を 1 通にまとめる、不要なコネクタや Web 検索をオフにする、定型の作業では effort を下げる、繰り返し使う資料はプロジェクトに入れる、といった方法で抑えられる。",
+  "explanation": "正解は a と c です。Usage limit best practices は、関連する複数の作業や質問を 1 つのメッセージにまとめるよう勧めています。また How do usage and length limits work? は、会話に不要なときは接続したアプリをオフにし、最新情報が要らなければ Web 検索をしないよう頼むことを勧め、ツールとコネクタはトークンを多く使うと説明しています。使用量には、メッセージの長さ、添付ファイルの大きさ、会話の長さ、ツールの利用、モデル、effort などが影響します。\n\n見分け方: effort は高いほどトークンを多く使い、定型の作業には Low や Medium が向くので、常に最高にする(b)のは逆効果です。繰り返し使う資料は、毎回添付する(d)のではなく、プロジェクトに入れてキャッシュを生かします。",
   "refs": [
    "https://support.claude.com/en/articles/9797557-usage-limit-best-practices",
    "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
+  ],
+  "topics": [
+   "usage-best-practices"
   ]
  },
  {
@@ -484,9 +525,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "容量の制約(capacity constraints)は、システム全体の需要が高いときの負荷管理で、障害(outage)ではありません。一時的なもので、時間をおいて再試行すれば通常は解消します。通常の負荷管理であるため、status ページには表示されません。実際の障害は status.claude.com で確認します。",
+  "explanation": "正解は c です。「Due to unexpected capacity constraints, Claude is unable to respond to your message.」は、Claude の基盤にシステム全体で高い需要がかかっているときに出ます。ヘルプセンターは、容量の制約は障害(outage)ではなく、システムは正常に動いたまま需要の多さを管理している状態であり、一時的で、一日の中で需要が変わるにつれて解消すると説明し、数分後に再試行するよう勧めています。通常の負荷管理なので、status ページには表示されません。\n\n見分け方: 容量の制約はそもそも status ページに載らないので、掲載を待つ(a)のは誤りです。上限に達したときは上限のメッセージが出ます(b)。キャッシュと Cookie の削除(d)はログインエラーへの対処です。実際の障害は status.claude.com で確認します。",
   "refs": [
    "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages"
+  ],
+  "topics": [
+   "error-messages"
   ]
  },
  {
@@ -505,7 +549,7 @@
    {
     "id": "b",
     "text": "アカウントを削除して作り直す。ログインエラーはアカウントのデータの破損が原因であるため",
-    "why": "アカウントの削除は対処として挙げられていない。削除すると元に戻せないデータも失う。"
+    "why": "アカウントの削除と作り直しは、ヘルプが挙げるログインエラーへの対処に含まれていない。"
    },
    {
     "id": "c",
@@ -521,9 +565,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "一般的なログインエラーには、VPN を使わずにアクセスする、有効にしているブラウザ拡張を無効にする、ブラウザのキャッシュと Cookie を削除する、の順に試します。それでも解消しない場合は、status ページで進行中の障害がないかを確かめます。",
+  "explanation": "正解は a です。ヘルプセンターは、ログインのときに「There was an error logging you in」のような一般的なエラーが出たら、VPN を使わずにアクセスする、有効にしているブラウザの拡張機能を無効にする、ブラウザのキャッシュと Cookie を削除する、を試すよう挙げています。それでもエラーが出る場合は、status ページで進行中の障害がないかを確かめます。\n\n見分け方: VPN は「使わない」が正しく、社内の VPN に必ず接続する(d)のは逆です。アカウントの作り直し(b)は対処として挙げられていません。使用量の上限に達したときは上限のメッセージが出るもので、ログインエラーの原因として上限(c)は挙げられていません。",
   "refs": [
    "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages"
+  ],
+  "topics": [
+   "error-messages"
   ]
  },
  {
@@ -558,10 +605,14 @@
   "answer": [
    "b"
   ],
-  "explanation": "usage credits を有効にしていると、上限に達しても要求は従量課金(標準の API 料金)に切り替わって続きます。切り替わる瞬間は上限が近い警告が残ることがあり、止められたように見えますが、作業は続いており、次の要求がクレジットで通ると表示が「Now using credits」に変わります。",
+  "explanation": "正解は b です。usage credits を有効にしていると、5 時間のセッション上限や週間上限に達しても作業は止まらず、要求は usage credits の従量課金に切り替わって続きます。ヘルプセンターは、切り替わる瞬間に上限に近いという警告が残っていて止められたように見えることがあるが、作業は続いており、次の要求が通ると表示が「Now using credits」に変わる、と説明しています。\n\n見分け方: クレジットが有効なら上限で止まることはなく(a)、切り替えのためにボタンを押す手順(c)も説明されていません。Max と Ultra に含まれる毎月の API クレジット(d)は usage credits とは別のもので、Claude、Claude Code、Claude Cowork での usage credits には充当されません。",
   "refs": [
    "https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans",
    "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages"
+  ],
+  "topics": [
+   "usage-credits",
+   "error-messages"
   ]
  },
  {
@@ -597,9 +648,12 @@
    "a",
    "b"
   ],
-  "explanation": "limit reset は、種類に応じて 5 時間の上限や週次の上限をすぐに満タンに戻します。上限に達する前でも使えますが、使うと取り消せません。期限がある場合は Settings > Usage に表示されます。週次上限は通常の曜日と時刻にリセットされたままで、ターミナルや IDE の Claude Code からは使えないため、ブラウザ、Desktop、モバイルアプリで使います。",
+  "explanation": "正解は a と b です。limit reset は、web、Claude Desktop、Claude Mobile の Settings > Usage にある Limit resets で「Reset for free」をクリックして使います。上限に達したときのメッセージにも同じボタンが出ます。ヘルプセンターは、上限に達するまで待たずに使えること、一度使うと取り消せないこと、期限がある場合は Settings > Usage に表示されることを説明しています。\n\n見分け方: 「Reset for free」のボタンは、現在ターミナルや IDE の Claude Code では使えないので、/reset のようなコマンドで使う(c)ことはできません。ただし使用量の上限はアカウントで共通なので、戻した分は Claude Code でも使えます。週次のリセットを使っても、週間上限は通常の曜日と時刻にリセットされます(d)。",
   "refs": [
    "https://support.claude.com/en/articles/17007452-what-is-a-limit-reset"
+  ],
+  "topics": [
+   "limit-reset"
   ]
  },
  {
@@ -634,9 +688,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Claude in Chrome がサイトにアクセスできないときは、そのサイトへの権限を与えたかを確認します。また、金融サービス、銀行、投資プラットフォーム、暗号資産取引所、成人向け、海賊版のコンテンツは既定でブロックされるカテゴリです。Team や Enterprise では、管理者がサイトへのアクセスを制限している場合もあります。",
+  "explanation": "正解は b です。Claude in Chrome troubleshooting は、Claude がサイトにアクセスできないときの確認事項として、そのサイトへの権限を与えているか、サイトが Claude の既定でブロックされるカテゴリ(金融サービス、銀行、投資プラットフォーム、暗号資産取引所、成人向けコンテンツ、海賊版コンテンツ)に含まれていないか、を挙げています。Team や Enterprise では、管理者がサイトへのアクセスを制限している場合もあります。\n\n見分け方: JavaScript の重いサイトの読み込み待ち(a)は、Claude がページを見られないときの対処の 1 つで、「必ずアクセスできる」とは書かれていません。Claude in Chrome は Pro を含む有料プランで使えます(c)。閲覧履歴の量(d)は原因として挙げられていません。",
   "refs": [
    "https://support.claude.com/en/articles/12902405-claude-in-chrome-troubleshooting"
+  ],
+  "topics": [
+   "claude-in-chrome"
   ]
  },
  {
@@ -671,9 +728,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "利用上限は画面をまたいで適用され、Claude in Chrome の利用も Claude や Claude Code と同じプランの上限に数えられます。ブラウザでの操作は通常のチャットより計算量が多いため、上限をより多く使うことを見込んでおきます。動作が重い場合は、不要なタブを閉じたり、複雑な作業を小さな手順に分けたりします。",
+  "explanation": "正解は b です。Claude in Chrome troubleshooting によると、使用量の上限は画面をまたいで適用され、Claude in Chrome の利用は Claude や Claude Code と同じプランの上限に数えられます。ブラウザでの操作は通常のチャットより計算量が多いため、上限をより多く使うことを見込んでおきます。長時間続くワークフローでは、さらに多くの使用量を使うことがあります。\n\n見分け方: Claude in Chrome に専用の別の上限がある(a)という説明はなく、同じプランの上限です。拡張機能のバージョンで二重に数えられる(c)という記述はありません。不要なタブを閉じるのは動作が重いときの対処で、タブを 1 つにすれば通常のチャットと同じになる(d)とは書かれていません。",
   "refs": [
    "https://support.claude.com/en/articles/12902405-claude-in-chrome-troubleshooting"
+  ],
+  "topics": [
+   "claude-in-chrome",
+   "usage-and-length-limits"
   ]
  },
  {
@@ -708,9 +769,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "ANTHROPIC_API_KEY の環境変数が設定されていると、Claude Code はサブスクリプション(Pro、Max、Ultra、Team、Enterprise)ではなく、その API キーで認証します。その結果、プランに含まれる利用量ではなく API の利用料が発生します。Console の従量課金でログインしていた場合は、Claude Code 内で /login を実行してサブスクリプションに切り替えます。",
+  "explanation": "正解は c です。Use Claude Code with your Pro, Max, or Ultra plan は、システムに ANTHROPIC_API_KEY の環境変数が設定されていると、Claude Code はサブスクリプションではなくその API キーで認証し、プランに含まれる使用量ではなく API の利用料が発生する、と注意しています。サブスクリプションの範囲で使うには、まずこの環境変数を確かめます。Claude Console の従量課金でログインしている場合は、Claude Code の中で /login を実行してサブスクリプションに切り替えます。\n\n見分け方: Claude Code の更新(a)は、希望のアカウントで認証する選択肢が出ないときの手順です。Pro プランには Claude Code の利用が含まれ、Claude と同じ上限を共有します(b)。IDE からの利用も、同じ資格情報でログインすれば同じ上限に数えられます(d)。",
   "refs": [
    "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-max-or-ultra-plan"
+  ],
+  "topics": [
+   "claude-code-subscription"
   ]
  },
  {
@@ -729,7 +793,7 @@
    {
     "id": "b",
     "text": "切り替えは次のメッセージで自動的に元に戻り、以降は Opus 5.5 で応答する",
-    "why": "切り替わった後は、その会話の残りでも 能力の低いモデルのまま残ると説明されている。"
+    "why": "切り替わった後は、その会話の残りでも能力の低いモデルのまま残ると説明されている。"
    },
    {
     "id": "c",
@@ -745,9 +809,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Opus 5.5 は、攻撃的なサイバーセキュリティに当たりうる依頼(侵入テストなど)を検知すると、Opus 4.8 に切り替えて同じ会話で再実行します。切り替えは通知とラベルで示され、モデル選択はその会話の残りで Opus 4.8 のままになります。Opus 5.5 に戻しても元の依頼が会話に残っていると再び切り替わることがあり、前のメッセージを編集して再試行すると解消しやすくなります。自動切り替えは設定でオフにでき、その場合は会話が一時停止します。",
+  "explanation": "正解は a です。Opus 5.5 は、ペネトレーションテストなどの攻撃的なサイバーセキュリティの要求を分類器が検知すると、Opus 4.8 に切り替えて同じ会話で再実行します。切り替えは通知と回答のラベルで分かり、モデルピッカーは会話の残りで Opus 4.8 のままになります。Opus 5.5 にはいつでも戻せますが、元の要求が会話に残っていると再び切り替わることがあり、前のメッセージを編集してから再試行すると解消しやすくなります。\n\n見分け方: 次のメッセージで自動的に戻る(b)ことはありません。会話は凍結されず、同じ会話で続けられます(c)。自動切り替えは Settings > Capabilities の「Switch models when a message is flagged」でオフにでき、オフにすると切り替えの代わりに会話が一時停止します(d)。",
   "refs": [
    "https://support.claude.com/en/articles/16049681-why-claude-switched-models-in-your-conversation-with-opus-5-or-opus-5-5"
+  ],
+  "topics": [
+   "model-fallback"
   ]
  },
  {
@@ -782,9 +849,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Opus 5 と Opus 5.5 には、モデルの内部の推論を抽出しようとする依頼(distillation)を検知する分類器があります。この場合は別のモデルへの切り替えは行われず、依頼が直接ブロックされます。推論を一字一句繰り返させたり、思考の全文を外部に書き出させたりする依頼が対象で、「なぜそうしたのか」の説明、概念の解説、コードレビューの説明などの会話的な依頼は使えます。",
+  "explanation": "正解は c です。Opus 5 と Opus 5.5 には、モデル内部の推論を抽出しようとする試み(distillation)を検知して直接ブロックする分類器があります。この場合は別のモデルへの切り替えは行われず、要求はそのままブロックされます。対象は、推論を一字一句繰り返させる、思考の全文を外部に書き出させる、といった要求です。推論の説明、概念の解説、コードレビューの説明、「why did you do that?」のような会話的な依頼は影響を受けません。\n\n見分け方: distillation のブロックは切り替えを伴わないので、自動切り替えの設定(a)とは関係ありません。容量の制約(b)ではなく、分類器によるブロックです。理由の説明は引き続き頼めるので、推論に関する質問がすべて禁止(d)というのは誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/16049681-why-claude-switched-models-in-your-conversation-with-opus-5-or-opus-5-5"
+  ],
+  "topics": [
+   "model-fallback"
   ]
  },
  {
@@ -820,9 +890,13 @@
    "a",
    "b"
   ],
-  "explanation": "モデルの提供終了が発表されたら、早めに新しいモデルを試し、自分にとって重要なプロンプトや会話で比べて代わりを見つけるよう勧められています。メモリや過去のチャットの検索、プロジェクトの指示を使うと、新しいモデルが好みの話し方に合わせやすくなります。ただし、こうした方法で以前のモデルの体験を完全に再現できるわけではありません。",
+  "explanation": "正解は a と b です。Adapt to new model personas after deprecations は、提供終了が発表されたらできるだけ早く新しいモデルを試し、自分にとって重要な種類のプロンプトや会話で並べて比べ、退役の前に代わりのモデルを見つけるよう勧めています。また、記憶を有効にし、過去のチャットの検索を許可すると、新しいモデルが好みや話し方に適応しやすくなり、独自の指示や文脈を入れられるプロジェクトも個人設定の手段になると説明しています。\n\n見分け方: 終了まで旧モデルだけを使う(c)のは、早く試すという勧めと逆です。ヘルプセンターは、こうした方法には限界があり、特定のモデルとの体験を完全に保存・再現できるわけではないと述べているので、「完全に再現する」(d)は誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/12738598-adapt-to-new-model-personas-after-deprecations"
+  ],
+  "topics": [
+   "model-deprecations",
+   "memory"
   ]
  },
  {
@@ -857,9 +931,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "プロジェクトにアップロードした文書はキャッシュされ、キャッシュされている間に再び参照すると、新しい内容より上限への数え方が少なくなります。ただし、キャッシュは使わない期間が続くと切れるため、長い休みの後の最初のメッセージでは、その内容が全量として数えられます。",
+  "explanation": "正解は b です。Usage limit best practices によると、プロジェクトにアップロードした文書はキャッシュされ、キャッシュされている間に再び参照すると、新しい内容より上限への数え方が少なくなります。ただし、キャッシュは一定期間使わないと切れ、長い休みの後にプロジェクトに戻ると、最初のメッセージではその内容が全量で数えられます。休暇明けの最初の質問だけ減りが大きかったのは、このためです。\n\n見分け方: ナレッジの自動削除(a)や、ナレッジを Web 検索で取り直す仕組み(d)は説明されていません。週間上限は、アカウントに割り当てられた決まった曜日と時刻にリセットされ、毎回満額が与えられるので、休み明けに半分になる(c)ことはありません。",
   "refs": [
    "https://support.claude.com/en/articles/9797557-usage-limit-best-practices"
+  ],
+  "topics": [
+   "usage-best-practices",
+   "projects"
   ]
  },
  {
@@ -878,7 +956,7 @@
    {
     "id": "b",
     "text": "Claude in Chrome をアンインストールし、Web 検索で経費精算システムの URL を検索させる",
-    "why": "Web 検索はログインした社内システムの画面を読むものではない。まずは権限と拡張機能の状態を確認する。"
+    "why": "アンインストールや Web 検索への切り替えは、ヘルプが挙げる対処にない。まずは再読み込み、拡張機能の有効化、サイトの権限を確認する。"
    },
    {
     "id": "c",
@@ -888,15 +966,18 @@
    {
     "id": "d",
     "text": "ほかのタブをすべて閉じ、Chrome を別のブラウザに替えてから同じ操作をやり直す",
-    "why": "タブを閉じるのは動作が重い場合の対処で、Claude in Chrome は Chrome の拡張なので別のブラウザでは使えない。"
+    "why": "タブを閉じるのは動作が重いときの対処で、ページが見えないときの対処ではない。ブラウザを替えることも挙げられていない。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "Claude in Chrome がページを見られないときは、ページを再読み込みし、拡張機能が有効かを確かめ、そのサイトへの権限を与えているかを確認します。JavaScript の重いサイトは、完全に読み込まれるまで少し時間がかかることがあります。操作がうまくいかない場合は、Chrome を最新にし、干渉しうるほかの拡張機能を無効にします。",
+  "explanation": "正解は a です。Claude in Chrome troubleshooting は、Claude がページを見られないときの対処として、ページを再読み込みして拡張機能が有効になっているかを確かめる、そのサイトへの権限を与えているかを確認する、を挙げています。JavaScript の重いサイトは、完全に読み込まれるまで少し時間がかかることがあります。操作がうまくいかないときは、最新の Chrome を使い、干渉しうる他の拡張機能を無効にします。\n\n見分け方: アンインストールや Web 検索への切り替え(b)は、挙げられている対処にありません。ページが見えない問題は、使用量の上限や usage credits(c)とは別の問題です。不要なタブを閉じるのは動作が重いときの対処で(d)、ブラウザを替えることも挙げられていません。",
   "refs": [
    "https://support.claude.com/en/articles/12902405-claude-in-chrome-troubleshooting"
+  ],
+  "topics": [
+   "claude-in-chrome"
   ]
  }
 ]

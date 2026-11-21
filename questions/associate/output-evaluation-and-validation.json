@@ -31,9 +31,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "ヘルプセンターは、Claude が権威的に見えて説得力があるが事実に基づかない引用を表示することがあると説明しています。影響の大きい内容は、原典に当たって確かめます。",
+  "explanation": "正解は b です。ヘルプセンターは、Claude が権威的に見えたり説得力があったりしても、事実に基づかない引用を示すことがあると説明しています。そのうえで、Claude を唯一の情報源として頼らず、影響の大きい助言は注意深く精査するよう求めています。書面に使う判例と引用は、判例データベースなどの原典で、実在するか、文面が一致するかを確かめます。\n\n見分け方: 具体的で権威ある文体であること(a)は、ヘルプセンターが幻覚の例として挙げている特徴そのもので、正確さの裏付けになりません。同じ質問への回答が同じだったこと(c)も、原典と照合したことにはなりません。免責の一文を付けても(d)、確認していない引用が書面に残ることは変わりません。",
   "refs": [
    "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on"
+  ],
+  "topics": [
+   "hallucinations"
   ]
  },
  {
@@ -68,9 +71,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "Claude は、もっともらしいが誤った回答を返すことがあります。そのため、単独の情報源にせず、影響の大きい助言は精査することが求められます。",
+  "explanation": "正解は d です。ヘルプセンターは、Claude が誤った回答や誤解を招く回答を返すことがあり(幻覚)、これは現在の最先端の生成 AI モデルの限界から生じると説明しています。そのうえで、Claude を唯一の情報源として頼らず、影響の大きい助言は注意深く精査するよう求めています。税務の助言を社内の方針にするのは、影響の大きい場面に当たります。\n\n見分け方: ヘルプセンターは、モデルが新しければ確認が不要になる(a)とは述べていません。利用を避けるべきだ(b)とも述べておらず、求めているのは精査です。誤りを自動で警告する仕組み(c)は説明されていません。",
   "refs": [
    "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on"
+  ],
+  "topics": [
+   "hallucinations"
   ]
  },
  {
@@ -105,9 +111,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ヘルプセンターによると、Claude は連携されていないツール(メール、ワープロ、ファイル転送など)にはアクセスできないのに、アクセスできるかのように答える(幻覚を起こす)ことがあります。実際に送られたかは、送信側と受信側で確認します。",
+  "explanation": "正解は a です。ヘルプセンターは、Claude が役に立とうとして、自分の能力について幻覚を起こすことがあると説明しています。本人がそう言っても、メール、ワープロ、ファイル転送など、明示的に連携されていないツールやソフトウェアにはアクセスできません。メール連携を設定していないこの場面では、「送信しました」という返答は能力についての幻覚で、メールは送られていません。\n\n見分け方: 迷惑メールへの振り分け(b)、送信時の通信の不具合(c)、バックグラウンドでの処理の継続(d)は、どれも Claude に送信の手段があることを前提にしています。連携していないツールは使えない、という一点で判断します。",
   "refs": [
    "https://support.claude.com/en/articles/8241188-claude-is-producing-links-that-don-t-work-and-falsely-claiming-that-it-has-sent-emails-or-produced-external-documents-what-s-going-on"
+  ],
+  "topics": [
+   "hallucinations"
   ]
  },
  {
@@ -142,10 +151,14 @@
   "answer": [
    "c"
   ],
-  "explanation": "ヘルプセンターは、各モデルに知識カットオフがあり、それ以降の出来事については正確な情報を持たない場合があると説明しています。最新の情報が必要なときは、web search で補い、出典を確認します。",
+  "explanation": "正解は c です。ヘルプセンターによると、各モデルには知識カットオフがあり、Claude Haiku 5.5 は 2026 年 6 月までのデータで学習されています。期限より後の出来事について尋ねると、正確な情報を持っていないことがあります。2026 年 9 月に公表された制度はこれに当たるので、Web search でリアルタイムのデータを取り込むか、一次情報で確認します。\n\n見分け方: 質問を長く詳しくしても(a)、学習データにない情報は補えません。新しい制度の情報が学習データに必ず含まれている(b)という前提は、知識カットオフの説明と合いません。Claude が常にインターネットの最新情報を参照して答える(d)わけではなく、最新の情報を取り込むのは Web search の役割です。カットオフの時期もモデルごとに異なります。",
   "refs": [
    "https://support.claude.com/en/articles/8114494-how-up-to-date-is-claude-s-training-data",
    "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+  ],
+  "topics": [
+   "knowledge-cutoff",
+   "web-search"
   ]
  },
  {
@@ -180,10 +193,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "ヘルプセンターは、web search の結果を使うときは引用された情報源を確認するよう勧めています。元のサイトには、Claude の要約に含まれない文脈や詳細があり、情報源の質が回答の質を左右するためです。",
+  "explanation": "正解は a です。ヘルプセンターは、Web search の結果を使うときは、Claude が引用した情報源を確認するよう勧めています。元のサイトには、Claude の要約に含まれない重要な文脈や詳細があることがあり、回答の質は参照した情報源の質に左右されるためです。Web search のページも、重要な情報は引用元を相互に照合し、重大な判断には権威ある情報源を使うよう勧めています。\n\n見分け方: Web search の回答には毎回引用が付きますが、それは情報源を自分で確かめやすくするためで、確認を省いてよい理由にはなりません(b)。更新日だけの確認(c)では、要約が元の文脈を正しく伝えているかは分かりません。情報源が複数あること(d)も、それぞれの質を確かめる代わりになりません。",
   "refs": [
    "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on",
    "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+  ],
+  "topics": [
+   "web-search",
+   "hallucinations"
   ]
  },
  {
@@ -218,9 +235,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Anthropic のドキュメントは、Claude に「分からない」と答えてよいと明示することを、幻覚を減らす基本策の 1 つに挙げています。",
+  "explanation": "正解は c です。ドキュメント「Reduce hallucinations」は、幻覚を減らす基本の手法の 1 つ目に、Claude が不確かさを認めることを明示的に許可する方法を挙げ、誤情報を大きく減らせるとしています。例のプロンプトでも、確信が持てない点や資料に必要な情報がない点は「確信を持って評価するのに十分な情報がない」と答えるよう指示しています。\n\n見分け方: 必ず結論を出させる(a)ことや、一般的な慣行で補わせる(b)ことは、この手法と逆で、資料にない内容を推測で埋めさせる指示です。回答を短くする指示(d)は、不明な点の扱いを何も変えないので、推測で埋める問題は残ります。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "reduce-hallucinations"
   ]
  },
  {
@@ -255,9 +275,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "長い文書(20k トークン超)では、タスクの前に一字一句の引用を抽出させると、回答が実際の文面に基づくようになり、幻覚が減るとされています。",
+  "explanation": "正解は d です。ドキュメント「Reduce hallucinations」は、長い文書(20k トークン超)を扱うタスクでは、作業の前に一字一句の引用を抜き出させるよう勧めています。こうすると回答が実際の文面に基づき、幻覚が減ります。例のプロンプトでも、まず関連する引用を抜き出させ(見つからなければその旨を述べさせ)、その引用だけに基づいて分析させています。\n\n見分け方: 要約だけを根拠にする(a)と、分析が原文ではなく言い換えに基づきます。一般的な論点の一覧から入る(b)と、契約書にない内容を当てはめやすくなります。引用を後回しにする(c)のは、引用を先に抜き出すという手法の順序と逆です。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "reduce-hallucinations"
   ]
  },
  {
@@ -292,9 +315,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "ドキュメントは、草稿の後で各主張に対する直接の引用を探させ、見つからない主張は削除する方法を示しています。",
+  "explanation": "正解は b です。ドキュメント「Reduce hallucinations」は、基本の手法の 1 つとして、各主張に引用と出典を付けさせて回答を検証できる形にすることを挙げています。生成した後に各主張を裏付ける引用を探させ、見つからなければその主張を撤回させる方法も示されています。プレスリリースの例では、裏付けとなる直接の引用が見つからない主張を削除し、削除した場所を空の [] で示させています。\n\n見分け方: 自己申告の確からしさ(a)や、書き直した文面との類似(c)は、資料の記述と照合していないので裏付けになりません。裏付けのない主張を注記付きで残す(d)のは、引用が見つからない主張を削除するという手法と逆です。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "reduce-hallucinations"
   ]
  },
  {
@@ -329,9 +355,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "ドキュメントは、同じプロンプトを複数回実行して出力を比べる方法を挙げ、出力間の不一致が幻覚を示す可能性があると述べています。",
+  "explanation": "正解は d です。ドキュメント「Reduce hallucinations」は、発展的な手法の 1 つとして Best-of-N verification を挙げています。同じプロンプトで Claude を複数回実行して出力を比べる方法で、出力の間の不一致は幻覚を示している可能性があります。数値が毎回異なるのはこの不一致に当たるので、その数値は元データで確かめます。\n\n見分け方: 数値の食い違いを通常の揺らぎとして無視する(a)と、幻覚のサインを見落とします。長さ(b)は正確さの指標ではありません。多数決(c)で選んでも、元データの裏付けにはなりません。ドキュメントは、重要な情報は常に検証するよう述べています。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "reduce-hallucinations"
   ]
  },
  {
@@ -366,9 +395,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ドキュメントは、これらの手法で幻覚は大幅に減るが完全にはなくならないとし、特に影響の大きい判断では重要な情報を常に検証するよう述べています。",
+  "explanation": "正解は a です。ドキュメント「Reduce hallucinations」は、「分からない」と認めることの許可や引用による裏付けなどの手法を紹介したうえで、これらの手法は幻覚を大きく減らすが、完全にはなくせないと注意しています。そのため、重要な情報は常に検証し、特に影響の大きい判断では検証を欠かさないよう求めています。\n\n見分け方: プロンプトの対策で幻覚がなくなるので確認を省ける(b)は、この注意書きと逆です。手法の効果が回答の長さで限られる(c)という説明はドキュメントにありません。Claude 自身が不確かだと述べた場合だけ検証する(d)のも誤りで、検証の対象は重要な情報です。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "reduce-hallucinations"
   ]
  },
  {
@@ -403,9 +435,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "ドキュメントは、提供した文書の情報だけを使い、一般知識は使わないよう明示的に指示する方法を、幻覚を減らす手法として挙げています。",
+  "explanation": "正解は c です。ドキュメント「Reduce hallucinations」は、発展的な手法の 1 つに External knowledge restriction(外部知識の制限)を挙げています。提供した文書の情報だけを使い、一般知識は使わないよう、Claude に明示的に指示する方法です。就業規則の記載だけに基づいて答えさせたいこの場面に、そのまま当てはまります。\n\n見分け方: 一般知識を先に要約させる(a)と、文書の内容と一般知識が回答の中で混ざりやすくなります。文書を何度も貼る(b)ことは、一般知識を使わないという指示の代わりになりません。足りない点を補わせる(d)のは、文書にない内容を持ち込ませる指示で、目的と逆です。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "reduce-hallucinations"
   ]
  },
  {
@@ -441,9 +476,12 @@
    "c",
    "d"
   ],
-  "explanation": "基本策として、「分からない」と言う許可を与えることと、長い文書では先に直接の引用を抽出させることが示されています。引用や出典で回答を検証できる形にすることも勧められています。",
+  "explanation": "正解は c と d です。ドキュメント「Reduce hallucinations」は、幻覚を減らす基本の手法(Basic hallucination minimization strategies)として、「分からない」と認めることを明示的に許可する、長い文書(20k トークン超)ではタスクの前に一字一句の引用を抜き出させる、各主張に引用と出典を付けさせて検証できる形にする、の 3 つを挙げています。c と d はこのうちの 2 つです。\n\n見分け方: 一般知識で補ってでも必ず結論を出させる(a)のは、不確かさを認めることを許可する手法と逆の指示です。出典や引用を付けさせない(b)のは、引用と出典で回答を検証できる形にするという基本の手法と逆です。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "reduce-hallucinations"
   ]
  },
  {
@@ -478,9 +516,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "ヘルプセンターは、Research を、5 回以上のツール呼び出しを 1 〜 3 分かけて行う包括的な情報収集と、複数の情報源を統合した詳しいレポートの作成に最適としています。",
+  "explanation": "正解は a です。ヘルプセンターは、Research を、1〜3 分かけて 5 回以上のツール呼び出しを行う包括的な情報収集に最適とし、Web と連携ツールの複数の情報源を統合して詳しいレポートを作れると説明しています。用途の例として、競合の比較も挙げられています。Research は複数の情報源を適切な引用付きで統合し、長い最終レポートを作ります。\n\n見分け方: Web search(b)は、1〜2 回のツール呼び出しで答えられる単純な事実の確認に向く機能です。Extended thinking だけ(c)は、Web の最新情報や連携を使わずに、Claude にじっくり考えさせたいときの機能です。学習データだけで答えさせる(d)と、最新の情報も社内ツールの情報も入りません。",
   "refs": [
    "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research"
+  ],
+  "topics": [
+   "web-search-thinking-research",
+   "research"
   ]
  },
  {
@@ -515,9 +557,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "ヘルプセンターは、Web search を、1 〜 2 回のツール呼び出しで答えられる単純な事実や、最新のニュースなどの確認に最適としています。",
+  "explanation": "正解は b です。ヘルプセンターは、Web search を、1〜2 回のツール呼び出しで答えられる単純な事実の質問に最適としています。例として、天気の確認、最近のニュースの見出し、「昨夜の Lakers の試合は誰が勝ったか」のような最新の詳細が挙げられており、昨夜の試合結果の確認はこれに当たります。\n\n見分け方: Research(a)は、1〜3 分かけて 5 回以上のツール呼び出しを行う包括的な情報収集向けで、1 つの結果の確認には大がかりです。Extended thinking だけ(c)は、Web の最新情報を必要としない推論向けです。学習データだけ(d)では、知識カットオフより後の出来事について正確な情報を持たないことがあります。",
   "refs": [
    "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research"
+  ],
+  "topics": [
+   "web-search-thinking-research",
+   "web-search"
   ]
  },
  {
@@ -546,15 +592,18 @@
    {
     "id": "d",
     "text": "Claude Mobile の Research は Web のみを検索し、連携ツールは使わない。含めるなら Web 版か Desktop で再開始する",
-    "why": "Mobile では連携ツールが使われなくても、エラーや表示は出ない。"
+    "why": "Claude Mobile で開始した Research は Web だけを検索し、コネクタは使わない。コネクタを含めるには、Claude on the web か Claude Desktop で開始する。"
    }
   ],
   "answer": [
    "d"
   ],
-  "explanation": "Research は Claude Mobile では Web だけを検索し、連携ツールは使われません。そのことを示すエラーも表示されません。内部情報を含めるには、Web 版か Claude Desktop で開始します。",
+  "explanation": "正解は d です。ヘルプセンターによると、Research は通常、Web と、Gmail などの Google Workspace を含む、チャットでオンにしたコネクタを調べます。ただし、Claude Mobile で開始した Research は Web だけを検索してコネクタを使わず、コネクタが飛ばされたことを示すエラーなども表示されません。コネクタの情報を含めるには、Claude on the web か Claude Desktop で Research を開始します。\n\n見分け方: Research は Claude Mobile でも使える(a)ので、Desktop 側で実行されたわけではありません。Research 中はコネクタのツールを毎回の承認なしで自動で使う(b)ので、承認の操作は原因ではありません。エラーの表示がないこと(c)は、コネクタが使われた証拠になりません。",
   "refs": [
    "https://support.claude.com/en/articles/11088861-use-research-on-claude"
+  ],
+  "topics": [
+   "research"
   ]
  },
  {
@@ -589,9 +638,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "ヘルプセンターによると、Claude は、内容が重要で自己完結しており(通常 15 行を超える)、編集・再利用・参照の対象になりそうで、会話の補足なしで成立する場合にアーティファクトを作ります。",
+  "explanation": "正解は c です。ヘルプセンターによると、Claude は共有する内容が次の条件を満たすときにアーティファクトを作ります。重要で自己完結している(通常 15 行を超える)、会話の外で編集・改善・再利用しそう、会話の追加の文脈なしで成立する、後で参照したり使ったりしそう、の 4 つです。c はこれらの条件に合っています。\n\n見分け方: 2 行程度の補足(a)や相づち程度の返答(d)は、重要で自己完結した内容でも、後で編集や再利用をする内容でもありません。前の回答の一部を訂正するだけの返答(b)は、会話の文脈がないと意味が通らないので、「単独で成立する」という条件を満たしません。",
   "refs": [
    "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them"
+  ],
+  "topics": [
+   "artifacts"
   ]
  },
  {
@@ -626,9 +678,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Docs や Markdown のドキュメントでは、変えたい文章をハイライトして「Edit with Claude」から依頼すると、マークした箇所に編集が加わります。",
+  "explanation": "正解は b です。ヘルプセンターによると、Doc や Markdown のドキュメントでは、変えたい文章をハイライトして「Edit with Claude」をクリックし、依頼を入力できます。Claude はマークした箇所に編集を加えるので、どの節のことかを説明する必要がありません。第 3 節だけを書き直したいこの場面に合っています。\n\n見分け方: 全体を作り直させる(a)と、変えたくない部分まで変わりえます。前のメッセージを編集する(c)と、独自のアーティファクトを持つ別バージョンのチャットが作られます。これは別の方向を試すための機能で、第 3 節だけを差し替える機能ではありません。箇所を指定して編集できるので、新しいチャットに全文を貼り直す(d)必要はありません。",
   "refs": [
    "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them"
+  ],
+  "topics": [
+   "artifacts"
   ]
  },
  {
@@ -663,9 +718,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ヘルプセンターは、エラーが出たときは「Try fixing with Claude」でエラー詳細を Claude に送って診断・修正させる方法を示しています。ただし、成功は保証されず、追加の調査が要る場合もあるとしています。",
+  "explanation": "正解は a です。ヘルプセンターによると、アーティファクトでエラーが出たときは、エラーメッセージの近くにある「Try fixing with Claude」ボタンを使います。クリックするとエラーの詳細が新しいメッセージにコピーされ、それを送ると Claude が問題を診断して修正を提案します。ただし、Claude は修正を試みますが成功は保証されず、さらに調べる必要があるエラーもあります。\n\n見分け方: エラーの詳細を渡して直させる手段があるので、削除して作り直すしかない(b)は誤りです。エラーが出ている出力を正しいとみなす(c)ことはできません。この機能でエラーが必ず解消する(d)わけではないと、ヘルプセンターに明記されています。",
   "refs": [
    "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them"
+  ],
+  "topics": [
+   "artifacts"
   ]
  },
  {
@@ -700,9 +758,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "Slides テンプレートでは、ノートや報告書から作った発表資料を編集・発表でき、PowerPoint と PDF に書き出せます。",
+  "explanation": "正解は d です。ヘルプセンターによると、Slides テンプレートでは、メモや報告書、チャットでの作業から発表資料を作り、スライドを直接編集したり Claude の中で発表したりでき、PowerPoint と PDF に書き出せます。テンプレートから作ったアーティファクトは「Export」で書き出し、デッキは PowerPoint と PDF に、または編集できるファイルとして Google Slides に直接送れます。\n\n見分け方: Docs(a)の書き出し先は Word、PDF、Markdown、Google Docs で、PowerPoint 形式のデッキにはなりません。Whiteboards(b)は、Claude やチームとアイデアを考えるための共有ボードです。Slides テンプレートで書き出せるので、手作業で 1 枚ずつ貼り付ける(c)必要はありません。",
   "refs": [
    "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them"
+  ],
+  "topics": [
+   "artifacts"
   ]
  },
  {
@@ -737,9 +798,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "ヘルプセンターは、Excel などのファイルを作成できるとしたうえで、構造・内容・書式を具体的に依頼し、出力を確認して磨き上げるよう勧めています。",
+  "explanation": "正解は c です。ヘルプセンターによると、Claude はコードを実行して Excel(.xlsx)などのファイルを作成でき、動作する数式を含む財務モデルも作れます。使い方として、望む構造・内容・書式を具体的に伝えるよう勧め、要件どおりにするには Claude の出力を見直して調整する必要がある場合があるとしています。\n\n見分け方: 出力を見直して調整する必要がある場合があるとされているので、確認せずにそのまま使う(a)のは誤りです。Excel は動作する数式付きで作れる(b)ので、数式を手入力する必要はありません。作れるファイルは Excel、PowerPoint、Word、PDF で、PDF だけ(d)ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude"
+  ],
+  "topics": [
+   "file-creation"
   ]
  },
  {
@@ -774,9 +838,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "カスタムビジュアルはチャット内の一時的な表示で、自動では保存されません。残すには、画像としてコピーする、.svg または .html でダウンロードする、アーティファクトとして保存するのいずれかを使います。",
+  "explanation": "正解は a です。ヘルプセンターによると、カスタムビジュアルは既定では一時的なもので、回答の一部としてその場に表示され、会話が進んでも別には保存されません。残したいときは、Copy as image(静止画のスナップショット)、Download(.svg または .html で保存)、Save as artifact(保持・公開・改善を続けられるアーティファクトに変換)のいずれかを使います。翌週も更新していくなら、アーティファクトとして保存するのが合っています。\n\n見分け方: ビジュアルは自動では保存されない(b)と明記されています。「すべての可視化をピンクに」のような好みは Claude が覚えますが、図そのものを保存する手段ではありません(c)。カスタムビジュアルは iOS と Android のアプリでは表示されません(d)。",
   "refs": [
    "https://support.claude.com/en/articles/13979539-custom-visuals-in-chat-and-cowork"
+  ],
+  "topics": [
+   "custom-visuals",
+   "artifacts"
   ]
  },
  {
@@ -811,9 +879,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "プロンプトのガイドは、出力の形式を操作するには、してほしくないことを禁じるより、してほしいことを伝えるよう勧めています。",
+  "explanation": "正解は c です。ドキュメント「Prompting best practices」は、出力の形式を操作する方法の最初に、してほしくないことではなく、してほしいことを伝えるよう挙げています。例として、「Markdown を使わないで」ではなく「滑らかに流れる散文の段落で書いて」と指示する形が示されています。箇条書きを減らしたい場面では、望む形式を肯定形で伝えます。\n\n見分け方: 禁止の指示を強く繰り返す(a)のは、ドキュメントが勧める「何をしてほしいかを伝える」形ではありません。形式を指定せずに再生成を繰り返す(b)のは、形式を操作する方法になっていません。長さの指定(d)は、箇条書きか散文かという形式を指定するものではありません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "prompting-best-practices"
   ]
  },
  {
@@ -849,9 +920,12 @@
    "b",
    "d"
   ],
-  "explanation": "調査に関するガイドは、明確な成功基準を示すことと、複数の情報源で情報を確認するよう促すことを勧めています。",
+  "explanation": "正解は b と d です。ドキュメント「Prompting best practices」は、調査と情報収集で最適な結果を得る方法として、明確な成功基準を示す(調査の問いに対して何が成功した答えかを定める)、複数の情報源で情報を確認するよう依頼する、の 2 つを挙げ、複雑な調査では構造化した進め方を使うよう勧めています。\n\n見分け方: 最初に見つかったページだけを使わせる(a)のは、複数の情報源で確認させるという勧めと逆です。成功基準を調査の後で Claude に決めさせる(c)のは、依頼する側が明確な成功基準を示すという勧めと合いません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "prompting-best-practices"
   ]
  },
  {
@@ -886,9 +960,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ヘルプセンターは、web search の制限として、ウェブサイトのリンクが機能しない場合があることを挙げ、重要な情報は引用元を相互に照合し、権威ある情報源で確認するよう勧めています。",
+  "explanation": "正解は a です。ヘルプセンターは Web search の制限(Limitations)として、ウェブサイトのリンクがときどき機能しないことを挙げています。また、重要な情報については、引用された情報源を相互に照合して全体像をつかみ、重大な判断には権威ある情報源を使うよう勧めています。開けないリンクを根拠にした主張は、別の情報源で確かめてから使います。\n\n見分け方: リンクが機能しないことは既知の制限なので、それだけで引用を捏造と決めて回答全体を無効にする(b)ことも、Web search を使っていない証拠とみなす(c)こともできません。逆に、リンク先を確かめられないまま要約を正しいとみなす(d)のは、情報源を確認するという勧めと逆です。",
   "refs": [
    "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+  ],
+  "topics": [
+   "web-search"
   ]
  },
  {
@@ -924,9 +1001,13 @@
    "a",
    "c"
   ],
-  "explanation": "ヘルプセンターは、Claude が事実に基づかない引用を示すことがあること、web search の結果を使うときは引用元を確認するよう勧めています。モデルごとに知識カットオフがあることも説明されています。",
+  "explanation": "正解は a と c です。ヘルプセンターは、Claude が権威的に見えたり説得力があったりしても、事実に基づかない引用を示すことがあると説明しています。また、Web search の結果を使うときは、Claude が引用した情報源を確認するよう勧めています。元のサイトには、Claude の要約に含まれない重要な文脈や詳細があることがあるためです。\n\n見分け方: 各モデルには知識カットオフがあり、期限より後の出来事について正確な情報を持たないことがあるので、b は誤りです。親指を下げるボタン(d)は、回答が役に立たなかったことを Anthropic に知らせるためのもので、回答を自動で修正する機能ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on"
+  ],
+  "topics": [
+   "hallucinations",
+   "knowledge-cutoff"
   ]
  },
  {
@@ -961,10 +1042,14 @@
   "answer": [
    "c"
   ],
-  "explanation": "Claude は誤った回答を返すことがあるため、単一の情報源とせず、影響の大きい助言は精査する必要があります。ドキュメントも、幻覚を減らす手法を使っても、重要な情報は常に検証するよう述べています。",
+  "explanation": "正解は c です。ヘルプセンターは、Claude を唯一の情報源として頼らず、影響の大きい助言は注意深く精査するよう求めています。ドキュメント「Reduce hallucinations」も、幻覚を減らす手法を使っても完全にはなくならないとして、重要な情報、特に影響の大きい判断では常に検証するよう述べています。契約や税務の判断の根拠にする場面は、これに当たります。\n\n見分け方: 懇親会の会場の候補出し(a)は、別途確認する予定のある下書きの材料です。誤字脱字の指摘(b)は、採用するかを利用者自身が判断します。構成案のたたき台(d)は、議論の中で誰でも修正できます。いずれも、Claude の回答がそのまま影響の大きい判断の根拠になる場面ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on",
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "hallucinations",
+   "reduce-hallucinations"
   ]
  },
  {
@@ -999,9 +1084,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "各モデルには学習データの期限(knowledge cutoff)があり、Sonnet 4.6 と Opus 4.6 は 2025 年 8 月、Sonnet 5.5 や Opus 5.5 は 2026 年 6 月までです。期限より後の出来事について尋ねると、正確な情報を持っていない可能性があります。新しい出来事は Web 検索を使うか、一次情報で確かめます。",
+  "explanation": "正解は a です。ヘルプセンターによると、Claude のデータは継続して更新されていますが、各モデルには学習データの期限があり、Sonnet 4.6 は 2025 年 8 月までのデータで学習しています。期限より後の出来事は知らない可能性があり、最近の出来事を尋ねると正確な情報を持っていないことがあります。2025 年 12 月の制度は期限の後なので、Web 検索を使うか一次情報で確かめます。\n\n見分け方: 「データを常に更新している」(b)は前半だけを取った誤りで、ヘルプはその上で各モデルに期限があると説明しています。自信のある書き方(c)は正確さの根拠になりません。ヘルプは、権威があるように見える回答でも誤っていることがあると注意しています。Sonnet 4.6 の期限は 2026 年ではなく 2025 年 8 月です(d)。",
   "refs": [
    "https://support.claude.com/en/articles/8114494-how-up-to-date-is-claude-s-training-data"
+  ],
+  "topics": [
+   "knowledge-cutoff"
   ]
  },
  {
@@ -1036,9 +1124,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Claude は数式を扱い、計算を行えますが、複雑な計算や業務上重要な計算は、専用の数学ソフトや手作業で確かめるよう勧められています。決算資料のように誤りの影響が大きい用途では、検証してから使います。",
+  "explanation": "正解は c です。ヘルプセンターは、Claude は数式を処理して計算を行えるが、複雑な計算や業務上重要な(mission-critical)計算は、専用の数学ソフトや手作業で確かめるべきだと説明しています。決算資料に使う減価償却の計算はこれに当たるので、検証してから使います。\n\n見分け方: 「計算はできる、ただし重要なものは別の手段で確かめる」の 2 点を押さえます。そのまま転記する(a)は確認を省いています。同じ計算を 2 回させる(b)のは Claude 自身による確認で、ヘルプが挙げる専用のソフトや手作業による確認ではありません。計算を扱えない(d)は、計算できるという説明と逆です。",
   "refs": [
    "https://support.claude.com/en/articles/10366421-how-does-claude-handle-mathematical-equations-and-calculations"
+  ],
+  "topics": [
+   "hallucinations"
   ]
  },
  {
@@ -1073,9 +1164,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Anthropic は EU AI Act の行動規範に署名し、2026 年 8 月 2 日以降に EU で提供を始めたモデルから、機械で読み取れる表示に対応しています。生成された文章には埋め込みの透かしが入り、Claude が作ったファイルには Content Credentials(C2PA)が付きます。透かしの検出は、規制当局、法執行機関、報道機関など、対象となる組織に限定公開で提供されています。",
+  "explanation": "正解は b です。透かしの検出は現在 private preview で、EU の行動規範に沿って、規制当局、法執行機関、報道機関、ファクトチェッカー、独立した研究者、教育機関、EU の市民団体など、対象となる組織に提供されています。自社の出力を確かめる義務がある一部の企業も対象です。なお、表示が見つかっても、Claude が処理した可能性を示すだけで、来歴を確定するものではありません。\n\n見分け方: 無料の Claude Content Checker はファイルの Content Credentials を確かめるもので、文章の透かしの検出は限定公開です(a)。表示は EU 域内に限らず、世界中で適用されます(c)。対応するモデルが生成した文章には透かしが埋め込まれるので、d も誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content"
+  ],
+  "topics": [
+   "ai-content-marking"
   ]
  },
  {
@@ -1111,9 +1205,12 @@
    "a",
    "b"
   ],
-  "explanation": "透かしなどの表示は、対応するモデルの出力に、Claude Platform(API)、Claude、Claude Code、Claude Cowork、Claude Tag などの製品をまたいで、世界中で適用されます。AWS、Google Cloud、Microsoft Foundry 経由の対応モデルにも透かしが入ります。2026 年 8 月 2 日より前のモデルについては、対応を進めている段階です。",
+  "explanation": "正解は a と b です。表示は、対応するモデルの出力に、Claude Platform(API)、Claude、Claude Code、Claude Cowork、Claude Tag など、Claude を使うあらゆる場所で適用されます。AWS、Google Cloud、Microsoft Foundry 経由で使う対応モデルの出力にも透かしが入ります。ただし Content Credentials(C2PA)は、ファイル生成の機能がある場所でだけ付きます。\n\n見分け方: 2026 年 8 月 2 日より前のモデルにも表示の対応を進めており、対応表には Opus 4.6 や Sonnet 4.6 なども載っています(c)。表示は EU 域内に限らず、Claude が提供されている世界中で適用されます(d)。",
   "refs": [
    "https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content"
+  ],
+  "topics": [
+   "ai-content-marking"
   ]
  },
  {
@@ -1148,9 +1245,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "天気やレシピなどの視覚的な表示はすべての利用者が使えますが、データを表示するウィジェットには Web 検索の有効化が必要です。天気の視覚的な表示は Web とデスクトップで使え、iOS と Android では文章で提供されます。気温は、米国の地点では華氏、それ以外では摂氏で表示されます。",
+  "explanation": "正解は a です。ヘルプセンターによると、天気の視覚的な表示は Web とデスクトップで使え、モバイル(iOS と Android)では、天気の情報が会話の中に文章で示されます。同僚の PC と自分のスマートフォンで表示が違ったのは、端末の違いで説明できます。\n\n見分け方: モバイルでも同じ情報は文章で得られるので、情報そのものがないわけではありません(b)。視覚的な回答はすべての利用者が使えるもので、プランによる違いではありません(c)。天気やレシピのデータ表示のウィジェットには、逆に Web 検索の有効化が必要です(d)。",
   "refs": [
    "https://support.claude.com/en/articles/13641943-visual-and-interactive-content"
+  ],
+  "topics": [
+   "visual-content"
   ]
  },
  {
@@ -1185,9 +1285,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "カスタムビジュアルは、Claude が質問に合わせて HTML で作る図、グラフ、対話的な表示で、Web とデスクトップのアプリで表示されます(iOS と Android では表示されません)。オンにする操作は不要で、Claude が役立つと判断したときに作り、頼んで作らせることもできます。ベータのため品質にはばらつきがあり、期待した場面で作られないこともあります。既定では保存されないので、残したいものは画像のコピー、ダウンロード、アーティファクトへの保存で残します。",
+  "explanation": "正解は b です。カスタムビジュアルは写真やイラストではなく、Web ページと同じ HTML で Claude が作るもので、ボタンやスライダーを操作できます。ベータとして Web とデスクトップで使え、iOS と Android のアプリでは表示されません。ヘルプセンターは、品質や複雑さにはばらつきがあり、期待した場面で Claude が作らないこともあると説明しています。\n\n見分け方: 画像ではなく HTML で作られ、モバイルでは表示されないので、a は誤りです。オンにする操作は不要で、Claude が役立つと判断したときに作り、頼んで作らせることもできます(c)。既定では一時的で自動では保存されず、残すには画像のコピー、ダウンロード、アーティファクトとしての保存を使います(d)。",
   "refs": [
    "https://support.claude.com/en/articles/13979539-custom-visuals-in-chat-and-cowork"
+  ],
+  "topics": [
+   "custom-visuals"
   ]
  },
  {
@@ -1222,9 +1325,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "カスタムビジュアルは Cowork でも作られますが、チャットとの違いが 2 つあります。共有リンクではほかの人に表示されないこと、図の中をクリックして追加の質問を送る機能がまだないことです(入力して質問することはできます)。図を残したり見せたりしたい場合は、画像のコピー、ダウンロード、アーティファクトへの保存を使います。",
+  "explanation": "正解は a です。カスタムビジュアルは Cowork のセッションでもチャットと同じように作られますが、違いが 2 つあります。Cowork のセッションはローカルで動くため、共有リンクではほかの人に図が表示されません。また、チャットでは図の中をクリックすると追加の質問が送られますが、Cowork にはまだこの機能がなく、入力して質問します。\n\n見分け方: 共有リンクで表示されないのは Cowork のセッションがローカルで動くためで、ログインの有無ではありません(b)。図は Cowork でも作られます(c)。クリックで追加の質問を送る機能はチャットにあり、Cowork にはまだないので、d は逆です。",
   "refs": [
    "https://support.claude.com/en/articles/13979539-custom-visuals-in-chat-and-cowork"
+  ],
+  "topics": [
+   "custom-visuals"
   ]
  },
  {
@@ -1259,9 +1365,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "ライブアーティファクトは、2026 年 8 月 19 日より前に Cowork で作られたアーティファクトです。引き続き Artifacts の一覧にあり、開いたり共有したりできますが、その場では編集できません。修正するには、「Share」から新しいアーティファクトとして公開し直します。すでに共有していたリンクの閲覧者には、新しい版が表示されます。",
+  "explanation": "正解は b です。ライブアーティファクトは、2026 年 8 月 19 日より前に Claude Cowork で作られたアーティファクトです。Artifacts の一覧に残って動き続け、開いたり共有したりできますが、その場では編集できません。修正するには、開いて「Share」を選び、新しいアーティファクトとして公開し直します。以後はほかのアーティファクトと同じように編集でき、既存のリンクを持つ人には新しい版が表示されます。\n\n見分け方: その場で編集できない(a)ことがライブアーティファクトの特徴です。公開し直す手順があるので、一から作り直す(c)必要はありません。ライブアーティファクトは引き続き動き、開くこともできます(d)。",
   "refs": [
    "https://support.claude.com/en/articles/14729249-use-live-artifacts-in-claude-cowork"
+  ],
+  "topics": [
+   "live-artifacts"
   ]
  },
  {
@@ -1296,10 +1405,14 @@
   "answer": [
    "b"
   ],
-  "explanation": "接続済みのアプリからデータを取得するアーティファクトは、作成者ではなく閲覧者の接続を使います。閲覧者がそのデータにアクセスできない場合、その部分は作成者のデータではなくエラーを表示します。誰でも自分のアプリを接続して使う仕組みなので、共有先の人の接続やアクセス権を確認します。",
+  "explanation": "正解は b です。接続済みのアプリからデータを取るアーティファクトは、作成者ではなく閲覧者の接続を使います。閲覧者がそのデータにアクセスできない場合、その部分は作成者のデータの代わりにエラーを表示します。同僚の画面の一部がエラーになったのは、その同僚の接続やアクセス権の問題として説明できます。なお、Claude Data のダッシュボードを live sharing(ベータ)で共有した場合だけは例外です。\n\n見分け方: 作成者の接続を使う(a)、データを固定の画像として渡す(d)は、閲覧者の接続を使う仕組みと合いません。Team と Enterprise では、組織の全員や特定の人と共有できます(c)。",
   "refs": [
    "https://support.claude.com/en/articles/9547008-share-artifacts",
    "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them"
+  ],
+  "topics": [
+   "artifact-sharing",
+   "artifacts"
   ]
  },
  {
@@ -1334,9 +1447,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Claude Sheets は Claude に組み込まれた表計算で、Claude と一緒に作る軽い共有の表に向きます。Claude for Excel と Claude for Google Workspace は、すでに Excel や Google スプレッドシートにあるファイルに Claude を持ち込むものです。ファイルがすでにそれらのアプリにある場合や、アプリのすべての機能が必要な場合はこちらを使います。",
+  "explanation": "正解は c です。ヘルプセンターは、Claude Sheets は Claude の中に表計算を置くもの、Claude for Excel と Claude for Google Workspace は、それらのアプリにあるファイルに Claude を持ち込むもの、と区別しています。Claude と作る軽い共有の表には Claude Sheets を、ファイルがすでに Excel や Google スプレッドシートにある場合や、それらのアプリのすべての機能が必要な場合は Claude for Excel などを使います。\n\n見分け方: Claude Sheets はベータで、ピボットテーブルなどはまだなく、マクロや VBA は非対応なので、Excel のすべての機能を持つ(a)は誤りです。Claude の中で表を作る機能はあります(b)。d は使い分けが逆です。",
   "refs": [
    "https://support.claude.com/en/articles/18324300-get-started-with-claude-sheets"
+  ],
+  "topics": [
+   "claude-sheets"
   ]
  },
  {
@@ -1371,9 +1487,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Claude Sheets では、Claude の変更は 1 つずつ枠で示され、何が変わったかを確認できます。版の履歴から以前の版を表示して復元できますが、その版より後の編集もすべて取り除かれます。自分の編集を残したい場合は、復元の前に内容を控えておくなどの注意が必要です。",
+  "explanation": "正解は a です。Claude Sheets の版の履歴(Version history)では、以前の版を表示して復元できます。ただし、ヘルプセンターは、以前の版を復元すると、その版より後に行われた編集も取り除かれると説明しています。この場合、Claude の変更より前の版に戻すと、その後の自分の編集も消えます。\n\n見分け方: 版の履歴は版を単位にした復元で、Claude の変更だけを選んで取り消す方法は説明されていません(b)。版の履歴はあります(c)。復元で表が一覧から削除されるという記述はありません(d)。なお、Claude の編集は 1 つずつ枠で示されるので、何が変わったかは確認できます。",
   "refs": [
    "https://support.claude.com/en/articles/18324300-get-started-with-claude-sheets"
+  ],
+  "topics": [
+   "claude-sheets"
   ]
  },
  {
@@ -1408,9 +1527,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Claude Sheets では、表を何に使い、何を追跡したいかを伝えると良い結果になります。すでに数字があるなら Claude に渡し、自分のデータから表を作らせます。Claude は複数のタブ、タブをまたぐ数式、書式、プルダウン、グラフなどを使って表を作れます。",
+  "explanation": "正解は b です。ヘルプセンターは、Claude Sheets でより良い結果を得るコツとして、表を何に使い、何を追跡したいかを伝えること、すでに数字があるなら Claude に渡して、自分のデータから表を作らせることを挙げています。手元に実際の金額があるこの場面では、用途を伝えたうえで数字も渡します。\n\n見分け方: 数字があるのに仮の数字で作らせる(a)のは、自分のデータから作らせるというコツと逆です。「予算表」とだけ伝える(c)と、用途や追跡したいことが伝わりません。数字を画像にして渡す(d)ことは、コツとして挙げられていません。",
   "refs": [
    "https://support.claude.com/en/articles/18324300-get-started-with-claude-sheets"
+  ],
+  "topics": [
+   "claude-sheets"
   ]
  },
  {
@@ -1445,9 +1567,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Claude Docs で良い結果を得るには、文書の目的、読み手、扱う内容を伝えます。ヘルプの例のように「販売チーム向けに、価格、時期、顧客からの上位 3 つの質問を扱う 2 ページのローンチ概要」と頼むと、的確な下書きになります。Claude は書き始める前にいくつか質問し、ファイル、メモリ、プロジェクト、接続済みのアプリなどの文脈も使います。",
+  "explanation": "正解は b です。ヘルプセンターは、良い依頼は文書が何のためのものか、誰が読むか、何を扱うかを伝えるものだとし、「a launch brief」とだけ頼むより「販売チーム向けに、価格、時期、顧客からの上位 3 つの質問を扱う 2 ページのローンチ概要」と頼むほうが良い結果になると例示しています。b はこの例どおりです。\n\n見分け方: 「資料を作って」とだけ頼む(a)、文字数だけを指定する(c)のでは、目的、読み手、扱う内容が伝わりません。Claude Docs では Claude が書き始める前にいくつか質問するので、質問させない(d)のはこの仕組みに合いません。",
   "refs": [
    "https://support.claude.com/en/articles/16923645-get-started-with-claude-docs"
+  ],
+  "topics": [
+   "claude-docs"
   ]
  },
  {
@@ -1482,9 +1607,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Claude Docs では、テキストを選んでコメントし、@Claude と書くと修正を頼めます。Claude はスレッドで返信して変更を加え、何をなぜ変えたかを説明します。Claude は常に依頼した人の権限で動き、作業中も文書はロックされないため、メンバーはいつでも一緒に編集できます。",
+  "explanation": "正解は b です。Claude Docs では、テキストを選んでコメントし、@Claude と書くと修正を頼めます。Claude はスレッドで返信して変更を加え、何をなぜ変えたかを説明します。Claude は常に依頼した人の権限で動くため、閲覧権限しかない人のために文書を編集することはできません。\n\n見分け方: Claude が所有者の権限で動く(a)は、依頼した人の権限で動くという説明と逆です。コメントでの @Claude への依頼は使えます(c)。Claude の作業中も何もロックされず、利用者はいつでも Claude と並んで編集できます(d)。",
   "refs": [
    "https://support.claude.com/en/articles/16923645-get-started-with-claude-docs"
+  ],
+  "topics": [
+   "claude-docs"
   ]
  },
  {
@@ -1493,7 +1621,7 @@
   "domain": "output-evaluation-and-validation",
   "type": "single",
   "scenarioId": null,
-  "stem": "Team プランの担当者が、顧客の資料を添付したチャットで作ったアーティファクトを、組織内に共有しようとしている。共有の前に確認すべきこととして、ヘルプセンターが注意しているものはどれか。",
+  "stem": "Team プランの担当者が、顧客の資料を添付したチャットで以前に作った旧来のアーティファクト(共有のメニューに「Share & copy link」と表示されるもの)を、組織内に共有しようとしている。共有の前に確認すべきこととして、ヘルプセンターが注意しているものはどれか。",
   "choices": [
    {
     "id": "a",
@@ -1519,9 +1647,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "チャットで作ったアーティファクトを共有すると、閲覧者はそのチャットの添付やファイルにもアクセスできます。共有する前に、機微な文書が含まれていないかを確かめます。プロジェクトで作ったアーティファクトの場合、閲覧者はそのプロジェクトへのアクセスも必要です。",
+  "explanation": "正解は a です。ヘルプセンターは、Team と Enterprise で旧来のアーティファクトを「Share & copy link」で共有する手順の中で、チャットで作ったアーティファクトを共有すると、閲覧者はそのチャットの添付やファイルにもアクセスできると注意し、共有の前に機微な文書がないかを確かめるよう勧めています。プロジェクトで作った場合は、閲覧者にそのプロジェクトへのアクセスも必要です。\n\n見分け方: 表示だけが共有される(b)は、この注意と逆です。組織内の共有は組織のアカウントでサインインした人が開くもので、取引先に見せるには Owner が External sharing をオンにしている必要があります(c)。チャットが複製される(d)という記述はありません。",
   "refs": [
    "https://support.claude.com/en/articles/9547008-share-artifacts"
+  ],
+  "topics": [
+   "artifact-sharing"
   ]
  },
  {
@@ -1550,15 +1681,18 @@
    {
     "id": "d",
     "text": "個人の Pro プランに切り替えてから同じアーティファクトを共有する",
-    "why": "組織のデータを個人のアカウントに移して共有することは、組織の方針を回避することになる。まず Owner に相談する。"
+    "why": "ヘルプが示している対応は Owner か Primary Owner への相談である。個人のプランに切り替えて共有する方法は説明されていない。"
    }
   ],
   "answer": [
    "b"
   ],
-  "explanation": "Team と Enterprise では、アーティファクトの共有先として「Only people invited」「Anyone at [組織名]」「Anyone with the link」を選べます。「Anyone with the link」は、Owner が External sharing をオンにしたか、そのアーティファクトを個別に許可した場合だけ使えます。灰色で選べない場合は、Owner か Primary Owner に相談します。Owner が外部共有をオフにすると、既存のリンクも使えなくなります。",
+  "explanation": "正解は b です。Team と Enterprise では、共有先として「Only people invited」「Anyone at [組織名]」「Anyone with the link」を選べます。「Anyone with the link」は、Owner が External sharing をオンにしたか、そのアーティファクトを個別に許可したときだけ使えます。灰色で選べない場合は、Owner か Primary Owner に相談するよう説明されています。\n\n見分け方: Team でも、Owner が許可すれば「Anyone with the link」を使えます(a)。ブラウザのキャッシュ(c)ではなく組織の設定の問題です。個人のプランに切り替えて共有する(d)方法は説明されておらず、ヘルプが示す対応は Owner か Primary Owner への相談です。",
   "refs": [
    "https://support.claude.com/en/articles/9547008-share-artifacts"
+  ],
+  "topics": [
+   "artifact-sharing"
   ]
  },
  {
@@ -1593,9 +1727,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "公開した旧来のアーティファクトは「Unpublish」でアクセスを取り消せますが、一度非公開にすると同じアーティファクトは再び公開できません。後で共有したい場合は、新しいアーティファクトを作ります。Unpublish すると、そのアーティファクトが使っていた個人用と共有用の保存データも完全に削除されます。",
+  "explanation": "正解は b です。Free、Pro、Max、Ultra の旧来のアーティファクトは「Publish」で公開し、「Unpublish」でアクセスを取り消せます。ヘルプセンターは、一度 Unpublish すると同じアーティファクトは再び公開できず、後で共有するには新しいアーティファクトを作る必要があると注意しています。また、Unpublish すると、そのアーティファクトが使っていた個人用と共有用の保存データも完全に削除されます。\n\n見分け方: 押し直せば同じリンクで公開できる(a)、30 日以内なら再公開できる(c)は、再公開できないという説明と合いません。Unpublish はアクセスを取り消す操作なので、リンクが有効なまま(d)ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/9547008-share-artifacts"
+  ],
+  "topics": [
+   "artifact-sharing"
   ]
  },
  {
@@ -1630,10 +1767,13 @@
   "answer": [
    "c"
   ],
-  "explanation": "Claude を使うアーティファクトは、Anthropic の基盤の上で小さなアプリとして動きます。使う人は自分の Claude アカウントでサインインし、それぞれのインスタンスで使います。API キーは不要で、作成者に費用はかからず、利用量は作成者ではなく使う人それぞれのプランの上限に数えられます。",
+  "explanation": "正解は c です。Claude を呼び出すアーティファクトは、小さなアプリとして Anthropic の基盤の上で動きます。使う人は自分の Claude アカウントでサインインし、それぞれのインスタンスで使います。API キーは不要で、作成者に費用はかかりません。10 人でも 10,000 人でも共有は無料で、利用量は作成者ではなく、使う人それぞれのプランの上限に数えられます。\n\n見分け方: 作成者の利用上限から引かれる(a)、作成者に API の料金が請求される(b)は、いずれも「作成者に費用はかからない」という説明と逆です。サインインすれば、使う人も Claude を使う機能を使えます(d)。",
   "refs": [
    "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them",
    "https://support.claude.com/en/articles/9547008-share-artifacts"
+  ],
+  "topics": [
+   "artifacts"
   ]
  },
  {
@@ -1669,9 +1809,12 @@
    "a",
    "b"
   ],
-  "explanation": "コード実行とファイル作成は隔離されたサンドボックスで動きます。ネットワークの外向き通信をオフにすると、サンドボックスの問題やプロンプトインジェクションがあってもデータが外に出るのを防げ、Excel のモデルやプレゼン資料の作成などの機能はそのまま使えます。「All domains」は最も柔軟ですが最もリスクが高い設定です。MCP の連携を有効にしている場合は、egress の設定にかかわらず、その接続を通じた通信が起こりえます。",
+  "explanation": "正解は a と b です。ヘルプセンターは、ネットワークの外向き通信(network egress)をオフにした構成を最も安全とし、サンドボックスの脆弱性やプロンプトインジェクションがあっても、データがサンドボックスの外に出ないと説明しています。一方、MCP の連携を有効にしている場合は、egress の設定にかかわらず、その接続を通じた通信が可能なままなので、MCP の構成は別に評価するよう求めています。\n\n見分け方: ネットワークをオフにしても、Excel のモデル作成やプレゼン資料の作成など、コード実行とファイル作成の機能はそのまま使えます(c)。「All domains」は最も柔軟ですが、最もリスクの高い選択肢とされています(d)。",
   "refs": [
    "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude"
+  ],
+  "topics": [
+   "file-creation"
   ]
  },
  {
@@ -1706,9 +1849,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "ヘルプは、ネットワークを (1) オフにして始め(最も安全)、(2) パッケージマネージャー(pip、npm など)を許可し、(3) 業務上必要な特定のドメインを許可リストに加える、という段階的な進め方を示しています。ネットワークを切っておくことは、サンドボックスの脆弱性やプロンプトインジェクションがあってもデータが外に出るのを防ぐ最後の防壁になります。",
+  "explanation": "正解は b です。ヘルプセンターは、慎重に進める組織に向けて、(1) ネットワークをオフにして始める(最も安全な構成)、(2) パッケージマネージャー(pip、npm など)を許可する、(3) 業務上必要な特定のドメインを許可リストに加える、という段階的な進め方を勧めています。最後の段階でも、何を許可しているかを把握したまま広げられます。\n\n見分け方: 「最も安全な状態から始めて、必要に応じて広げる」が軸です。すべてを許可してから止める(a)、最後にオフにする(c)は順序が逆です。最初から広く許可して設定を変えない(d)のは、段階的に広げる進め方ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude"
+  ],
+  "topics": [
+   "file-creation"
   ]
  },
  {
@@ -1743,9 +1889,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Team と Enterprise では、Owner か Primary Owner が Organization settings > Capabilities で組織全体の Web 検索を有効にする必要があります。有効になれば、メンバーはチャットの「+」から「Web search」をオンにできます。新しい Claude の体験では Web 検索のトグルはなく、Claude が役立つときに検索します。",
+  "explanation": "正解は b です。Team と Enterprise では、まず Owner か Primary Owner が Organization settings > Capabilities で組織全体の Web 検索を有効にする必要があります。有効になれば、メンバーはチャットの「+」から「Web search」をオンにでき、不要な会話ではオフにできます。なお、新しい Claude の体験には Web 検索のトグルはなく、Claude が役立つときに検索します。\n\n見分け方: Haiku 4.5 も Web 検索に対応するモデルとして挙げられているので、a は誤りです。usage credits の設定(c)が Web 検索の表示に関わるという記述はありません。Web 検索がデスクトップアプリだけの機能だという記述もありません(d)。",
   "refs": [
    "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+  ],
+  "topics": [
+   "web-search"
   ]
  },
  {
@@ -1780,10 +1929,14 @@
   "answer": [
    "b"
   ],
-  "explanation": "Web 検索を使うと、Claude の回答には出典への直接の引用やリンクが付きます。ヘルプは、Claude の回答を唯一の情報源にせず、Web 検索の結果を使うときは引用元を確認するよう勧めています。元のサイトには、Claude のまとめに含まれない重要な文脈や詳細があることがあります。",
+  "explanation": "正解は b です。ヘルプセンターは、Claude を唯一の情報源にせず、Web 検索の結果を使うときは Claude が示した引用元を確認するよう勧めています。元のサイトには Claude のまとめに含まれない重要な文脈や詳細があることがあり、回答の質は参照した情報源にも左右されるためです。Web 検索の回答には出典への直接の引用とリンクが付くので、自分で確かめられます。\n\n見分け方: 引用元があれば必ず一致する(a)、リンクが開けば内容も正しい(d)は、元のサイトで内容を確かめるという勧めを省いています。Web 検索なしで同じ質問をする(c)と、学習データの期限より後の情報は得られず、確認の方法として挙げられているものでもありません。",
   "refs": [
    "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on",
    "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+  ],
+  "topics": [
+   "hallucinations",
+   "web-search"
   ]
  },
  {
@@ -1818,9 +1971,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Web 検索がオンのとき、Claude は URL が示されると、そのページの内容を直接取得して分析できます(web fetch)。Web 検索では、画像の検索結果を会話に表示することもでき、別の設定は不要です。回答には出典の引用とリンクが付くので、元のページで内容を確かめられます。",
+  "explanation": "正解は b です。Web 検索がオンのとき、URL を示すと、Claude はそのページの内容を直接取得して分析できます。この機能は web fetch と呼ばれ、記事やブログなどの内容全体を扱えます。無料プランでは、長い記事を URL で要約させると記事全体がコンテキストに入り、利用上限を多く使う点に注意が必要です。\n\n見分け方: URL を示せばページの内容を取得できるので、キーワード検索の結果だけを使う(a)は誤りです。Research が必須だという記述はありません(c)。画像の検索結果も Web 検索の一部ですが、URL を示したときにページの画像だけを表示する(d)わけではありません。",
   "refs": [
    "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+  ],
+  "topics": [
+   "web-search"
   ]
  },
  {
@@ -1855,9 +2011,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "アーティファクトは、Claude に接続済みのアプリ(Asana、Google カレンダー、Slack など)やカスタムコネクタを読み書きできます。最初にアプリを使うとき、Claude はどのアプリとツールを使うかを示して承認を求め、個々のツールをオフにもできます。共有や公開をしたアーティファクトでも、使う人はそれぞれ自分のアプリを接続します。Team と Enterprise では Owner が組織全体でこの機能をオフにできます。",
+  "explanation": "正解は a です。アーティファクトは、Asana、Google Calendar、Slack など Claude に接続済みのアプリやカスタムコネクタを読み書きできます。最初にアプリを使うとき、Claude はどのアプリとツールを使うかを示して承認を求めます。個々のツールはオフにでき、その選択は以後の利用に引き継がれます。共有や公開をしたアーティファクトでも、使う人はそれぞれ自分のアプリを接続します。\n\n見分け方: 作成者の接続が同僚に共有される(b)のではなく、各自が接続します。アーティファクトはアプリを読むだけでなく書き込むこともできます(c)。操作ごとに承認が必要なコネクタのツールは、アーティファクトでは使えません(d)。",
   "refs": [
    "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them"
+  ],
+  "topics": [
+   "artifacts"
   ]
  },
  {
@@ -1892,9 +2051,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "「Anyone with the link」で共有したアーティファクトは、組織外の人やサインインしていない人も開けます。ただし、リンクだけで開いた人には、接続済みのアプリや Claude を使う部分は動かず、コメントも見たり追加したりできません。アプリからデータを取得する部分は、閲覧者自身の接続を使う仕組みだからです。",
+  "explanation": "正解は b です。「Anyone with the link」で共有したアーティファクトは、組織外の人や、多くの場合サインインしていない人も開けます。ただし、組織外から、またはサインインせずにリンクで開いた人には、アーティファクトは見えるものの、接続済みのアプリや Claude を使う部分は動かず、コメントを見たり追加したりもできません。\n\n見分け方: リンクだけの閲覧者にすべてが動く(a)わけではありません。多くのアーティファクトはサインインなしで開けるので、c も誤りです。接続済みのアプリを使う部分は作成者ではなく閲覧者の接続を使う仕組みなので、作成者の接続でデータが表示される(d)ことはありません。",
   "refs": [
    "https://support.claude.com/en/articles/9547008-share-artifacts"
+  ],
+  "topics": [
+   "artifact-sharing"
   ]
  },
  {
@@ -1929,9 +2091,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Claude Sheets は Pro、Max、Ultra、Team、Enterprise のプランでベータとして提供されています。Team プランでは既定でオンですが、Enterprise プランでは組織の設定でオンにされるまでオフです。見当たらない場合は、組織の管理者に設定を確認してもらいます。",
+  "explanation": "正解は a です。Claude Sheets は Pro、Max、Ultra、Team、Enterprise のプランでベータとして提供されています。Team プランでは既定でオンですが、Enterprise プランでは Organization settings > Artifacts でオンにされるまでオフです。Owner か Primary Owner が Templates の下でオンにし、組織の Artifacts もオンになっている必要があります。\n\n見分け方: Enterprise でも提供されているので、b は誤りです。Claude Sheets は Web とデスクトップに対応し、モバイルでは利用が限られるので、c は逆です。usage credits の設定(d)が Sheets の表示に関わるという記述はありません。",
   "refs": [
    "https://support.claude.com/en/articles/18324300-get-started-with-claude-sheets"
+  ],
+  "topics": [
+   "claude-sheets"
   ]
  }
 ]

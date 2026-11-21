@@ -31,9 +31,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "モデル選択は、能力、速度、費用の兼ね合いで決めます。大量で単純な処理は小型モデルが向いています。判断は推測ではなく、実際のデータでの評価に基づいて行います。",
+  "explanation": "正解は a です。公式ガイドは、モデルを能力、速度、費用の兼ね合いで選ぶとし、大量で単純な処理、費用に敏感な用途には、Claude Haiku 5.5 のような高速で安価なモデルから始める効率優先の進め方を勧めています。選択表でも、最も低い遅延と価格が必要なときは Haiku 5.5 で、例として大量の処理が挙がっています。この問題では、評価で精度の要件を満たすことが確認済みなので、上位のモデルを使う理由がありません。\n\n見分け方: 要件を満たしているのに最上位のモデルを使う(b)と、費用と遅延が増えるだけです。2 つのモデルに送って照合する(c)のは、単純な分類に対して費用が何倍にもなります。毎回ランダムに選ぶ(d)と、品質と費用が安定しません。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+  ],
+  "topics": [
+   "choosing-a-model"
   ]
  },
  {
@@ -68,10 +71,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "費用はリクエスト単価ではなく、タスクを完了するまでの合計で評価します。安いモデルでもターン数や再試行が増えれば、合計では高くつくことがあります。",
+  "explanation": "正解は a です。公式ガイドの選択表は、長時間の自律的なコーディングエージェントや大規模なリファクタリングに Claude Opus 5.5 を挙げています。また、複数のモデルを組み合わせる型として、上位のモデルが計画と統合を行い、大量の作業を安価なモデルに任せる orchestrator を紹介しています。ただし最適化ガイドは、組み合わせる前にまず 1 つのモデルで effort を振って測り、単一モデルを上回るときだけ採用するよう勧めています。\n\n見分け方: 費用は完了したタスク 1 件あたりで比べます。失敗したタスクはトークン、再試行、その後の影響の分まで費用がかかるため、すべてを最小のモデルにする(b)と、かえって高くつくことがあります。モデルの違いは速度だけではありません(c)。ターンごとにモデルを替える(d)と、モデルごとのキャッシュが使えません。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence",
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "choosing-a-model",
+   "cost-optimization"
   ]
  },
  {
@@ -106,9 +114,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "キャッシュは tools、system、messages の順に並んだ内容の先頭部分に対して働きます。途中に 1 バイトでも違いがあると、そこから後ろは再利用されません。cache_control で区切り(ブレークポイント)を指定します。",
+  "explanation": "正解は a です。プロンプトキャッシュは、tools、system、messages の順に並んだ接頭部分を、cache_control を付けたブロックまで含めて対象にします。一致は接頭部分の完全一致で判定されるため、公式ドキュメントは、ツール定義、システムの指示、資料、例のような変わらない内容をプロンプトの先頭に置き、再利用する部分の終わりに cache_control で区切りを付けるよう勧めています。\n\n見分け方: 変わる内容を先頭に置く(b)と、その後ろの接頭部分が毎回変わり、キャッシュに当たりません。キャッシュは並び順のどこかにある同じ内容を拾うものではなく、先頭からの接頭部分で判定します(c)。すべてを 1 つの user メッセージにまとめる(d)と、変わる部分と変わらない部分を分けて区切りを置けません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-caching",
+   "prompt-cache-invalidation"
   ]
  },
  {
@@ -122,7 +134,7 @@
    {
     "id": "a",
     "text": "キャッシュへの書き込みは通常の入力より割高で、キャッシュからの読み出しは大幅に安い",
-    "why": "書き込みに上乗せがあり、読み出しは通常入力の 1 割程度になる。"
+    "why": "書き込みは基本の入力単価より高く(5 分で 1.25 倍、1 時間で 2 倍)、読み出しは大幅に安い。読み出しは多くのモデルで 0.1 倍で、Opus 5.5 と Sonnet 5.5 は 0.05 倍、Fable 5.2 などは 0.025 倍になる。"
    },
    {
     "id": "b",
@@ -143,10 +155,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "既定の有効期間(5 分)では、書き込みは通常入力の 1.25 倍、読み出しは 0.1 倍です。1 時間の有効期間では、書き込みが 2 倍になります。一部の新しいモデルでは、読み出しの倍率がさらに低く設定されています。同じ接頭部分を繰り返し使うほど得になり、1 回しか使わない内容をキャッシュすると損になります。",
+  "explanation": "正解は a です。プロンプトキャッシュの料金は基本の入力単価に対する倍率で決まり、5 分の書き込みは 1.25 倍、1 時間の書き込みは 2 倍です。読み出し(ヒット)は多くのモデルで 0.1 倍ですが、Claude Opus 5.5 と Claude Sonnet 5.5 は 0.05 倍、Claude Fable 5.2 などは 0.025 倍と、モデルで異なります。5 分のキャッシュは 1 回の読み出しで、1 時間のキャッシュは 2 回の読み出しで元が取れます。\n\n見分け方: 書き込みも読み出しも課金されます(b)。読み出しは通常の入力より大幅に安く、速度だけの改善ではありません(c)。キャッシュは入力の接頭部分に対する仕組みで、出力トークンの生成には影響しません(d)。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
-   "https://platform.claude.com/docs/en/about-claude/pricing"
+   "https://platform.claude.com/docs/en/about-claude/pricing",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "api-pricing",
+   "prompt-caching"
   ]
  },
  {
@@ -181,9 +197,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "キャッシュが効いているかどうかは usage の cache_creation_input_tokens と cache_read_input_tokens で確認します。読み出しが 0 のまま続く場合は、タイムスタンプ、リクエスト ID、順序の定まらない JSON、ツール一覧の変動など、接頭部分を変えている要因を探します。",
+  "explanation": "正解は a です。キャッシュの書き込みはブレークポイントの位置でだけ起き、その位置までの接頭部分のハッシュで判定されます。公式ドキュメントは、タイムスタンプのようにリクエストごとに変わる内容を含むブロックにブレークポイントを置くと、毎回新しい書き込みになり読み出しが起きない、とよくある誤りとして説明しています。区切りは、リクエスト間で同一な最後のブロックに置きます。\n\n見分け方: max_tokens は出力の上限で、入力のキャッシュの判定には関係しません(b)。ストリーミングでもキャッシュは働き、usage は message_start のイベントで確認できます(c)。キャッシュの一致は接頭部分のハッシュで判定され、同じ API キーで別のモデルを呼ぶことが、このリクエストの接頭部分を変えることはありません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-cache-invalidation",
+   "prompt-caching"
   ]
  },
  {
@@ -218,9 +238,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "既定の有効期間は 5 分です。リクエストの間隔が 5 分を超える用途では、1 時間の有効期間を指定する選択肢があります(書き込みの料金は高くなります)。",
+  "explanation": "正解は a です。公式ドキュメントによると、キャッシュの既定の有効期間は 5 分で、キャッシュされた内容が使われるたびに追加料金なしで更新されます。期間は、キャッシュに書き込むか読み出すリクエストの開始から数えます。5 分では短い場合は、追加料金で 1 時間の有効期間(ttl: \"1h\")を指定できます。\n\n見分け方: 既定は 24 時間ではなく 5 分です(b)。キャッシュを手動で消す方法はなく、使われない状態が続くと自動で失効するので、無期限に残るわけでもありません(c)。有効期間は会話の単位ではなく時間で決まり、同じ接頭部分を持つ別のリクエストからも読み出せます(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-caching"
   ]
  },
  {
@@ -255,10 +278,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "即時の応答が不要な処理は Message Batches API で 50% 引きになります。全リクエストに共通する指示や資料があるなら、プロンプトキャッシュを併用して入力費用をさらに下げられます。",
+  "explanation": "正解は a です。Message Batches API は即時の応答を必要としない処理に向き、すべての利用が標準料金の 50% で課金されます。プロンプトキャッシュと併用でき、2 つの割引は重なるため、共通の指示部分をキャッシュすると入力の費用をさらに下げられます。ただしバッチ内のキャッシュの命中はベストエフォートです。夜間の大量の分類は、結果を急がない処理に当たります。\n\n見分け方: ストリーミング(b)は応答を順に受け取るための機能で、料金は下がりません。分類のような処理を最上位のモデルにする(c)と単価が上がるだけです。max_tokens(d)は出力の上限で、上げても費用は下がりません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "batch-processing",
+   "api-pricing"
   ]
  },
  {
@@ -293,10 +320,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "遅延を減らす方法には、より小型のモデルを選ぶ、出力を短くする、プロンプトキャッシュを使う、ストリーミングで体感を改善する、といった選択肢があります。ストリーミングは合計時間を変えずに、最初の表示までの時間を短縮します。",
+  "explanation": "正解は a です。公式ガイド Reducing latency は、遅延を減らす方法の 1 つとしてストリーミングを挙げています。ストリーミングでは、出力全体が完成する前にモデルが応答を返し始めるため、利用者が出力を即座に見られ、アプリケーションの体感の応答性が大きく上がります。回答の内容は変わりません。\n\n見分け方: max_tokens(b)は出力の長さの上限で、生成の速さは変わりません。同じ質問を 2 回送る(c)と、費用が倍になるうえ待ち時間も縮みません。Message Batches API(d)は即時の応答を必要としない処理のための非同期の仕組みで、結果は最大 24 時間後になりうるので、対話には向きません。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency",
    "https://platform.claude.com/docs/en/build-with-claude/streaming"
+  ],
+  "topics": [
+   "reduce-latency"
   ]
  },
  {
@@ -331,9 +361,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "effort は output_config の中で指定します。分類や短い応答のような処理は低い設定で十分なことが多く、コーディングや長い自律作業は高い設定が効果を発揮します。既定値はモデルによって異なるため、用途ごとに実データで測って決めます。",
+  "explanation": "正解は a です。effort は、Claude が応答にどれだけのトークンを使うかを調整し、応答の徹底さとトークン効率を交換する設定です。Messages API では output_config.effort に指定します。本文、ツール呼び出し、思考のすべてのトークンに影響し、水準は low から max まであります。公式は、単純な処理や速度が重要な処理は low、複雑な推論や難しいコーディングは高い水準を目安とし、効果は用途ごとに評価するよう勧めています。\n\n見分け方: 一時的なエラーの再試行の回数(b)は SDK などクライアント側の設定です。出力の長さの上限(c)は max_tokens の役割で、effort は厳密なトークン予算ではなく振る舞いの目安です。effort はレート制限(d)とは関係しません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/effort"
+  ],
+  "topics": [
+   "effort"
   ]
  },
  {
@@ -368,10 +401,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "モデル選択には、小型モデルから始めて不足があれば上げる進め方と、高性能なモデルで実現できることを確かめてから下げる進め方があります。どちらも、評価に基づいて判断します。",
+  "explanation": "正解は a です。公式ガイドは、モデルを替えるかどうかを決めるには、用途に合ったベンチマークテストを作ることを最も重要な手順とし、実際のプロンプトとデータで試し、モデルごとに回答の正確さ、品質、例外的な入力の扱いを比べ、性能と費用を比べて決めるよう勧めています。小さいモデルから始める進め方も、能力の高いモデルから始める進め方も、評価で性能が要件を満たすかを確かめます。\n\n見分け方: 価格だけで決める(b)と、品質の要件を満たすか分からないまま本番に出ます。評判だけで選ぶ(c)と、自分の用途での性能が分かりません。本番に全モデルを同時に出して苦情で比べる(d)と、利用者に影響が出ます。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "choosing-a-model"
   ]
  },
  {
@@ -406,10 +442,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "小型モデルは、リアルタイムの用途、大量処理、サブエージェントの下請け作業に向きます。",
+  "explanation": "正解は a です。公式ガイドの選択表は、最も低い遅延と価格が必要なときは Claude Haiku 5.5 を挙げ、用途の例としてリアルタイムのアプリケーション、大量の処理、サブエージェントの作業を示しています。Reducing latency も、速度が重要な用途では Haiku 5.5 が最も速い応答を返すとしています。Models overview の相対的な遅延でも Haiku 5.5 は Fastest です。\n\n見分け方: 最も高性能なモデル(b)の相対的な遅延は Moderate で、単価も高くなります。系統によって遅延は異なります(c)。Message Batches API(d)は即時の応答を必要としない処理のためのもので、リアルタイム用途には向きません。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
-   "https://platform.claude.com/docs/en/about-claude/models/overview"
+   "https://platform.claude.com/docs/en/models/overview",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency"
+  ],
+  "topics": [
+   "choosing-a-model",
+   "reduce-latency"
   ]
  },
  {
@@ -444,10 +485,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "費用対効果は、タスクの成功率と、完了までに消費したトークンの合計で評価します。",
+  "explanation": "正解は a です。最適化ガイドは、モデルをトークン単価ではなく完了したタスク 1 件あたりの費用で比べるよう勧めています。支払うのは完了したタスクに対してであり、能力の高いモデルは少ない作業でタスクを終えて単価の差の多くを打ち消すことがあります。逆に、失敗したタスクはそのトークン、再試行、その後の影響の分まで費用がかかります。\n\n見分け方: 1 リクエストあたりの費用(b)は、完了までにかかったリクエストの回数を反映しません。100 万トークンあたりの単価(c)は、実際に消費したトークンの量を反映しません。1 トークンの生成時間(d)は速度の指標で、費用の指標ではありません。",
   "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence",
    "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
    "https://platform.claude.com/docs/en/about-claude/pricing"
+  ],
+  "topics": [
+   "cost-optimization"
   ]
  },
  {
@@ -482,9 +527,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "出力は入力より高価なので、不要に長い出力を避けることが節約になります。応答時間も、主に出力の長さで決まります。",
+  "explanation": "正解は a です。Claude API の料金は 100 万トークンあたりで入力と出力に分かれ、出力の単価のほうが高く設定されています。たとえば Claude Opus 5.5 は入力 $4、出力 $20 です。最適化ガイドは、Haiku 5.5、Sonnet 5.5、Opus 5.5、Fable 5.2、Fable 5.1 で出力の単価が入力の 5 倍であることを挙げ、短い答えを頼むよう勧めています。エージェントのループでは、モデルが書いたトークンが後のターンの入力として繰り返し送られます。\n\n見分け方: 入力と出力は同じ単価ではありません(b)。単価が高いのは出力です(c)。出力トークンも課金されます(d)。",
   "refs": [
-   "https://platform.claude.com/docs/en/about-claude/pricing"
+   "https://platform.claude.com/docs/en/about-claude/pricing",
+   "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence"
+  ],
+  "topics": [
+   "api-pricing"
   ]
  },
  {
@@ -519,9 +568,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ブレークポイントを複数置くと、更新頻度の異なる部分(ツール定義、システムプロンプト、資料、会話履歴)を別々にキャッシュできます。",
+  "explanation": "正解は a です。公式ドキュメントによると、1 つのプロンプトに定義できるキャッシュのブレークポイント(cache_control)は最大 4 つです。複数のブレークポイントは、更新の頻度が違う部分(めったに変わらないツール定義と毎日変わる資料など)を別々にキャッシュしたいときや、伸びる会話が前回の書き込みから 20 ブロック以上先に進むときに使います。自動キャッシュを併用すると、その分も 4 つの枠の 1 つを使います。\n\n見分け方: 1 つに限られるわけではありません(b)。上限があり、無制限ではありません(c)。上限はメッセージの数とは関係なく決まっています(d)。なお、ブレークポイント自体に料金はかかりません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-caching"
   ]
  },
  {
@@ -556,9 +608,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "キャッシュには、モデルごとに最小のトークン数があります。これに満たない場合は、黙って通常の入力として処理されます。usage で実際の書き込みと読み出しを確認します。",
+  "explanation": "正解は a です。キャッシュできるプロンプトには、モデルごとに最小の長さがあります。たとえば Claude Opus 5.5、Sonnet 5.5、Haiku 5.5 は 512 トークン、Claude Haiku 4.5 は 4,096 トークンです。これより短い内容は cache_control を付けてもキャッシュされず、エラーも返さずに通常の入力として処理されます。usage の cache_creation_input_tokens と cache_read_input_tokens が両方とも 0 なら、キャッシュされていません。\n\n見分け方: system 配列のブロックはキャッシュの対象です(b)。プロンプトキャッシュは現行のすべてのモデルで使え、追加の契約は要りません(c)。cache_control は tools、system、messages のブロックに付けられ、user メッセージに限りません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-caching"
   ]
  },
  {
@@ -593,9 +648,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "1 時間のキャッシュは、書き込みの料金が高くなる代わりに、間隔の長い呼び出しでも読み出しの割引を受けられます。",
+  "explanation": "正解は a です。公式ドキュメントは、5 分より長い間隔で、1 時間以内に再利用されるプロンプトに 1 時間の有効期間を勧めており、例としてサブエージェントの作業が 5 分を超える場合を挙げています。cache_control に ttl: \"1h\" を指定します。書き込みは基本の入力単価の 2 倍(5 分は 1.25 倍)ですが、2 回の読み出しで元が取れます。\n\n見分け方: キャッシュをやめる(b)と、毎回すべてを通常の入力として払います。自前のタイマーで無意味なリクエストを送り続ける(c)と、使わない時間帯にも費用がかかり、1 時間の指定のほうが単純です。資料を書き換える(d)と接頭部分が一致しなくなり、キャッシュに当たりません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-caching",
+   "api-pricing"
   ]
  },
  {
@@ -630,9 +689,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "キャッシュは、tools、system、messages の順の接頭部分に対して働きます。前の方ほど変更の影響が大きいので、ツール定義とシステムプロンプトは会話の途中で変えないようにします。",
+  "explanation": "正解は a です。キャッシュは tools → system → messages の階層に従い、ある階層を変えると、その階層とそれ以降のすべてのキャッシュが無効になります。公式ドキュメントの表では、ツール定義(名前、説明、パラメータ)の変更は tools、system、messages のすべてを無効にするとされています。キャッシュは接頭部分のバイト単位の一致で判定されるためです。\n\n見分け方: 変更したツールの分だけが無効になるわけではありません(b)。先頭の接頭部分が変わっているので、影響がない(c)ことはありません。system のキャッシュも tools の後ろにあるため無効になります(d)。なお対応モデルでは、tools を書き換えずにメッセージでツールを追加する方法があります。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-cache-invalidation"
   ]
  },
  {
@@ -667,9 +729,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "会話では、履歴が毎ターン伸びます。末尾にブレークポイントを置くと、直前までの接頭部分がキャッシュから読み出され、差分だけが新たに処理されます。",
+  "explanation": "正解は a です。伸びていく会話では、各リクエストの最後のブロックにブレークポイントを置きます。前のターンまでの内容は変わらないので、次のリクエストは前回書き込まれたエントリをさかのぼって見つけて読み出し、新しく加わった部分だけが書き込まれます。自動キャッシュはこの位置を自動で最後のブロックへ進めます。さかのぼるのは 20 ブロックまでなので、1 ターンで 20 ブロック以上増える場合は、2 つ目のブレークポイントを置きます。\n\n見分け方: 最初のメッセージに固定する(b)と、後のターンの履歴はキャッシュされません。位置を無作為に変える(c)と、前回の書き込みと一致せず読み出しが安定しません。会話の履歴もキャッシュできます(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-caching"
   ]
  },
  {
@@ -704,9 +769,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "キャッシュはモデル単位です。複数のモデルを使い分ける構成では、モデル間でキャッシュを再利用できない点を、費用の見積もりに含めます。",
+  "explanation": "正解は a です。Claude Code のプロンプトキャッシュの説明は、モデルごとにキャッシュが別であり、/model でモデルを切り替えると、内容が同じでも次のリクエストは会話履歴全体をキャッシュなしで読み込むとしています。Claude Code はこのため、キャッシュが有効な間にモデルを切り替えるときに確認を求めます。キャッシュが使えないときは、エラーではなく通常の入力として処理されます。\n\n見分け方: システムプロンプトが同じでも、別のモデルのキャッシュは読み出せません(b)。上位と下位のモデルの間で一部だけを共有する仕組み(c)は、出典にありません。モデルを切り替えてもエラーにはならず、キャッシュに当たらないだけです(d)。",
   "refs": [
+   "https://code.claude.com/docs/en/prompt-caching",
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-cache-invalidation"
   ]
  },
  {
@@ -741,10 +810,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツール定義は、リクエストの先頭に位置します。順序と内容を固定し、最後の定義にブレークポイントを置くと、まとめてキャッシュできます。",
+  "explanation": "正解は a です。公式ドキュメントによると、ツール定義は tools 配列の最後のツールに cache_control を置くとキャッシュでき、そのツールまでに定義されたすべてのツールが 1 つの接頭部分としてキャッシュされます。tools は tools → system → messages の階層の先頭にあるため、ツールの順序と内容を固定しておくことが前提になります。\n\n見分け方: tools 配列のツール定義は、キャッシュできる対象として明記されています(b)。説明を短くして量を減らす(c)方法もありえますが、キャッシュを使えば定義を削らずに入力の費用を下げられます。ツール定義を user メッセージに貼り付ける(d)と、tools として定義されたツールではなくなります。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-caching"
   ]
  },
  {
@@ -780,9 +851,12 @@
    "a",
    "b"
   ],
-  "explanation": "キャッシュは、費用と応答時間の両方を改善します。長い資料や多数の例を含むプロンプト、ツールの多いエージェント、長い会話で効果が大きくなります。",
+  "explanation": "正解は a と b です。プロンプトキャッシュでは、キャッシュされた接頭部分が見つかるとそれを使い、処理時間と費用を減らします。読み出しは基本の入力単価の一部(多くのモデルで 0.1 倍)で課金されるため、繰り返し送る入力の費用が下がります(a)。また公式ドキュメントは、長い文書では最初のトークンまでの時間が改善するとしています(b)。\n\n見分け方: 公式ドキュメントは、キャッシュは出力トークンの生成に影響せず、キャッシュを使わない場合と同じ応答が返るとしています。そのため、出力の品質は上がりません(c)。キャッシュの倍率は入力に対するもので、出力トークンの単価は変わりません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-caching"
   ]
  },
  {
@@ -817,9 +891,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "応答時間を縮めるには、出力を短くする(簡潔な回答を求める、不要な前置きを省かせる)、小型のモデルを使う、といった方法が効きます。max_tokens は上限であり、短く書かせる指示にはなりません。",
+  "explanation": "正解は a です。公式ガイド Reducing latency は、遅延を減らす方法として、プロンプトと出力のトークン数を性能を保てる範囲で減らすことを挙げ、処理し生成するトークンが少ないほど応答は速くなるとしています。具体策として、Claude に簡潔に答えるよう直接頼むこと、max_tokens で出力の長さに上限を設けることを挙げています。ほかに、速いモデルを選ぶ、ストリーミングで体感を改善する、という方法もあります。\n\n見分け方: システムプロンプトの文体(b)は、トークン数ほど時間を左右しません。API キーの長さ(c)と、リクエストの JSON のインデント(d)は、モデルが処理し生成するトークンの数に関係しません。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency"
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency",
+   "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence"
+  ],
+  "topics": [
+   "reduce-latency"
   ]
  },
  {
@@ -854,10 +932,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "簡潔な出力がほしいときは、プロンプトで長さを指示するか、effort を調整します。max_tokens を下げるだけでは、途中で切れた出力になります。",
+  "explanation": "正解は a です。最適化ガイドは、max_tokens は 1 つの応答の上限で、モデルからは見えないため、下げてもモデルが節約して書くことはないと説明しています。上限に達すると stop_reason が \"max_tokens\" になり、出力は途中で切れます。一方 effort は、モデルが応答にどれだけのトークンを使うかの振る舞いの目安で、厳密な予算ではありません。返答の長さそのものを変えたいときは、プロンプトで指示します。\n\n見分け方: 2 つは役割が違います(b)。max_tokens を下げても、モデルは上限に合わせて簡潔に書くようにはなりません(c)。effort は出力側の振る舞いの設定で、入力トークンの上限ではありません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/effort",
+   "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence",
    "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ],
+  "topics": [
+   "effort",
+   "cost-optimization"
   ]
  },
  {
@@ -892,9 +975,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "思考は、複雑な分析、多段階の計画、難しいコーディングなどで効果を発揮します。単純な処理では、費用と時間が増えるだけになります。",
+  "explanation": "正解は a です。思考が有効なとき、Claude は回答の前に問題を言い直し、方法を試し、途中の結果を確かめ、成り立たない道を捨てます。公式ドキュメントは、そのため数学、コーディング、分析、長いエージェント作業のような、途中の作業が答えの質を左右する複雑な課題で性能が上がるとしています。適応的な思考では、複数段階の数学の問題は深い推論を引き起こし、単純な事実の質問には思考なしで答えることがあります。\n\n見分け方: 挨拶への返答(b)、決まった定型文の出力(c)、単語 1 つの翻訳(d)は、途中の推論が答えの質を左右しない単純な処理です。思考のトークンは出力として課金されるため、こうした処理では費用と時間が増えるだけです。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/extended-thinking"
+   "https://platform.claude.com/docs/en/build-with-claude/thinking",
+   "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost"
+  ],
+  "topics": [
+   "thinking"
   ]
  },
  {
@@ -929,10 +1016,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "思考の深さは、用途ごとに測って決めます。応答時間の要件が厳しい経路では浅く、正確さが重要な経路では深く設定します。",
+  "explanation": "正解は a です。思考は複雑な課題での性能を上げますが、思考に使われたトークンは、思考の文章が返されない場合も出力トークンとして課金され、max_tokens にも数えられます。effort を上げると、Claude はより頻繁に、より深く思考します。公式ドキュメントは、低い effort は応答時間と費用を大きく下げうる一方で能力がいくらか下がるとし、効果を用途ごとに評価するよう勧めています。\n\n見分け方: 思考のトークンは課金され、生成に時間もかかります(b)。思考は出力側のトークンで、入力トークンを減らしません(c)。思考の深さはレート制限を緩める設定ではありません(d)。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/extended-thinking",
+   "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost",
+   "https://platform.claude.com/docs/en/build-with-claude/thinking",
    "https://platform.claude.com/docs/en/build-with-claude/effort"
+  ],
+  "topics": [
+   "thinking",
+   "effort"
   ]
  },
  {
@@ -967,10 +1059,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "新しいモデルは指示への反応が良く、旧モデル向けの回避策(強い強調、細かすぎる手順)が不要になったり、害になったりします。評価で確かめながら移行します。",
+  "explanation": "正解は a です。Model deprecations は、後継モデルの自分のタスクでの性能を測るため、新しいモデルでアプリケーションを十分に試すよう勧めています。最適化ガイドも、モデルの世代によってプロンプトへの反応が違うため、モデルを替えるたびにプロンプトを見直すよう勧めています。既存の評価セットで新旧を比べ、必要な箇所だけ直すのが適切です。\n\n見分け方: モデル ID だけを替えてすぐに本番へ出す(b)と、挙動の変化に気付けません。根拠なく全部を書き直す(c)必要はありません。プロンプトのベストプラクティスは、システムプロンプトへの反応が良くなったモデルでは「CRITICAL: You MUST」のような強い表現が過剰な呼び出しを招くことがあるとし、和らげるよう勧めています(d は逆)。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
-   "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+   "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+   "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "model-migration"
   ]
  },
  {
@@ -1005,10 +1102,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "最新の情報が必要な用途では、Web 検索ツール、RAG、現在の日付や関連データのプロンプトへの挿入によって、知識を補います。",
+  "explanation": "正解は a です。モデルの知識には期限があり、Models overview は現行モデルの信頼できる知識の期限(Reliable knowledge cutoff)を示しています。それ以降の出来事はモデルの知識にないため、外から与える必要があります。Web 検索ツールは、Claude にリアルタイムの Web の内容へのアクセスを与え、知識の期限を超えた最新の情報で、出典を示しながら答えられるようにします。\n\n見分け方: effort(b)は応答にかけるトークンの量を調整する設定で、モデルの知識は増えません。max_tokens(c)は出力の長さの上限です。同じ質問を繰り返しても(d)、モデルが知らない情報は出てきません。",
   "refs": [
-   "https://platform.claude.com/docs/en/about-claude/models/overview",
+   "https://platform.claude.com/docs/en/models/overview",
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool"
+  ],
+  "topics": [
+   "choosing-a-model"
   ]
  },
  {
@@ -1043,11 +1143,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "費用の最適化は、現状の内訳の把握から始めます。キャッシュの読み出しがどれだけあるか、入力と出力のどちらが大きいかを見て、効果の大きい対策を選びます。",
+  "explanation": "正解は a です。最適化ガイドは、品質を下げずに費用を減らす手段として、プロンプトキャッシュ、不要なトークンの削減、バッチ処理、現在のモデルに合わせたプロンプトの見直しを挙げ、最初にキャッシュに取り組むよう勧めています(バッチは遅延と引き換えです)。モデルの選択や effort は費用と知能を交換する手段で、自分の作業で測りながら調整します。\n\n見分け方: 先に最も安いモデルに替える(b)と、品質が落ちるおそれのある手段から始めることになります。max_tokens はモデルから見えない上限で、極端に下げる(c)と出力が途中で切れ、そのターンも課金されます。システムプロンプトを消す(d)と、必要な指示が失われます。",
   "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence",
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
    "https://platform.claude.com/docs/en/about-claude/pricing"
+  ],
+  "topics": [
+   "cost-optimization"
   ]
  },
  {
@@ -1082,10 +1186,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "バッチでは処理の順序が決まっていないため、キャッシュの命中は確実ではありません。共通の接頭部分を揃え、長めの有効期間を使うと、命中しやすくなります。",
+  "explanation": "正解は a です。Message Batches API はプロンプトキャッシュに対応しており、2 つの割引は重ねて適用されます。ただし、バッチのリクエストは非同期かつ並行に、順不同で処理されるため、キャッシュの命中はベストエフォートで、命中率は利用の形によって 30〜98% 程度とされています。命中率を上げるには、すべてのリクエストに同じ cache_control ブロックを入れ、共有する内容を多くし、1 時間のキャッシュを使います。\n\n見分け方: 併用はできます(b)。2 つの割引は重なり、片方だけが適用されるわけではありません(c)。バッチの処理順は保証されず、すべてのリクエストがキャッシュに当たる保証はありません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "batch-processing",
+   "prompt-caching"
   ]
  },
  {
@@ -1120,10 +1228,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "1 つのモデルで effort を調整する構成は、キャッシュを共有でき、運用も単純です。複数モデルの構成は、測定で効果を確かめてから採用します。",
+  "explanation": "正解は a です。最適化ガイドは、2 つ目のモデルを加える前に、今のモデルで effort を振って測り、差が残るなら能力の高いモデルを単独で低い effort にした場合の費用も測るよう勧めています。組み合わせは、単一モデルの得点と費用の曲線を上回るときだけ採用します。測定では、Claude Opus 5.5 の low が Sonnet 5.5 の既定とほぼ同じ解決率だった例があります。\n\n見分け方: 費用は完了したタスク 1 件あたりで比べるもので、単価の安いモデルが常に安く済むわけではありません(b)。常に最上位のモデルを最高の effort で使う(c)と、多くの処理で費用と時間が過剰になります。公式は自分の作業で測って決めるよう勧めており、直感で決める(d)のは根拠になりません。",
   "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence",
    "https://platform.claude.com/docs/en/build-with-claude/effort",
    "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+  ],
+  "topics": [
+   "cost-optimization",
+   "effort"
   ]
  },
  {
@@ -1158,10 +1271,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "最初のトークンまでの時間は、入力の量、思考の深さ、モデルの大きさに左右されます。体感を重視する用途では、ストリーミングと合わせて調整します。",
+  "explanation": "正解は a です。プロンプトキャッシュでは、キャッシュされた接頭部分が見つかるとそれを使い、処理時間を減らします。公式ドキュメントは、長い文書では最初のトークンまでの時間(TTFT)が改善するとしており、5 分と 1 時間のキャッシュで遅延の効果は同じです。Reducing latency も、処理するトークンが少ないほど応答が速くなるとしています。\n\n見分け方: 出力の最大長を伸ばしても(b)、応答が始まるまでの時間は縮みません。ツール定義を増やす(c)と処理する入力が増えます。思考は回答の本文の前に thinking ブロックとして生成されるため、思考を深くする(d)と最初の本文が出るまでがかえって遅くなりえます。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency"
+  ],
+  "topics": [
+   "prompt-caching",
+   "reduce-latency"
   ]
  },
  {
@@ -1196,10 +1313,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "統括役に高性能なモデル、作業役に小型モデルを置く構成は、品質を保ちながら費用と時間を抑えます。",
+  "explanation": "正解は a です。公式ガイドは、複数のモデルを組み合わせる型の 1 つとして、上位のモデルがループを回して計画・振り分け・統合を行い、大量の作業を安価なモデルに任せる orchestrator を紹介しています。Anthropic のマルチエージェント研究システムも、Claude Opus 4 の主エージェントが Claude Sonnet 4 のサブエージェントに作業を任せる構成でした。ただし最適化ガイドは、測定で委任が有利だったのは限られた場面だったとして、採用前に測るよう勧めています。\n\n見分け方: 上位のモデルを一切使わない(b)と、難しい判断を任せる先がありません。1 文ごとにモデルを替える(c)と、モデルごとのキャッシュが使えません。両方に送って長い回答を選ぶ(d)と、費用が倍になり、長さは品質の基準になりません。",
   "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence",
    "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "cost-optimization",
+   "choosing-a-model"
   ]
  },
  {
@@ -1218,7 +1340,7 @@
    {
     "id": "b",
     "text": "temperature を下げて、思考に使われるトークンを減らす",
-    "why": "temperature は出力のばらつきに関わる設定で、思考の量を決めるものではない。"
+    "why": "temperature は思考の量を決める設定ではない。また Claude 4.7 以降のモデルでは非既定値の temperature がエラーになり、API バージョン 2026-10-21 では削除されている。"
    },
    {
     "id": "c",
@@ -1234,10 +1356,14 @@
   "answer": [
    "d"
   ],
-  "explanation": "Claude Fable 5.2 は 5 段階の effort すべてに対応し、API の既定は high です。適応的な思考(adaptive thinking)が常に有効なため、思考の深さ、応答時間、費用を調整する主な手段は effort になります。公式は high から始め、評価で品質が保てる場合に medium や low へ下げることを勧めています。",
+  "explanation": "正解は d です。Claude Fable 5.2 は 5 段階の effort すべてに対応し、API の既定は high です。適応的な思考が常に有効なため、思考の深さ、遅延、費用を調整する主な手段は effort になります。公式は high から始め、最も難しい長時間の作業で効果を測れたら xhigh へ上げ、評価で品質が保てるところは medium や low に下げるよう勧めています。\n\n見分け方: Fable 5.2 は思考が常に有効で、リクエストごとに思考の有無を切り替える前提(a)は成り立ちません。temperature(b)は思考の量を決める設定ではなく、Claude 4.7 以降のモデルでは非既定値がエラーになります。max_tokens(c)は思考と本文を合わせた出力の厳密な上限で、下げると応答が途中で切れるだけです。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/effort",
    "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost"
+  ],
+  "topics": [
+   "effort",
+   "thinking"
   ]
  },
  {
@@ -1272,9 +1398,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "多くのモデルは effort の既定が high ですが、Claude Opus 5.5 と Claude Haiku 5.5 は medium です。Opus 5 以前の Opus は high が既定のため、effort を省いたリクエストは、Opus 5.5 では 1 段低い水準で動きます。モデルを切り替えるときは、既定値の違いを確かめ、必要なら明示します。",
+  "explanation": "正解は a です。effort の既定値は多くのモデルで high ですが、Claude Opus 5.5 と Claude Haiku 5.5 は medium です。公式ドキュメントは、Claude Opus 5 以前の Opus は high が既定のため、effort を省いたリクエストは Opus 5.5 では 1 段低い水準で動くと明記しています。effort は応答のすべてのトークンに影響するため、傾向が変わりえます。以前と同じ水準にしたいときは、effort を明示します。\n\n見分け方: Opus 5.5 は 5 段階すべての effort に対応しています(b)。既定は max ではなく medium です(c)。effort は省略でき、省略するとモデルの既定値が使われます(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/effort"
+  ],
+  "topics": [
+   "effort",
+   "model-migration"
   ]
  },
  {
@@ -1309,9 +1439,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "fast モードは、対応するモデルで出力トークンの生成速度を最大 2.5 倍にします。料金は割増です。効果は 1 秒あたりの出力トークン数に表れ、最初のトークンまでの時間を縮めるものではありません。リクエストに speed: \"fast\" を指定して使います。",
+  "explanation": "正解は c です。fast モードは、対応するモデル(Claude Fable 5.2、Claude Mythos 5.2、Claude Opus 5.5 など)で、出力トークンの毎秒生成数を最大 2.5 倍にする機能です。リクエストに speed: \"fast\" を指定して使い、料金は割増で、Opus 5.5 では入力 $8、出力 $40(100 万トークンあたり)と標準の 2 倍です。同じモデルを速い推論構成で動かすもので、知能や能力は変わりません。\n\n見分け方: 速度の向上は 1 秒あたりの出力トークン数に表れ、最初のトークンまでの時間を縮めるものではありません。料金も割増です(a)。小さいモデルに切り替える機能ではなく、料金も下がりません(b)。入力の接頭部分を再利用するのはプロンプトキャッシュです(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/fast-mode"
+  ],
+  "topics": [
+   "fast-mode"
   ]
  },
  {
@@ -1346,10 +1479,15 @@
   "answer": [
    "d"
   ],
-  "explanation": "思考の設定と effort の水準を同じに保った連続するリクエストでは、プロンプトキャッシュが保たれます。解決された effort の値はプロンプトに反映されるため、リクエストの間で変えると、キャッシュの区切り(ブレークポイント)が無効になることがあります。",
+  "explanation": "正解は d です。思考の設定と effort の水準を同じに保った連続するリクエストでは、プロンプトキャッシュが保たれます。公式ドキュメントによると、解決された effort の値はプロンプトに反映されるため、リクエストの間で変えるとキャッシュのブレークポイントが無効になりえます。messages のキャッシュは必ず無効になり、モデルによっては tools と system も無効になります。対応モデルでは、per-message effort で変えるとキャッシュが保たれます。\n\n見分け方: effort を指定してもキャッシュは使え、同じ設定を続ければ保たれます(a)。effort はモデルを切り替える設定ではありません(b)。low のリクエストで書き込みが省かれるという記述(c)は、出典にありません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+   "https://platform.claude.com/docs/en/build-with-claude/effort"
+  ],
+  "topics": [
+   "prompt-cache-invalidation",
+   "effort"
   ]
  }
 ]

@@ -82,6 +82,7 @@ for (const cert of ['developer', 'architect', 'architect-pro', 'associate']) {
   console.log(`  計 ${total} 問`);
   if (topics.size) {
     console.log(`  トピック ${topics.size} 件。トピック付きの問題 ${withTopics} / ${total} 問`);
+    if (withTopics !== total) err(`${cert}: トピックのない問題が ${total - withTopics} 問ある(${tpath} がある資格では全問に必要)`);
     for (const t of topics) if (!usedTopics.has(t)) err(`${tpath} ${t}: どの問題からも参照されていない`);
   }
   for (const [s, n] of Object.entries(scenarios)) console.log(`  シナリオ ${s}: ${n} 問`);

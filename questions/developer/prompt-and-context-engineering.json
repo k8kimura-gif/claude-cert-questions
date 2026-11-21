@@ -31,9 +31,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "XML タグは、プロンプトの各部分を明確に分けるのに有効です。決まったタグ名があるわけではなく、内容を表す一貫した名前を付けます。出力をタグで囲むよう求めれば、後処理での抽出も容易になります。",
+  "explanation": "正解は a です。Prompting best practices は、XML タグは Claude が複雑なプロンプトを曖昧さなく解釈するのに役立ち、とくに指示、文脈、例、差し込む入力が混ざるときに有効だとしています。内容の種類ごとに <instructions>、<context>、<input> のような専用のタグで囲むと、取り違えが減ります。タグ名に決まりはなく、一貫した、内容を表す名前を使い、自然な階層があれば入れ子にします。\n\n見分け方: 大文字(b)は強調であって、部分の境界を示しません。ドキュメントは強い言い回しが過剰な反応を招く場合があるとしています。空行(c)は、どの部分が何であるかを伝えません。別々のリクエストに分ける(d)と、指示と資料と例が同じ文脈に入らず、資料を踏まえた回答ができなくなります。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/use-xml-tags"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "use-xml-tags"
   ]
  },
  {
@@ -68,9 +71,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "例示(マルチショット)は、出力の精度、一貫性、品質を上げる確実な方法です。例は実際の用途に近く、偏りのないものを選び、タグで囲んで指示と区別します。",
+  "explanation": "正解は a です。Prompting best practices は、例を出力の形式、口調、構造を導く最も確実な方法の 1 つとし、関連性(実際の用途を映す)、多様性(意図しないパターンを拾わない程度にばらつかせる)、構造化(<example> タグで囲み、複数なら <examples> にまとめる)を満たすよう勧めています。最良の結果には 3〜5 件が目安です。\n\n見分け方: 例を 1 件だけにする(b)と、多様性がなく、その例に偶然ある特徴まで拾われやすくなります。例を示さずに説明だけにする(c)のは、出力の例の方が抽象的な指示より効果的だという記述(Increase output consistency)に反します。100 件以上(d)は目安の 3〜5 件から大きく外れ、トークンも多く使います。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "multishot-prompting"
   ]
  },
  {
@@ -105,9 +111,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "長文を扱うときは、文書を上、質問を下に置きます。複数の文書はそれぞれタグで囲み、出典などのメタデータを添えます。回答の前に関連箇所を引用させると、無関係な部分に惑わされにくくなります。",
+  "explanation": "正解は a です。Prompting best practices は、20k トークン以上の大きな文書を扱うときは、長い文書や入力をプロンプトの上部、つまり質問、指示、例より前に置くよう勧めており、すべてのモデルで性能が上がるとしています。質問を末尾に置くと、テストでは応答の質が最大 30% 上がり、とくに複雑な複数文書の入力で効果があります。\n\n見分け方: 質問を冒頭に置く(b)のは、推奨と逆の配置です。文書を分割して別々のリクエストにする(c)と、各リクエストには一部しか入らず、文書全体を踏まえた回答ができません。文書を削る(d)と、答えに必要な情報が失われます。長い文書では、まず関連箇所を引用させる方法も勧められています。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "long-context-prompting"
   ]
  },
  {
@@ -136,15 +146,19 @@
    {
     "id": "d",
     "text": "temperature を上げる",
-    "why": "ばらつきが増えるだけで、指示の解釈は改善しない。"
+    "why": "temperature は出力のばらつきに関わる値で、指示の解釈は改善しない。多くの最新モデルでは既定値以外の temperature は 400 エラーになる。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "プロンプトは、背景を知らない優秀な同僚に説明するつもりで、明確かつ直接に書きます。目的、対象読者、成功の基準を伝えると、Claude は状況に合った判断ができます。",
+  "explanation": "正解は a です。Prompting best practices は、Claude Opus 4.5 と Claude Opus 4.6 は以前のモデルよりシステムプロンプトへの反応がよく、強い言い回しで過剰に反応(overtrigger)しうるとし、「CRITICAL: You MUST use this tool when...」を「Use this tool when...」のような普通の言い方に和らげるよう勧めています。また、指示の背景や理由を説明すると、Claude は目的を理解して的を絞った応答ができ、説明から一般化もできます。\n\n見分け方: 命令を繰り返してさらに強調する(b)と、過剰な反応が強まる方向です。指示をすべて削る(c)と、必要な指示まで失われます。temperature(d)は出力のばらつきを調整するもので、指示の解釈を変えません。多くの最新モデルでは、既定値以外の temperature は 400 エラーになります。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/build-with-claude/thinking"
+  ],
+  "topics": [
+   "be-clear-and-direct"
   ]
  },
  {
@@ -179,10 +193,16 @@
   "answer": [
    "a"
   ],
-  "explanation": "コンテキストエンジニアリングは、望む結果が得られる可能性を最大にする、最小限で情報価値の高いトークンの集合を見つける作業です。手段には、会話の要約(コンパクション)、古いツール結果の消去、コンテキストの外へのメモの保存、サブエージェントへの分担があります。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、コンテキストのトークンが増えるほど情報を正確に思い出す力が下がる(context rot)ため、コンテキストを収穫逓減のある有限の資源として扱い、望む結果の可能性を最大にする最小限で情報価値の高いトークンの集合を目指すよう勧めています。長い作業の手法として、会話の要約(コンパクション)、コンテキストの外へのメモの保存、サブエージェントを挙げ、古いツール結果の消去を最も安全で手軽なコンパクションの形の 1 つとしています。\n\n見分け方: 記事は、大きなコンテキストウィンドウを待つ方法について、どの大きさのウィンドウでも汚染と関連性の問題は残るとしています(b)。ツール結果を毎ターン複製する(c)と、関連の薄いトークンがさらに増えます。システムプロンプトを削る(d)と、振る舞いを導く指示が失われます。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://platform.claude.com/docs/en/build-with-claude/compaction"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/compaction",
+   "https://platform.claude.com/docs/en/build-with-claude/context-editing"
+  ],
+  "topics": [
+   "context-engineering",
+   "compaction",
+   "context-editing"
   ]
  },
  {
@@ -218,10 +238,13 @@
    "a",
    "b"
   ],
-  "explanation": "ハルシネーションを減らす基本は、分からないと言える余地を与えること、回答を直接の引用に基づかせること、主張ごとに根拠を示させることです。Citations 機能を使えば、引用元の位置も確認できます。",
+  "explanation": "正解は a と b です。Reduce hallucinations は、ハルシネーションを減らす基本の手法として、Claude に「分からない」と言うことを明示的に許す(誤った情報を大きく減らせる)、長い文書では作業の前に一語一句の引用を抜き出させて応答を本文に基づかせる、主張ごとに引用と出典を示させて検証する、を挙げています。与えた文書の情報だけを使うよう指示する方法も、発展的な手法として載っています。\n\n見分け方: max_tokens(c)は出力の長さの上限で、内容の正確さを高める手法としては挙げられていません。「必ず何か答えること」(d)は、分からないと言う余地をなくすので、a の推奨と逆の方向になり、推測による回答を招きます。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
    "https://platform.claude.com/docs/en/build-with-claude/citations"
+  ],
+  "topics": [
+   "reduce-hallucinations"
   ]
  },
  {
@@ -256,9 +279,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "役割の付与は、システムプロンプトの基本的な使い方です。「データサイエンティスト」より「小売業の顧客分析を専門とするデータサイエンティスト」のように具体的にすると、効果が上がります。",
+  "explanation": "正解は a です。Prompting best practices は、システムプロンプトで役割を設定すると、用途に合わせて Claude の振る舞いと口調が絞られ、1 文でも違いが出るとしています。API では system パラメータに役割の文を書き、質問は user メッセージで送ります。Increase output consistency も、システムプロンプトで役割と性格を定めることを、一貫した応答の強い土台としています。\n\n見分け方: max_tokens(b)は出力の長さの上限で、観点や口調を決めるものではありません。英語に翻訳する(c)ことは、出典が挙げる役割の手法とは関係がありません。同じ質問を繰り返す(d)ことは、出典が挙げるどの手法にも当たらず、どの観点で答えるかも伝えません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/system-prompts"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency"
+  ],
+  "topics": [
+   "role-prompting"
   ]
  },
  {
@@ -293,9 +320,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "明確なプロンプトには、作業の目的、想定する読み手、成果物の使い道、完了の基準が含まれます。手順がある場合は、番号付きで示します。",
+  "explanation": "正解は a です。Prompting best practices は、Claude を「優秀だが、あなたの規範や仕事の流れについての背景を持たない新しい従業員」と考えるよう勧め、Key test として、作業の背景をほとんど知らない同僚にプロンプトを見せて従ってもらい、相手が迷うなら Claude も迷う、という確かめ方を示しています。あわせて、出力の形式と制約を具体的に書く、順序が大切な手順は番号付きリストや箇条書きにする、と勧めています。\n\n見分け方: 文字数(b)は、ドキュメントが挙げる分かりやすさの基準ではありません。大文字による強調(c)は境界や意味を明確にせず、強い言い回しは過剰な反応を招く場合があります。専門用語を増やす(d)と、背景を共有していない相手にはかえって通じにくくなります。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/be-clear-and-direct"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "be-clear-and-direct"
   ]
  },
  {
@@ -304,12 +334,12 @@
   "domain": "prompt-and-context-engineering",
   "type": "single",
   "scenarioId": null,
-  "stem": "複雑な分析で、結論だけを求めると誤りが多い。推論の過程と最終的な答えを分けて出力させたい。適切な方法はどれか。",
+  "stem": "複雑な分析で、結論だけを求めると誤りが多い。Claude に考えさせたうえで、最終的な答えだけをプログラムで取り出したい。現行のドキュメントに沿った方法はどれか。",
   "choices": [
    {
     "id": "a",
-    "text": "考える過程を <thinking>、答えを <answer> のようなタグで分けて出力するよう指示する(または、モデルの思考機能を使う)",
-    "why": "考える余地を与えると正確さが上がり、タグで分ければ答えだけを取り出せる。"
+    "text": "モデルの思考機能(thinking)を使う。思考がオフのときは、答える前に考えるよう指示し、最終的な答えを <answer> タグに入れさせる",
+    "why": "正解。思考を使えば推論は thinking ブロックに分かれる。手動の chain-of-thought は、思考がオフのときの代替とされている。"
    },
    {
     "id": "b",
@@ -330,10 +360,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "段階的に考えさせると、複雑な問題での正確さが上がります。出力が長くなり、応答時間が延びる点が代償です。",
+  "explanation": "正解は a です。思考(thinking)を使うと、Claude は答える前に問題を考え、その内容は応答本文より前の thinking ブロックとして返るので、推論と答えが分かれます。複雑な作業で性能が上がります。思考がオフのときは、答える前に考えさせ、最終的な答えを <answer> タグに入れさせる手動の chain-of-thought が代替になります。ただし Claude Opus 5.5 などの一部の最新モデルでは思考に任せるよう勧められており、推論を <thinking> タグで出力に書かせるプロンプトは断られることがあります。\n\n見分け方: 考えずに答えさせる(b)のは、考える余地を与えて正確さを上げる方向と逆です。max_tokens を 50 にする(c)と、思考のトークンも max_tokens に含まれるので、考える余地がなくなります。答えを先に書かせる(d)と、推論が答えより後になり、答えを導く過程として働きません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-of-thought",
-   "https://platform.claude.com/docs/en/build-with-claude/extended-thinking"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/build-with-claude/thinking",
+   "https://platform.claude.com/docs/en/build-with-claude/refusals-and-fallback"
+  ],
+  "topics": [
+   "chain-of-thought"
   ]
  },
  {
@@ -347,7 +381,7 @@
    {
     "id": "a",
     "text": "段階ごとにプロンプトを分け、前の段階の出力を次の入力にする",
-    "why": "各段階に、モデルの注意を集中させられる。"
+    "why": "各プロンプトが 1 つの段階だけを扱い、段階ごとの出力を確かめて直せる。"
    },
    {
     "id": "b",
@@ -368,9 +402,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "プロンプトの連鎖は、段階ごとの品質を上げ、問題のある段階の特定も容易にします。段階の間は、XML タグで出力を受け渡すと明確です。",
+  "explanation": "正解は a です。Prompting best practices は、作業を順に実行する複数の API 呼び出しに分けるプロンプトの連鎖は、途中の出力を確かめたいときや、決まったパイプラインの構成を強制したいときに役立つとしています。各段階が別の呼び出しなので、どの時点でも記録、評価、分岐ができます。Increase output consistency も、複雑な作業を小さな下位作業に分け、各プロンプトが 1 つの下位作業だけを扱うようにすると、一貫性の誤りが減るとしています。なお、多段階の推論の大半は adaptive thinking などで Claude が内部で処理できるともされています。\n\n見分け方: 1 つのプロンプトを長くする(b)のは、下位作業に分ける方向と逆です。大文字で強調する(c)ことは、段階ごとの出力を確かめる手段になりません。出力を短くする(d)と、雑になった段階を直す手がかりにならず、段階の品質も上がりません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency"
+  ],
+  "topics": [
+   "prompt-chaining"
   ]
  },
  {
@@ -405,10 +443,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "書式の制御では、望む形を肯定形で伝える、出力を特定のタグで囲ませる、プロンプト自体の文体を望む出力に合わせる、といった方法が有効です。",
+  "explanation": "正解は a です。Prompting best practices は、出力の書式を導く方法の第一に「してほしくないことではなく、してほしいことを伝える」を挙げ、「Do not use markdown in your response」の代わりに「Your response should be composed of smoothly flowing prose paragraphs.」と書く例を示しています。ほかに、XML タグで出力の形を示す、プロンプト自体の書き方を望む出力に合わせる(プロンプトから Markdown を除くと出力の Markdown が減ることがある)、詳しいプロンプトで好みを明示する、が挙げられています。\n\n見分け方: 禁止だけを書く(b)のは、ドキュメントが「代わりに」と書き換えを勧めている書き方そのものです。何も指示しない(c)と、望む形が伝わりません。同じ禁止を冒頭と末尾に繰り返す(d)のも禁止の形のままで、望む形を伝えていません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/be-clear-and-direct"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "output-format-control"
   ]
  },
  {
@@ -443,10 +483,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "テンプレートでは、変数を {{変数名}} のように示し、XML タグで囲んで指示と区別します。固定部分を前に置けば、プロンプトキャッシュも効きます。",
+  "explanation": "正解は a です。Prompting best practices は、指示、文脈、例、差し込む入力(variable inputs)が混ざるプロンプトでは、種類ごとに <instructions> や <input> のようなタグで囲むと取り違えが減るとしています。ドキュメントの例でも、差し込む内容を {{ANNUAL_REPORT}} のような変数で示し、タグで囲んでいます。固定部分を分けておくと、プロンプトキャッシュも使いやすくなります。Prompt caching は、固定の内容(ツール定義、システムの指示、文脈、例)をプロンプトの先頭に置くよう勧めています。\n\n見分け方: 入力ごとにプロンプトの全体を書き直す(b)と、固定部分が毎回変わり、同じ指示を一貫して適用できず、キャッシュも効きません。入力を区切りなしで指示に埋め込む(c)と、指示と入力の境界が曖昧になります。指示を利用者に書かせる(d)と、アプリケーションが指示の内容を管理できません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/use-xml-tags"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "use-xml-tags"
   ]
  },
  {
@@ -481,9 +524,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "例は、望む振る舞いと正確に一致させます。意図しない共通点(長さ、冒頭の言い回し、題材)があると、それも規則として拾われます。",
+  "explanation": "正解は a です。Prompting best practices は、例を多様にし、エッジケースを含めて、Claude が意図しないパターンを拾わない程度にばらつかせるよう勧めています。例が 1 件だけだと、言い回しや長さのような偶然の特徴まで、従うべきパターンとして拾われやすくなります。目安は 3〜5 件で、Claude に例の多様性を評価させたり、追加の例を作らせたりもできます。\n\n見分け方: 例を 0 件にする(b)のは、出力の例の方が抽象的な指示より効果的だという記述(Increase output consistency)に反します。ドキュメントは、意図しないパターンを拾う対策として、モデルの変更(c)ではなく例を多様にすることを挙げています。例の置き場所をユーザーメッセージに限る記述は出典になく、システムプロンプトにも例は置けます(d)。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "multishot-prompting"
   ]
  },
  {
@@ -518,10 +565,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "長い文書を扱うときは、まず関連する引用を抜き出させると、残りの内容による雑音を減らせます。",
+  "explanation": "正解は a です。Prompting best practices は、長い文書の作業では、作業の前に文書の関連箇所を引用させるよう勧めています。Claude が関連する内容に集中し、文書の残りを無視しやすくなるためです。Reduce hallucinations も、20k トークンを超える文書では、作業の前に一語一句の引用を抜き出させると、応答が実際の本文に基づき、ハルシネーションが減るとしています。\n\n見分け方: 段落を無作為に並べ替える(b)手法は、出典に挙げられておらず、文書の流れが崩れます。文書を渡さずに記憶で答えさせる(c)と、回答を本文に基づかせることができません。長い文書では、文書を上部に、質問を末尾に置くよう勧められており、質問を文書の前に置く(d)のは逆の配置です。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "long-context-prompting",
+   "reduce-hallucinations"
   ]
  },
  {
@@ -556,10 +607,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "複数の文書は、それぞれタグで囲み、内容と出典などのメタデータを分けて示します。",
+  "explanation": "正解は a です。Prompting best practices は、複数の文書を使うときは、各文書を <document> タグで囲み、内容を <document_content>、出典などのメタデータを <source> などのサブタグに入れるよう勧めています。例では、<documents> の中に <document index=\"1\"> のように番号を付けて並べています。あわせて、長い文書は上部に置き、質問は末尾に置きます。\n\n見分け方: 区切りなしで連結する(b)と、どこまでがどの資料かが分からず、出典も示せません。資料ごとに別のリクエストに分ける(c)と、1 回のリクエストに 1 つの資料しか入らず、資料を横断した回答ができません。題名だけを渡す(d)と、Claude は資料の内容を読めません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/use-xml-tags"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "long-context-prompting",
+   "use-xml-tags"
   ]
  },
  {
@@ -595,10 +649,14 @@
    "a",
    "b"
   ],
-  "explanation": "一貫性を高める方法には、形式の明示、例示、構造化出力、長い作業の分割、検索による根拠の固定があります。",
+  "explanation": "正解は a と b です。Increase output consistency は、JSON、XML、独自のテンプレートで出力形式を正確に定めること、望む出力の例を示すこと(抽象的な指示より効果的)を挙げています。また、特定の JSON スキーマに必ず従う出力が必要なら、Structured outputs を使うよう勧めています。structured outputs は制約付きデコードでスキーマに合う応答を保証します。\n\n見分け方: 形式を何も書かない(c)と、形式を定める手がかりがなく、出力の形が揃う保証がありません。max_tokens(d)は出力の長さの上限で、形式を定めるものではありません。なお、同じページにある Assistant ターンの事前入力(prefill)は、Claude 4.6 以降のモデルでは使えません。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency",
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "increase-consistency",
+   "output-format-control"
   ]
  },
  {
@@ -633,9 +691,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "必要な時点で取得する方式は、コンテキストを無駄にせず、段階的に理解を深められます。事前の読み込みより時間はかかるため、用途によって両者を組み合わせます。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、関連するデータを事前にすべて処理する代わりに、ファイルパス、保存したクエリ、Web リンクなどの軽い識別子を持たせ、ツールで実行時にデータをコンテキストに読み込む方式を「just in time」と呼んでいます。Claude Code は、対象のデータ全体を読み込まずに、クエリや head、tail などのコマンドで大きなデータを分析します。実行時の探索は事前に計算したデータの取得より遅いため、一部を事前に読み込む組み合わせの方式もあります。\n\n見分け方: 全データを最初にプロンプトへ入れる(b)のは、just in time と対比される事前の読み込みです。情報を与えない(c)と、エージェントは作業できません。利用者に入力させる(d)のは、エージェントがツールで自分で読み込む方式ではありません。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "context-engineering"
   ]
  },
  {
@@ -664,16 +725,20 @@
    {
     "id": "d",
     "text": "コンパクションはツール定義を削除し、消去はツールの結果を削除する",
-    "why": "会話の内容を要約する。"
+    "why": "コンパクションは会話の古いターンを要約に置き換える機能で、ツール定義を削除するものではない。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "長い作業では、もう参照しない古いツール結果を消すだけで、かなりの空きが得られます。要約は、経緯を保ちたい場合に使います。",
+  "explanation": "正解は a です。Compaction overview によると、コンパクションは会話の古いターンを、Claude がサーバーで書いた要約に置き換えます。一方、Context editing のツール結果の消去(clear_tool_uses_20250919)は、コンテキストが設定したしきい値を超えると古いツール結果から順に消し、消した結果をプレースホルダーの文に置き換えます。要約は作りません。ドキュメントは、ほとんどの用途ではコンパクションを主な手段とし、消す内容を細かく制御したい場面でコンテキスト編集を使うとしています。\n\n見分け方: 消去は要約を作らない(b)ので、両方を要約とするのは誤りです。どちらもコンテキストを小さく保つための機能です(c)。コンパクションが置き換えるのは会話の古いターンで、ツール定義を削除する機能ではありません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/compaction",
    "https://platform.claude.com/docs/en/build-with-claude/context-editing"
+  ],
+  "topics": [
+   "compaction",
+   "context-editing"
   ]
  },
  {
@@ -708,9 +773,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "プロンプトは、最小限の情報で望む振る舞いを十分に伝えるものを目指します。最小限は、短いという意味ではありません。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、システムプロンプトを「適切な高度」で書くよう勧めています。一方の失敗は、正確な振る舞いを引き出そうと、複雑で壊れやすい論理をプロンプトにハードコードすることで、壊れやすさと保守の複雑さが増します。もう一方の失敗は、具体的な手がかりを与えない曖昧で高水準な指示や、共有していない前提を当然とする指示です。最適な高度は、振る舞いを導くのに十分具体的で、かつ強い経験則を与える柔軟さを持つ中間にあります。\n\n見分け方: すべての場合を if 文のように列挙する(b)のは、記事が「brittle if-else hardcoded prompts」と呼ぶ一方の極端です。「うまくやること」とだけ書く(c)のは、具体的な手がかりのない曖昧な指示で、もう一方の極端です。何も書かない(d)と、振る舞いを導く情報がありません。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "context-engineering"
   ]
  },
  {
@@ -745,10 +813,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "あらゆる規則を詰め込むより、振る舞いを的確に示す例を選ぶ方が効果的です。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、few-shot の例を引き続き強く勧める一方、従うべき規則をすべて言い表そうとして例外的な事例の長い一覧をプロンプトに詰め込むことは勧めないとし、代わりに、期待する振る舞いを効果的に描く、多様で典型的な(canonical)例を厳選するよう勧めています。Prompting best practices も、例は関連性と多様性を持たせ、3〜5 件を目安にするとしています。\n\n見分け方: 例外的な事例をさらに追加する(b)のは、記事が勧めないとした方法をさらに進めることです。例をすべて削って規則だけにする(c)と、記事が強く勧める few-shot の利点を失います。同じ例を繰り返す(d)と、多様性がなく、新しい手がかりも増えません。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "multishot-prompting",
+   "context-engineering"
   ]
  },
  {
@@ -783,10 +855,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "指示に理由や背景を添えると、Claude は目的を理解して、書かれていない状況にも適切に対応します。",
+  "explanation": "正解は a です。Prompting best practices は、Claude を「あなたの規範や仕事の流れについての背景を持たない新しい従業員」と考え、望むことを正確に説明するよう勧めています。また、指示の背景や動機(なぜその振る舞いが重要か)を伝えると、Claude は目的についての情報を得て的を絞った応答ができ、説明から一般化もできるとしています。成果物の目的、読み手、作業全体での位置付けは、こうした背景に当たります。\n\n見分け方: 「賢く考えること」(b)は、目的や読み手についての情報を何も加えません。同じ質問を繰り返す(c)ことも、背景を補いません。出力の最大文字数(d)は形式の制約で、何のための成果物かは伝わりません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/be-clear-and-direct",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "be-clear-and-direct"
   ]
  },
  {
@@ -821,10 +895,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "コンテキストには、今の判断に役立つ情報を残します。古いツール結果の整理は、最も手軽で安全な整理の 1 つです。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、コンテキストを有限の資源として扱い、情報価値の高いトークンに絞るよう勧め、メッセージ履歴の奥で一度呼び出したツールの生の結果をエージェントがもう一度見る必要はないとして、ツール結果の消去を最も安全で手軽なコンパクションの形の 1 つとしています。Context editing も、ファイルの内容や検索結果のような古いツール結果は、Claude が処理した後は不要になるとしています。\n\n見分け方: 作業の目的(b)は、振る舞いを導くために常に必要です。直近の決定事項と未解決の問題(c)は、記事の例でもコンパクションで残す内容(設計上の決定、未解決のバグ)に当たります。今使っているツールの定義(d)は、エージェントが環境に働きかけるために必要です。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
    "https://platform.claude.com/docs/en/build-with-claude/context-editing"
+  ],
+  "topics": [
+   "context-engineering",
+   "context-editing"
   ]
  }
 ]

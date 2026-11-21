@@ -31,10 +31,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "stop_reason が \"max_tokens\" のときは、リクエストで指定した max_tokens に達して生成が止まっています。正常終了は \"end_turn\" です。アプリケーションはレスポンスの本文を使う前に stop_reason を確認し、打ち切りを検知できるようにします。",
+  "explanation": "正解は a です。stop_reason が \"max_tokens\" は、リクエストで指定した max_tokens の上限に達して生成が止まったことを表します。公式資料の対処は、max_tokens を引き上げるか、続きを生成させることです。また、max_tokens の大きいリクエストは、ストリーミング(または Message Batches API)で送るよう勧められています。一部のネットワークは無通信の接続を切るため、非ストリーミングでは応答を受け取れずに失敗することがあるからです。\n\n見分け方: 上限を変えずに再送すると(b)、同じ上限で止まります。max_tokens は生成するトークン数の絶対的な上限で、システムプロンプトの指示(c)で超えることはできません。レート制限を超えたときは、stop_reason ではなく HTTP 429 のエラーが返ります(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+   "https://platform.claude.com/docs/en/api/errors",
    "https://platform.claude.com/docs/en/api/messages"
+  ],
+  "topics": [
+   "stop-reasons",
+   "streaming"
   ]
  },
  {
@@ -69,10 +74,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "Messages API ではシステムプロンプトをトップレベルの system パラメータで渡します。messages 配列は user と assistant のやり取りを表します。",
+  "explanation": "正解は a です。Messages API では、会話の最初から効かせるシステムプロンプトを、リクエストのトップレベルの system パラメータで渡します。API リファレンスも、システムプロンプトを含めるにはトップレベルの system を使うよう案内しています。messages は user と assistant のターンを並べる配列です。プロンプトの指針では、system で役割を与えると Claude の振る舞いと口調が用途に合い、1 文でも効果があるとされています。\n\n見分け方: 一部のモデルでは user ターンの直後に role: \"system\" のメッセージを置いて会話の途中から指示を足せますが、messages の先頭には置けないので、冒頭からの指示には使えません(b)。assistant メッセージは Claude の側の発言です(c)。anthropic-system というヘッダー(d)は公式資料にありません。",
   "refs": [
    "https://platform.claude.com/docs/en/api/messages",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/system-prompts"
+   "https://platform.claude.com/docs/en/build-with-claude/working-with-messages",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "messages-api-basics"
   ]
  },
  {
@@ -91,7 +100,7 @@
    {
     "id": "b",
     "text": "会話を識別する ID を、リクエストのヘッダーで送っていない",
-    "why": "標準の Messages API にはサーバー側で会話を保持する会話 ID の仕組みがない。"
+    "why": "Messages API はステートレスで、会話をつなぐ ID をヘッダーで送る仕組みは公式資料にない。ベータの message threads でも、前の応答の id は本文の thread パラメータで指定する。"
    },
    {
     "id": "c",
@@ -107,9 +116,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "Messages API はステートレスです。複数ターンの会話では、過去の user / assistant メッセージをすべて messages 配列に入れて毎回送ります。Claude の応答を履歴に追加するときは、テキストだけでなく content 全体を保持します。",
+  "explanation": "正解は a です。Messages API はステートレスで、複数ターンの会話では、それまでの会話履歴全体を毎回 API に送ります。2 回目のリクエストの messages に 1 回目の user と assistant のメッセージを入れていなければ、Claude はそのやり取りを参照できません。ベータの message threads を使うと API が会話を短時間(最後のリクエストから 5 分)保持しますが、その場合も本文の thread パラメータで前の応答の id を指定します。\n\n見分け方: 会話 ID をヘッダーで送る仕組み(b)は公式資料にありません。プロンプトキャッシュ(c)は、同じ接頭辞の処理を再利用して時間と費用を減らす機能で、内容を送らずに済むものではありません。temperature(d)は履歴の有無とは関係がなく、API バージョン 2026-10-21 では削除されています。",
   "refs": [
-   "https://platform.claude.com/docs/en/api/messages"
+   "https://platform.claude.com/docs/en/build-with-claude/working-with-messages",
+   "https://platform.claude.com/docs/en/api/messages",
+   "https://platform.claude.com/docs/en/build-with-claude/message-threads"
+  ],
+  "topics": [
+   "messages-api-basics"
   ]
  },
  {
@@ -144,9 +158,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ストリーミングは Server-Sent Events で届きます。message_start、content_block_start、複数の content_block_delta、content_block_stop、message_delta(stop_reason と usage の更新)、message_stop の順です。SDK の最終メッセージ取得ヘルパーを使えば、イベントを自分で組み立てる必要はありません。",
+  "explanation": "正解は a です。ストリーミングでは、各コンテンツブロックが content_block_start、任意の数の content_block_delta、content_block_stop の順で届きます。テキストの断片は、content_block_delta の delta に type が text_delta として入っています。全体の流れは、message_start、各コンテンツブロック、1 つ以上の message_delta、最後の message_stop です。\n\n見分け方: message_start が運ぶのは content が空の Message オブジェクトで、本文の断片は含みません(b)。message_stop はストリームの最後のイベントです(c)。ping はストリームの途中に任意の数だけ入りうるイベントで、テキストの差分は運びません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/streaming"
+  ],
+  "topics": [
+   "streaming"
   ]
  },
  {
@@ -181,9 +198,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "出力が長いリクエストや max_tokens が大きいリクエストは、ストリーミングを使うと HTTP のタイムアウトを避けられます。個々のイベントを処理する必要がなければ、SDK のヘルパーで完成したメッセージだけを受け取れます。",
+  "explanation": "正解は a です。公式資料は、max_tokens を大きくするならストリーミングか Message Batches API を使うよう勧めています。一部のネットワークは無通信の接続を一定時間で切るため、非ストリーミングでは応答を受け取れずに失敗やタイムアウトになることがあるからです。個々のイベントを処理しなくてよい場合は、SDK の .stream() と最終メッセージのヘルパー(Python の get_final_message()、TypeScript の finalMessage())で、非ストリーミングと同じ完成した Message を受け取れます。\n\n見分け方: max_tokens を 256 に下げる(b)と、必要な長さのレポートが得られません。同じ長時間のリクエストを再試行する(c)、並列に送る(d)のは、接続が無通信のまま待たされるという原因を取り除きません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/streaming"
+   "https://platform.claude.com/docs/en/build-with-claude/streaming",
+   "https://platform.claude.com/docs/en/api/errors",
+   "https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/python"
+  ],
+  "topics": [
+   "streaming",
+   "api-errors"
   ]
  },
  {
@@ -197,7 +220,7 @@
    {
     "id": "a",
     "text": "retry-after ヘッダーの時間を待ち、指数バックオフで再試行する",
-    "why": "429 はレート制限で、待てば回復する。待ち時間はヘッダーで示される。"
+    "why": "429 はレート制限などの超過を表す。retry-after ヘッダーがあれば、その秒数を待ってから再試行する。"
    },
    {
     "id": "b",
@@ -218,10 +241,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "429 (rate_limit_error) は、組織に割り当てられたレート制限を超えたことを表します。retry-after ヘッダーに従って待ち、バックオフを入れて再試行します。公式 SDK は 429 と 5xx を既定で自動再試行します。",
+  "explanation": "正解は a です。429 rate_limit_error は、組織がレート制限などに達したことを表します。Rate limits のページは、応答に retry-after ヘッダーがあれば、その秒数だけ待ってから再試行するよう書いています。公式 SDK も、レート制限などの一時的な失敗を指数バックオフで自動的に再試行し(既定 2 回)、retry-after があれば従います。ただし、使用ティアの月の上限に達した 429 には retry-after がなく、利用が再開するまで再試行しても失敗します。\n\n見分け方: リクエストの形式や内容の誤りは 400 invalid_request_error(b)、API キーの問題は 401 authentication_error です(c)。待たずにすぐ繰り返す(d)のは、retry-after の指示に従っていません。",
   "refs": [
    "https://platform.claude.com/docs/en/api/rate-limits",
    "https://platform.claude.com/docs/en/api/errors"
+  ],
+  "topics": [
+   "rate-limits",
+   "api-errors"
   ]
  },
  {
@@ -256,9 +283,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "529 は API 全体が一時的に過負荷のときに返ります。自組織のレート制限超過を表す 429 とは原因が異なりますが、どちらも待って再試行することで回復します。",
+  "explanation": "正解は a です。529 overloaded_error は、API が一時的に過負荷であることを表し、すべての利用者からの通信が多いときに起こりうると説明されています。自組織のレート制限などを表す 429 とは原因が異なります。公式 SDK は 5xx のエラーを一時的な失敗として、指数バックオフで自動的に再試行します。ストリーミングの途中で過負荷になると、非ストリーミングなら 529 にあたる overloaded_error がエラーイベントとして届くことがあります。\n\n見分け方: 組織のレート制限は 429 rate_limit_error(b)、リクエストのバイト数の上限超過は 413 request_too_large(c)、API キーに指定した資源を使う権限がないのは 403 permission_error です(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/api/errors"
+  ],
+  "topics": [
+   "api-errors"
   ]
  },
  {
@@ -293,9 +323,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "エラー処理では、再試行できるもの(429、5xx、接続エラー)と、できないもの(400、401、403、404 など)を分けます。1 つの広い例外でまとめて捕まえると、この区別が失われます。",
+  "explanation": "正解は a です。400 invalid_request_error は、リクエストの形式や内容に問題があることを表します。原因がリクエストの側にあるため、同じ内容を送り直しても結果は変わらず、メッセージが示す問題を直す必要があります。Python SDK の自動再試行の対象も、接続エラー、408、409、429、500 以上で、400 は含まれません。なお、自分で設定した利用上限に達したときも 400 が返り、その場合は上限を引き上げるか外します。\n\n見分け方: 429(b)は、retry-after ヘッダーなどに従って待てば成功しうるエラーです。500 api_error(c)について公式資料は、指数バックオフで再試行し、続くようなら request ID を添えてサポートに連絡するよう書いています。529(d)は API の一時的な過負荷です。",
   "refs": [
-   "https://platform.claude.com/docs/en/api/errors"
+   "https://platform.claude.com/docs/en/api/errors",
+   "https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/python"
+  ],
+  "topics": [
+   "api-errors"
   ]
  },
  {
@@ -319,7 +353,7 @@
    {
     "id": "c",
     "text": "temperature を 0 にする",
-    "why": "出力のばらつきは減るが、スキーマへの適合は保証されない。"
+    "why": "スキーマへの適合は保証されない。また、Claude 4.7 以降のモデルでは既定以外の値を、API バージョン 2026-10-21 ではどの値を指定しても 400 エラーになる。"
    },
    {
     "id": "d",
@@ -330,9 +364,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "構造化出力は、レスポンスを指定した JSON スキーマに制約します。ツールの入力を厳密にしたい場合は、ツール定義に strict: true を付けます。プロンプトだけに頼る方法は、形式が崩れる可能性を残します。",
+  "explanation": "正解は a です。構造化出力の JSON outputs は、output_config.format に type: \"json_schema\" とスキーマを指定すると、制約付きデコードで応答をスキーマに従わせます。公式資料は、JSON の構文エラーがなく、型と必須フィールドが保証され、スキーマ違反のための再試行が要らないと説明しています。ただし、拒否(refusal)や max_tokens での打ち切りのときは、スキーマに合わないことがあります。ツールの入力を厳密にするには strict: true を使います。\n\n見分け方: プロンプトでの指示(b)だけでは、不正な JSON や必須フィールドの欠落が起こりうると公式資料にあります。temperature(c)はスキーマへの適合を保証せず、現行のモデルや API バージョンでは指定できません。正規表現での検証と再試行(d)は、構造化出力によって不要になる作業です。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "structured-outputs"
   ]
  },
  {
@@ -368,9 +405,12 @@
    "a",
    "b"
   ],
-  "explanation": "Message Batches API は、応答の即時性が不要な大量処理に向いています。料金は 50% 引きで、多くは 1 時間以内、最長 24 時間で完了します。各リクエストに custom_id を付け、結果はその ID で対応付けます。",
+  "explanation": "正解は a と b です。Message Batches API は、即時の応答が要らない大量のリクエストを非同期で処理し、すべての利用が標準の API 料金の 50% で課金されます。結果は作成時の順序と一致しないことがあるため、各リクエストに付けた custom_id で突き合わせるよう公式資料は勧めています。多くのバッチは 1 時間以内に終わり、1 つのバッチは 100,000 件か 256 MB までなので、5 万件は 1 つのバッチに入る件数です。\n\n見分け方: 結果は、すべてのリクエストの処理が終わるか 24 時間が経つと取得でき、ストリーミングで即時に返るものではありません(c)。各リクエストは独立に処理されるので、1 つのバッチに種類の異なるリクエストを混ぜられます(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ],
+  "topics": [
+   "batch-processing"
   ]
  },
  {
@@ -389,7 +429,7 @@
    {
     "id": "b",
     "text": "文字数を 4 で割った値をトークン数の概算として使い、モデルのコンテキストウィンドウの上限と比べて判断する",
-    "why": "言語やモデルによって大きくずれる。日本語では特に不正確になる。"
+    "why": "換算はそのモデルのトークナイザーで数えたものではない。同じ文章でもモデルによってトークン数は変わる(Claude 4.7 以降のモデルはおよそ 30% 多い)。"
    },
    {
     "id": "c",
@@ -405,9 +445,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "トークン数はモデルのトークナイザーに依存します。count_tokens はメッセージ、システムプロンプト、ツール定義を含めた入力トークン数を返すので、送信前の判定に使えます。",
+  "explanation": "正解は a です。トークンカウントのエンドポイント(POST /v1/messages/count_tokens)は、メッセージの作成と同じ構造の入力(システムプロンプト、ツール、画像、PDF を含む)を受け取り、入力トークンの合計を返します。利用は無料で、レート制限はメッセージの作成とは別に数えられます。返る値は推定で、実際とわずかに異なることがあります。トークン数は数えるモデルで変わるため、使う予定のモデルを指定して数えるよう勧められています。\n\n見分け方: 文字数からの換算(b)や他社のトークナイザー(c)は、そのモデルのトークナイザーで数えたものではありません。実際に送って試す(d)と、収まった場合はそのまま通常の料金がかかります。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/token-counting"
+  ],
+  "topics": [
+   "token-counting"
   ]
  },
  {
@@ -442,10 +485,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "Files API にアップロードするとファイル ID が返ります。以後は document(または image)ブロックの source で file_id を指定して参照します。プロンプトキャッシュと組み合わせると、繰り返し参照する際の入力費用も下げられます。",
+  "explanation": "正解は a です。Files API は、ファイルを一度アップロードして何度も使うための API で、アップロードすると file_id が返ります。以後のリクエストでは、document ブロック(PDF やプレーンテキスト)や image ブロックの source で file_id を参照し、内容を毎回送り直さずに済みます。PDF support のページも、大きな PDF や繰り返し使う PDF には Files API を勧めています。アップロードしたファイルは、そのワークスペースにアクセスできる API キーから参照できる点に注意します。\n\n見分け方: Messages API はステートレスで、システムプロンプトも毎回送ります(b)。プロンプトキャッシュ(c)は同じ接頭辞を含むリクエストで処理を再利用する仕組みで、内容自体はリクエストに含めます。Message Batches API(d)は非同期の大量処理のための API です。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/files",
    "https://platform.claude.com/docs/en/build-with-claude/pdf-support"
+  ],
+  "topics": [
+   "files-api",
+   "pdf-support"
   ]
  },
  {
@@ -474,16 +521,20 @@
    {
     "id": "d",
     "text": "PDF を assistant メッセージに入れ、質問は user メッセージに書く",
-    "why": "assistant ロールは Claude の発言を表す。入力資料を置く場所ではない。"
+    "why": "assistant ロールは Claude の発言を表す。API バージョン 2026-10-21 では、assistant メッセージに document ブロックを置くと 400 エラーになる。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "PDF は user メッセージ内の document ブロックで渡します。テキストだけでなく、ページ内の図表も画像として解釈されます。資料は質問より前に置きます。",
+  "explanation": "正解は a です。PDF support のページは、性能を上げる方法の最初に「PDF をテキストより前に置く」を挙げています。プロンプトの指針でも、長い文書は質問や指示より上に置くよう勧めており、質問を末尾に置くとテストで応答の質が最大 30% 上がったとしています。PDF は user メッセージの document ブロックで渡します。各ページは画像と抽出したテキストの両方として渡されるため、図表についても質問できます。\n\n見分け方: 質問を先に置く並べ方(b)は、推奨される順序ではありません。PDF は document ブロックで渡すもので、system に base64 の文字列として貼る方法(c)は案内されていません。API バージョン 2026-10-21 では、assistant メッセージに document ブロックを置くと 400 エラーになります(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/api/versioning"
+  ],
+  "topics": [
+   "pdf-support"
   ]
  },
  {
@@ -518,9 +569,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "画像は image コンテンツブロックで渡します。source には base64、URL、Files API の file_id を指定できます。複数の画像を比較させる場合は、それぞれにラベルとなるテキストを添えると区別しやすくなります。",
+  "explanation": "正解は a です。API では、画像を image コンテンツブロックで渡し、source には base64 のデータ、オンラインの画像の URL、Files API の file_id のいずれかを指定します。対応形式は JPEG、PNG、GIF、WebP です。1 つのリクエストに複数の画像を入れられ、その場合は Image 1: のような短いラベルを付けると、プロンプトや後のターンで名前で参照できます。画像は文章より前に置くと最もよく働くとされています。\n\n見分け方: 公式資料が示す画像の渡し方は image ブロックの source で、本文に URL を書く方法は案内されていません(b)。画像は通常の Messages API で送れます(c)。現行のすべての Claude モデルが、テキストと画像の入力に対応しています(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/vision"
+  ],
+  "topics": [
+   "vision"
   ]
  },
  {
@@ -555,9 +609,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Citations を有効にすると、応答は複数のテキストブロックに分かれ、引用のあるブロックに引用元の文言と位置(文字位置やページ番号)が付きます。引用元は実際に渡した文書に限られるため、根拠の確認が容易になります。",
+  "explanation": "正解は a です。Citations は、各文書で citations.enabled=true を指定して有効にします(同じリクエストで有効と無効の文書は混ぜられません)。応答は複数のテキストブロックに分かれ、主張を含むブロックに引用の一覧が付きます。引用の位置は、PDF ではページ番号、プレーンテキストでは文字位置の範囲で示されます。API が引用を解析するため、渡した文書への有効な参照であることが保証され、cited_text は出力トークンに数えられません。\n\n見分け方: 公式資料は、プロンプトで引用を求める方法(b)と比べて、Citations のほうが引用の信頼性と質が高いとしています。Citations と構造化出力は併用できず、両方を指定すると 400 エラーになります(c)。文書は document ブロックで直接渡し、事前のベクトルデータベースは要りません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/citations"
+  ],
+  "topics": [
+   "citations"
   ]
  },
  {
@@ -592,10 +649,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "クライアント側のツールは、Claude が tool_use ブロックで呼び出しを要求し、アプリケーションが実行して tool_result を返す、という往復で動きます。stop_reason が \"end_turn\" になるまでこれを繰り返します。",
+  "explanation": "正解は a です。stop_reason が \"tool_use\" のときは、Claude がアプリケーションの実行するツールを呼び出しています。アプリケーションは各 tool_use ブロックのツールを実行し、次のリクエストで応答の content を変えずに assistant メッセージとして加え、続く user メッセージに tool_use ブロックごとの tool_result を入れて、同じ tools で送ります。次の応答も tool_use なら、これを繰り返します。\n\n見分け方: tool_use は完了ではなく、ツールの結果を待っている状態です(b)。結果を返さずに同じリクエストを送っても(c)、ツールの結果は Claude に届きません。max_tokens の上限に達した打ち切りは、stop_reason が \"max_tokens\" になります(d)。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
-   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works"
+  ],
+  "topics": [
+   "stop-reasons",
+   "handle-tool-calls"
   ]
  },
  {
@@ -614,7 +676,7 @@
    {
     "id": "b",
     "text": "タイムアウトも再試行の対象なので、実際の待ち時間は設定したタイムアウトより長くなりうる",
-    "why": "タイムアウト値に再試行回数を掛けた時間まで伸びる可能性がある。"
+    "why": "Python SDK の資料に、タイムアウトしたリクエストも既定で 2 回再試行されるとある。そのため全体の待ち時間は、1 回分のタイムアウトより長くなりうる。"
    },
    {
     "id": "c",
@@ -631,10 +693,13 @@
    "a",
    "b"
   ],
-  "explanation": "公式 SDK は接続エラー、408、409、429、5xx を既定で自動再試行します。再試行回数とタイムアウトはクライアントの設定で変更できます。応答時間に上限がある処理では、再試行を含めた合計時間で見積もります。",
+  "explanation": "正解は a と b です。公式 SDK は、接続エラー、レート制限、5xx などの一時的な失敗を、指数バックオフで既定 2 回、自動的に再試行します。Python SDK の資料では、対象は接続エラー、408、409、429、500 以上です。既定のタイムアウトは 10 分で、タイムアウトしたリクエストも既定で 2 回再試行されるため、全体の待ち時間は 1 回分のタイムアウトより長くなりえます。回数は max_retries で変えたり無効にしたりできます。\n\n見分け方: 再試行の対象に 400 は含まれません(c)。自動再試行は既定で有効で、max_retries はそれを変更・無効化するための設定です(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/api/errors",
-   "https://platform.claude.com/docs/en/api/rate-limits"
+   "https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/python"
+  ],
+  "topics": [
+   "api-errors"
   ]
  },
  {
@@ -643,7 +708,7 @@
   "domain": "applications-and-integration",
   "type": "single",
   "scenarioId": null,
-  "stem": "Amazon Bedrock や Google Cloud の Vertex AI 経由で Claude を利用する場合の注意点として正しいものはどれか。",
+  "stem": "Amazon Bedrock や Google Cloud(Claude Models on Google Cloud)経由で Claude を利用する場合の注意点として正しいものはどれか。",
   "choices": [
    {
     "id": "a",
@@ -669,9 +734,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "クラウド事業者経由の利用では、そのプラットフォーム用のクライアントと認証を使います。機能の提供状況が異なるため、特定の機能に依存する設計では事前に対応状況を確認します。",
+  "explanation": "正解は a です。クラウドプラットフォーム経由の利用は、その事業者の課金と IAM に統合され、機能の提供状況はプラットフォームごとに異なるため、各プラットフォームのページで確かめるよう公式資料は案内しています。たとえば Amazon Bedrock のモデル ID は global.anthropic.claude-fable-5-2 のような形です。Claude Models on Google Cloud (Google managed) はモデルを URL で指定し、どちらも Files API や Message Batches API に対応していません。\n\n見分け方: 認証には、各クラウドの資格情報(AWS の IAM ロールや Google Cloud の Application Default Credentials など)を使います(b)。提供の範囲や時期はプラットフォームごとに異なります(c)。ストリーミングはどちらでも使えます(d)。",
   "refs": [
-   "https://platform.claude.com/docs/en/about-claude/models/overview"
+   "https://platform.claude.com/docs/en/api/overview",
+   "https://platform.claude.com/docs/en/models/overview",
+   "https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock",
+   "https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/google-managed"
+  ],
+  "topics": [
+   "cloud-platforms"
   ]
  },
  {
@@ -684,13 +755,13 @@
   "choices": [
    {
     "id": "a",
-    "text": "最初のメッセージは user ロールで始める",
-    "why": "会話は user の発言から始まる。"
+    "text": "user と assistant のターンを交互に並べる。同じロールのメッセージが続くと、1 つのターンに結合される",
+    "why": "正解。モデルは user と assistant が交互に並ぶターンで訓練されており、連続する同じロールのメッセージは 1 つのターンに結合される。"
    },
    {
     "id": "b",
-    "text": "最初のメッセージは assistant ロールで始める",
-    "why": "最初は user ロールである。"
+    "text": "assistant のメッセージを続けて並べると、それぞれが独立した別のターンとして扱われる",
+    "why": "連続する同じロールのメッセージは、1 つのターンに結合される。"
    },
    {
     "id": "c",
@@ -706,9 +777,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "messages は user と assistant の発言を時系列に並べたものです。最初は user の発言で、以後は会話の流れに沿って積み上げます。",
+  "explanation": "正解は a です。API リファレンスによると、モデルは user と assistant が交互に並ぶ会話のターンで動くよう訓練されています。messages には直前までのターンを入れ、モデルはその続きとして次のメッセージを生成します。user のメッセージ 1 件だけでも、複数の user と assistant のメッセージでもかまいません。連続する同じロールのメッセージは 1 つのターンに結合されます。\n\n見分け方: 同じロールを続けても別々のターンにはならず、結合されます(b)。messages の並びは会話の流れそのもので、順序に意味があります(c)。messages は 1 件でも複数でもかまいません(d)。",
   "refs": [
-   "https://platform.claude.com/docs/en/api/messages"
+   "https://platform.claude.com/docs/en/api/messages",
+   "https://platform.claude.com/docs/en/build-with-claude/working-with-messages"
+  ],
+  "topics": [
+   "messages-api-basics"
   ]
  },
  {
@@ -743,10 +818,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "応答の content はブロックの配列です。テキスト以外に tool_use や thinking のブロックが含まれることがあり、これらを保ったまま履歴に戻します。",
+  "explanation": "正解は a です。Handle tool calls のページは、次のリクエストでそれまでのメッセージを保ち、応答の content を変えずに assistant メッセージとして加えるよう書いています。そのうえで、tool_use ブロックごとの tool_result ブロックを入れた user メッセージを続けます。tool_result は対応する tool_use の直後に置く必要があり、間に別のメッセージを挟めません。ツールを使う場合、thinking と redacted_thinking のブロックも受け取ったとおりに戻します。\n\n見分け方: テキストだけ(b)や最後のブロックだけ(c)を戻すと、tool_use ブロックが欠けて tool_result の対応先がなくなります。応答を加えずに tool_result だけを送る(d)と、tool_result が対応する tool_use の直後に置かれません。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+   "https://platform.claude.com/docs/en/api/errors",
    "https://platform.claude.com/docs/en/api/messages"
+  ],
+  "topics": [
+   "handle-tool-calls",
+   "messages-api-basics"
   ]
  },
  {
@@ -781,10 +861,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "stop_sequences は、指定した文字列が現れたら生成を止める仕組みです。どの文字列で止まったかは、応答の stop_sequence フィールドで分かります。",
+  "explanation": "正解は a です。stop_sequences に指定した文字列のいずれかを Claude が出力すると生成が止まり、stop_reason は \"stop_sequence\" になります。どの文字列で止まったかは、応答の stop_sequence フィールドで確かめられます。stop_reason は成功した応答に含まれる値で、4xx や 5xx の HTTP ステータスで返るエラーとは区別されます。\n\n見分け方: 停止シーケンスでの停止は正常な応答で、エラーにはなりません(b)。指定した文字列に達した時点で生成は止まり、そのまま続くことはありません(c)。\"max_tokens\" は、リクエストで指定した max_tokens の上限に達したときの値です(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
    "https://platform.claude.com/docs/en/api/messages"
+  ],
+  "topics": [
+   "stop-reasons"
   ]
  },
  {
@@ -819,9 +902,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "stop_reason の値は、end_turn(自然な完了)、max_tokens(上限到達)、stop_sequence(停止文字列)、tool_use(ツール呼び出し)、pause_turn(サーバー側ツールの途中での一時停止)、refusal(拒否)、model_context_window_exceeded(コンテキストウィンドウが埋まった)です。",
+  "explanation": "正解は a です。end_turn は最もよく見られる stop_reason で、Claude が応答を自然に終えたことを表し、応答をそのまま使えます。ほかの主な値には、max_tokens(指定した上限に到達)、stop_sequence(停止シーケンスを出力)、tool_use(ツールの呼び出し)、pause_turn(サーバーツールのループが反復上限に到達)、refusal(辞退)、model_context_window_exceeded(コンテキストウィンドウの上限に到達)があります。\n\n見分け方: 上限による打ち切りは \"max_tokens\"(b)、アプリケーションにツールの結果を求めている状態は \"tool_use\" です(c)。レート制限は stop_reason ではなく、HTTP 429 のエラーとして返ります(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ],
+  "topics": [
+   "stop-reasons"
   ]
  },
  {
@@ -845,7 +931,7 @@
    {
     "id": "c",
     "text": "一時的な判定の揺れなので、同じリクエストを成功するまで繰り返す",
-    "why": "同じ内容は同じ理由で辞退される可能性が高い。"
+    "why": "公式資料が示す再試行は、別のモデルへのフォールバックである。同じリクエストを同じモデルで繰り返す方法は示されていない。"
    },
    {
     "id": "d",
@@ -856,9 +942,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "拒否は HTTP エラーではなく、正常な応答の stop_reason として返ります。本文を使う前に stop_reason を必ず確認します。",
+  "explanation": "正解は a です。\"refusal\" は、安全性の分類器が応答を辞退したことを表し、エラーではなく通常の HTTP 200 の応答として返ります。そのため、ステータスコードではなく stop_reason で分岐します。辞退の応答には stop_details が付き、category で方針の分野が分かります。公式資料は、同じリクエストを別の Claude モデルに送る(フォールバック)と多くの場合は回答を得られるとし、サーバー側とクライアント側の設定方法を示しています。\n\n見分け方: 200 だからと本文をそのまま回答として扱う(b)と、辞退を見落とします。公式資料が示す再試行は別のモデルへのフォールバックで、同じリクエストを繰り返すこと(c)ではありません。上限による打ち切りではないので、max_tokens(d)は関係ありません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+   "https://platform.claude.com/docs/en/build-with-claude/refusals-and-fallback"
+  ],
+  "topics": [
+   "stop-reasons"
   ]
  },
  {
@@ -893,10 +983,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "pause_turn は、サーバー側ツールを含む長いターンが一時停止したことを表します。応答を履歴に加えて再度リクエストすれば、Claude が続きを処理します。",
+  "explanation": "正解は a です。pause_turn は、Web 検索などのサーバーツールを実行するサーバー側のループが、反復の上限(既定で 1 リクエストにつき 10 回)に達したときに返ります。続けるには、それまでのメッセージに応答の content を変えずに assistant メッセージとして加え、同じ tools で、その後に user メッセージを付けずに送り直します。応答に container が含まれていれば、その ID も送り返します。\n\n見分け方: ターンはまだ完了していません(b)。サーバーツールは API が実行するので、アプリケーションが実行して tool_result を返す必要はありません(c)。pause_turn はエラーではなく、成功した応答の stop_reason です(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools",
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool"
+  ],
+  "topics": [
+   "stop-reasons",
+   "tool-use-basics"
   ]
  },
  {
@@ -931,10 +1026,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "usage には、入力、出力、キャッシュの書き込みと読み出しのトークン数が入ります。これにモデルごとの単価を掛けて費用を計算します。",
+  "explanation": "正解は a です。API はトークン数で課金とレート制限を行い、応答の usage には input_tokens、output_tokens、cache_creation_input_tokens、cache_read_input_tokens などが入ります。リクエストの入力トークンの合計は、input_tokens、cache_creation_input_tokens、cache_read_input_tokens の和です。これにモデルごとの単価を掛けて費用を計算します。キャッシュの書き込みと読み出しは、通常の入力とは別の単価です。\n\n見分け方: リファレンスは、usage のトークン数が見えている内容と 1 対 1 には対応しないとしており、文字数(b)や HTTP 応答のバイト数(d)からは求められません。max_tokens(c)は生成の上限で、実際に生成された量ではありません。",
   "refs": [
    "https://platform.claude.com/docs/en/api/messages",
    "https://platform.claude.com/docs/en/about-claude/pricing"
+  ],
+  "topics": [
+   "messages-api-basics"
   ]
  },
  {
@@ -969,10 +1067,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "直接呼び出す場合は、x-api-key、anthropic-version、content-type の各ヘッダーを付けます。公式 SDK はこれらを自動で設定します。",
+  "explanation": "正解は a です。API versions のページは、リクエストに anthropic-version ヘッダーを必ず送るよう書いており、API overview の表でも anthropic-version と content-type(application/json)が必須です。認証は Authorization: Bearer(または従来の方式の x-api-key)で行います。公式 SDK は、認証、バージョン、content-type のヘッダーを自動で送ります。\n\n見分け方: モデルはリクエスト本文の model で指定します(b)。リクエスト ID は、API が応答の request-id ヘッダーで返すものです(c)。ストリーミングは本文で \"stream\": true を指定します(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/api/versioning",
+   "https://platform.claude.com/docs/en/api/overview",
    "https://platform.claude.com/docs/en/api/messages"
+  ],
+  "topics": [
+   "messages-api-basics"
   ]
  },
  {
@@ -1007,9 +1109,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "401 は API キーに問題がある場合に返ります。403 は、キーは有効だが対象の資源を使う権限がない場合です。",
+  "explanation": "正解は a です。401 authentication_error は、API キーに問題があること(形式の誤り、取り消し、期限切れなど)を表します。まず、送っているキーの値、キーが有効か、環境変数が設定されているかを確かめます。キーは有効でも、指定した資源を使う権限がない場合は 403 permission_error です。なお、メッセージが CORS requests are not allowed で始まる 401 はキーの問題ではなく、ブラウザから直接呼び出したことが原因です。\n\n見分け方: リクエストの形式や内容の誤りは 400 invalid_request_error(b)、レート制限は 429 rate_limit_error です(c)。モデル ID の綴りは認証とは別の問題で、401 が示す API キーの問題にはあたりません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/api/errors"
+  ],
+  "topics": [
+   "api-errors"
   ]
  },
  {
@@ -1044,10 +1149,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "利用できるモデルの一覧は Models API で取得できます。モデル ID は推測せず、公式の一覧にあるものを使います。",
+  "explanation": "正解は a です。エラーの一覧では、404 not_found_error は要求した資源が見つからないことを表し、選択肢の中でモデルの指定の誤りに当てはまるのはこれだけです(公式資料は、存在しないモデル ID のときに返る種別を個別には書いていません)。使えるモデルは Models API(GET /v1/models)で一覧を取得でき、各プラットフォームのモデル ID は Models overview の表で確かめられます。\n\n見分け方: 429(b)は組織のレート制限などの超過、529(c)は API の一時的な過負荷、401(d)は API キーの問題を表し、いずれもモデル ID の誤りとは関係しません。",
   "refs": [
    "https://platform.claude.com/docs/en/api/errors",
-   "https://platform.claude.com/docs/en/about-claude/models/overview"
+   "https://platform.claude.com/docs/en/api/overview",
+   "https://platform.claude.com/docs/en/models/overview"
+  ],
+  "topics": [
+   "api-errors"
   ]
  },
  {
@@ -1082,10 +1191,16 @@
   "answer": [
    "a"
   ],
-  "explanation": "リクエストには大きさの上限があります。大きなファイルは Files API で先にアップロードして参照する、複数のリクエストに分ける、といった方法で対処します。",
+  "explanation": "正解は a です。413 request_too_large は、リクエストが許される最大のバイト数を超えたことを表します。上限は Claude API の Messages API で 128 MB、Amazon Bedrock で 20 MB、Claude Models on Google Cloud (Google managed) で 30 MB です。Vision のページは、画像の枚数の上限(API で最大 600 枚)より先にこの大きさの上限に達することがあるとし、画像が多いときは Files API でアップロードして file_id で参照するよう勧めています。\n\n見分け方: レート制限の超過は 429(b)、API の過負荷は 529 です(d)。リクエストの形式や内容の誤りは 400 invalid_request_error で返ります(c)。",
   "refs": [
    "https://platform.claude.com/docs/en/api/errors",
+   "https://platform.claude.com/docs/en/api/overview",
+   "https://platform.claude.com/docs/en/build-with-claude/vision",
    "https://platform.claude.com/docs/en/build-with-claude/files"
+  ],
+  "topics": [
+   "api-errors",
+   "vision"
   ]
  },
  {
@@ -1120,9 +1235,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "すべての応答には、リクエストを識別する request-id ヘッダーが付きます。アプリケーションのログに記録しておくと、障害の調査に使えます。",
+  "explanation": "正解は a です。すべての API 応答には、req_018EeWyXxfu5pfWkrYcMdjWG のような一意の値を持つ request-id ヘッダーが付き、エラーの本文にも同じ値が request_id として入ります。公式資料は、特定のリクエストについてサポートに問い合わせるときは、この ID を添えるよう勧めています。Python と TypeScript の SDK では、応答オブジェクトの _request_id で読めます。\n\n見分け方: API キー(b)は秘密の情報で、リクエストの特定にも使いません。PC の機種(c)や max_tokens の値(d)では、どのリクエストかを特定できません。",
   "refs": [
-   "https://platform.claude.com/docs/en/api/errors"
+   "https://platform.claude.com/docs/en/api/errors",
+   "https://platform.claude.com/docs/en/api/overview"
+  ],
+  "topics": [
+   "api-errors"
   ]
  },
  {
@@ -1157,10 +1276,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "ストリーミングでは、最初のステータスコードだけでなく、途中の error イベントも処理する必要があります。途中まで受信した内容をどう扱うかも設計しておきます。",
+  "explanation": "正解は a です。ストリーミングでは、API が 200 を返した後にエラーが起きることがあり、その場合は通常の HTTP エラーの仕組みではなく、ストリームの中のエラーイベントとして届きます。たとえば利用が集中しているときは、非ストリーミングなら 529 にあたる overloaded_error が届くことがあります。中断したときは、受信済みの内容を保存し、続きを求めるリクエストで再開できます。\n\n見分け方: 200 の後でもエラーは届きうるので(b)は誤りで、エラーはイベントとして通知されます(c)。受信済みの内容は手元に残り、公式資料はそれを保存して続きから再開する方法を示しています(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/streaming",
    "https://platform.claude.com/docs/en/api/errors"
+  ],
+  "topics": [
+   "streaming",
+   "api-errors"
   ]
  },
  {
@@ -1195,9 +1318,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "tool_use ブロックの入力は、content_block_delta の input_json_delta で少しずつ届きます。content_block_stop の後に、連結した文字列をパースします。",
+  "explanation": "正解は a です。tool_use ブロックの input の更新は、content_block_delta の input_json_delta として届き、その中身は部分的な JSON の文字列です(最終的な tool_use.input は常にオブジェクト)。文字列の断片を連結し、content_block_stop を受け取ってからパースします。既定では、API は input の各キーと値が完成するまでバッファし、完成したものを複数の断片に分けて送ります。\n\n見分け方: 完成した input が content_block_start でまとめて届くのではありません(b)。引数は同じストリームの中で届きます(c)。個々の断片は部分的な JSON の文字列で、単独でパースできる完全な JSON ではありません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/streaming"
+  ],
+  "topics": [
+   "streaming"
   ]
  },
  {
@@ -1232,9 +1358,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "message_start で入力側の usage が、message_delta で stop_reason と出力側の usage が届きます。",
+  "explanation": "正解は a です。message_delta は、最終的な Message オブジェクトの最上位の変更を知らせるイベントで、stop_reason はこのイベントで届きます。stop_reason は最初の message_start では null で、ほかのイベントには含まれません。message_delta の usage のトークン数は累積値なので、出力トークン数もここで分かります。\n\n見分け方: content_block_start(b)はコンテンツブロックの開始を、content_block_delta(d)はブロックの内容の差分を運びます。ping(c)はストリームの途中に任意の数だけ入りうるイベントで、stop_reason は含みません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/streaming"
+   "https://platform.claude.com/docs/en/build-with-claude/streaming",
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ],
+  "topics": [
+   "streaming",
+   "stop-reasons"
   ]
  },
  {
@@ -1258,7 +1389,7 @@
    {
     "id": "c",
     "text": "ストリーミングのイベントで、処理が終わったリクエストから 1 件ずつ結果が届く",
-    "why": "バッチの結果はストリーミングでは届かない。"
+    "why": "バッチでは stream: true を使えず、結果はすべての処理が終わったとき(または 24 時間後)に results_url からまとめて取得する。"
    },
    {
     "id": "d",
@@ -1269,9 +1400,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "バッチは投入後に非同期で処理されます。processing_status が ended になったら、結果を取得します。",
+  "explanation": "正解は a です。Message Batches API に投入したバッチは非同期に処理され、各リクエストは独立に扱われます。バッチの processing_status は in_progress から始まり、すべてのリクエストの処理が終わって結果の準備ができると ended になります。状態は Console か取得のエンドポイントで確認でき、バッチの id を使って定期的に状態を確かめるポーリングのループを作るのが公式の方法です。ended になったら results_url から結果を取得します。\n\n見分け方: 投入の応答は処理の完了を待たずに返り、処理は裏で進みます(b)。バッチには stream: true を指定できず、結果は 1 つのファイルとして、すべての処理が終わったとき(または 24 時間後)に取得できるようになります(c)。完了を知らせるメール(d)は出典に書かれておらず、状態は API か Console で確認します。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ],
+  "topics": [
+   "batch-processing"
   ]
  },
  {
@@ -1306,9 +1440,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "結果の種別は succeeded、errored、canceled、expired です。24 時間以内に処理されなかったリクエストは expired になります。成功以外のリクエストには課金されません。",
+  "explanation": "正解は a です。バッチの処理が終わると、各リクエストに結果が付きます。結果の種別は 4 つで、succeeded(成功し、メッセージの結果を含む)、errored(不正なリクエストや内部エラーでメッセージが作られなかった)、canceled(モデルに送られる前にバッチが取り消された)、expired(モデルに送られる前に 24 時間の期限に達した)です。errored、canceled、expired のリクエストには課金されません。\n\n見分け方: 「再試行中」を表す retrying という種別はありません(a)。succeeded(b)、errored(c)、expired(d)はいずれも実在する種別です。失敗したリクエストを再試行するかどうかは、結果を見てアプリケーションが決め、必要なら新しいリクエストとして送り直します。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ],
+  "topics": [
+   "batch-processing"
   ]
  },
  {
@@ -1343,9 +1480,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "バッチは、費用を抑える代わりに応答の即時性を手放す仕組みです。対話的な用途には通常の API とストリーミングを使います。",
+  "explanation": "正解は a です。Message Batches API は、即時の応答を必要としない大量の処理のための仕組みです。費用は標準の 50% になり、スループットも上がりますが、処理は非同期で、多くのバッチは 1 時間以内に終わるものの、最長で 24 時間かかることがあります。利用者が画面の前で回答を待つチャットのように即時性が必要な用途には、通常の Messages API を使います。\n\n見分け方: 公式ドキュメントは、大規模な評価、コンテンツのモデレーション、大量のデータの分析や要約、一括のコンテンツ生成をバッチの用途の例に挙げています。夜間の文書の分類(b)、評価用データセットへのプロンプトの実行(c)、過去の記事の一括要約(d)は、いずれも急がない大量の処理なので向いています。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ],
+  "topics": [
+   "batch-processing"
   ]
  },
  {
@@ -1380,10 +1520,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "コンテンツブロックの種類は、ファイルの MIME タイプと合っている必要があります。PDF やテキストは document、画像は image です。",
+  "explanation": "正解は a です。Files API でアップロードしたファイルは、ファイルの種類に合ったコンテンツブロックの source に type: \"file\" と file_id を指定して参照します。画像(image/jpeg、image/png、image/gif、image/webp)は image ブロック、PDF とプレーンテキストは document ブロック、コード実行ツールに渡すファイルは container_upload ブロックです。中身を送り直さずに、何度でも参照できます。\n\n見分け方: 画像を document ブロックに入れる(b)と、ファイルの種類とブロックが合わないため 400 エラーになります。file_id を text ブロックの本文(c)やシステムプロンプト(d)に文字列として書いても、ただのテキストとして扱われ、ファイルは読み込まれません。ファイルの参照は、メッセージのコンテンツブロックで行います。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/files",
    "https://platform.claude.com/docs/en/build-with-claude/vision"
+  ],
+  "topics": [
+   "files-api",
+   "vision"
   ]
  },
  {
@@ -1407,7 +1551,7 @@
    {
     "id": "c",
     "text": "PDF 全体を 1 枚の巨大な画像に変換して送る",
-    "why": "解像度が落ちて読めなくなり、上限の問題も解決しない。"
+    "why": "大きな画像は処理の前に縮小されるため、細かな文字が読みにくくなる。出典が勧めるのは、大きな PDF の分割である。"
    },
    {
     "id": "d",
@@ -1418,9 +1562,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "PDF には、リクエストのサイズとページ数の上限があります。上限を超える場合は、分割や要約の段階的な統合を検討します。入力を黙って切り詰めることは避けます。",
+  "explanation": "正解は a です。PDF のリクエストには上限があり、Claude API ではリクエスト全体で 128 MB、ページ数は 600 ページ(コンテキストウィンドウが 1M トークン未満なら 100 ページ)までです。上限は PDF と一緒に送る他の内容も含むリクエスト全体にかかります。公式ドキュメントは、大きな PDF は必要に応じて分割するよう勧めており、文字の細かい PDF でページの上限より先にコンテキストが埋まるときも、文書を部分に分けることを挙げています。\n\n見分け方: 後半を黙って切り捨てる(b)と、情報が失われ、利用者も気付けません。PDF 全体を 1 枚の巨大な画像にする(c)と、大きな画像は処理の前に縮小されるため細かな文字が読みにくくなります。max_tokens(d)は出力の上限で、入力の上限とは関係がありません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/pdf-support"
+  ],
+  "topics": [
+   "pdf-support"
   ]
  },
  {
@@ -1449,15 +1596,18 @@
    {
     "id": "d",
     "text": "画像を 1 つの PDF に埋め込んで、文書として送る",
-    "why": "ページは画像としても処理されるため、減らない。"
+    "why": "PDF では各ページが画像に変換され、抽出したテキストのトークンも加わる。出典が費用を抑える方法として挙げるのは、送る前の縮小である。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "画像は大きさに応じたトークンを消費します。非常に大きな画像は自動的に縮小されますが、あらかじめ適切な大きさにしておくと、費用と応答時間を抑えられます。",
+  "explanation": "正解は a です。Claude は画像を 28×28 ピクセルの区画(visual token)単位で処理し、トークン数はおおむね ⌈幅/28⌉ × ⌈高さ/28⌉ で、画像が大きいほど増えます。モデルの上限を超える画像は自動で縮小されますが、公式ドキュメントは、高解像度が必要でなければ送る前に縮小してトークンの費用を抑え、遅延も減らすよう勧めています。\n\n見分け方: base64、URL、file_id のどれで渡しても、画像は同じ image ブロックとして処理され、渡し方でトークン数の計算は変わりません(b)。max_tokens(c)は出力の上限で、入力の費用は変わりません。PDF に埋め込む(d)と、各ページが画像に変換されるうえ、抽出したテキストのトークンも加わります。出典が費用を抑える方法として挙げるのは、送る前の縮小です。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/vision"
+  ],
+  "topics": [
+   "vision"
   ]
  },
  {
@@ -1471,7 +1621,7 @@
    {
     "id": "a",
     "text": "画像に写っている実在の人物を、顔の特徴から特定することはしない",
-    "why": "人物の識別は行わない設計になっている。"
+    "why": "公式ドキュメントは、Claude を画像の人物の名前を挙げることに使えず、Claude はそれを拒否するとしている。"
    },
    {
     "id": "b",
@@ -1492,9 +1642,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Claude は図表、文書、写真の内容を解釈できますが、顔による人物の特定は行いません。細かな空間的推論や、不鮮明な画像の読み取りには誤りが出ることがあります。",
+  "explanation": "正解は a です。公式ドキュメントは画像理解の制約として、Claude を画像の人物の名前を挙げることに使えず、Claude はそれを拒否すると明記しています(利用ポリシーに基づく)。ほかに、低品質、回転した、200 ピクセル未満の小さな画像では誤りが出ることがあること、座標や位置の出力、物の数え上げはおおよそであること、AI が生成した画像かどうかは判定できないことが挙げられています。\n\n見分け方: Claude は画像の中の文字を読めます。重要な文字は読める大きさにするよう勧められているだけです(b)。グラフや図表の内容も解釈でき、PDF ではページの画像からグラフや図について質問できます(c)。1 回の API リクエストには複数の画像を入れられ、上限はモデルによって 100 枚または 600 枚です(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/vision"
+  ],
+  "topics": [
+   "vision"
   ]
  },
  {
@@ -1529,9 +1682,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "引用には、引用した文言、文書の番号と題名、位置情報が含まれます。位置情報は、プレーンテキストでは文字位置、PDF ではページ番号です。",
+  "explanation": "正解は a です。Citations を有効にすると、応答の text ブロックに、主張を裏付ける引用の一覧が付きます。引用には、引用した文言(cited_text)、文書の番号(document_index)と題名、位置が入ります。位置の表し方は文書の種類で決まり、PDF では page_location としてページ番号の範囲(start_page_number は 1 から数え、end_page_number は含まない)が返ります。プレーンテキストでは文字位置、カスタムコンテンツではブロックの番号です。\n\n見分け方: 渡した文書に対する引用なので、Web サイトの URL(b)は入りません(URL が付くのは Web 検索ツールの引用です)。引用の信頼度の数値(c)や、著者の連絡先(d)は、引用の形式にありません。なお、cited_text は出力トークンに数えられません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/citations"
+  ],
+  "topics": [
+   "citations",
+   "pdf-support"
   ]
  },
  {
@@ -1566,10 +1723,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "構造化出力でも、stop_reason が max_tokens や refusal の場合は、スキーマに適合した完全な出力は得られません。パースの前に stop_reason を確認します。",
+  "explanation": "正解は a です。構造化出力は制約付きのデコードでスキーマへの適合を保証しますが、公式ドキュメントは適合しない場合として 2 つを挙げています。1 つは max_tokens に達して出力が途中で切れたときで、stop_reason が \"max_tokens\" になり、出力が不完全でスキーマに合わないことがあります。この場合は max_tokens を増やして再試行します。もう 1 つは安全上の理由で拒否したとき(stop_reason が \"refusal\")です。パースの前に stop_reason を確かめます。\n\n見分け方: 構造化出力は形式の目安ではなく、完了した出力はスキーマに合う有効な JSON になります(b)。スキーマには複雑さの上限があり、超えるとリクエストがエラーになりますが、フィールドが多いことで出力が途中で止まるわけではありません(c)。ストリーミングの有無(d)は、出力の打ち切りとは関係がありません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
    "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ],
+  "topics": [
+   "structured-outputs"
   ]
  },
  {
@@ -1604,9 +1764,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "応答そのものを JSON で受け取りたいときは構造化出力を、ツールの引数を確実にスキーマどおりにしたいときは strict を使います。両方を併用することもできます。",
+  "explanation": "正解は a です。構造化出力には 2 つの機能があります。JSON outputs(output_config.format)は Claude の応答の形式、つまり Claude が何を言うかを制御し、strict tool use(strict: true)はツールの名前と入力、つまり Claude が関数をどう呼ぶかをスキーマに合わせます。両者は別の問題を解くもので、同じリクエストで併用できます。エージェントで、確実なツール呼び出しと構造化された最終出力の両方が必要なときに役立ちます。\n\n見分け方: 対象が異なるため、同じ機能の別名ではありません(b)。どちらもストリーミングと併用でき、ストリーミングの有無で使い分けるものではありません(c)。strict が保証するのは入力の形で、ツールを呼ぶかどうかは別の話です。呼び出しを強制するのは tool_choice の役割です(d)。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use"
+  ],
+  "topics": [
+   "structured-outputs",
+   "strict-tool-use"
   ]
  },
  {
@@ -1641,9 +1806,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "会話が長くなるほど、ウィンドウは履歴で埋まります。長い会話では、要約や古い内容の削除によって管理します。",
+  "explanation": "正解は a です。コンテキストウィンドウは、モデルが応答を生成するときに参照できるテキストのすべてで、応答そのものも含みます。公式ドキュメントは、システムプロンプト、messages のすべてのメッセージ(ツールの結果、画像、文書を含む)、ツール定義がウィンドウに数えられ、そのターンで生成する出力(拡張思考を含む)も数えられるとしています。会話が進むと、各ターンのメッセージがウィンドウに積み重なります。\n\n見分け方: 出力も同じウィンドウに含まれます(b)。API は状態を持たないため、毎回送る履歴全体が入力になり、ウィンドウに数えられます(c)。ツール定義も入力として数えられ、その消費を減らす方法としてツール検索ツールなどが紹介されています(d)。長い会話では、サーバー側のコンパクションが主な管理方法です。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+  ],
+  "topics": [
+   "context-windows"
   ]
  },
  {
@@ -1678,9 +1846,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Models API は、利用できるモデルの一覧と、各モデルの上限や対応機能を返します。",
+  "explanation": "正解は a です。公式ドキュメントは、モデルの能力とトークンの上限を Models API でプログラムから取得できるとしています。応答には、利用できる各モデルの max_input_tokens(入力の上限)、max_tokens(出力の上限)、capabilities オブジェクトが入ります。capabilities には、thinking の無効化を受け付けるか、Web 検索とコード実行のツールを受け付けるかなどの情報もあります。\n\n見分け方: モデル ID は名前と版を表すもので、上限の情報は含まれません(b)。わざと上限を超えるリクエストを送る(c)のは、無駄なリクエストになるうえ、公式の方法ではありません。モデルに自分の仕様を尋ねる(d)方法は、確実な情報源ではありません。プログラムから確かめる手段として公式に用意されているのが Models API です。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/models/overview"
+  ],
+  "topics": [
+   "models-overview"
   ]
  },
  {
@@ -1694,12 +1865,12 @@
    {
     "id": "a",
     "text": "特定のバージョンを指すモデル ID を固定して使い、切り替えは評価を行ってから計画的に実施する",
-    "why": "バージョンを固定すれば、挙動が勝手に変わらない。"
+    "why": "モデル ID は固定のスナップショットを指し、その ID の重みや設定は更新されない。切り替えはテストしてから行う。"
    },
    {
     "id": "b",
     "text": "常に最新のモデルを指す別名を使い、改善された新しいモデルが出たら自動的に切り替わるようにしておく",
-    "why": "別名の指す先が変わると、挙動が変わる。"
+    "why": "Claude API に、新しいモデルへ自動で切り替わる別名はない。4.6 世代より前の別名も、同じマイナーバージョンの最新の日付付きスナップショットを指すだけである。"
    },
    {
     "id": "c",
@@ -1715,10 +1886,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "モデルには提供終了の予定があります。廃止の告知を確認し、評価セットで新しいモデルの挙動を確かめてから移行します。",
+  "explanation": "正解は a です。Claude のモデル ID は、どれも固定のスナップショットを指します。ある ID を使っている間、その下のモデルは変わらず、Anthropic は既存の ID の重みや設定を更新しません。更新版は新しい ID で出ます。そのため、本番では ID を指定して使い、新しいモデルへの切り替えは、提供終了日より前に自分の用途でテストしてから行います。なお、提供基盤の更新で挙動にわずかな違いが出ることはあります。\n\n見分け方: Claude API に、新しいモデルへ自動で切り替わる別名はありません。日付のない ID を最新版への別名と考えるのはよくある誤解だと公式は書いています(b)。無作為にモデルを選ぶと挙動が揃いません(c)。model はリクエストに必須のパラメータです(d)。",
   "refs": [
+   "https://platform.claude.com/docs/en/about-claude/models/model-ids-and-versions",
    "https://platform.claude.com/docs/en/about-claude/models/overview",
    "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ],
+  "topics": [
+   "models-overview",
+   "model-migration"
   ]
  },
  {
@@ -1753,9 +1929,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "モデルの提供終了は事前に告知されます。新しいモデルでは挙動や推奨されるプロンプトが変わることがあるため、評価を伴う移行が必要です。",
+  "explanation": "正解は a です。モデルが非推奨(Deprecated)になると、後継モデルと提供終了日が示されます。公式ドキュメントは、提供終了日までにすべての利用を適切な後継モデルに移すこと、そのために提供終了日よりずっと前に新しいモデルでアプリケーションを十分にテストすることを勧めています。モデルごとの移行ガイドも用意されています。公開されたモデルについては、少なくとも 60 日前に通知があります。\n\n見分け方: 提供終了(Retired)になったモデルへのリクエストは失敗します。後継モデルに自動で転送される仕組みは書かれていません(b)。同じ ID を指定し続けても、提供終了後は使えません(c)。API キーを再発行しても、提供終了したモデルは使えるようになりません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ],
+  "topics": [
+   "model-migration"
   ]
  },
  {
@@ -1790,9 +1969,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "レート制限は、リクエスト数、入力トークン数、出力トークン数といった指標で管理されます。利用実績に応じてティアが上がり、上限も上がります。",
+  "explanation": "正解は a です。Messages API のレート制限は、モデルの種類ごとに、1 分あたりのリクエスト数(RPM)、入力トークン数(ITPM)、出力トークン数(OTPM)で測られ、どれか 1 つを超えても 429 エラーになります。上限は組織の単位で適用され、組織は利用実績などに基づいて利用ティアに自動で割り当てられ、使うにつれて上のティアに上がれます。\n\n見分け方: 制限は分単位の複数の指標で測られ、トークンの量も対象です(b)。制限は組織の単位で適用され、ワークスペースごとにさらに低い上限を設定できます。API キーを増やしても組織の上限は増えません(c)。上限はティアによって異なります(d)。なお、制限はトークンバケット方式で、上限まで連続的に補充されます。",
   "refs": [
    "https://platform.claude.com/docs/en/api/rate-limits"
+  ],
+  "topics": [
+   "rate-limits"
   ]
  },
  {
@@ -1827,9 +2009,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "応答ヘッダーには、各指標の上限、残量、リセットまでの時間が含まれます。これを使って、送信の速度を自分で調整できます。",
+  "explanation": "正解は a です。API の応答には、適用中のレート制限、現在の残り、補充が終わる時刻を示すヘッダーが入ります。anthropic-ratelimit-requests-limit / -remaining / -reset のように、リクエスト数、トークン数、入力トークン数、出力トークン数のそれぞれについて返り、reset は RFC 3339 の時刻です。429 のときは retry-after ヘッダーがあれば、その秒数だけ待ってから再試行します。\n\n見分け方: usage(b)は、そのリクエストで消費した入力と出力のトークン数で、残りの量ではありません。stop_reason と stop_sequence(c)は、生成が止まった理由を表します。リクエスト ID(d)はリクエストの識別子で、サポートへの問い合わせなどに使うものです。",
   "refs": [
    "https://platform.claude.com/docs/en/api/rate-limits"
+  ],
+  "topics": [
+   "rate-limits"
   ]
  },
  {
@@ -1853,7 +2038,7 @@
    {
     "id": "c",
     "text": "環境ごとに別の組織を契約し、それぞれで請求と上限を管理する",
-    "why": "管理が複雑になる。ワークスペースで足りる。"
+    "why": "出典は、1 つの組織の中で請求と管理をまとめたまま、環境ごとにワークスペースを分ける使い方を紹介している。"
    },
    {
     "id": "d",
@@ -1864,9 +2049,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "ワークスペースは、用途や環境ごとに API キー、支出の上限、レート制限を分ける仕組みです。",
+  "explanation": "正解は a です。ワークスペースは、組織の中でプロジェクト、環境、チームを分ける仕組みで、それぞれにメンバー、API キー、上限を割り当てられます。ワークスペースごとに月間の支出の上限と、RPM、ITPM、OTPM のレート制限を設定でき、他のワークスペースを使いすぎから守れます。公式ドキュメントは、開発、ステージング、本番を別々のワークスペースにする使い方を例に挙げています。\n\n見分け方: 1 つのキーを全環境で共有する(b)と、上限もキーも環境ごとに分かれません。組織を分ける(c)方法は出典になく、ワークスペースは 1 つの組織の中で請求と管理をまとめたまま分ける仕組みです。ヘッダーに環境の名前を入れる(d)だけでは、上限もキーも分かれません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/workspaces"
+   "https://platform.claude.com/docs/en/manage-claude/workspaces",
+   "https://platform.claude.com/docs/en/api/rate-limits"
+  ],
+  "topics": [
+   "workspaces",
+   "rate-limits"
   ]
  },
  {
@@ -1901,9 +2091,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "応答の content は、順序も内容も変えずに履歴へ戻すのが基本です。thinking ブロックには検証用の署名が付いており、改変すると受け付けられません。",
+  "explanation": "正解は a です。Claude がツールを呼ぶと、応答の組み立てを止めて外部の情報を待ちます。tool_result を返すと同じ応答の続きを作るため、前の推論が残っている必要があります。公式ドキュメントは、tool_use ブロックに伴う thinking ブロックを、完全かつ改変せずに送り返すよう求めています。thinking ブロックには推論を暗号化した signature があり、API はこれで Claude が生成したものかを確かめます。改変したブロックは 400 エラーで拒否されます。\n\n見分け方: ツール使用のターンの中では thinking ブロックの送り返しが必須で、取り除く(b)と推論の連続性が失われます。前のターンの不要なブロックは API が自動で絞り込みます。内容を書き換える(c)と拒否されます。ロールを変えて user メッセージに移す(d)方法はなく、assistant メッセージのまま返します。",
   "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/thinking",
+   "https://platform.claude.com/docs/en/build-with-claude/context-windows",
    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking"
+  ],
+  "topics": [
+   "thinking"
   ]
  },
  {
@@ -1938,10 +2133,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "思考の深さは、費用と応答時間に直接影響します。単純な処理では労力の設定を下げ、難しい処理で上げると、費用対効果が良くなります。",
+  "explanation": "正解は a です。thinking のトークンは Claude が生成するもので、出力トークンとして課金されます。max_tokens の一部になり、レート制限にも数えられます。表示される thinking は推論の要約ですが、課金されるのは元の推論の全トークンで、表示される量とは一致しません。費用と遅延を下げたいときは、公式ドキュメントはまず effort を下げるよう勧めています。\n\n見分け方: thinking は無料ではありません(b)。生成時には出力として課金されます。なお、前のターンの thinking ブロックを残すモデルでは、それが後のリクエストの入力として課金されますが、生成したときの課金が入力になるわけではありません(c)。display: \"omitted\" で表示しなくても全トークンが課金され、減るのは遅延だけです(d)。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/extended-thinking",
+   "https://platform.claude.com/docs/en/build-with-claude/context-windows",
+   "https://platform.claude.com/docs/en/build-with-claude/thinking",
    "https://platform.claude.com/docs/en/build-with-claude/effort"
+  ],
+  "topics": [
+   "thinking"
   ]
  },
  {
@@ -1976,10 +2175,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "サーバー側ツールには、Web 検索、Web 取得、コード実行などがあります。宣言すれば、Claude が必要に応じて使い、結果は応答のコンテンツブロックとして返ります。",
+  "explanation": "正解は a です。ツールは、コードがどこで動くかで分かれます。クライアントツール(利用者が定義するツールなど)はアプリケーションで動き、Claude が stop_reason: \"tool_use\" と tool_use ブロックを返すと、アプリケーションが処理を実行して tool_result を送り返します。サーバーツール(web_search、web_fetch、code_execution、tool_search など)は Anthropic の基盤で動き、結果は同じ応答の中で直接見られます。\n\n見分け方: サーバーツールはアプリケーションが実行するものではなく、実行の往復も要りません(b)。クライアントツールは、定義を書くだけでなく実行もアプリケーションが行います(c)。Messages API でサーバーツールを使うときも、web_search ツールのように tools に加えます(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool",
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+  ],
+  "topics": [
+   "tool-use-basics",
+   "web-search-tool"
   ]
  },
  {
@@ -2014,9 +2217,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Web 検索ツールでは、使用回数の上限や、対象とするドメインの許可・禁止を設定できます。検索に基づく回答には出典が付きます。",
+  "explanation": "正解は a です。Web 検索ツールでは、Claude が検索結果を使い、ターンの最後に出典を付けた最終的な回答を返します。引用は常に有効で、各引用には出典の url、title、引用した文言(最大 150 文字)などが入ります。ユーザーに API の出力をそのまま表示するときは、元の出典への引用を含める必要があります。\n\n見分け方: 検索は API(Anthropic の基盤)が実行し、利用者のブラウザでは行われません(b)。max_uses で 1 ターンの検索回数の上限を決められ、超えると max_uses_exceeded のエラーになります(c)。allowed_domains か blocked_domains で検索先のドメインを絞れ(両方を同時には指定できません)、組織の管理者も Console で制限できます(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool"
+  ],
+  "topics": [
+   "web-search-tool"
   ]
  },
  {
@@ -2051,9 +2257,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "コード実行ツールは、隔離された環境でコードを実行し、標準出力やエラーを結果として返します。実際の計算に基づく分析ができます。",
+  "explanation": "正解は a です。コード実行ツールは、Claude がデータの分析、可視化、複雑な計算などを行えるようにするサーバーツールです。tools に加えると、Claude は Bash コマンドとファイル操作で Python を書いて実行できます。すべての操作は安全なサンドボックスのコンテナで行われ、API がサーバー側で実行して結果(stdout、stderr、return_code など)を同じリクエストの中で Claude に返すため、自前の実行環境は要りません。\n\n見分け方: 生成されたコードを検証せずに本番サーバーで実行する(b)のは危険です。実行せずに結果を想像させる(c)と、実際の計算に基づきません。Message Batches API(d)は大量のリクエストを非同期で処理する仕組みで、コードを実行する機能ではありません。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool"
+  ],
+  "topics": [
+   "code-execution-tool"
   ]
  },
  {
@@ -2088,9 +2297,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "MCP コネクタは、リモートの MCP サーバーへの接続を API 側で行う機能です。利用にはベータ用のヘッダーが必要で、サーバーの指定とツールセットの指定を組み合わせます。",
+  "explanation": "正解は a です。MCP コネクタは、別の MCP クライアントを用意せずに、Messages API から直接リモートの MCP サーバーに接続する機能です。リクエストの mcp_servers にサーバーの URL や名前、必要なら OAuth のトークンを書き、tools に type: \"mcp_toolset\" のツールセットを置いて有効にするツールを決めます。ベータの機能で、mcp-client-2026-09-15 などのベータ用ヘッダーが必要です。\n\n見分け方: システムプロンプトに URL を書いても(b)、接続は行われません。MCP は API からも使えます(c)。ツール定義を手作業で書き写す(d)と、自分でクライアントツールとして実行することになります。なお、MCP コネクタが対応するのはツールの呼び出しだけで、サーバーは HTTP で公開されている必要があります。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector"
+  ],
+  "topics": [
+   "mcp-connector"
   ]
  },
  {
@@ -2125,9 +2337,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "RAG では、埋め込みモデルで文書を検索できる形にし、質問に関連する部分だけを取り出して Claude に渡します。Anthropic の資料では、埋め込みの提供元として Voyage AI が紹介されています。",
+  "explanation": "正解は a です。公式ドキュメントは、Anthropic は独自の埋め込みモデルを提供していないと明記し、提供元の例として Voyage AI を紹介しています(他の提供元も評価するよう勧めています)。RAG では、埋め込みモデルで文書の断片をベクトルにして保存し、質問に意味の近い断片を検索して、それを Claude へのプロンプトに加えて回答を生成します。\n\n見分け方: Messages API には埋め込みを返す機能はありません(b)。Claude に数値の列を出力させても(c)、埋め込みモデルが作るベクトルにはなりません。全文書を常にプロンプトに入れる(d)のは、知識ベースが小さいとき(記事では 200,000 トークン未満)の選択肢で、大きな知識ベースでは RAG が一般的な方法です。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/embeddings"
+  ],
+  "topics": [
+   "retrieval-augmented-generation"
   ]
  },
  {
@@ -2162,9 +2377,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Contextual Retrieval は、断片ごとに文書全体を踏まえた説明文を生成して付加する手法です。埋め込み検索とキーワード検索(BM25)を併用し、再順位付けを加えると、さらに精度が上がります。",
+  "explanation": "正解は a です。Anthropic の記事「Introducing Contextual Retrieval」は、文書を断片にすると文脈が失われ、検索に失敗することを問題としています。解決策は、各断片に文書全体の中での位置づけを説明する短い文脈(通常 50〜100 トークン)を Claude で生成して前に付け、そのうえで埋め込み(Contextual Embeddings)と BM25 の索引(Contextual BM25)を作ることです。記事の実験では検索失敗率が 49% 減り、再順位付けを加えると 67% 減りました。\n\n見分け方: 断片をさらに細かくする(b)と、文脈がさらに失われます。ファイル名の一致だけで選ぶ(c)と、内容に基づく検索ができません。断片を無作為に並べ替える(d)ことで精度が上がるという記述はありません。",
   "refs": [
-   "https://www.anthropic.com/news/contextual-retrieval"
+   "https://www.anthropic.com/research/contextual-retrieval"
+  ],
+  "topics": [
+   "retrieval-augmented-generation"
   ]
  },
  {
@@ -2199,9 +2417,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "文書と同じく、画像も質問より前に置きます。複数の画像がある場合は、「画像 1:」のような見出しを添えると、区別して参照できます。",
+  "explanation": "正解は a です。公式ドキュメントは、テキストのプロンプトで長い文書を質問の前に置くと結果が良くなるのと同じく、Claude は画像がテキストより前にあるときに最もよく働くとしています。画像を後ろや途中に置いても十分に動きますが、用途が許すなら画像を先、テキストを後にする構成を勧めています。複数の画像があるときは、「Image 1:」のような短いラベルで紹介すると、名前で参照できます。\n\n見分け方: 質問を先に置く(b)のも動作はしますが、推奨される順序ではありません。API は状態を持たないため、画像と質問を別々のリクエストに分ける(c)と、後のリクエストに画像が含まれません。画像はメッセージの image コンテンツブロックで渡すもので、システムプロンプトに入れる方法(d)ではありません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/vision"
+  ],
+  "topics": [
+   "vision"
   ]
  },
  {
@@ -2236,9 +2457,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "コンピュータ操作では、画面に表示された内容が指示として解釈される危険があります。隔離された環境、機密情報へのアクセスの制限、重要な操作での人の確認を組み合わせます。",
+  "explanation": "正解は a です。公式ドキュメントは、コンピュータ操作には通常の API 機能とは異なる危険があるとして、権限を最小限にした専用の仮想マシンかコンテナを使うこと、ログイン情報などの機密データへのアクセスを与えないこと、インターネットへのアクセスを許可リストのドメインに限ること、現実に影響のある操作は人に確認させることを勧めています。参考実装も Docker コンテナの中で動きます。\n\n見分け方: 普段使いの PC(b)や本番の管理者セッション(c)では、誤操作や、Web ページや画像の中の指示に従ってしまうプロンプトインジェクションの被害が大きくなります。プロンプトインジェクションを検出する分類器はありますが、上の対策は引き続き重要とされており、安全をモデルに任せられるわけではありません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool"
+  ],
+  "topics": [
+   "computer-use"
   ]
  },
  {
@@ -2273,10 +2497,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "Claude は通常、利用者の言語に合わせて応答しますが、入力に他の言語が多いと影響を受けることがあります。出力の言語は、明示すると確実です。",
+  "explanation": "正解は a です。公式ドキュメントは、Claude は会話から応答の言語を推測するものの、本番のアプリケーションでは目的の言語を明示するよう勧めています。最も確実な場所はシステムプロンプトで、会話のどのターンでも指示が安定して保たれます。利用者が言語を選べる場合も、その選択をシステムプロンプトに埋め込み、利用者のメッセージから推測させないようにします。\n\n見分け方: max_tokens(b)は出力の長さの上限で、言語の選択には関係しません。資料をすべて削除する(c)と、回答の根拠がなくなります。同じ質問を 2 回送る(d)ことは、言語を指定する方法ではありません。望む出力の形式や制約は、具体的に明示するのが基本です。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/be-clear-and-direct",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/system-prompts"
+   "https://platform.claude.com/docs/en/build-with-claude/multilingual-support",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "multilingual-support"
   ]
  },
  {
@@ -2311,9 +2538,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "再試行は信頼性のために必要ですが、副作用のある操作を重複させる危険があります。冪等性キーなどを使って、ツール側で重複を防ぎます。これは API 一般の設計上の定石で、公式 SDK が既定で自動再試行を行うことを踏まえた対策です。",
+  "explanation": "正解は a です。公式 SDK は、接続エラー、レート制限、5xx のサーバーエラーなどの一時的な失敗を、既定で 2 回、指数的なバックオフで自動的に再試行します。そのため、副作用のある操作は同じ要求が複数回届いても結果が重複しないように、ツールの側で冪等にしておきます(同じ識別子の操作は 1 回だけ実行するなど)。冪等にすることは API の利用一般の設計上の定石で、公式ドキュメントに書かれているのは SDK の自動再試行の部分です。\n\n見分け方: 再試行を無効にする(b)と、一時的な障害から回復できなくなります。max_tokens(c)は出力の長さの上限で、重複とは関係がありません。ツールの説明に書く(d)のはモデルへの指示で、ネットワークの再送による重複はモデルの判断では防げません。",
   "refs": [
    "https://platform.claude.com/docs/en/api/errors"
+  ],
+  "topics": [
+   "api-errors"
   ]
  },
  {
@@ -2337,7 +2567,7 @@
    {
     "id": "c",
     "text": "一式を 1 つの大きなスキルの SKILL.md に書き写し、各リポジトリに置く",
-    "why": "スキルは指示と知識を与えるもので、フックや MCP サーバーの設定は含められない。"
+    "why": "1 つのスキルに書き写す方法は出典にない。出典は、スキル、サブエージェント、フック、MCP サーバーを 1 つの単位にまとめたいときにプラグインを使うとしている。"
    },
    {
     "id": "d",
@@ -2348,9 +2578,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "プラグインは、スキル、エージェント、フック、MCP サーバーなどの部品を入れたディレクトリで、Claude Code が 1 つの単位としてインストールして読み込みます。公式は、複数の部品をまとめて配りたいとき、多くのプロジェクトに入れたいとき、版を付けて公開したいときにプラグインを使うとしています。マニフェストは .claude-plugin/plugin.json に置きます。",
+  "explanation": "正解は b です。Claude Code のプラグインは、スキル、エージェント、フック、MCP サーバーなどの部品を入れたディレクトリで、Claude Code が 1 つの単位としてインストールして読み込みます。公式ドキュメントは、複数の部品を 1 つの単位にまとめたいときにプラグインを使うとし、自分の構成をチームに渡す、多くのプロジェクトに入れる、版を付けて公開する場面を挙げています。マーケットプレイスから入れれば更新も受け取れます。\n\n見分け方: CLAUDE.md(a)はコンテキストとして扱われる指示で、他のリポジトリのフックや MCP の設定を有効にはしません。1 つのスキルに書き写す(c)方法は出典になく、まとめる単位として示されているのはプラグインです。~/.claude/(d)は自分の端末の個人の設定で、チームやリポジトリには共有されません。",
   "refs": [
    "https://code.claude.com/docs/en/plugins"
+  ],
+  "topics": [
+   "claude-code-plugins"
   ]
  },
  {
@@ -2385,10 +2618,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "プラグインのマニフェスト(.claude-plugin/plugin.json)の dependencies は、そのプラグインが動くために有効でなければならないプラグインを表します。version は版の文字列で、設定すると、変更するまで利用者はその版に固定されます。",
+  "explanation": "正解は a です。プラグインのマニフェスト(.claude-plugin/plugin.json)の dependencies は、そのプラグインが動くために有効でなければならないプラグインの一覧で、\"name\"、\"name@marketplace\"、オブジェクトの形で書けます。version は版の文字列で、設定すると、変更するまで利用者はその版に固定されます(command ソースのプラグインなど、固定されない例外もあります)。マニフェストで必須なのは name だけです。\n\n見分け方: requires や lock(b)というフィールドはマニフェストになく、知らない最上位のフィールドは取り除かれます。説明文や名前(c)は、依存関係や版の固定として扱われません。version を省く(d)と、版は固定されません。",
   "refs": [
    "https://code.claude.com/docs/en/plugins-reference",
    "https://code.claude.com/docs/en/plugins"
+  ],
+  "topics": [
+   "claude-code-plugins"
   ]
  },
  {
@@ -2407,7 +2643,7 @@
    {
     "id": "b",
     "text": "重要な指示を大文字にし、同じ指示を 3 回繰り返して強調して書く",
-    "why": "出典は、長さを抑えることと、内容を分けることを勧めている。"
+    "why": "Claude Code のベストプラクティスは、IMPORTANT や大文字での強調を古い助言とし、長いファイルで指示が埋もれるならファイルを短くするよう勧めている。"
    },
    {
     "id": "c",
@@ -2423,9 +2659,13 @@
   "answer": [
    "d"
   ],
-  "explanation": "公式は、CLAUDE.md を 1 ファイル 200 行未満に保つことを目安にしています。長いファイルはコンテキストを多く使い、守られにくくなります。コードベースの一部だけに関わる指示は、パスを絞ったルールに移します。@ による取り込みは整理には役立ちますが、取り込み元と一緒に読み込まれるため、コンテキストの消費は減りません。",
+  "explanation": "正解は d です。公式ドキュメントは、1 つの CLAUDE.md を 200 行未満に保つことを目安とし、長いファイルはコンテキストを多く使い、守られにくくなるとしています。コードベースの一部だけに関わる指示は、.claude/rules/ の中のパスを絞ったルール(paths フロントマター)に移すと、一致するファイルを扱うときだけ読み込まれます。\n\n見分け方: @ による取り込み(a)は整理には役立ちますが、取り込んだファイルは取り込み元と一緒に読み込まれるため、コンテキストの消費は減りません。大文字や繰り返しで強調する(b)のは、Claude Code のベストプラクティスのページが「古い助言」として挙げるもので、強調を重ねると規則を過剰に当てはめやすくなるとしています。毎回プロンプトに貼る(c)と、手作業になり、チームでも共有できません。",
   "refs": [
-   "https://code.claude.com/docs/en/memory"
+   "https://code.claude.com/docs/en/memory",
+   "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "claude-md"
   ]
  }
 ]

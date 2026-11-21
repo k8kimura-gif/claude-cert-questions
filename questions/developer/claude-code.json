@@ -31,9 +31,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "CLAUDE.md には階層があります。プロジェクトのもの(チームで共有)、ユーザーのもの(個人の全プロジェクトに適用)、組織で管理するものなどです。内容は簡潔に保ち、Claude が毎回知っておくべきことに絞ります。",
+  "explanation": "正解は a です。プロジェクトの CLAUDE.md(./CLAUDE.md か ./.claude/CLAUDE.md)は、ビルドやテストのコマンド、コーディング規約、設計上の決定など、プロジェクトで作業する全員に当てはまる指示を書く場所で、バージョン管理を通じてチームと共有されます。CLAUDE.md は毎回のセッションの開始時に読み込まれます。\n\n見分け方: ~/.claude/CLAUDE.md(c)はユーザーのスコープで、自分の全プロジェクトに適用される個人の設定であり、チームには共有されません。毎回のメッセージに貼り付ける方法(b)は、CLAUDE.md が置き換える「毎回説明し直すこと」そのものです。README.md(d)が自動で指示として読み込まれるという記述は出典になく、CLAUDE.md から @README のように取り込んだときに読み込まれます。",
   "refs": [
    "https://code.claude.com/docs/en/memory"
+  ],
+  "topics": [
+   "claude-md"
   ]
  },
  {
@@ -46,7 +49,7 @@
   "choices": [
    {
     "id": "a",
-    "text": "claude -p(ヘッドレスモード)でプロンプトを渡して実行する",
+    "text": "claude -p(非対話モード)でプロンプトを渡して実行する",
     "why": "-p は非対話で実行し、結果を標準出力に返す。"
    },
    {
@@ -68,9 +71,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "ヘッドレスモードは、スクリプトや CI からの利用を想定しています。出力形式を JSON にしたり、使えるツールを制限したりできます。",
+  "explanation": "正解は a です。Claude Code は -p(--print)フラグを付けると非対話で実行でき、公式ドキュメントはこれをスクリプトや CI/CD での使い方としています。成功すると終了コード 0、失敗すると 0 以外で終わるため、スクリプトで分岐できます。--output-format で json などの出力形式を選べ、--allowedTools で列挙したツールを確認なしで使えるようにできます。\n\n見分け方: 対話モードのキー入力を自動化する方法(b)は、公式に示された使い方ではありません。CLAUDE.md(c)は指示を与えるファイルで、実行のきっかけにはなりません。claude mcp serve で MCP サーバーとして起動する方法(d)は、Claude Code を他のアプリケーションから接続させるためのもので、CI からタスクを実行する手段ではありません。",
   "refs": [
-   "https://code.claude.com/docs/en/headless"
+   "https://code.claude.com/docs/en/headless",
+   "https://code.claude.com/docs/en/cli-reference"
+  ],
+  "topics": [
+   "claude-code-headless"
   ]
  },
  {
@@ -105,9 +112,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "MCP サーバーの設定にはスコープがあります。ローカル(自分だけ、そのプロジェクトだけ)、プロジェクト(.mcp.json で共有)、ユーザー(自分の全プロジェクト)です。秘密情報は .mcp.json に直接書かず、環境変数の展開を使います。",
+  "explanation": "正解は a です。MCP サーバーの設定には 3 つのスコープがあります。project スコープのサーバーはプロジェクトのルートの .mcp.json に保存され、.mcp.json をバージョン管理に入れると、チームの全員が同じ MCP のツールやサービスを使えます。API キーのような値は、.mcp.json の中で ${VAR} の形の環境変数の展開を使って参照できます。\n\n見分け方: local スコープ(b)は既定のスコープで、~/.claude.json に保存され、そのプロジェクトの自分だけに使われます。各自に登録してもらうと、共有ではなく個別の設定になります。CLAUDE.md(c)は指示を書くファイルで、接続の設定ではありません。MCP_SERVERS という環境変数でサーバーを定義する方法(d)は出典にありません。",
   "refs": [
    "https://code.claude.com/docs/en/mcp"
+  ],
+  "topics": [
+   "claude-code-mcp"
   ]
  },
  {
@@ -142,9 +152,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "CLAUDE.md の内容は Claude への助言で、守られる保証はありません。必ず実行したい処理は、フックのように決定的に動く仕組みで実現します。フックは settings.json に定義します。",
+  "explanation": "正解は a です。フックは Claude Code のライフサイクルの決まった時点で自動的に実行される処理で、LLM が実行を選ぶのではなく必ず実行されるため、決定的に制御できます。公式ドキュメントは、PostToolUse イベントに Edit|Write のマッチャーを付け、編集されたファイルに Prettier をかけるフックを例に挙げています。フックは .claude/settings.json などの hooks ブロックに書きます。\n\n見分け方: CLAUDE.md(b)やプロンプト(c)の指示は、モデルが読んで判断する非決定的なもので、ほぼ守られても保証はありません。ベストプラクティスは、CLAUDE.md の一文を強調しても守られないなら、それはフックにすべき指示だとしています。上位のモデルに替える(d)ことも、実行を保証する仕組みにはなりません。",
   "refs": [
+   "https://code.claude.com/docs/en/hooks-guide",
+   "https://code.claude.com/docs/en/best-practices",
    "https://code.claude.com/docs/en/hooks"
+  ],
+  "topics": [
+   "claude-code-hooks"
   ]
  },
  {
@@ -179,9 +194,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "プランモードは、影響の大きい変更や、方針の選択を伴う作業の前に使います。計画を確認してから、実装に移ります。",
+  "explanation": "正解は a です。plan モードは、変更を加えずに調査して変更案を示させるモードです。Claude はファイルを読み、調査のためのシェルコマンドを実行して計画を書きますが、ソースは編集しません。計画を承認するまで編集は止められ、承認すると、選んだ方法(auto モード、編集を 1 つずつ承認するなど)で編集に移ります。Shift+Tab、/plan、claude --permission-mode plan で使えます。\n\n見分け方: 確認を省いて最後まで自動で進める(b)のは plan モードではなく、確認を省くモードには auto や bypassPermissions があります。plan モードは料金プランの切り替え(c)とは関係ありません。テストだけを実行するモード(d)という説明は出典にありません。",
   "refs": [
+   "https://code.claude.com/docs/en/permission-modes",
    "https://code.claude.com/docs/en/common-workflows"
+  ],
+  "topics": [
+   "claude-code-permission-modes"
   ]
  },
  {
@@ -200,7 +219,7 @@
    {
     "id": "b",
     "text": "メインの会話の履歴をすべて自動的に引き継ぐので、作業の背景や目的を改めて説明する必要がまったくない",
-    "why": "引き継がない。"
+    "why": "引き継がない。フォークを除くサブエージェントは新しい独立したコンテキストで始まり、会話の履歴を見ない。Claude が作業を要約した委任のメッセージを渡す。"
    },
    {
     "id": "c",
@@ -216,9 +235,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "サブエージェントは、Markdown のファイルで定義します。プロジェクト用は .claude/agents/、個人用は ~/.claude/agents/ に置きます。",
+  "explanation": "正解は a です。サブエージェントは特定の種類の作業を受け持つ専用のアシスタントで、それぞれが自分のコンテキストウィンドウで動き、専用のシステムプロンプト、使えるツールの範囲、独立した権限を持ちます。YAML のフロントマターと Markdown の本文からなるファイルで定義し、プロジェクト用は .claude/agents/、個人用は ~/.claude/agents/ に置きます。\n\n見分け方: サブエージェント(フォークを除く)は新しい独立したコンテキストで始まり、メインの会話の履歴は見えません。Claude が作業を要約した委任のメッセージを渡します(b は誤り)。ツールは使え、tools や disallowedTools で範囲を絞れます(c)。サブエージェントは複数定義でき、Claude は description を見て任せる先を選びます(d)。",
   "refs": [
    "https://code.claude.com/docs/en/sub-agents"
+  ],
+  "topics": [
+   "claude-code-subagents"
   ]
  },
  {
@@ -253,10 +275,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "常に守らせたい規約は CLAUDE.md に、特定の作業の手順はスキルに書くと、コンテキストを節約できます。",
+  "explanation": "正解は a です。CLAUDE.md は毎回のセッションの開始時に読み込まれ、ビルドのコマンドや規約のように毎回必要な事実を書きます。スキルは、通常は説明(description)だけがコンテキストに載り、本文は利用者が /skill-name で呼び出したときか、Claude が関係があると判断したときに読み込まれます。そのため、長い手順や参照資料も、必要になるまでほとんどコストがかかりません。\n\n見分け方: スキルの本文は使われるときにだけ読み込まれるので、どちらも全文が読み込まれる(b)は誤りです。スキルは .claude/skills/ に置いてコミットすればチームと共有できます(c)。/ で呼び出せるのはスキルのほうで、CLAUDE.md は呼び出すものではありません(d)。",
   "refs": [
    "https://code.claude.com/docs/en/skills",
    "https://code.claude.com/docs/en/memory"
+  ],
+  "topics": [
+   "claude-code-skills",
+   "claude-md",
+   "claude-code-extensions"
   ]
  },
  {
@@ -291,10 +318,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "権限の規則は、settings.json に書きます。プロジェクトで共有する設定と、個人用の設定を分けられます。",
+  "explanation": "正解は a です。確認なしで使えるツールや使えないツールは、settings.json の permissions に allow、ask、deny のルールとして書きます。例えば \"Bash(npm run test *)\" を allow に、\"Read(./.env)\" を deny に書けます。ルールは deny、ask、allow の順に評価され、より具体的な allow ルールでも deny ルールの例外にはできません。チームで共有するなら .claude/settings.json をコミットし、個人の例外は .claude/settings.local.json に書きます。\n\n見分け方: 権限ルールはモデルではなく Claude Code が強制するもので、プロンプトや CLAUDE.md(b)の指示はルールを変えません。README.md(c)や package.json(d)は、Claude Code の権限の設定に使うファイルではありません。",
   "refs": [
    "https://code.claude.com/docs/en/permissions",
    "https://code.claude.com/docs/en/settings"
+  ],
+  "topics": [
+   "claude-code-permissions"
   ]
  },
  {
@@ -329,10 +359,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "コンテキストは、作業ごとに整理します。同じ作業を続ける場合は /compact、別の作業に移る場合は /clear が向きます。",
+  "explanation": "正解は a です。公式のベストプラクティスは、関係のない作業の間には /clear を使うよう勧めています。リクエストのたびに会話全体が送られるため、前の作業の履歴を残したままだと、次の作業でもその分を読み直すことになります。/clear は空のコンテキストで新しい会話を始め、前の会話は /resume で再開できます。同じ会話を続けながらコンテキストを空けたいときは /compact を使います。\n\n見分け方: 同じ会話で続ける(b)と、関係のない履歴が次の作業のコンテキストに残ります。PC の再起動(c)は、会話のコンテキストを整理する手段として出典にありません。CLAUDE.md を削除する(d)と、毎回必要なプロジェクトの指示まで失われます。",
   "refs": [
    "https://code.claude.com/docs/en/best-practices",
-   "https://code.claude.com/docs/en/slash-commands"
+   "https://code.claude.com/docs/en/commands"
+  ],
+  "topics": [
+   "claude-code-context"
   ]
  },
  {
@@ -367,10 +400,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "/init は、コードベースを解析して、ビルドやテストのコマンド、見つけた規約を含む CLAUDE.md の出発点を作ります。CLAUDE.md が既にある場合は、上書きせずに改善を提案します。そこから、Claude が自分では見つけられない指示を足していきます。",
+  "explanation": "正解は b です。/init はコードベースを解析して、ビルドのコマンド、テストの手順、見つけたプロジェクトの規約を含む CLAUDE.md の出発点を作ります。公式ドキュメントは、CLAUDE.md が既にある場合、/init は上書きせずに改善を提案すると明記しています。そこから、Claude が自分では見つけられない指示を足していきます。\n\n見分け方: 既存のファイルは上書きされないので、作り直す(a)は誤りです。既存の CLAUDE.md があってもエラーで終わる(c)のではなく、改善の提案になります。内容を ~/.claude/CLAUDE.md に移す(d)という動作は出典に書かれていません。なお、CLAUDE_CODE_NEW_INIT=1 を設定すると、質問しながら進める対話式の /init になります。",
   "refs": [
    "https://code.claude.com/docs/en/memory",
    "https://code.claude.com/docs/en/commands"
+  ],
+  "topics": [
+   "claude-md"
   ]
  },
  {
@@ -405,9 +441,12 @@
   "answer": [
    "d"
   ],
-  "explanation": ".claude/rules/ のルールは、YAML のフロントマターの paths で対象を絞れます。パスを絞ったルールは、Claude が一致するファイルを読んだり編集したりするときに読み込まれます。@ による取り込みはファイルの整理には役立ちますが、取り込み元と一緒に読み込まれるため、コンテキストの消費は減りません。",
+  "explanation": "正解は d です。.claude/rules/ に置いたルールは、YAML のフロントマターの paths で対象のファイルを絞れます。paths を指定したルールは、Claude が一致するファイルを Read、Write、Edit で扱うときに読み込まれるため、関係のない作業ではコンテキストに載りません。公式ドキュメントは、コードベースの一部にだけ関係する指示をパスを絞ったルールに移すよう勧めています。\n\n見分け方: CLAUDE.md(a)は毎回すべて読み込まれ、見出しで断り書きをしてもコンテキストには載ります。@ による取り込み(b)はファイルの整理には役立ちますが、取り込んだファイルは CLAUDE.md と一緒に読み込まれるため、消費は減りません。~/.claude/CLAUDE.md(c)は個人の設定で、毎回読み込まれる点も同じです。",
   "refs": [
    "https://code.claude.com/docs/en/memory"
+  ],
+  "topics": [
+   "claude-md"
   ]
  },
  {
@@ -442,9 +481,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "権限モードは、Claude が確認なしで行える操作の範囲を決めます。手動のモードでは、ファイルの編集、シェルコマンドの実行、ネットワークへのアクセスの多くで確認を求めます。auto モードでは、利用者の代わりに、分類器と呼ばれる 2 つ目のモデルが操作を審査します。",
+  "explanation": "正解は c です。auto モードでは、利用者の代わりに、分類器と呼ばれる 2 つ目のモデルが操作を審査します。分類器は実行の前に操作を見て、依頼の範囲を超えるもの、認識していないインフラを対象とするもの、Claude が読んだ悪意のある内容に動かされたように見えるものを止めます。公式ドキュメントは、auto モードは確認を減らすが安全を保証するものではないとしています。\n\n見分け方: auto モードでも分類器の審査があり、deny ルールは効き、明示した ask ルールは確認を求めます(a は誤り)。ファイルを読んで計画を立て、承認まで編集しないのは plan モードです(b)。ファイルの編集やシェルコマンドの多くで利用者に確認するのは Manual モード(default)です(d)。",
   "refs": [
    "https://code.claude.com/docs/en/permission-modes"
+  ],
+  "topics": [
+   "claude-code-permission-modes"
   ]
  },
  {
@@ -479,10 +521,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "スキーマに沿った出力を得るには、--output-format json と --json-schema を組み合わせます。応答には、セッション ID や使用量などの情報とともに、structured_output フィールドに構造化された出力が入ります。Claude が依頼を断った場合など、有効な出力なしで終わるとこのフィールドは付かないため、使う前に存在を確かめます。",
+  "explanation": "正解は a です。決まったスキーマに沿った出力を得るには、--output-format json と --json-schema(JSON Schema の定義)を組み合わせます。応答には、セッション ID や使用量などのメタデータとともに、structured_output フィールドに構造化された出力が入ります。Claude が依頼を断った場合など、有効な出力なしで終わるとこのフィールドは付かないため、使う前に存在を確かめます。\n\n見分け方: プロンプトで JSON を頼んで text の出力をパースする(b)方法では、スキーマへの適合は保証されません。result フィールド(c)には、通常の json 出力のテキストの結果が入ります。stream-json(d)は改行区切りの JSON でイベントを逐次受け取る形式で、最後の行は最終の応答などを含む result メッセージです。",
   "refs": [
    "https://code.claude.com/docs/en/headless",
    "https://code.claude.com/docs/en/cli-reference"
+  ],
+  "topics": [
+   "claude-code-headless"
   ]
  }
 ]

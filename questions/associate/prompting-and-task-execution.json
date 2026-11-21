@@ -31,9 +31,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "公式ヘルプは、複雑な依頼をサブステップに分けることを原則の 1 つに挙げています。分けると各段階の結果を確認でき、必要ならフィードバックして軌道修正できます。",
+  "explanation": "正解は b です。ヘルプセンターは、Claude は明確で具体的な指示を与えたときに最もよく働くとし、プロンプトの原則の 1 つに「複雑な依頼をサブステップに分ける」を挙げています。市場分析、競合比較、施策案、要約を一度に頼むのではなく 1 つずつ依頼すれば、各段階の結果を見て、フィードバックを返しながら次へ進めます。フィードバックを返すことも、同じ記事が挙げる原則です。\n\n見分け方: 依頼を短くして裁量を増やす(a)のは、依頼を明確に説明し、文脈をできるだけ含めるという原則と逆です。同じ依頼文の再送(c)は、依頼の構造を変えないので原因に手を付けていません。背景を省いて成果物名だけを並べる(d)は、文脈をできるだけ多く含めるという原則に反します。",
   "refs": [
    "https://support.claude.com/en/articles/7996857-my-prompt-isn-t-giving-me-a-helpful-answer"
+  ],
+  "topics": [
+   "prompt-principles"
   ]
  },
  {
@@ -69,9 +72,12 @@
    "a",
    "d"
   ],
-  "explanation": "公式ヘルプが挙げるのは、依頼を簡潔かつ明確に説明すること、背景知識のない人に頼むつもりで文脈をできるだけ含めること、複雑な依頼をサブステップに分けること、フィードバックを返すことです。",
+  "explanation": "正解は a と d です。ヘルプセンターの記事「My prompt isn’t giving me a helpful answer.」は、プロンプトの原則として、依頼を簡潔かつ明確に説明する、プロンプトにできるだけ多くの文脈を含める、背景知識のない人に指示するつもりで書く、複雑な依頼をサブステップに分ける、フィードバックを返す(フォローアップの指示や明確化、書き直しの依頼)を挙げています。a は文脈と「背景知識のない人」の原則に、d はフィードバックの原則に当たります。\n\n見分け方: Claude が文脈を推測で補うので 1 文に絞る(b)は、文脈をできるだけ含めるという原則と逆です。複雑な依頼を 1 つのメッセージにまとめる(c)は、サブステップに分けるという原則と逆です。",
   "refs": [
    "https://support.claude.com/en/articles/7996857-my-prompt-isn-t-giving-me-a-helpful-answer"
+  ],
+  "topics": [
+   "prompt-principles"
   ]
  },
  {
@@ -106,9 +112,13 @@
   "answer": [
    "c"
   ],
-  "explanation": "公式ヘルプは、Claude の使い方として、議論やブレインストーミングの相手になり、アイデアの壁打ち、別の視点の提示、提案を行うことを挙げています。",
+  "explanation": "正解は c です。ヘルプセンターの「What are some things I can use Claude for?」は、Claude の使い方の 1 つに、議論やブレインストーミングの相手を挙げています。アイデアを投げかける相手になり、異なる視点を出し、推薦を行えるとされており、既存の名称案に別の視点や提案がほしいこの場面に合います。\n\n見分け方: Research(a)は、5 回以上のツール呼び出しで web や連携先の複数の情報源を統合し、詳しいレポートを作る機能で、壁打ちが目的のこの場面とは用途が違います。要約(b)は長い記事や文書、会話を簡潔にまとめる使い方で、新しい視点を出すものではありません。翻訳と画像の分析(d)も使い方に挙がっていますが、使い方がそれに限られるわけではありません。",
   "refs": [
    "https://support.claude.com/en/articles/7996845-what-are-some-things-i-can-use-claude-for"
+  ],
+  "topics": [
+   "claude-use-cases",
+   "web-search-thinking-research"
   ]
  },
  {
@@ -143,9 +153,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "公式ドキュメントは、Claude を「文脈を持たない有能な新入社員」のように考え、背景知識の少ない同僚にプロンプトを見せて、その指示どおりに動けるかを尋ねる確認方法(key test)を示しています。",
+  "explanation": "正解は d です。Prompting best practices は、Claude を、優秀だが職場の規範やワークフローの文脈を持たない新しい社員のように考えるよう述べ、重要なテスト(Key test)として、課題について文脈がほとんどない同僚にプロンプトを見せ、その指示に従ってもらうことを挙げています。同僚が混乱するなら、Claude も混乱します。\n\n見分け方: 出力が毎回一致するか(a)は、指示の明確さを確かめる方法として示されていません。文字数を半分に削る(b)は、出力の形式や制約を具体的に書くという勧めと逆向きで、短さは明確さの基準ではありません。「わかりにくければ質問して」と足す(c)は、送る前にプロンプトのわかりにくさを確かめる方法ではありません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "be-clear-and-direct"
   ]
  },
  {
@@ -180,9 +193,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "公式ドキュメントは、指示の背景や動機を説明すると、Claude がそこから一般化でき、より目的に沿った回答を返せるとしています。例として、省略記号を使わない理由に、音声読み上げエンジンが発音できないことを挙げています。",
+  "explanation": "正解は a です。ガイドの「Add context to improve performance」は、指示の背景や動機、たとえばなぜその振る舞いが重要かを説明すると、Claude が目的をよく理解し、より的確な応答を返せると述べています。効果が低い例は「NEVER use ellipses」、効果が高い例は「応答は音声読み上げエンジンで読まれ、エンジンは省略記号の発音を知らないので、省略記号は使わない」で、この問題の状況と同じです。Claude は説明から一般化できます。\n\n見分け方: 大文字や太字での強調(b)と、冒頭と末尾での繰り返し(d)は、どちらも理由を伝えていません。理由を書かない短い禁止(c)は、ガイドが効果が低いとして示した書き方そのものです。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "be-clear-and-direct"
   ]
  },
  {
@@ -196,7 +212,7 @@
    {
     "id": "a",
     "text": "一貫性を高めるため、構成も言い回しもほぼ同じメールだけを並べる",
-    "why": "似すぎた例は、意図しないパターンを Claude に学習させる。多様な例が勧められている。"
+    "why": "似すぎた例からは、Claude が意図しないパターンまで拾うおそれがある。ガイドは、境界的なケースを含めて変化をもたせた多様な例を勧めている。"
    },
    {
     "id": "b",
@@ -218,9 +234,12 @@
    "b",
    "c"
   ],
-  "explanation": "公式ドキュメントは、例を関連性が高く(relevant)、多様で(diverse)、構造化された(<example> タグで囲んだ)ものにするよう勧めています。例はフォーマット、トーン、構造を誘導する確実な方法の 1 つです。",
+  "explanation": "正解は b と c です。ガイドは、例を入れるときの条件として、関連性(Relevant: 実際の用途を忠実に反映する)、多様性(Diverse: 境界的なケースを含め、Claude が意図しないパターンを拾わない程度に変化をもたせる)、構造化(Structured: <example> タグで囲み、複数なら <examples> タグに入れて、指示と区別できるようにする)の 3 つを挙げています。b は関連性に、c は多様性に当たります。例は、出力の形式、口調、構成を導く最も確実な方法の 1 つです。\n\n見分け方: ほぼ同じメールだけを並べる(a)と、意図しないパターンまで拾われやすく、多様性の条件に反します。例を指示と混ぜる(d)は、タグで囲んで区別するという構造化の条件に反します。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "few-shot-examples"
   ]
  },
  {
@@ -255,9 +274,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "公式ドキュメントは、出力形式を制御する方法として、してはいけないことではなく何をするかを伝えること、プロンプトの書式を望む出力の書式に合わせることを挙げています。",
+  "explanation": "正解は b です。ガイドは、出力の書式を導く特に効果的な方法の 1 つ目に、してはいけないことではなく何をするかを伝えることを挙げています。例も「Do not use markdown in your response」の代わりに「Your response should be composed of smoothly flowing prose paragraphs.」と書くもので、この場面と同じ形です。\n\n見分け方: 禁止の指示を足す(a)は、ガイドが「代わりに」と退けている書き方です。プロンプトを箇条書きと太字の多い構成にする(c)は、プロンプトの書式が応答の書式に影響しうるので望む出力にプロンプトの書式を合わせる、という勧めと逆です。形式を任せる(d)では、望む形を伝えていません。ガイドは出力の形式と制約を具体的に書くよう勧めています。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "output-format-control"
   ]
  },
  {
@@ -292,9 +314,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "公式ドキュメントは、長い入力(20k トークン以上)では、長文の資料を指示や質問や例より上に置くよう勧めています。末尾に質問を置くと、特に複数文書を含む複雑な入力で応答の質が上がりうるとしています。",
+  "explanation": "正解は d です。ガイドの「Long context prompting」は、20k トークン以上の大きな文書やデータを扱うときは、長い文書や入力をプロンプトの上部、つまりクエリ、指示、例より上に置くよう勧めています。これはすべてのモデルで性能を高めるとされ、テストでは、末尾に置いたクエリが、特に複数文書を含む複雑な入力で応答の質を最大 30% 高めました。3 社の年次報告書を比較するこの場面は、複数文書の入力に当たります。\n\n見分け方: 質問を先頭に置く(a)は、推奨と逆の順序です。報告書の途中に質問を挟む(b)は、ガイドが示す配置ではありません。順序は結果に関係しない(c)は、ガイドが配置による改善を示していることと合いません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "long-context-prompting"
   ]
  },
  {
@@ -329,9 +354,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "XML タグは、指示、文脈、例、可変の入力が混在する複雑なプロンプトを Claude が曖昧さなく解釈する助けになります。一貫した説明的なタグ名を使うのが推奨です。",
+  "explanation": "正解は a です。ガイドは、XML タグが、特に指示、文脈、例、可変の入力が混在するプロンプトを Claude が曖昧さなく解釈する助けになると述べています。内容の種類ごとに <instructions>、<context>、<input> のような専用のタグで囲むと、誤解釈が減ります。推奨事項として、一貫した説明的なタグ名を使うこと、自然な階層があればタグを入れ子にすることも挙げています。\n\n見分け方: 1 つの段落につなげる(b)は内容の区切りをなくすので、種類ごとにタグで囲むという対処と逆です。タグ名を毎回変える(c)は、一貫したタグ名を使うという推奨に反します。資料を別のメッセージに分ける(d)は、ガイドがこの問題の対処として示すものではありません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "xml-tags"
   ]
  },
  {
@@ -366,9 +394,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "公式ヘルプは、回答が短すぎる、あるいは一部しか完結していないときは、プロンプトを練り直すよう勧めています。具体的には、前回のプロンプトと回答を次のプロンプトに含めて、続きから書かせます。",
+  "explanation": "正解は c です。ヘルプセンターの記事「Claude’s response to my prompt is too brief.」は、Claude のコンテキストウィンドウは与えたプロンプトに適用され、生成する出力には適用されないと説明しています。そのうえで、回答が短すぎる、または一部しか完結していないときはプロンプトを練り直す(retool)よう勧め、次のプロンプトに前回のプロンプトと回答を含めて、続きから書かせる方法を挙げています。\n\n見分け方: 出力もコンテキストウィンドウを消費するので新しいチャットでやり直す(a)は、記事の説明と前提が逆です。プロンプトを変えずに再送する(b)は、プロンプトを練り直すという勧めに沿っていません。文書を半分に切る(d)は、記事が挙げる方法ではありません。",
   "refs": [
    "https://support.claude.com/en/articles/8114518-claude-s-response-to-my-prompt-is-too-brief"
+  ],
+  "topics": [
+   "prompt-principles"
   ]
  },
  {
@@ -403,9 +434,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "公式ヘルプは、プロンプト作成の原則の 1 つとして、フォローアップの指示や明確化を返し、回答の書き直しを求めるフィードバックを挙げています。",
+  "explanation": "正解は d です。ヘルプセンターは、プロンプトの原則の 1 つに「Claude にフィードバックを返す」を挙げ、フォローアップの指示や明確化を伝える、回答の書き直しを求める、という形を示しています。内容は合っていて文体だけが硬いこの場面では、どこをどう変えてほしいかを具体的に伝え、書き直しを求めるのが原則に沿った対応です。\n\n見分け方: 同じプロンプトを新しいチャットで送り直す(a)は、何を直してほしいかを伝えていないので、フィードバックになりません。初稿を捨てて一から書き直す(b)は、内容が合っている以上、フィードバックで足りる場面です。自分で手直しする(c)は、フィードバックを返して書き直させるという原則を使っていません。",
   "refs": [
    "https://support.claude.com/en/articles/7996857-my-prompt-isn-t-giving-me-a-helpful-answer"
+  ],
+  "topics": [
+   "prompt-principles"
   ]
  },
  {
@@ -440,9 +474,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "公式ヘルプは、web search を、1〜2 回のツール呼び出しで答えられる単純な事実確認(天気、特定企業の情報、最新ニュースの見出しなど)に向くとしています。",
+  "explanation": "正解は c です。ヘルプセンターは、web search が、1〜2 回のツール呼び出しで答えられる単純な事実の質問に最適だとし、例として天気の確認、特定企業の情報、最新ニュースの見出しの取得などを挙げています。取引先の最新ニュースの見出しを確かめるこの場面は、その例そのものです。\n\n見分け方: Research(a)は、1〜3 分かけて 5 回以上のツール呼び出しを要する包括的な情報収集に最適とされ、この場面には過剰です。extended thinking(b)は、web の最新情報を必要としない複雑な推論に向くもので、最新ニュースの確認には向きません。機能を何も使わない(d)と、web の最新情報を取りに行かないので、最新ニュースという要件を満たせません。",
   "refs": [
    "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research"
+  ],
+  "topics": [
+   "web-search-thinking-research"
   ]
  },
  {
@@ -477,9 +514,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "公式ヘルプは、research を、5 回以上のツール呼び出しを要する包括的な情報収集や、複数の情報源からのレポート作成に最適としています。競合の比較や、古い社内文書の更新が例に挙げられています。",
+  "explanation": "正解は b です。ヘルプセンターは、research が、1〜3 分かけて 5 回以上のツール呼び出しを要する包括的な情報収集に最適で、web と連携先の複数の情報源を統合して詳しいレポートを作るとしています。できることの例として、競合の比較や、古い社内文書を web の情報で更新することが挙げられており、この場面に合います。\n\n見分け方: web search(a)は 1〜2 回のツール呼び出しで答えられる単純な事実の質問に向くもので、複数社の比較とレポート作成には足りません。extended thinking 単体(c)は、web 検索や連携を使わずに Claude によく考えさせたいときに向くもので、最新情報は集めません。何も有効にしない(d)と、web の最新情報を集められません。",
   "refs": [
    "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research"
+  ],
+  "topics": [
+   "web-search-thinking-research",
+   "research"
   ]
  },
  {
@@ -515,9 +556,15 @@
    "a",
    "c"
   ],
-  "explanation": "公式ヘルプは、extended thinking と research の併用で、Claude が調査の進め方を考えてから包括的な情報収集を実行できるとしています。research は引用つきで複数の情報源を統合し、より長い最終レポートを出します。",
+  "explanation": "正解は a と c です。ヘルプセンターは、extended thinking と research を併用すると、Claude が進め方をよく考えて計画したうえで、包括的な情報収集を実行できると説明し、例に新興技術を調べて事業提案書を作る場面を挙げています。また、research は複数の情報源の情報を適切な引用とともに統合し、より長い最終レポートを出します。\n\n見分け方: research は web search をオンにしておかないと動きません(b)。これは「Use research on Claude」に明記されています。引用元の確認が不要になる(d)という記述はなく、web search のヘルプは、重要な情報は引用された情報源を照らし合わせて確かめるよう勧めています。",
   "refs": [
-   "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research"
+   "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research",
+   "https://support.claude.com/en/articles/11088861-use-research-on-claude",
+   "https://support.claude.com/en/articles/10684626-enable-and-use-web-search"
+  ],
+  "topics": [
+   "web-search-thinking-research",
+   "research"
   ]
  },
  {
@@ -552,9 +599,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "公式ヘルプのよくある質問では、research を有効にしても調査が始まらないときは、「Claude, please use the research tool to…」のように、research を使うよう促すことを勧めています。",
+  "explanation": "正解は d です。ヘルプセンターの「Use research on Claude」のよくある質問は、Research を有効にしたのに Claude が調査しているように見えないときは、「Claude, please use the research tool to…」のように、Research を使うよう Claude を促すことを勧めています。なお、Research が動くには web search をオンにしておく必要があります。\n\n見分け方: Research は Claude Opus 5.5 で動き、必要に応じて Claude Opus 4.8 に切り替わり、チャットで選んだモデルにかかわらずこれらを使うので、モデルを替える(a)のは対処になりません。質問を 1 語に絞る(b)は、記事が示す対処ではありません。Research は「+」ボタンから有効にし、無効にするときは青い表示をもう一度クリックすると説明されており、メッセージごとに有効にし直す(c)という説明はありません。",
   "refs": [
    "https://support.claude.com/en/articles/11088861-use-research-on-claude"
+  ],
+  "topics": [
+   "research"
   ]
  },
  {
@@ -589,9 +639,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "公式ドキュメントは、調査と情報収集では、成功基準を明確にし、複数の情報源での検証を促すよう勧めています。複雑な調査では、仮説と信頼度を追跡し、調査メモを更新させる構造的な進め方も示しています。",
+  "explanation": "正解は a です。ガイドの「Research and information gathering」は、調査の結果を最適にする方法として、明確な成功基準を示す(何をもって成功した回答とするかを定義する)、情報源の検証を促す(複数の情報源で情報を確かめるよう頼む)、複雑な調査では構造的な進め方を使う、の 3 つを挙げています。a は前の 2 つにそのまま当たります。\n\n見分け方: 範囲も基準も示さず後から伝える(b)は、成功基準を明確にするという勧めと逆です。最初の 1 つの情報源の結論を採用する(c)は、複数の情報源での検証と逆です。過程を記録させない(d)は、競合する仮説を立て、進捗メモに信頼度を記録し、仮説ツリーや調査メモを更新させるという、複雑な調査での構造的な進め方と逆です。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "prompting-research-tasks"
   ]
  },
  {
@@ -626,9 +679,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "プロンプトのガイドは、Claude を「優秀だが、あなたの職場のやり方や文脈を知らない新しい社員」として考えるよう勧めています。重要なテストは、課題の文脈をほとんど知らない同僚にプロンプトを見せ、その指示に従ってもらうことです。同僚が混乱するなら、Claude も混乱します。",
+  "explanation": "正解は c です。ガイドの「Be clear and direct」は、Claude を、優秀だが職場の規範やワークフローの文脈を持たない新しい社員として考えるよう述べ、重要なテスト(Key test)として、課題について文脈がほとんどない同僚にプロンプトを見せ、その指示に従ってもらうことを挙げています。同僚が混乱するなら、Claude も混乱します。\n\n見分け方: 同じ文面が 3 回返るか(a)は回答のばらつきを見る方法で、ガイドの Key test ではありません。文字数が短いか(b)は明確さの基準として挙げられておらず、ガイドはむしろ出力の形式と制約を具体的に書くよう勧めています。英語に翻訳する(d)は、ガイドが示す確かめ方ではありません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "be-clear-and-direct"
   ]
  },
  {
@@ -657,15 +713,19 @@
    {
     "id": "d",
     "text": "effort を最大にすれば、Claude が自分で依頼の範囲を広げて充実した内容にしてくれる",
-    "why": "effort は考える量の設定で、依頼していない範囲まで広げる指示の代わりにはならない。"
+    "why": "effort は、応答の丁寧さとトークン効率のバランスを取るために Claude が使うトークンの量を制御する設定で、依頼していない範囲まで広げる指示の代わりにはならない。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "Claude は明確で具体的な指示によく応えます。作業に厳密に必要な以上のこと(競合比較や想定問答まで盛り込むなど)をしてほしいなら、あいまいな依頼から推測させるのではなく、明示的に頼みます。ガイドの例でも、「ダッシュボードを作って」より「関連する機能をできるだけ含め、基本を超えた充実した実装にして」のほうが効果的とされています。",
+  "explanation": "正解は a です。ガイドは、Claude が明確で明示的な指示によく応え、求める出力を具体的に書くと結果が良くなると述べています。作業に厳密に必要な以上のことをしてほしいなら、あいまいなプロンプトから推測させず、明示的に頼みます。例でも、「Create an analytics dashboard」より、関連する機能や操作をできるだけ含め、基本を超えた充実した実装にするよう求めるほうが効果的とされています。\n\n見分け方: 送り直して待つ(b)と「不十分だった」とだけ伝える(c)は、どちらも何を求めるかを伝えておらず、推測に任せたままです。effort(d)は、応答の丁寧さとトークン効率のバランスを取るために Claude が使うトークンの量を制御する設定で、依頼の範囲を明示する代わりにはなりません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/build-with-claude/effort"
+  ],
+  "topics": [
+   "be-clear-and-direct"
   ]
  },
  {
@@ -679,7 +739,7 @@
    {
     "id": "a",
     "text": "例を 1 つに減らし、締め方の影響を小さくする",
-    "why": "例の数を減らすと、形式や語調をそろえる効果も弱まる。ガイドは 3〜5 個の例を勧めている。"
+    "why": "ガイドは 3〜5 個の例を勧めており、1 つに減らすのはこれに沿わない。締め方が偏る原因である例の多様性の不足も解消されない。"
    },
    {
     "id": "b",
@@ -700,9 +760,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "例(few-shot)は、出力の形式、語調、構成を導く最も確実な方法の 1 つです。ガイドは、例を実際の用途に近く(relevant)、多様に(diverse)、構造化して(structured)用意するよう勧めています。多様さが足りないと、締め方のような意図しないパターンまで Claude が拾います。例は 3〜5 個が目安です。",
+  "explanation": "正解は c です。ガイドは、例を多様に(Diverse)するよう勧め、境界的なケースを含め、Claude が意図しないパターンを拾わない程度に変化をもたせるとしています。3 つの例がすべて「〜しませんか?」で終わっていたため、その締め方まで Claude がパターンとして拾っています。締め方の違う例を入れるのが、ガイドに沿った改善です。\n\n見分け方: 例は出力の形式、口調、構成を導く最も確実な方法の 1 つで、ガイドは最良の結果のために 3〜5 個の例を勧めています。1 つに減らす(a)のも、すべて削除する(b)のも、この勧めから外れます。同じ締め方の例を 10 個に増やす(d)は、多様性の不足をそのまま広げます。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "few-shot-examples"
   ]
  },
  {
@@ -738,9 +801,13 @@
    "a",
    "b"
   ],
-  "explanation": "例は、実際の用途に近く、多様で、構造化したものにします。<example> タグ(複数なら <examples> タグ)で囲むと、Claude が例と指示を区別できます。3〜5 個が目安で、Claude に例の関連性や多様性を評価させたり、最初の例をもとに追加の例を作らせたりすることもできます。",
+  "explanation": "正解は a と b です。ガイドは、例を構造化(Structured)し、<example> タグで囲み、複数の例は <examples> タグに入れて、Claude が指示と区別できるようにするよう勧めています。また、最良の結果のために 3〜5 個の例を入れ、Claude に例の関連性や多様性を評価させたり、最初の例をもとに追加の例を作らせたりできるとしています。\n\n見分け方: 例を本番の用途と関係のない一般的な文章にする(c)は、例を実際の用途に忠実に合わせるという関連性(Relevant)の条件に反します。例と指示を区切らずに混ぜる(d)は、タグで囲んで指示と区別するという構造化の条件に反します。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "few-shot-examples",
+   "xml-tags"
   ]
  },
  {
@@ -775,9 +842,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ガイドは、出力の形式や制約を具体的に示すことに加え、手順の順序や網羅性が重要な場合は、番号付きのリストや箇条書きで順に指示するよう勧めています。Claude は職場の手順を知らないため、必要な手順は省略せずに書きます。",
+  "explanation": "正解は a です。ガイドの「Be clear and direct」は、出力の形式と制約を具体的に書くことに加えて、手順の順序や網羅性が重要なときは、番号付きリストや箇条書きを使って順を追った手順として指示するよう勧めています。決まった順序があり 1 つも飛ばせない月次決算の確認は、この場面に当たります。\n\n見分け方: 「いつもの手順で」とだけ頼む(b)は、Claude を職場の規範やワークフローの文脈を持たない新しい社員として扱うというガイドの考え方に反します。1 つの長い段落にまとめる(c)は、順序が重要なときに番号付きリストで示すという勧めに沿っていません。最初の手順だけを伝える(d)は、網羅性が重要な手順を最初からすべて示していません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "be-clear-and-direct"
   ]
  },
  {
@@ -812,9 +882,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "長い文書(20k トークン以上)を扱うときは、文書をプロンプトの上部に置き、質問や指示は後に置きます。複数の文書は、それぞれを <document> タグで囲み、<source> などのメタデータと <document_content> の本文をサブタグで分けると、Claude が取り違えにくくなります。",
+  "explanation": "正解は b です。ガイドの「Long context prompting」は、複数の文書を使うときは、それぞれを <document> タグで囲み、<document_content> と <source>(ほかのメタデータも)のサブタグで分けるよう勧めています。例では、<documents> の中に <document index=\"1\"> のように文書を並べ、<source> にファイル名、<document_content> に本文を入れています。どの本文がどの文書のものかを、タグで区別して示せます。\n\n見分け方: 区切りなしで続けて貼る(a)は、文書ごとに本文と出典を分けるという勧めに沿っていません。別々のチャットで要約させる(c)は、ガイドが複数文書の構成として示す方法ではありません。報告書を最後に置く(d)は、長い文書をクエリ、指示、例より上に置くという勧めと逆です。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "long-context-prompting",
+   "xml-tags"
   ]
  },
  {
@@ -849,9 +923,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "チャットにアップロードした PDF は、100 ページ以下なら本文に加えて画像、グラフ、図などの視覚的な要素も解析されます。101〜1000 ページの PDF はテキストだけが処理され、1000 ページを超える PDF はアップロードできません。大きな文書は、範囲を分けてアップロードすることが勧められています。",
+  "explanation": "正解は b です。ヘルプセンターの「Upload files to Claude」は、100 ページ以下の PDF ではテキストに加えて画像、グラフ、図などの視覚的な要素も解析し、101〜1000 ページの PDF ではテキストだけを処理して視覚的な要素は解析しないと説明しています。300 ページのレポートはテキストだけが処理されるので、グラフの部分を 100 ページ以下に分けて渡すのが対処になります。大きな文書を小さな部分に分けることは、同じ記事のコツにも挙がっています。\n\n見分け方: 何ページでも図表まで解析される(a)と、1000 ページ以下ならすべて解析される(d)は、100 ページという境目を見落としています。1000 ページはアップロードできる上限です。プロジェクトのファイル(c)は、マルチモーダルの PDF を除いてテキストの抽出のみと説明されています。",
   "refs": [
    "https://support.claude.com/en/articles/8241126-upload-files-to-claude"
+  ],
+  "topics": [
+   "file-uploads"
   ]
  },
  {
@@ -887,9 +964,12 @@
    "a",
    "b"
   ],
-  "explanation": "画像は 1000×1000 ピクセル以上のものを使い、小さい画像や低解像度の画像は避けます。PDF の特定のページを指すときは、文書に印刷された番号ではなく、PDF ビューアに表示されるページ番号を使います。PDF 以外の文書(DOCX など)からはテキストだけが抽出され、埋め込まれた画像は読まれません。",
+  "explanation": "正解は a と b です。ヘルプセンターの「Upload files to Claude」は、よい結果を得るためのコツとして、画像は 1000×1000 ピクセル以上のものを使い、小さい画像や低解像度の画像はできるだけ避けること、PDF の特定のページを指すときは、文書に印刷されたページ番号ではなく、PDF ビューアに表示されるページ番号を使うことを挙げています。\n\n見分け方: PDF 以外の文書(DOCX など)からはテキストだけが抽出され、埋め込まれた画像は読めないので、どの形式でもよい(c)は誤りです。画像の解像度を下げる(d)は、大きな画像を使い低解像度の画像を避けるというコツと逆です。なお、チャットにアップロードできる画像の大きさは 8000×8000 ピクセルまでです。",
   "refs": [
    "https://support.claude.com/en/articles/8241126-upload-files-to-claude"
+  ],
+  "topics": [
+   "file-uploads"
   ]
  },
  {
@@ -924,9 +1004,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Claude は PDF 以外の文書(DOCX など)からはテキストだけを抽出します。文書に埋め込まれた画像は読めないため、組織図を読ませたいときは、画像ファイル(JPEG、PNG、GIF、WebP)として添付するなど、Claude が画像を解析できる形で渡します。",
+  "explanation": "正解は b です。ヘルプセンターは、PDF 以外の文書について、Claude はテキストだけを抽出し、埋め込まれた画像は読むことも解釈することもできないと説明しています。DOCX に埋め込んだ組織図に触れずに回答したのは、このためです。組織図を読ませたいなら、対応する画像形式(JPEG、PNG、GIF、WebP)のファイルとして渡すなど、画像として扱われる形にします。\n\n見分け方: DOCX は対応する文書形式に含まれ(a)、テキストは読まれます。1 つのチャットに添付できるのは 20 ファイルまでですが、これは埋め込み画像が読まれないこととは関係ありません(c)。人事情報だから回答から除かれる(d)という説明は、記事にありません。",
   "refs": [
    "https://support.claude.com/en/articles/8241126-upload-files-to-claude"
+  ],
+  "topics": [
+   "file-uploads"
   ]
  },
  {
@@ -961,9 +1044,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "チャットへのアップロードは 1 ファイル 500MB、1 つのチャットで 20 ファイルまでです。プロジェクトのファイルは 1 ファイル 30MB までで、数は無制限ですが、内容の合計が Claude のコンテキストウィンドウに収まる必要があります。プロジェクトのファイルはテキストの抽出が基本で、マルチモーダルの PDF だけが例外です。",
+  "explanation": "正解は b です。ヘルプセンターは、プロジェクトのファイルの上限を、1 ファイル 30MB、数は無制限(ただし内容の合計が Claude のコンテキストウィンドウに収まる必要がある)、内容の種類はテキストの抽出のみ(マルチモーダルの PDF を除く)と説明しています。抽出した内容の長さによっては、追加のトークンの制限がかかることもあります。\n\n見分け方: 1 ファイル 500MB、20 ファイルまで(a)は、チャットへのアップロードの上限です。画像を含むすべての資料が図表まで解析される(c)は、テキストの抽出のみという説明に反します。サイズの上限がない(d)は、1 ファイル 30MB の上限を見落としています。なお、チャットへのアップロードでは、100 ページ以下の PDF の視覚的な要素も解析されます。",
   "refs": [
    "https://support.claude.com/en/articles/8241126-upload-files-to-claude"
+  ],
+  "topics": [
+   "file-uploads",
+   "projects"
   ]
  },
  {
@@ -998,9 +1085,14 @@
   "answer": [
    "c"
   ],
-  "explanation": "表示言語(インターフェースの言語)を変えても、Claude とはどの言語でも会話でき、Claude は使った言語で応答します。音声モードは表示言語とは別の言語設定を持ち、Settings > Capabilities の Voice > Spoken language(見当たらない場合は Settings > General)で選びます。",
+  "explanation": "正解は c です。ヘルプセンターの「How to use Claude in your preferred language」は、表示言語の設定を変えても Claude とはどの言語でも会話でき、Claude は使った言語で応答すると説明しています。音声モードは表示言語とは別の言語設定を持ち、Settings > Capabilities の Voice > Spoken language で選びます。Voice が見当たらない場合は、Settings > General の Voice > Language で選びます。\n\n見分け方: 表示言語が英語だと英語で回答される(a)は、使った言語で応答するという説明に反します。表示言語を変えれば音声の言語も変わる(b)は誤りで、音声モードのヘルプも、表示言語を変えても音声の言語は変わらないと述べています。日本語は表示言語の対応言語に含まれ、会話の言語をプランで制限する説明もありません(d)。",
   "refs": [
-   "https://support.claude.com/en/articles/10769299-how-to-use-claude-in-your-preferred-language"
+   "https://support.claude.com/en/articles/10769299-how-to-use-claude-in-your-preferred-language",
+   "https://support.claude.com/en/articles/11101966-use-voice-mode"
+  ],
+  "topics": [
+   "language-settings",
+   "voice-mode"
   ]
  },
  {
@@ -1035,9 +1127,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Claude は、画像生成ツールのように写真やイラストを生成しません。一方で、HTML と SVG を使った図、グラフ、インタラクティブな図解を会話の中で作れ、追加の質問に合わせて調整もできます。アップロードされた画像を見て分析することもできます。",
+  "explanation": "正解は a です。ヘルプセンターの「Can Claude produce images?」は、Claude は画像生成ツールのように写真やイラストを生成しないと説明しています。一方で、HTML と SVG を使った図、グラフ、インタラクティブな図解を会話の中で作れ、追加の質問に応じて調整もできます。この機能は Claude の web 版とデスクトップ版でベータです。写真風の画像は、この記事が説明する Claude の機能では作れません。\n\n見分け方: effort(b)は、応答の丁寧さとトークン効率のバランスを取るための設定で、画像生成の機能を加えるものではありません。Claude はアップロードされた画像を見て分析できるので、c は誤りです。Research(d)は、web や連携先を調べてレポートにまとめる機能で、画像は生成しません。",
   "refs": [
    "https://support.claude.com/en/articles/9002504-can-claude-produce-images"
+  ],
+  "topics": [
+   "claude-use-cases"
   ]
  },
  {
@@ -1072,9 +1167,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "最新のモデルは以前より簡潔で、効率のために詳しいまとめを省くことがあり、ツールの呼び出しの後にまとめを書かず次の操作に進む場合があります。作業の内容を見えやすくしたいなら、「ツールを使う作業を終えたら、行ったことを短くまとめて」のように明示的に頼みます。",
+  "explanation": "正解は b です。ガイドは、最新のモデルが以前より簡潔で自然な伝え方をし、効率のために詳しいまとめを省くことがあると説明しています。そのため、ツールの呼び出しの後に言葉でのまとめを書かず、次の操作に直接進むことがあります。作業をもっと見えるようにしたいなら、「After completing a task that involves tool use, provide a quick summary of the work you've done.」のように明示的に指示します。\n\n見分け方: ガイドは、effort を上下しても見える応答の長さが確実には変わらないモデル(Claude Opus 5)を挙げ、長さはプロンプトで指示するよう勧めています(a)。まとめを省くことは最新のモデルの伝え方として説明されており、不具合ではないので、古いモデルに戻す(c)のは的外れです。ツールの利用をやめる(d)必要もありません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "output-format-control"
   ]
  },
  {
@@ -1109,10 +1207,14 @@
   "answer": [
    "c"
   ],
-  "explanation": "ヘルプセンターの入門記事は、Claude を「新しく雇った委託先(contractor)」にたとえています。あなた自身、あなたの仕事、組織についての文脈を持たないため、非常に具体的な指示を与えることが勧められています。プロンプトのガイドも同様に、Claude を文脈を知らない優秀な新入社員として扱うよう述べています。",
+  "explanation": "正解は c です。ヘルプセンターの「Introduction to prompt design」は、Claude を新しく雇った委託先(contractor)として考えるよう述べています。Claude はあなた、あなたの作業、あなたの組織についての文脈を持たないので、何をしてほしいかを非常に具体的に指示します。Prompting best practices も、Claude を、職場の規範やワークフローの文脈を持たない優秀な新しい社員として考えるよう述べています。\n\n見分け方: 長年の同僚(a)は文脈を共有している前提で、記事のたとえと逆です。検索エンジンへのキーワードの羅列(b)と、熟練の専門家に目的だけを伝える(d)は、どちらも非常に具体的に指示するという勧めに反します。",
   "refs": [
    "https://support.claude.com/en/articles/7996853-introduction-to-prompt-design",
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "prompt-principles",
+   "be-clear-and-direct"
   ]
  },
  {
@@ -1147,9 +1249,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "音声モードには 2 つの使い方があります。既定のハンズフリーモードは、話の自然な間に応答し、静かな環境に向いています。騒がしい場所や、Claude が背景の音と声を区別しにくい場合は、話している間だけボタンを押すプッシュ・トゥ・トークモードに切り替えると、聞き取りを制御しやすくなります。",
+  "explanation": "正解は c です。ヘルプセンターの「Use voice mode」によると、既定のハンズフリーモード(Hands-free mode)は、Claude が聞き続けて話の自然な間で応答する方式で、静かな環境で最もよく動きます。騒がしい環境や、Claude が声と背景の音を区別しにくい場合は、話している間ボタンを押し続け、終わったら離すプッシュ・トゥ・トークモード(Push-to-talk mode)に切り替えます。Claude がいつ聞くかを制御しやすく、人通りの多い通りなどでも確実に使えます。\n\n見分け方: ハンズフリーモードのまま大声で話し続ける(a)は、騒がしい場所ではプッシュ・トゥ・トークに切り替えるという勧めに沿っていません。言語の設定を変える(b)は、声と背景の音の区別とは関係がありません。音声モードは Free から Enterprise までのすべてのプランで使えるベータ機能なので、d は誤りです。",
   "refs": [
    "https://support.claude.com/en/articles/11101966-use-voice-mode"
+  ],
+  "topics": [
+   "voice-mode"
   ]
  },
  {
@@ -1184,9 +1289,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "ガイドは、指示の背景や動機(なぜその振る舞いが重要か)を説明すると、Claude が目的をよく理解し、より的確に応えると説明しています。Claude は説明から一般化できるため、「読み手は業界の用語を知らない新人なので」と理由を添えると、列挙していない用語にも配慮しやすくなります。",
+  "explanation": "正解は b です。ガイドの「Add context to improve performance」は、指示の背景や動機、たとえばなぜその振る舞いが重要かを説明すると、Claude が目的をよく理解し、より的確な応答を返せると述べています。Claude は説明から一般化できるので、「読み手は業界の用語をまだ知らない新人だから」という理由を添えると、指示で挙げていない用語にも配慮が及びやすくなります。\n\n見分け方: 大文字や記号での強調(a)は理由を伝えておらず、ガイドで効果が低い例とされた「NEVER use ellipses」と同じ形です。用語の列挙(c)は、列挙していない用語に一般化する手がかりを与えません。指示を外して手で直す(d)は、指示の改善になっていません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "be-clear-and-direct"
   ]
  }
 ]
