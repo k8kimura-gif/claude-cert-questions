@@ -864,9 +864,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "形式の多様な入力には、多様な例で対応します。",
+  "explanation": "正解は a です。Prompting best practices は、例を出力の形式、口調、構造を導く最も確実な方法の 1 つとし、例は実際の用途を忠実に映し、エッジケースを含めて、Claude が意図しないパターンを拾わない程度に多様にするよう勧めています(最良の結果には 3〜5 件が目安)。この場面では、論文、プレスリリース、決算資料と構成が違うので、それぞれの種類の文書について抽出の結果を添えた例を示すのが当てはまります。\n\n見分け方: 論文の例だけ(b)では、例が多様でなく、論文の構成を前提にした扱いを他の文書にも当てはめるおそれがあります。「どの形式でも正確に」とだけ書く(c)のは抽象的な指示で、Increase output consistency は、出力の例を示すほうが抽象的な指示より効果的だとしています。文書の種類を 1 つに絞る(d)と、さまざまな文書を分析するという用途を満たせません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency"
+  ],
+  "topics": [
+   "multishot-prompting"
   ]
  },
  {
@@ -901,9 +905,16 @@
   "answer": [
    "a"
   ],
-  "explanation": "エージェントの間の受け渡しは、構造化します。必須の項目と、任意の項目を、スキーマで定めます。",
+  "explanation": "正解は a です。Agent SDK のドキュメント(Get structured output from agents)は、エージェントは既定で自由な文章を返し、それは会話には向くが出力をプログラムで使うときには向かないとしています。JSON Schema で形を定めると、SDK が出力を検証し、合わなければ再度促します。記事 How we built our multi-agent research system も、各サブエージェントには目的とともに出力の形式を渡すよう勧めています。この場面ではコーディネーターが結果をプログラムで処理するので、スキーマで返させるのが当てはまります。\n\n見分け方: 自由な文章から正規表現で値を取り出す(b)のは、ドキュメントが「自分で解析し、応答ごとの書式の揺れに対処する必要がある」と説明する状態そのものです。形式を毎回変えてよいとする(c)と、決まった形で処理するという前提が崩れます。画像で返す(d)と、プログラムで処理できません。",
   "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/structured-outputs",
+   "https://www.anthropic.com/research/multi-agent-research-system",
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "structured-outputs",
+   "structured-output-schema-design",
+   "multi-agent-systems"
   ]
  },
  {
@@ -938,10 +949,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "生成の質は、手本の質に左右されます。良い例を、1 つか 2 つ示します。",
+  "explanation": "正解は a です。Prompting best practices は、例を出力の形式、口調、構造を導く最も確実な方法の 1 つとし、実際の用途を忠実に映す例を選ぶよう勧めています。Claude Code のベストプラクティスも、具体的な依頼の例として「HotDogWidget.php のパターンに従ってカレンダーのウィジェットを作る」を挙げ、妥当なやり方が 2 つあるときの好みはコードからは読めないので、こだわるなら先に言うよう述べています。この場面では、チームの既存のサービスが流儀を実物で示す例になるので、それを手本として渡すのが当てはまります。\n\n見分け方: 「チームの流儀に合わせて」とだけ書く(b)と、何が流儀で、どのサービスを手本にするかが伝わりません。生成の回数を増やして選ぶ(c)のは、Claude に足りない情報(流儀)を何も与えていないので、どの候補も同じように外れえます。後から手で直す(d)のは、生成の段階で流儀を伝えるという改善になっていません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
    "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "multishot-prompting",
+   "claude-code-prompting"
   ]
  },
  {
@@ -976,10 +991,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "出力の構成は、明示して揃えます。",
+  "explanation": "正解は a です。Increase output consistency は、一貫性を高める方法として、出力の形式を JSON、XML、独自のテンプレートで正確に定めることと、望む出力の例を示すこと(抽象的な指示より効果的)を挙げています。Prompting best practices も、出力の形式と制約を具体的に書くよう勧めています。この場面では、概要、主な型、データの流れ、注意点という見出しの構成をテンプレートとして指定し、それに沿った文書の例を示すのが当てはまります。\n\n見分け方: 構成を指定しない(b)のは、構成が毎回違うという今の状態のままです。文書を短くする(c)のは長さの話で、見出しの構成をそろえることにはなりません。生成のたびにモデルを替える(d)のは、出力の形式を定める手法ではなく、Increase output consistency が挙げる手法にも当たりません。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "increase-consistency",
+   "output-format-control"
   ]
  },
  {
@@ -1014,10 +1033,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "指摘に検出の分類を付けておくと、誤検知の多い分類を特定して、その基準を直せます。",
+  "explanation": "正解は a です。Customize Code Review は、指摘の調整を指摘の種類ごとに行う例を挙げています。誤りと分かる指摘が多い種類には投稿の前に根拠を求める、CI が検査する項目などの種類は指摘を省く、といったものです。また Structured outputs では enum を使い、決まった値の中から分類を返させられます。この場面では、どの種類の指摘が却下されやすいかを集計するために、各指摘に検出の分類を持たせるのが当てはまります(集計の仕組みは利用側の設計で、公式資料が定めるものではありません)。\n\n見分け方: 指摘の文字数(b)は、どの種類の問題かを表さないので、種類ごとの却下の傾向は分かりません。実行した日の天気(c)は、指摘の内容と関係がありません。モデルの名前だけ(d)では、同じモデルが出した指摘を種類ごとに分けられません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+   "https://code.claude.com/docs/en/code-review-customize",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "claude-code-code-review",
+   "structured-outputs"
   ]
  },
  {
@@ -1052,10 +1075,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "誤検知の多い分類は、正確な分類への信頼も損ないます。分類ごとに有効・無効を切り替えられるようにしておきます。",
+  "explanation": "正解は a です。Customize Code Review は、指摘の調整として、特定の種類(finding categories)の指摘を省く指定と、誤りと分かる指摘が多い種類に投稿前の根拠(名前からの推測ではなく file:line の引用など)を求める指定を挙げ、後者は書き手の手戻りになる誤検知を減らすとしています。同じ種類の指摘が繰り返し出るときは REVIEW.md に規則を足すよう案内されています。この場面では、誤検知が多いのは「未使用の変数」という 1 つの分類なので、その分類だけを止め、基準を直してから再開するのが当てはまります。\n\n見分け方: すべての分類を止める(b)と、正しく働いている分類の指摘まで失われます。何もしない(c)と誤検知が続き、問題文のとおり他の指摘も信用されなくなります。指摘を増やす(d)のは、ドキュメントが Nit の件数に上限を設けてレビューを行動につながる量に保つよう勧めているのと逆の方向です。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+   "https://code.claude.com/docs/en/code-review-customize",
+   "https://code.claude.com/docs/en/code-review-pull-requests"
+  ],
+  "topics": [
+   "claude-code-code-review"
   ]
  },
  {
@@ -1090,9 +1116,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "許容される形と、問題のある形を並べて示すと、Claude は、例にない場面でも区別できるようになります。",
+  "explanation": "正解は a です。Prompting best practices は、例を出力を導く最も確実な方法の 1 つとし、エッジケースを含めた多様な例を示すよう勧めています。Claude Code のベストプラクティスは、CLAUDE.md に書くべきものとして、リポジトリから読めないチームの決定(どのエラー処理の部品を使うと決めたか、など)を挙げており、Code Review も CLAUDE.md を文脈として読みます。この場面では、社内のラッパー関数の正しい使い方と、本当に問題のある書き方を対にして示すと、どこからが問題かという境界が例で伝わります。\n\n見分け方: 「誤検知をしないように」(b)は、何が誤検知かという基準を伝えていません。ラッパー関数を使わない書き方に改める(c)のは、レビューの誤りに合わせて、問題のないコードの側を曲げることになります。観点ごとやめる(d)と、本当の問題も見つけられなくなります。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://code.claude.com/docs/en/best-practices",
+   "https://code.claude.com/docs/en/code-review-customize"
+  ],
+  "topics": [
+   "multishot-prompting",
+   "claude-code-code-review"
   ]
  },
  {
@@ -1127,10 +1159,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "指摘の形式は、例で示して揃えます。場所、問題、重大度、修正案を、決まった構造で出力させます。",
+  "explanation": "正解は a です。Claude Code の Code Review では、指摘は該当する行へのコメントとして投稿され、重大度(Important、Nit、Pre-existing)が付き、チェックランの詳細では Severity、File:Line、Issue の表にまとまります(Read and request reviews on a pull request)。この場面では、場所、問題の内容、重大度に修正の案を加えると、開発者がどこを、どの程度急いで、どう直すかを判断できます(修正の案を含めるのはこの場面の設計で、ページの表にある項目ではありません)。決まった項目で出力させるには、構造化出力で JSON Schema に従わせられます。\n\n見分け方: 場所を示さない 1 文(b)では、どこを直すかが分かりません。説明の文章だけ(c)では、場所と直し方が分からず、開発者が該当箇所を探し直すことになります。重大度だけ(d)では、何が問題かが分かりません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+   "https://code.claude.com/docs/en/code-review-pull-requests",
+   "https://code.claude.com/docs/en/code-review-customize",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "claude-code-code-review",
+   "structured-outputs"
   ]
  },
  {
@@ -1165,10 +1202,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "一般的な指示は、広すぎる解釈を招きます。何を報告し、何を報告しないかを、具体的に書きます。",
+  "explanation": "正解は a です。Prompting best practices は、Claude は明確で明示的な指示によく応えるとし、出力の形式と制約を具体的に書くよう勧めています。Claude Code のベストプラクティスも、問題を探すよう頼まれたレビュアーは必ず何かを見つけるとして、仕様に照らしたレビューの依頼から「skip style」を外さないよう述べています。この場面では、「コメントの正確さ」という広い依頼が言い回しへの指摘を招いているので、報告するのはコメントの述べる動作とコードの実際の動作が矛盾する場合だけと、基準を具体的に書くのが当てはまります。\n\n見分け方: 「もっと正確に」(b)は、何を報告し何を報告しないかを定めておらず、広すぎる解釈が残ります。確認をやめる(c)と、目的の食い違いが見つかりません。コメントを削除させる(d)のは、レビューの範囲を超え、正しいコメントまで失わせます。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/be-clear-and-direct",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "be-clear-and-direct",
+   "claude-code-code-review"
   ]
  },
  {
@@ -1203,10 +1244,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "機械的に判定できる検査は、専用のツールに任せます。Claude には、判断の必要な問題を任せます。",
+  "explanation": "正解は a です。Customize Code Review は、REVIEW.md の例で、報告しないものとして「CI がすでに強制しているもの(lint、整形、型エラー)」を挙げ、CI が検査するリンティングなどを、指摘を省く対象の候補としています。Code Review も既定では、書式の好みではなく、本番を壊すバグという正しさに集中します。この場面ではリンターが書式を検査しているので、書式は報告の対象外とし、ロジックや安全性の問題に集中させるのが当てはまります。\n\n見分け方: 書式もすべて報告させる(b)と、リンターと同じ指摘が重なり、価値のある指摘が埋もれます。リンターを止める(c)と、決まった規則で確実に検査する仕組みを失い、書式の確認をモデルの判断に任せることになります。何も書かない(d)と、リンターと重なる書式の指摘を除くという方針がプロンプトに表れません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
-   "https://code.claude.com/docs/en/best-practices"
+   "https://code.claude.com/docs/en/code-review-customize",
+   "https://code.claude.com/docs/en/code-review"
+  ],
+  "topics": [
+   "claude-code-code-review"
   ]
  },
  {
@@ -1241,9 +1285,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "構造の違う入力には、それぞれの例を用意します。",
+  "explanation": "正解は a です。Prompting best practices は、例を示すときは実際の用途を忠実に映し、エッジケースを含めて、Claude が意図しないパターンを拾わない程度に多様にするよう勧めています(最良の結果には 3〜5 件が目安)。この場面では、本文中に埋め込む形式と末尾に一覧にする形式とで引用の現れ方が違うので、両方の形式について抽出の例を示すのが当てはまります。\n\n見分け方: 多いほうの形式の例だけ(b)では、もう一方の形式の扱いが例から分からず、例が多様であるという条件も満たしません。「どんな形式でも漏れなく」(c)は抽象的な指示で、Increase output consistency は、出力の例を示すほうが抽象的な指示より効果的だとしています。片方の形式を受け付けない(d)のは、形式のばらついた文書から抽出するという要件を満たしません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency"
+  ],
+  "topics": [
+   "multishot-prompting"
   ]
  },
  {
@@ -1262,7 +1310,7 @@
    {
     "id": "b",
     "text": "スキーマを、さらに厳密にするだけにする",
-    "why": "文字列型である限り、表記は制約されない。"
+    "why": "「厳密に」が何を指すかが定まっていない。型や必須の指定を厳しくしても、文字列の表記はそろわない(スキーマで表記を制約するなら、format や pattern でそろえる表記そのものを指定する必要がある)。"
    },
    {
     "id": "c",
@@ -1278,10 +1326,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "スキーマは構造を保証しますが、値の表記までは決めません。正規化の規則は、指示として与えます。",
+  "explanation": "正解は a です。Increase output consistency は出力の形式を正確に定めるよう勧め、Prompting best practices も出力の形式と制約を具体的に書くよう勧めています。この場面では、どの表記にそろえるか(YYYY-MM-DD など)の規則をプロンプトに書き、スキーマのフィールドの説明にも書いておくのが当てはまります。なお、Structured outputs は文字列の format(date など)と簡単な正規表現の pattern に対応しているので、スキーマの側でも表記を制約できます。\n\n見分け方: (b)の「さらに厳密に」は、何をどう厳密にするかが定まっていません。型や必須の指定を厳しくしても文字列の表記はそろわず、表記を制約するなら、format や pattern でそろえる表記そのものを指定する必要があります。表記をそろえない(c)と下流で処理できず、日付を抽出しない(d)と必要な情報が失われます。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
-   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency"
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "increase-consistency",
+   "structured-output-schema-design"
   ]
  },
  {
@@ -1316,9 +1369,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "自己検証のためのフィールドを設けると、意味上の誤りを検出できます。",
+  "explanation": "正解は a です。Structured outputs が保証するのは、JSON の構文が正しく、フィールドの型と必須フィールドがスキーマに合うことです。明細の合計と総額が一致するかはスキーマでは表せないので、記載された総額と、明細から計算した合計を別々のフィールドで出力させれば、コードで 2 つを比べて食い違いを機械的に見つけられます。Prompting best practices の Payments, account numbers, and financial records のブロックも、他の人が頼る報告では、保管されている文書が示す数字を主たる版とするよう指示しています。\n\n見分け方: 総額だけ(b)や、合計を出さない(c)では、比べる相手がないので食い違いを検出できません。モデルの判断でどちらかに合わせて直す(d)と、原本と違う値が黙って入り、文書が示す数字を主たる版とするという上の指示にも反します。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "structured-outputs",
+   "structured-output-schema-design"
   ]
  },
  {
@@ -1353,10 +1411,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "原本そのものに矛盾がある場合は、それを明示して、判断を人に委ねます。",
+  "explanation": "正解は a です。Reduce hallucinations は、情報が足りないときに分からないと認めることを Claude に明示的に許すよう勧め、これらの手法でもハルシネーションはなくならないので、影響の大きい判断では重要な情報を必ず確かめるよう述べています。この場面では、原本に支払条件が 2 通り書かれていて、どちらが有効かを原本からは決められないので、矛盾を示すフィールドを設けて両方の記載を残し、人の確認につなげるのが当てはまります。\n\n見分け方: 先に出た方を採る(b)のも、後に出た方を採る(c)のも、原本に書かれていない「どちらが優先か」という判断を推測で補っており、根拠がありません。支払条件を空にする(d)と、記載がないのか矛盾しているのかを区別できず、矛盾があることが下流に伝わりません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
-   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "reduce-hallucinations",
+   "structured-output-schema-design"
   ]
  },
  {
@@ -1391,10 +1453,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "根拠の抜き書きは、検証を容易にし、作り出された値の発見にも役立ちます。",
+  "explanation": "正解は a です。Reduce hallucinations は、主張ごとに引用と出典を示させると応答を検証できるようになるとし、裏付けの引用が見つからない主張は取り下げさせる方法も挙げています。この場面では、値ごとに根拠となった原本の記述の抜き書きを持たせれば、値と原本を突き合わせられます。なお、API の Citations 機能は渡した文書への有効な参照を保証しますが、構造化出力(output_config.format)とは併用できず、400 エラーになります。値ごとに引用が要るときは、1 行に 1 フィールドずつ答えさせて解析する方法が Citations のページに載っています。\n\n見分け方: 値の文字数(b)、抽出にかかった時間(c)、モデルの名前(d)は、どれも原本のどこに書かれていたかを示さないので、値の確認には役立ちません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
-   "https://platform.claude.com/docs/en/build-with-claude/citations"
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+   "https://platform.claude.com/docs/en/build-with-claude/citations",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "reduce-hallucinations",
+   "citations"
   ]
  },
  {
@@ -1423,15 +1490,18 @@
    {
     "id": "d",
     "text": "括弧が、閉じていない",
-    "why": "スキーマで防げる。"
+    "why": "構文の誤りは制約付きデコードで防げる(ただし max_tokens で打ち切られたときは、出力が不完全でスキーマに合わないことがある)。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "スキーマは、構文と構造の誤りを防ぎます。意味上の誤りには、検証の規則や、人の確認が必要です。",
+  "explanation": "正解は a です。Structured outputs は、制約付きデコードによって、JSON の構文エラーがなく(Always valid)、フィールドの型と必須フィールドが保証される(Type safe)と説明しています。保証されるのはスキーマへの適合で、型と構造の正しい値がどのフィールドに入ったかという意味の正しさは、スキーマでは表せません。この場面の発行日と支払期日の入れ違いは、どちらも日付の文字列として型に合うので、スキーマでは防げません。\n\n見分け方: 必須フィールドの欠落(b)と型の不一致(c)は、Type safe の保証で防げます。括弧が閉じていない(d)のような構文の誤りも、Always valid の保証で防げます。ただし、拒否(stop_reason が \"refusal\")のときと max_tokens で打ち切られたときは、出力がスキーマに合わないことがあり、後者は max_tokens を上げて再試行するよう勧められています。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "structured-outputs"
   ]
  },
  {
@@ -1466,10 +1536,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "判断の分かれる入力は、例で扱いを決めます。",
+  "explanation": "正解は a です。Prompting best practices は、例を出力の形式と構造を導く最も確実な方法の 1 つとし、エッジケースを含めた多様な例を示すよう勧めています。Increase output consistency も、望む出力の例を示すことは抽象的な指示より効果的だとしています。この場面では、「2 ケース」「約 30 個」「ひと箱」のようなくだけた表記ごとに、数値、単位、概数かどうかという期待する出力を例で示せば、判断の分かれる表記の扱いが定まります。\n\n見分け方: 単位や概数の情報を捨てる(b)と、「2 ケース」と「2 個」の違いや、値が概数であることが下流に伝わりません。0 を出力させる(c)と、「数量 0」という事実でない値が入ります。Reduce hallucinations は、分からないときは分からないと答えることを許すよう勧めています。モデルに任せる(d)と、扱いが文書ごとに揺れます。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/multishot-prompting",
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "multishot-prompting",
+   "increase-consistency"
   ]
  },
  {
@@ -1504,10 +1579,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "作り出された値を減らすには、推測を禁じる指示と、記載なしを表現できるスキーマを、組み合わせます。",
+  "explanation": "正解は a です。Reduce hallucinations は、Claude に「分からない」と言うことを明示的に許すと誤った情報を大きく減らせるとしています。一方、Structured outputs は必須フィールドを保証するので、記載がなくても必須のフィールドには値が入ります。Agent SDK のドキュメントも、スキーマが求める情報がタスクにないかもしれないなら、そのフィールドを任意にするよう勧めています。この場面では、推測を禁じる指示と、null を返せるスキーマを組み合わせるのが当てはまります。\n\n見分け方: 指示だけ(b)では、必須のフィールドを何かで埋める必要が残ります。スキーマだけ(c)では、記載がないときは null を返すという方針が伝わりません。推測を勧める(d)と、原本にない値が増えます。なお、[\"string\", \"null\"] のような null を許す型は、リクエスト全体で 16 個までという union 型の上限に数えられます。",
   "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
-   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+   "https://code.claude.com/docs/en/agent-sdk/structured-outputs"
+  ],
+  "topics": [
+   "reduce-hallucinations",
+   "structured-output-schema-design"
   ]
  },
  {
@@ -1542,10 +1622,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "複雑なスキーマは、誤りの原因になります。段階を分けて、それぞれを単純にします。",
+  "explanation": "正解は a です。Agent SDK のドキュメント(Get structured output from agents)は、深い入れ子で必須フィールドの多いスキーマは満たしにくいとして、単純に始めて必要に応じて複雑にするよう勧めています。API の Structured outputs も、複雑さの上限への対策として、入れ子を平らにする、リクエストを分ける、を挙げています。この場面では、スキーマを単純にし、必要ならプロンプトの連鎖(Prompting best practices)で抽出を段階に分けるのが当てはまります。\n\n見分け方: 入れ子をさらに深くする(b)のは、上の助言と逆です。すべて必須にする(c)と、記載のない値まで埋めることになり、情報がないかもしれないフィールドは任意にするという SDK の助言に反します(API のページの「できるものは required に」は、複雑さの上限への対策です)。説明をすべて削る(d)と、各フィールドに何を入れるかが伝わらなくなります。",
   "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/structured-outputs",
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "structured-output-schema-design",
+   "prompt-chaining"
   ]
  },
  {
@@ -1580,10 +1665,17 @@
   "answer": [
    "a"
   ],
-  "explanation": "フィールドの名前と説明は、プロンプトの一部です。曖昧な名前は、誤った値の原因になります。",
+  "explanation": "正解は a です。Define tools は、ツールの説明を極めて詳しく書くことを性能の「群を抜いて最も重要な」要素とし、各パラメータの意味と動作への影響を説明するよう勧めています。記事 Writing effective tools for agents も、説明や仕様はエージェントのコンテキストに読み込まれるので、それを磨くことがプロンプトエンジニアリングになるとし、引数の名前も曖昧さをなくすよう勧めています。この場面のスキーマのフィールドの説明も、何をどの形式で入れるかを Claude に伝える部分になります。\n\n見分け方: 速くなる(b)や費用が下がる(c)は、説明の効果ではありません。ツール使用の料金は、ツールの名前、説明、スキーマを含む入力トークンで決まるので、説明を足すと入力はむしろ増えます。効果がない(d)は、上の記述と合いません。",
   "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+   "https://www.anthropic.com/research/writing-tools-for-agents",
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+  ],
+  "topics": [
+   "define-tools",
+   "writing-tools-for-agents",
+   "structured-output-schema-design"
   ]
  }
 ]
