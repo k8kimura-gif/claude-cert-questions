@@ -1,0 +1,520 @@
+[
+ {
+  "id": "context-engineering",
+  "title": "コンテキストエンジニアリングと長時間のタスク",
+  "summary": "記事「Effective context engineering for AI agents」は、コンテキストエンジニアリングを、推論の間に最適なトークン(情報)の集合を選び、保ち続ける戦略の集まりとし、プロンプトエンジニアリングの自然な発展と位置付けています。トークンが増えるほどモデルがそこから情報を正確に思い出す力は下がり(context rot)、LLM には「注意の予算」があるため、コンテキストは収穫逓減のある有限の資源として扱います。指針は、望む結果の可能性を最大にする、最小限で情報価値の高いトークンの集合を見つけることです。システムプロンプトは、壊れやすい if-else の論理を書き込むことと、具体的な手がかりのない曖昧な指示の中間の「適切な高度」で書きます。数十分から数時間に及ぶ長時間のタスクでは、トークン数がコンテキストウィンドウを超えるため、コンパクション(上限に近づいた会話を要約して新しいコンテキストを始める)、構造化したメモ(コンテキストの外にメモを書き残して後で読み戻す)、サブエージェントの構成の 3 つの手法を使います。",
+  "points": [
+   "最小限は短いという意味ではない。例外的な事例の長い一覧は勧めず、多様で典型的な例を厳選する",
+   "just in time: 軽い識別子(ファイルパス、保存したクエリ、Web リンクなど)を持たせ、ツールで実行時に読み込む。実行時の探索は事前に計算したデータの取得より遅く、両者を組み合わせる方式もある",
+   "コンパクションは長期の一貫性を保つ最初の手段。残すものと捨てるものの選択が要で、削りすぎると後で重要になる細かい文脈を失う。最も軽い形はツールの結果の消去",
+   "Claude Code では、会話の履歴を要約して重要な点(設計上の決定、未解決のバグ、実装の詳細)を残し、直近に参照した 5 つのファイルと合わせて続ける",
+   "構造化したメモの例は、Claude Code の to-do リストや、独自のエージェントが保つ NOTES.md。API の memory tool はクライアント側で動き、Claude がファイル操作を要求してアプリケーションが実行する。セッションをまたいで文脈を保つのに使える",
+   "サブエージェントは数万トークン以上を使って調べても、返すのは要約(多くは 1,000〜2,000 トークン)だけ。詳しい探索の文脈はサブエージェントの中に閉じる",
+   "使い分け: 往復の多い作業はコンパクション、区切りが明確な反復的な開発はメモ、並行した探索が効く複雑な調査や分析はマルチエージェント",
+   "API のコンパクションは、古いターンを、サーバーで Claude が書いた要約に置き換える。いつ要約するかを自分で決める on-demand と、入力トークンが設定したしきい値に達すると API が行う方式がある",
+   "コンテキストウィンドウが大きくなっても、汚染と関連性の問題は残る"
+  ],
+  "sources": [
+   {
+    "url": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+    "title": "Effective context engineering for AI agents"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/compaction",
+    "title": "Compaction overview"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+    "title": "Memory tool"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "messages-api-basics",
+  "title": "Messages API の基本(リクエストの構成と会話履歴)",
+  "summary": "Messages API(POST /v1/messages)はステートレスで、複数ターンの会話では、それまでの会話履歴全体を毎回 API に送ります。messages は role と content を持つメッセージの配列で、モデルは user と assistant が交互に並ぶターンで動くよう訓練されています。user のメッセージ 1 件だけでも、複数の user と assistant のメッセージでもよく、連続する同じロールのメッセージは 1 つのターンに結合されます。content は文字列か、text、image、document などのブロックの配列です。会話の最初から効かせる指示(システムプロンプト)は、トップレベルの system パラメータで渡します。HTTP で直接呼ぶ場合は、認証(Authorization: Bearer、または従来の x-api-key)に加えて anthropic-version と content-type のヘッダーが必要で、公式 SDK はこれらを自動で送ります。応答の usage には、課金とレート制限の基になるトークン数が入ります。",
+  "points": [
+   "ベータの message threads を使うと、API が会話を短時間保持し、以後は本文の thread パラメータで前の応答の id を指定して新しいメッセージだけを送れる。スレッドは最後のリクエストから 5 分で失効する",
+   "一部のモデルでは、user ターンの直後に role: \"system\" のメッセージを置いて会話の途中から指示を足せる。ただし messages の先頭には置けない",
+   "最後のメッセージが assistant だと、その続きから生成する(prefill)。Claude 4.6 以降のモデルでは prefill は 400 エラーになる",
+   "ツールを使う会話では、応答の content を変えずに assistant メッセージとして履歴に戻す",
+   "usage には input_tokens、output_tokens、cache_creation_input_tokens、cache_read_input_tokens などが入る。入力トークンの合計はこの 3 つの入力側の値の和。usage の値は、見えている内容と 1 対 1 には対応しない",
+   "API バージョン 2026-10-21 では temperature、top_p、top_k が削除され、送ると 400 エラーになる。Claude 4.7 以降のモデルでは、それより前のバージョンでも既定以外の値は 400 エラー",
+   "1 つのリクエストに入れられるメッセージは 100,000 件まで"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/api/messages",
+    "title": "Messages (API reference)"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/working-with-messages",
+    "title": "Using the Messages API"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/api/overview",
+    "title": "API overview"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/api/versioning",
+    "title": "API versions"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/message-threads",
+    "title": "Message threads"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "long-context-prompting",
+  "title": "長い文書を扱うプロンプト(long context prompting)",
+  "summary": "大きな文書やデータの多い入力(20k トークン以上)を扱うときについて、Prompting best practices は 3 つの方法を挙げています。1 つ目は、長い文書や入力をプロンプトの上部、つまり質問、指示、例より前に置くことで、すべてのモデルで性能が上がるとされています。質問を末尾に置くと、テストでは応答の質が最大 30% 上がり、とくに複雑な複数文書の入力で効果があるとしています。2 つ目は、複数の文書を使うとき、各文書を <document> タグで囲み、内容を <document_content>、出典などのメタデータを <source> などのサブタグに入れることです。3 つ目は、回答を引用に基づかせることで、作業の前に文書の関連箇所を引用させると、Claude が関連する内容に集中し、文書の残りを無視しやすくなります。Reduce hallucinations も、20k トークンを超える長い文書では、作業の前に一語一句の引用を抜き出させると、応答が実際の本文に基づき、ハルシネーションが減るとしています。",
+  "points": [
+   "対象は 20k トークン以上の大きな文書やデータの多い入力",
+   "長い文書を上部に、質問・指示・例をその後に置く。すべてのモデルで性能が上がる",
+   "質問を末尾に置くと、テストでは応答の質が最大 30% 上がった(とくに複雑な複数文書の入力)",
+   "複数の文書は <documents> の中で <document> ごとに囲み、<document_content> と <source> などのサブタグで内容とメタデータを分ける",
+   "作業の前に関連箇所を引用させ(例: <quotes> タグ)、その引用に基づいて作業させる"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+    "title": "Reduce hallucinations"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "reduce-hallucinations",
+  "title": "ハルシネーションを減らす(根拠と引用)",
+  "summary": "最も高度な言語モデルでも、事実と異なる文や、与えた文脈と食い違う文を生成することがあり、これをハルシネーションと呼びます。公式ドキュメントは基本の対策を 3 つ挙げています。Claude に「分からない」と言うことを明示的に許すと、誤った情報を大きく減らせます。20k トークンを超える長い文書を扱うタスクでは、作業の前に文書から一語一句そのままの引用を抜き出させ、それに基づいて作業させると、応答が実際の本文に根拠を置きます。主張ごとに引用と出典を示させると応答を検証でき、生成した後に各主張を裏付ける引用を探させ、見つからない主張は取り下げさせることもできます。発展的な手法として、display: \"summarized\" の思考で推論を確かめる、同じプロンプトを複数回実行して比べる Best-of-N、出力を次のプロンプトの入力にして確かめる反復、提供した文書の情報だけを使い一般知識を使わないよう指示する外部知識の制限があります。これらの手法でもハルシネーションはなくならないため、影響の大きい判断では重要な情報を必ず確かめます。",
+  "points": [
+   "「分からない」と答えることを明示的に許す",
+   "20k トークンを超える文書では、作業の前に一語一句の引用を抜き出させ、その引用に基づいて作業させる",
+   "主張ごとに引用と出典を示させる。裏付けの引用が見つからない主張は取り下げさせる",
+   "発展的な手法: 思考(display: \"summarized\")による確認、Best-of-N、反復的な改善、外部知識の制限",
+   "これらの技法はハルシネーションを大きく減らすが、なくしはしない。影響の大きい判断では重要な情報を必ず検証する",
+   "API の Citations 機能: 文書ごとに citations.enabled=true を指定すると、応答の各主張に、それを支える文書の正確な箇所の引用が付く。すべての現行モデルが対応する",
+   "Citations の位置: PDF はページ番号(1 始まり)、プレーンテキストは文字の位置(0 始まり)、カスタムコンテンツはブロックの番号(0 始まり)"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+    "title": "Reduce hallucinations"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/citations",
+    "title": "Citations"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "citations",
+  "title": "Citations(引用)",
+  "summary": "Citations は、渡した文書に基づく回答に、根拠となった箇所の引用を API が構造化して付ける機能です。PDF、プレーンテキスト、カスタムコンテンツの文書を渡し、各文書で citations.enabled=true を指定します。同じリクエストで、引用を有効にした文書と無効の文書を混ぜることはできません。API は文書を引用の単位に分割し(PDF とプレーンテキストは文ごと、カスタムコンテンツは渡したブロックがそのまま単位)、応答は複数のテキストブロックに分かれて、主張を含むブロックに引用の一覧が付きます。引用には、引用した文言(cited_text)、文書の番号と題名、位置が入ります。位置は、PDF ではページ番号(1 から数え、終わりは含まない)、プレーンテキストでは文字位置(0 から数える)、カスタムコンテンツではブロックの番号です。プロンプトで引用を求める方法と比べ、引用は渡した文書への有効な参照であることが保証され、質も高いとされています。",
+  "points": [
+   "cited_text は出力トークンに数えられず、後のターンで送り返しても入力トークンに数えられない",
+   "有効にすると、システムプロンプトの追加と文書の分割のために、入力トークンがわずかに増える",
+   "テキストは引用できるが、画像は引用できない。テキストを抽出できないスキャンだけの PDF も引用できない",
+   "title と context はモデルに渡されるが、引用の対象にはならない",
+   "構造化出力(output_config.format)とは併用できず、両方を指定すると 400 エラー",
+   "プロンプトキャッシュ、トークンカウント、バッチ処理とは併用できる"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/citations",
+    "title": "Citations"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "structured-outputs",
+  "title": "構造化出力(JSON outputs と strict tool use)",
+  "summary": "構造化出力は、制約付きデコードによって、Claude の出力を指定したスキーマに従わせる機能です。2 つの機能があります。JSON outputs は、リクエストの output_config.format に type: \"json_schema\" とスキーマを指定し、Claude の応答(何を言うか)をスキーマに合う JSON にします。strict tool use は、ツール定義に strict: true を付け、ツールの名前と入力(関数をどう呼ぶか)をスキーマで検証します。両者は別の問題を解くもので、別々にも同じリクエストでも使えます。JSON の構文エラーがなく、型と必須フィールドが保証され、スキーマ違反のための再試行が要らなくなると説明されています。構造化出力を使わず、プロンプトだけに頼ると、不正な JSON、必須フィールドの欠落、型の不一致が起こりえます。ただし、拒否したときと max_tokens で打ち切られたときは、出力がスキーマに合わないことがあります。",
+  "points": [
+   "例外: 拒否(stop_reason が \"refusal\")のときは、拒否の文がスキーマより優先される。HTTP 200 が返り、生成したトークンは課金される",
+   "例外: max_tokens で打ち切られた(stop_reason が \"max_tokens\")ときは、出力が不完全でスキーマに合わないことがある。max_tokens を上げて再試行する",
+   "enum と const の文字列の大文字・小文字は保証されない。比較は大文字・小文字を区別せずに行う",
+   "Citations とは併用できず、引用を有効にした文書と output_config.format を同時に指定すると 400 エラー。メッセージの事前入力(prefill)とも併用できない",
+   "バッチ処理、トークンのカウント、ストリーミングとは併用できる",
+   "文法の制約は Claude の直接の出力だけにかかり、ツールの呼び出しや thinking には及ばない",
+   "SDK のヘルパー(Python の client.messages.parse() など)は、型からスキーマを作り、応答を検証して解析済みの値を返す",
+   "prefill に対応しないモデルでは、構造化出力やシステムプロンプトでの指示が prefill の代わりになる"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "title": "Structured outputs"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use",
+    "title": "Strict tool use"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/citations",
+    "title": "Citations"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/api/errors",
+    "title": "Claude API errors"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "pdf-support",
+  "title": "PDF サポート",
+  "summary": "PDF は user メッセージの document ブロックで渡し、source には、オンラインの PDF の URL、base64 のデータ、Files API の file_id のいずれかを指定します。繰り返し使う PDF や大きな PDF には Files API が勧められています。PDF を送ると、各ページが画像に変換され、ページごとに抽出したテキストと一緒に Claude に渡されます。そのため、本文だけでなく図、表、グラフなどの視覚的な要素についても質問できます。費用は、抽出したテキスト(1 ページあたり通常 1,500〜3,000 トークン)と、各ページの画像(1 ページあたり最大 1,568 トークン)の合計で、PDF に追加の料金はありません。Claude API では、リクエスト全体の大きさが 128 MB、ページ数が 600 ページ(コンテキストウィンドウが 1M トークン未満なら 100 ページ)までで、この上限は PDF と一緒に送る他のコンテンツも含むリクエスト全体にかかります。パスワード付きや暗号化された PDF は使えません。",
+  "points": [
+   "性能を上げる方法: PDF をテキストより前に置く、標準的なフォントを使う、ページを正しい向きにする、プロンプトでは PDF ビューアーの論理ページ番号を使う、大きな PDF は分割する、繰り返す分析にはプロンプトキャッシュを使う",
+   "プロンプトの一般的な指針でも、長い文書は質問や指示より上に置く。質問を末尾に置くと、テストで応答の質が最大 30% 上がった",
+   "文字の細かいページや図表の多い PDF は、ページの上限より先にコンテキストウィンドウが埋まることがある。その場合は文書を分割する",
+   "PDF の処理は Claude の画像理解に基づくため、画像入力と同じ制約を受ける",
+   ".xlsx や .docx のようなバイナリ形式は document ブロックに使えない。テキストか PDF に変換する",
+   "大量の PDF は Message Batches API で処理できる",
+   "Amazon Bedrock と Claude Models on Google Cloud (Google managed) では base64 の source だけが使える"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "title": "PDF support"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "context-windows",
+  "title": "コンテキストウィンドウ",
+  "summary": "コンテキストウィンドウは、言語モデルが応答を生成するときに参照できるテキストのすべてで、生成する応答そのものも含みます。学習に使われた大量のデータとは別のもので、モデルの「作業記憶」にあたります。リクエストの中のものはすべてウィンドウに数えられます。システムプロンプト、messages のすべてのメッセージ(ツールの結果、画像、文書を含む)、ツール定義、そしてそのターンで Claude が生成する出力(拡張思考を含む)です。会話が進むと、各ターンの user と assistant のメッセージがウィンドウに積み重なります。ウィンドウが大きいほど複雑で長いプロンプトを扱えますが、トークンが増えるほど正確さと想起が落ちる(context rot)ため、何を入れるかを選ぶことが重要です。長い会話やエージェントの処理では、サーバー側のコンパクション(compaction)が主な管理方法とされています。",
+  "points": [
+   "多くの現行モデルのウィンドウは 1M トークンで、1 回のリクエストで最大 128k トークンを出力できる。それ以外のモデルは 200k トークン",
+   "各応答の usage に消費量が出る。プロンプトキャッシュを使うと、input_tokens、cache_read_input_tokens、cache_creation_input_tokens の 3 つに分かれ、すべてがウィンドウに数えられる",
+   "送信前の見積もりにはトークンカウント API を使う",
+   "thinking のトークンは max_tokens の一部で、出力トークンとして課金され、レート制限にも数えられる",
+   "前のターンの thinking ブロックを残すか取り除くかはモデルによって異なる",
+   "1 回のリクエストに入れられる画像や PDF のページは 600(200k トークンのモデルは 100)まで"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/context-windows",
+    "title": "Context windows"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "writing-tools-for-agents",
+  "title": "エージェント向けのツール設計(Writing effective tools for agents)",
+  "summary": "Anthropic の記事「Writing effective tools for agents」は、ツールを決定的なシステムと非決定的なエージェントの間の取り決めと捉え、他の開発者向けの API と同じ感覚ではなく、エージェント向けに設計し直すよう勧めています。進め方は、試作を作って自分で試し、現実の使い方に基づく評価タスクを多数用意して評価を回し、結果(エージェントの推論、生の記録、ツール呼び出しの指標)を読んで改善する、の繰り返しです。記事は、ツール設計の原則として、作るツールを選ぶこと、名前空間で境界を示すこと、意味のある文脈を返すこと、トークン効率を考えて応答を設計すること、ツールの説明をプロンプトとして磨くことを挙げています。",
+  "points": [
+   "ツールは多ければよいわけではない。既存の API のエンドポイントをそのまま包むのはよくある誤り。影響の大きいワークフローに絞り、よく連続する複数の操作を 1 つのツールにまとめる(例: list_users・list_events・create_event の代わりに schedule_event)",
+   "名前空間(サービス別や資源別の接頭辞)で、似たツールの境界を示す。接頭辞か接尾辞かで評価結果が変わることもあり、自分の評価で選ぶ",
+   "応答は判断に役立つ情報を優先し、uuid や mime_type のような低水準の技術的な識別子は避ける。意味の分からない英数字の ID を意味のある言葉に置き換えるだけで、検索タスクの精度が大きく上がった",
+   "詳しさを選べる response_format(concise / detailed)のような引数で、必要なときだけ ID を返す方法がある",
+   "大きくなりうる応答には、ページ分割、範囲指定、絞り込み、切り詰めを、適切な既定値とともに入れる(Claude Code はツールの応答を既定で 25,000 トークンに制限)。切り詰めたときやエラーのときは、次に何をすべきかを具体的に伝える",
+   "ツールの説明は新しく入ったチームメンバーに説明するつもりで書く。引数名は user ではなく user_id のように曖昧さをなくす。説明の小さな改善でも成績が大きく変わることがある"
+  ],
+  "sources": [
+   {
+    "url": "https://www.anthropic.com/research/writing-tools-for-agents",
+    "title": "Writing effective tools for agents — with agents"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+    "title": "Define tools"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "autonomous-agents",
+  "title": "エージェントの使いどころと安全な運用",
+  "summary": "記事「Building effective agents」によると、エージェントは、複雑な入力の理解、推論と計画、確実なツールの使用、誤りからの回復といった能力が成熟するにつれて本番で使われ始めています。エージェントは利用者の指示か対話から作業を始め、タスクが明確になると自分で計画して動き、必要なら追加の情報や判断を求めて人に戻ります。実行中は、各ステップで環境から「正解の手がかり(ground truth)」(ツール呼び出しの結果やコードの実行など)を得て進み具合を評価することが重要です。チェックポイントや障害に当たったときには、人のフィードバックを待てます。タスクは完了で終わるのが普通ですが、制御を保つために停止条件(最大反復回数など)を入れることもよくあります。実装は多くの場合、環境からのフィードバックをもとにループの中でツールを使う LLM にすぎず、ツール群とその説明を明確に設計することが重要です。",
+  "points": [
+   "エージェントが向くのは、必要なステップ数の予測が難しいか不可能で、固定の経路をハードコードできない、答えの決まっていない問題",
+   "エージェントは多くのターンを動くため、その判断をある程度信頼できる必要がある。自律性は、信頼できる環境でタスクを広げるのに向く",
+   "自律性は費用の増加と誤りの連鎖(compounding errors)の可能性を伴う。サンドボックス環境での十分なテストと、適切なガードレールを勧めている",
+   "付録の例: カスタマーサポート(会話と行動を組み合わせ、解決を明確に測れる)と、コーディングエージェント(自動テストで解を検証でき、テストの結果をフィードバックに反復できる)。自動テストがあっても、システム全体の要件に合うかを確かめる人のレビューは欠かせない",
+   "エージェントが特に価値を出すのは、会話と行動の両方が必要で、成功の基準が明確で、フィードバックのループを回せ、人による意味のある監督を組み込めるタスク"
+  ],
+  "sources": [
+   {
+    "url": "https://www.anthropic.com/research/building-effective-agents",
+    "title": "Building effective AI agents"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "success-criteria-evals",
+  "title": "成功の基準と評価(eval)の作り方",
+  "summary": "LLM を使うアプリケーションの開発は、成功の基準を明確に定め、それに照らして性能を測る評価を設計することから始まります。公式ドキュメントのプロンプトエンジニアリングの概要は、プロンプトを改良する前提として、成功の基準、それを経験的に試す方法、改良する最初のプロンプトの 3 つを挙げています。良い成功の基準は、具体的(Specific)、測定できる(Measurable)、達成できる(Achievable)、用途に関連する(Relevant)ものです。例として「感情の分類がうまくできること」は悪い基準で、「多様な 10,000 件の投稿からなる held-out のテストセットで F1 スコア 0.85 以上」が良い基準とされています。多くの用途では、品質、一貫性、遅延、費用など、複数の観点で評価する必要があります。",
+  "points": [
+   "評価の設計の原則 1: 課題に即す。実際の入力の分布を反映させ、境界事例を忘れない",
+   "境界事例の例: 関係のない、または存在しない入力、長すぎる入力、(チャットでは)質の悪い・有害な・無関係な入力、人でも判断が分かれる曖昧な事例",
+   "原則 2: できる限り自動で採点できる形にする(多肢選択、文字列の一致、コードによる採点、LLM による採点)",
+   "原則 3: 質より量を優先する。人が採点する少数の質の高い問題より、自動採点のやや粗い多数の問題がよい",
+   "テストケースを手で何百件も書くのは難しいため、基本の事例から Claude に追加の事例を作らせられる",
+   "定量的な方法の例として、基準のモデルや以前の版と性能を比べる A/B テストが挙げられている"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "title": "Define success criteria and build evaluations"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
+    "title": "Prompt engineering overview"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "context-editing",
+  "title": "コンテキスト編集(ツール結果の消去)",
+  "summary": "Context editing は、会話の履歴から特定の内容を選んで消す機能で、ベータヘッダー context-management-2025-06-27 で有効にします。サーバー側の戦略は、ツール結果の消去(clear_tool_uses_20250919)と思考ブロックの消去(clear_thinking_20251015)です。編集はプロンプトが Claude に届く前にサーバーで適用され、クライアントは編集前の完全な履歴をそのまま持ち続けます。ツール結果の消去は、コンテキストが設定したしきい値を超えると、古いツール結果から時系列の順に消し、消した結果をそのことを示すプレースホルダーの文に置き換えます。既定では結果だけを消し、clear_tool_inputs を true にするとツール呼び出しの引数も消します。ページは、ほとんどの用途ではサーバー側のコンパクションを長い会話の主な手段とし、この機能は消す内容を細かく制御したい場面に向くとしています。記事 Effective context engineering for AI agents は、ツール結果の消去を、最も安全で手軽なコンパクションの形の 1 つとしています。",
+  "points": [
+   "ベータヘッダーは context-management-2025-06-27",
+   "戦略は clear_tool_uses_20250919(ツール結果)と clear_thinking_20251015(思考ブロック)",
+   "サーバー側でプロンプトが Claude に届く前に適用される。クライアントは完全な履歴を持ち続ける",
+   "ツール結果の消去の既定: trigger は 100,000 入力トークン、keep は 3 回のツール使用。exclude_tools で消さないツールを指定できる",
+   "消した結果はプレースホルダーの文に置き換わる。clear_tool_inputs: true で呼び出しの引数も消す",
+   "ツール結果を消すとキャッシュ済みの接頭辞が無効になる。clear_at_least で 1 回に消す最小のトークン数を決める",
+   "ほとんどの用途ではサーバー側のコンパクションが主な手段"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/context-editing",
+    "title": "Context editing"
+   },
+   {
+    "url": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+    "title": "Effective context engineering for AI agents"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "compaction",
+  "title": "コンパクションと要約で失われる情報",
+  "summary": "Compaction overview によると、コンパクションは会話の古いターンを、Claude がサーバーで書いた要約に置き換える機能で、自前の要約コードは要りません。会話が長くなると応答の質が下がるため、長い会話やエージェントの作業をコンテキストウィンドウに収め、有効なコンテキストを小さく保ちます。方法は、アプリケーションが要求したときに要約する Compaction on demand、入力トークンが設定したしきい値に達したときに API が行う Compaction at a token threshold、自前の要約の 3 つで、使える場面では on demand が勧められています。記事 Effective context engineering for AI agents は、コンパクションを長い作業で一貫性を保つ最初の手段としつつ、何を残し何を捨てるかの選択が要で、削りすぎると後で重要になる細かな文脈を失うと注意しています。Memory tool のページは、長く動くエージェントではコンパクションとメモリを併用し、要約を経ても残すべき情報はメモリで保つよう勧めています。",
+  "points": [
+   "on demand はベータヘッダー compact-2026-09-04 とトップレベルの compaction パラメータを使う。返ってきた compaction ブロックは、signature を含めて返されたとおりに送り返す",
+   "既定の要約が後で必要な内容を落とすときは、instructions で独自の要約プロンプトを書ける(16,384 文字まで)。ドキュメントの例は「合意したすべての実体名とフィールド名を残す」のように、残すものを具体的に指定している",
+   "直近の数ターンを一語一句そのまま Claude に届けたいときは、Compaction that keeps recent turns を使う。要約は古いターンだけを対象にする",
+   "記事の勧め: 要約のプロンプトは複雑なエージェントの記録で調整する。まず再現率を最大にして関係する情報をすべて拾い、そのうえで余分な内容を除いて精度を上げる",
+   "Claude Code のコンパクションは、設計上の決定、未解決のバグ、実装の詳細を残し、重複したツール出力やメッセージを捨て、直近に参照した 5 つのファイルと合わせて作業を続ける",
+   "要約せずに、規則で古いツール結果や思考ブロックを消すのは Context editing",
+   "記事は、要約で会話の流れを保つ方法は、やり取りの多い作業に向くとしている"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/compaction",
+    "title": "Compaction overview"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/compaction-on-demand",
+    "title": "Compaction on demand"
+   },
+   {
+    "url": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+    "title": "Effective context engineering for AI agents"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+    "title": "Memory tool"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "agent-state-persistence",
+  "title": "長時間の作業の状態の保存と再開",
+  "summary": "数時間に及ぶ作業や、複数のコンテキストウィンドウにまたがる作業では、進み具合をコンテキストの外に残し、新しいコンテキストや再開したプロセスが読み戻せるようにします。Prompting best practices は、最初のコンテキストウィンドウで枠組み(テストやセットアップスクリプト)を作り、以後のウィンドウで to-do リストを進める構成を勧め、テストの状態は tests.json のような構造化した形式に、全体の進み具合は progress.txt のような自由記述のメモに残し、git で作業の記録と戻せるチェックポイントを持つよう勧めています。記事 Effective harnesses for long-running agents は、最初のセッションで環境を整え、以後のセッションが 1 回に 1 つの機能を進めて、進み具合のファイルと git のコミットを残す構成により、新しいセッションがすぐに作業の状態を把握できたと報告しています。記事 How we built our multi-agent research system は、エージェントは状態を持ち誤りが積み重なるため、エラーが起きた地点から再開できる仕組みを作り、再試行や定期的なチェックポイントのような決定的な安全策と組み合わせたと述べています。",
+  "points": [
+   "新しいコンテキストでの始め方を具体的に指示する(例: pwd を実行する、progress.txt・tests.json・git のログを読む、新しい機能に取りかかる前に基本の結合テストを通す)",
+   "最近のモデルはローカルのファイルシステムから状態を見つけるのが得意で、コンパクションより新しいコンテキストで始めるほうがよい場合もある",
+   "構造化した状態には JSON などの構造化した形式を使う。記事では、モデルは Markdown より JSON のファイルを不適切に書き換えにくかった",
+   "Memory tool はクライアント側で動き、Claude が要求したファイル操作をアプリケーションが自分の保存先で実行する。ツールを渡すと、作業の前にメモリのディレクトリを確認し、コンテキストがいつリセットされてもよいよう進み具合を記録させる指示が、システムプロンプトに自動で加わる",
+   "Memory tool の複数セッションのパターン: 最初のセッションで進捗のログと機能のチェックリストを作り、以後のセッションは最初にそれを読み、終わる前に進捗のログを更新する",
+   "機能は 1 つずつ進め、エンドツーエンドで確かめてから完了と記す。記事では、Claude が十分に確かめないまま機能を完了と記す失敗が見られた",
+   "一度にやりすぎて途中でコンテキストを使い切ると、次のセッションは中途半端で記録のない状態から推測で始めることになる",
+   "マルチエージェントの調査では、主エージェントが計画をメモリに保存し、コンテキストが 200,000 トークンを超えて切り詰められても計画を失わないようにしている"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   },
+   {
+    "url": "https://www.anthropic.com/research/effective-harnesses-for-long-running-agents",
+    "title": "Effective harnesses for long-running agents"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+    "title": "Memory tool"
+   },
+   {
+    "url": "https://www.anthropic.com/research/multi-agent-research-system",
+    "title": "How we built our multi-agent research system"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "multi-agent-systems",
+  "title": "マルチエージェントシステム(How we built our multi-agent research system)",
+  "summary": "Anthropic の記事「How we built our multi-agent research system」は、Claude の Research 機能の構成と、本番で得た教訓をまとめたものです。主エージェント(lead agent)が調査を計画し、並行して検索するサブエージェントを作る、オーケストレーターとワーカーの構成です。サブエージェントはそれぞれのコンテキストウィンドウで質問の別の面を調べ、最も重要な内容に圧縮して主エージェントに返します。調査が終わると CitationAgent が文書とレポートから引用箇所を特定し、すべての主張を出典に帰属させます。マルチエージェントは主に、問題を解くのに十分なトークンを使えるようにすることで効き、価値が高く、並列化しやすく、1 つのコンテキストウィンドウを超える情報を扱うタスクに向きます。一方、エージェントはチャットの約 4 倍、マルチエージェントは約 15 倍のトークンを使います。本番では、エージェントは状態を持ち誤りが積み重なるため、エラーが起きた地点から再開できる仕組みと、再試行や定期的なチェックポイントのような決定的な安全策を組み合わせています。",
+  "points": [
+   "向かないのは、すべてのエージェントが同じ文脈を共有する必要がある、またはエージェント間の依存が多い領域。多くのコーディングタスクは、調査より本当に並列化できる部分が少ない",
+   "オーケストレーターに委任の仕方を教える: 各サブエージェントには目的、出力の形式、使うツールと情報源の指針、明確な作業の境界を渡す。説明が足りないと、作業の重複や抜けが起きる",
+   "問い合わせの複雑さに応じた労力の規則をプロンプトに入れる(単純な事実確認は 1 エージェントで 3〜10 回のツール呼び出し、比較は 2〜4 のサブエージェント、など)",
+   "ツールが失敗していることをエージェントに知らせて適応させると、うまく働く。エラーのたびに最初からやり直すのは高くつき、利用者を苛立たせる",
+   "長い会話では、完了した作業の段階を要約し、重要な情報を外部のメモリに保存してから次に進む。上限が近づいたら、新しいサブエージェントを起こし、丁寧な引き継ぎで継続性を保つ",
+   "サブエージェントの成果を外部のシステムに保存して軽い参照だけをコーディネーターに渡すと、多段の処理での情報の損失と、大きな出力を会話の履歴に写すトークンの負担を減らせる",
+   "LLM による採点の基準: 事実の正確さ(主張が出典と合うか)、引用の正確さ、網羅性、出典の質、ツールの効率。人によるテストは、自動の評価が見逃す境界事例を見つける",
+   "本番では追跡(tracing)で失敗の原因を診断し、更新は rainbow deployment で新旧の版を並行させて段階的に移し、動いているエージェントを壊さないようにする"
+  ],
+  "sources": [
+   {
+    "url": "https://www.anthropic.com/research/multi-agent-research-system",
+    "title": "How we built our multi-agent research system"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "claude-code-subagents",
+  "title": "サブエージェントによるコンテキストの分離(Claude Code と Agent SDK)",
+  "summary": "Claude Code のサブエージェントは、特定の種類の作業を受け持つ専用の AI アシスタントで、それぞれ自分のコンテキストウィンドウで、専用のシステムプロンプト、使えるツールの範囲、独立した権限を持って動きます。検索結果、ログ、ファイルの中身でメインの会話があふれるような作業を任せると、サブエージェントは自分のコンテキストで作業し、要約だけを返します。Claude は、変更を加えずにコードベースを検索・理解するときに組み込みの Explore に任せ、探索の結果をメインの会話のコンテキストに入れずに済ませます。Agent SDK でも同じで、サブエージェントの途中のツール呼び出しと結果はサブエージェントの中にとどまり、親には最後のメッセージだけが返ります。サブエージェント(フォークを除く)は新しい独立したコンテキストで始まり、メインの会話の履歴も既に読んだファイルも見えないため、Claude が作業を要約した委任のメッセージを書き、サブエージェントはそこから作業します。",
+  "points": [
+   "サブエージェントが向くのは、メインに要らない冗長な出力が出る作業、ツールや権限を制限したい作業、自己完結して要約を返せる作業",
+   "メインの会話が向くのは、やり取りの多い作業、計画・実装・テストのように段階が多くの文脈を共有する作業、小さな変更、遅延が重要な場面",
+   "独立した調査は、複数のサブエージェントで並行して進め、Claude が結果を統合できる(例: 認証、データベース、API のモジュールを並行して調べる)。調査の道筋が互いに依存しないときに最もよく働く",
+   "多くのサブエージェントが詳しい結果を返すと、メインのコンテキストを大きく消費しうる。ベストプラクティスは、短い要約を返させるよう勧めている",
+   "費用は主にトークン。新しいサブエージェントは会話が既に持つ文脈を集め直すため、かえって遅くなることもある。既定では同じモデル(またはより小さいモデル)が同じ作業をするので、答えが賢くなるわけではない",
+   "定義の必須フィールドは name と description。tools で使えるツールを制限でき(省くと使えるツールをすべて引き継ぐ)、model で Haiku のような安いモデルに回せる",
+   "Agent SDK では query() の agents パラメータでプログラムから定義する方法が推奨されている。Claude は Agent ツールでサブエージェントを呼び出す"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/sub-agents",
+    "title": "Create custom subagents"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/agent-sdk/subagents",
+    "title": "Subagents in the SDK"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "claude-code-context",
+  "title": "Claude Code のコンテキストの管理(/clear・/compact・読み直し)",
+  "summary": "Claude Code では、リクエストのたびに会話全体が送られるため、関係のない作業をいくつも抱えたセッションは、次の作業の各ターンでそれまでの作業の内容も読み直すことになります。公式のベストプラクティスは、関係のない作業の間には /clear を使うよう勧めています。/clear は空のコンテキストで新しい会話を始めるコマンドです。同じ会話を続けながらコンテキストを空けたいときは、会話をここまでの要約に置き換える /compact を使い、要約で残す内容を指示できます。2 回修正しても直らないときは、3 回目の修正を重ねるより、/clear して学んだことを織り込んだ新しいプロンプトを書くほうがよいとしています。コンパクションの後は、プロジェクト直下の CLAUDE.md がディスクから読み込み直され、読んだ・編集したファイルは最近変更されたものから最大 5 つまで読み直されますが、会話の中身は要約されます。",
+  "points": [
+   "/clear [name]: 空のコンテキストで新しい会話を始める。別名は /reset、/new。前の会話は /resume で再開できる",
+   "/compact [instructions]: ここまでの会話を要約してコンテキストを空ける。要約の焦点を指示できる。長いセッションでは、会話全体を読んで要約するため、それ自体が大きなリクエストになる",
+   "/context で現在のコンテキストの使用状況を確認できる",
+   "Esc で Claude の動作を途中で止め、/rewind で以前の時点にコードや会話を戻せる。チェックポイントは、会話の外で手で変えたファイルを通常は記録しない",
+   "Edit ツールは、最後に読んだ後でディスク上の内容が変わったファイルでも、old_string が今の内容に一意に一致すれば編集でき、結果にそのことが示される。Claude は周りの内容に依存する編集の前に読み直す。old_string が古いときは編集の前にファイルを読み直す",
+   "ベストプラクティスは、auto モードで会話中に伝えた制約の一文はコンパクションで失われうるので、守らせたいことは deny ルールに書くよう勧めている"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/commands",
+    "title": "Commands"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/context-window",
+    "title": "Explore the context window"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/tools-reference",
+    "title": "Tools reference"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "context-handoff",
+  "title": "コンテキストの引き継ぎ(新しいコンテキスト・サブエージェント・人)",
+  "summary": "作業を別のコンテキストや人に渡すときは、受け手が元の会話を見られないことを前提に、続きに必要な状態を渡します。記事 Effective context engineering for AI agents は、システムプロンプトの典型的な失敗の 1 つに、共有していない文脈を前提にすることを挙げ、コンテキストには最小限で情報価値の高いトークンを選ぶよう勧めています。Claude Code のサブエージェントは、フォークを除き新しいコンテキストで始まり、メインの会話の履歴も既に読んだファイルも見えないため、Claude が作業を要約した委任のメッセージを書きます。記事 How we built our multi-agent research system は、委任には目的、出力の形式、ツールと情報源の指針、作業の境界を含めるよう勧め、コンテキストの上限が近づいたときは新しいサブエージェントを起こし、丁寧な引き継ぎで継続性を保つとしています。記事 Building effective agents によると、エージェントは追加の情報や判断を求めて人に戻ることがあり、チェックポイントや障害に当たったときには人のフィードバックを待てます。",
+  "points": [
+   "引き継ぐのは、受け手が持っていない文脈。共有していると思い込まない",
+   "委任の説明が足りないと、作業の重複、抜け、取り違えが起きる。記事では、短い指示だけを受けた複数のサブエージェントが同じ調査を重複して行った",
+   "要約で残すものの例: Claude Code のコンパクションは、設計上の決定、未解決のバグ、実装の詳細を残し、重複したツール出力を捨てる",
+   "サブエージェントは数万トークン以上を使って調べても、返すのは要約(多くは 1,000〜2,000 トークン)だけで、詳しい探索の文脈は中にとどめる",
+   "API のコンパクションでは、既定の要約が後で必要な内容を落とすとき、残すものを指定した独自の要約プロンプトを書ける",
+   "支払いや口座番号を扱うエージェント向けに Prompting best practices が勧める指示は、確認を行ったと言うのは、そのセッションのツールの結果が行動の前にそれを示したときだけにするよう求めている"
+  ],
+  "sources": [
+   {
+    "url": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+    "title": "Effective context engineering for AI agents"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/sub-agents",
+    "title": "Create custom subagents"
+   },
+   {
+    "url": "https://www.anthropic.com/research/multi-agent-research-system",
+    "title": "How we built our multi-agent research system"
+   },
+   {
+    "url": "https://www.anthropic.com/research/building-effective-agents",
+    "title": "Building effective agents"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "human-review-and-monitoring",
+  "title": "人による確認と本番の監視(抜き取りと較正)",
+  "summary": "記事 Demystifying evals for AI agents は、エージェントの性能を知るには、自動の評価に加えて、本番の監視、利用者のフィードバック、A/B テスト、会話記録を人が読む確認、人による体系的な評価を組み合わせるよう勧めています。自動の評価は実際の使われ方と合わないと誤った安心感を生みえ、本番の監視は問題が利用者に届いてから気付く後追いになり、利用者のフィードバックはまばらで自己選択的で、深刻な問題に偏ります。会話記録を人が読むと、自動の検査が見逃す細かな品質の問題を見つけられますが、時間がかかり規模を広げにくい方法です。記事は、フィードバックを絶えず振り分け、会話記録を毎週抜き出して読むことを勧め、人による体系的な評価は LLM の採点者の較正や主観的な出力の評価に充てるとしています。公式ドキュメント(Define success criteria and build evaluations)は、評価を実際のタスクの分布に合わせて境界事例も含めるよう勧め、人による採点は最も柔軟で質が高い一方、遅く高価だとしています。",
+  "points": [
+   "人の採点の方法の例: 専門家のレビュー、クラウドソーシングによる判定、抜き取り(spot-check sampling)、A/B テスト、評価者間の一致",
+   "モデルによる採点は柔軟で規模を広げられるが、非決定的で、精度のために人の採点者との較正が必要。LLM の採点者は人の専門家と密に較正する",
+   "公式ドキュメントは、LLM による採点は、まず信頼性を確かめてから規模を広げるよう勧めている",
+   "記事によると、仕組みが安定すれば、人によるレビューはときどき行えば足りる",
+   "多くの用途では、品質、一貫性、遅延、費用など、複数の観点での評価が必要",
+   "境界事例の例: 関係のない、または存在しない入力、長すぎる入力、人でも判断が分かれる曖昧な事例",
+   "利用者に問題を見つけてもらうことに主に頼ると、利用者に悪影響が出うる"
+  ],
+  "sources": [
+   {
+    "url": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
+    "title": "Demystifying evals for AI agents"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "title": "Define success criteria and build evaluations"
+   }
+  ],
+  "checked": "2026-11-21"
+ }
+]
