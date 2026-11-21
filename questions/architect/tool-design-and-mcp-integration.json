@@ -31,10 +31,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールの説明は、モデルがツールを選ぶときの主な情報源です。似た機能のツールがあるときは、境界が分かるように説明を書きます。",
+  "explanation": "正解は a です。公式ドキュメント(Define tools)は、極めて詳しい説明を書くことを、ツールの性能を左右する「群を抜いて最も重要」な要素とし、何をするか、いつ使うべきか(使うべきでないか)、各パラメータの意味、返さない情報などの注意点を書くよう勧めています。この場面の説明は 1 行ずつしかなく、注文の質問でどちらを使うかの手がかりがないので、説明の書き足しが最初の改善に当たります。\n\n見分け方: 記事 Effective context engineering for AI agents は、プロンプトに複雑で壊れやすい規則を書き込むと、もろくなり保守の手間が増えると述べています(c)。統合(b)は Define tools も勧める手法ですが、この場面の原因である説明の不足には直接手を付けません。検証用のエージェント(d)は、原因を残したまま工程を増やします。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents",
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+   "https://www.anthropic.com/research/writing-tools-for-agents",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "define-tools",
+   "writing-tools-for-agents"
   ]
  },
  {
@@ -69,10 +74,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "MCP ツールは isError で失敗を伝えます。一時的な障害、検証エラー、業務上の制約、権限の問題を区別し、再試行できるかどうかを含めると、エージェントの回復行動が適切になります。",
+  "explanation": "正解は a です。Messages API のドキュメント(Handle tool calls)は、ツールが失敗したときも tool_result に is_error: true を付けて返し、\"failed\" のような汎用の文言ではなく、何が起きたかと次に何を試すべきかを書くよう勧めています。MCP の仕様も、ツール実行エラーは isError: true を付けた結果で返し、モデルが自分で修正できる行動につながる内容を含めるとしています。原因が分からず再試行を繰り返すこの場面では、種類と再試行の可否を返すのが当てはまります(どの項目で構造化するかは公式資料に定めがなく、設計の判断です)。\n\n見分け方: 空の結果を成功として返す(b)と、「該当なし」と区別できません。セッションの終了(c)は、回復できる失敗まで打ち切ります。ドキュメントはループの再試行にも上限を設けるよう勧めています。詳細を伏せて制限なく再試行する(d)と、入力の誤りのように直らない失敗で応答が返らなくなります。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents",
-   "https://modelcontextprotocol.io/docs/learn/architecture"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+   "https://www.anthropic.com/research/writing-tools-for-agents"
+  ],
+  "topics": [
+   "tool-error-responses",
+   "mcp-tools-spec"
   ]
  },
  {
@@ -107,10 +117,16 @@
   "answer": [
    "a"
   ],
-  "explanation": "エージェントに与えるツールは、役割に合わせて少数に絞ります。ツールが多すぎたり、役割が重なっていたりすると、選択の精度が下がります。公式の資料は具体的な上限の数を示していませんが、「ツールが多いほど良い結果になるわけではない」と述べています。",
+  "explanation": "正解は a です。記事 Writing effective tools for agents は、ツールは多いほど良い結果になるわけではなく、多すぎるツールや重なるツールはエージェントを効率的な進め方からそらすことがあると述べています。記事 How we built our multi-agent research system も、各サブエージェントには使うツールと情報源の指針と、明確な作業の境界を渡すとしています。統合の役割に Web 検索は要らないので、役割に必要なツールだけに絞るのが当てはまります。\n\n見分け方: ツールを増やす(b)のは、記事の言う「多いほど良いわけではない」に反します。全ツールを与えてプロンプトで使い分ける(c)と、この場面のように役割外のツールが使われる余地が残ります。統合のサブエージェントの廃止(d)は、出典付きの包括的なレポートを作るために結果を統合する役割を失わせます。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents",
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://www.anthropic.com/research/writing-tools-for-agents",
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "writing-tools-for-agents",
+   "multi-agent-systems",
+   "context-engineering"
   ]
  },
  {
@@ -145,9 +161,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "Grep はファイルの内容を検索し、Glob はファイルのパスをパターンで探します(例: **/*.test.tsx)。目的に応じて使い分けます。",
+  "explanation": "正解は a です。Claude Code のツールのリファレンス(Tools reference)によると、Grep はファイルの中身をパターンで検索するツールで、Glob がファイル名でファイルを探すのに対し、Grep はファイルの中の行を見つけます。ripgrep を基にしており、既定では一致したファイルのパスを返します。calculateTax を呼んでいる箇所はファイルの中身にあるので、Grep が当てはまります。\n\n見分け方: Glob(b)は **/*.ts のような名前のパターンで探すツールで、中身は検索しません。Edit(c)は既存のファイルの文字列を置き換え、Write(d)はファイルを作成または上書きするツールです。なお Claude Code は macOS や Linux では Grep と Glob を既定のツールから外し、Bash の grep と find で検索しますが、Agent SDK のオプションで名前を挙げれば使えます。",
   "refs": [
+   "https://code.claude.com/docs/en/tools-reference",
    "https://code.claude.com/docs/en/agent-sdk/overview"
+  ],
+  "topics": [
+   "builtin-tools"
   ]
  },
  {
@@ -182,9 +202,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "プロジェクトスコープの MCP 設定(.mcp.json)はバージョン管理で共有します。認証情報は環境変数の展開で渡します。個人的に試すサーバーは、ユーザースコープに設定します。",
+  "explanation": "正解は a です。Claude Code の MCP のドキュメントによると、project スコープのサーバーはプロジェクトのルートの .mcp.json に保存し、バージョン管理でチームと共有します。.mcp.json は環境変数の展開に対応しており、command、args、env、url、headers の値に ${VAR} や ${VAR:-default} の形で書け、設定を共有しながら API キーのような値を環境ごとに渡せます。値をファイルに書かずに共有の設定を作れるので、この場面に当てはまります。\n\n見分け方: 値を .mcp.json に書いてコミットする(b)と、秘密の値がリポジトリの履歴に入ります。CLAUDE.md(c)は MCP サーバーの接続を設定する場所ではありません。チャットでの共有(d)は漏えいの危険を広げます。また、リモートサーバーの url と headers では、Claude Code 自身の認証情報などに当たる変数名は空として読まれます。",
   "refs": [
-   "https://code.claude.com/docs/en/mcp"
+   "https://code.claude.com/docs/en/mcp",
+   "https://code.claude.com/docs/en/agent-sdk/mcp"
+  ],
+  "topics": [
+   "agent-credentials",
+   "claude-code-mcp"
   ]
  },
  {
@@ -219,10 +244,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "MCP ツールの説明には、機能と出力、適した場面を詳しく書きます。課題管理のような標準的な連携は既存の MCP サーバーを使い、自作のサーバーはチーム固有の業務に限ると保守が楽になります。",
+  "explanation": "正解は a です。公式ドキュメント(Define tools)は、ツールが何をするか、いつ使うべきか(使うべきでないか)、何を返すかを詳しく説明に書くことを最も重要な要素としています。記事 How we built our multi-agent research system も、MCP サーバーのツールは説明の質がまちまちで、悪い説明はエージェントをまったく誤った道に進ませると述べ、汎用のツールより専門のツールを優先するといった指針をエージェントに与えたとしています。シンボルの参照関係を返すという利点が説明から読み取れないこの場面では、説明に違いを書くのが当てはまります。\n\n見分け方: Grep を使えなくする(b)と、単純な文字列の検索まで不便になり、MCP ツールを選ぶ理由も伝わりません。名前だけを変える(c)のでは、何が得意かは伝わりません。サーバーを増やす(d)のは、選択の問題と関係がありません。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents",
-   "https://code.claude.com/docs/en/mcp"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://www.anthropic.com/research/writing-tools-for-agents"
+  ],
+  "topics": [
+   "define-tools",
+   "multi-agent-systems"
   ]
  },
  {
@@ -257,10 +287,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "自動化されたエージェントに渡す認証情報は、最小権限で、対象を限定し、シークレット管理の仕組みから注入します。",
+  "explanation": "正解は a です。Claude Code の GitHub Actions のドキュメントは、API キーや OAuth トークンを直接リポジトリにコミットせず、GitHub Secrets に保存してワークフローから参照するよう警告し、ワークフローには必要な権限だけを与えるよう勧めています。環境変数のドキュメントも、サブプロセスから認証情報を取り除く設定でも GITHUB_TOKEN は残るため、GitHub Actions のジョブには必要最小限の permissions を与えるよう勧めています。コメントの投稿だけが必要なこの場面では、対象と権限を絞ったトークンをシークレットから渡すのが当てはまります。\n\n見分け方: 組織全体の管理者権限(b)は、必要な権限だけを与える勧めに反し、漏えいや誤操作の影響を広げます。ワークフローのファイルへの直書き(c)は、コミットしないという警告に反します。保護設定を無効にする(d)と、保護そのものが失われます。",
   "refs": [
-   "https://code.claude.com/docs/en/mcp",
-   "https://code.claude.com/docs/en/headless"
+   "https://code.claude.com/docs/en/github-actions",
+   "https://code.claude.com/docs/en/env-vars",
+   "https://code.claude.com/docs/en/agent-sdk/secure-deployment"
+  ],
+  "topics": [
+   "agent-credentials"
   ]
  },
  {
@@ -295,10 +329,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "tool_choice には、\"auto\"(呼ぶかどうかを任せる)、\"any\"(いずれかを必ず呼ぶ)、特定のツールの指定、\"none\" があります。ただし、一部の新しいモデルでは \"any\" と特定ツールの強制指定が使えません。その場合は \"auto\" と strict: true を組み合わせるか、構造化出力を使います。利用するモデルの対応状況を確認してください。",
+  "explanation": "正解は a です。公式ドキュメント(Define tools)によると、tool_choice は auto(既定。呼ぶかどうかを Claude が決める)、any(いずれかを必ず使う)、tool(指定したツールを必ず使う)、none(使わない)の 4 つです。種別が不明でもいずれかの抽出ツールを呼ばせたいこの場面では、any が従来の方法に当たります。ただし Claude Opus 5.5、Claude Sonnet 5.5、Claude Fable 5.2 などでは any と tool が 400 エラーになり、その場合は auto と strict tool use、または構造化出力を使うよう案内されています。\n\n見分け方: auto のままでは、ツールを呼ばずに答える選択が残ります。説明を短くする(b)のは、詳しい説明を勧めるドキュメントと逆です。none(c)はツールの使用を止めます。extract_invoice の固定(d)では、契約書まで請求書として抽出されます。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use",
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "define-tools",
+   "strict-tool-use"
   ]
  },
  {
@@ -333,9 +372,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "エージェントには、役割に必要なツールだけを与えます。役割の外のツールは、誤用の原因になります。",
+  "explanation": "正解は a です。記事 Writing effective tools for agents は、ツールは多いほど良い結果になるわけではなく、多すぎるツールや機能の重なるツールはエージェントを効率的な進め方からそらし、どれを使うかで混乱させると述べています。記事 Effective context engineering for AI agents も、よくある失敗として、機能を抱えすぎたり、どのツールを使うかの判断を曖昧にしたりする膨らんだツール群を挙げています。サポートと関係のない在庫や人事のツールを足したこの場面の誤りは、これに当たると考えられます。\n\n見分け方: 公式資料が挙げる原因は、役割に合わないツールや重なるツールです。MCP サーバーの数の上限(b)は、選択の誤りの説明になりません。max_tokens(c)は出力の長さの上限で、ツールの選択には関係しません。ツール名(d)は 128 文字まで付けられ、長さが選択の誤りの主因とは言えません。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://www.anthropic.com/research/writing-tools-for-agents",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools"
+  ],
+  "topics": [
+   "writing-tools-for-agents",
+   "context-engineering"
   ]
  },
  {
@@ -370,10 +415,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "アクセスの失敗と、有効な空の結果は、必ず区別します。前者は再試行や引き継ぎ、後者は顧客への確認につながります。",
+  "explanation": "正解は a です。Messages API のドキュメント(Handle tool calls)は、ツールが失敗したときは tool_result に is_error: true を付け、何が起きたかを書いて返すよう定めています。MCP の仕様も、API の失敗などをツール実行エラーとして isError: true で返すとしています。この場面のデータベースへの接続の失敗は、こうしたツールの失敗に当たります。一方、該当する注文がないのは照会の正常な結果なので、成功として返して区別するのが当てはまります(区別の仕方そのものは公式資料に書かれておらず、上の原則の当てはめです)。\n\n見分け方: どちらもエラーにする(b)と、正常な「該当なし」まで障害として扱われます。どちらも空のまま(c)では、エージェントが障害を「注文なし」と顧客に伝える状況が続きます。架空の注文を返す(d)と、事実でない情報が顧客に伝わります。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents",
-   "https://modelcontextprotocol.io/docs/learn/architecture"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+   "https://www.anthropic.com/research/writing-tools-for-agents"
+  ],
+  "topics": [
+   "tool-error-responses"
   ]
  },
  {
@@ -408,9 +457,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "エラーは、一時的な障害、入力の誤り、業務上の制約、権限の問題に分けます。業務上の制約は、再試行できないことと、顧客向けの説明を含めます。",
+  "explanation": "正解は a です。MCP の仕様は、業務ロジックのエラーを、API の失敗や入力の検証エラーと並ぶツール実行エラーとし、モデルが自分で修正するための行動につながる内容を返すとしています。Messages API のドキュメント(Handle tool calls)も、エラーの文面に何が起きたかと次に何をすべきかを書けば、Claude は推測せずに回復や方針の変更ができると述べています。返品期限の超過は時間をおいても変わらないので、再試行では直らないことと、顧客に説明できる理由を返すのが当てはまります。\n\n見分け方: 一時的な障害として扱う(b)と、結果の変わらない再試行が繰り返されます。理由を付けない(c)と、エージェントは顧客に事情を説明できません。成功として返す(d)のは、事実と異なる結果です。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls"
+  ],
+  "topics": [
+   "tool-error-responses",
+   "mcp-tools-spec"
   ]
  },
  {
@@ -445,10 +499,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "一時的な障害は、発生した場所の近くで回復させます。解決できなかったものだけを、何を試したかと合わせて上位に伝えます。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system は、ツールが失敗していることをエージェントに知らせて適応させるとうまく働くとし、それを再試行の処理(retry logic)や定期的なチェックポイントといった決定的な安全策と組み合わせていると述べています。Messages API のドキュメントも、失敗は is_error: true で、何が起きたかと次に試すべきことを添えて返すよう勧めています。タイムアウトが再試行で直ることの多いこの場面では、ツールの側で数回再試行し、それでも失敗したときだけ経緯を添えて伝えるのが当てはまります。\n\n見分け方: 1 回の失敗で人に引き継ぐ(b)と、その場で直る失敗まで担当者に回ります。空の結果で隠す(c)と、「該当なし」と区別できません。会話のやり直し(d)について、同じ記事は、最初からのやり直しは高くつき利用者を苛立たせるとしています。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents",
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls"
+  ],
+  "topics": [
+   "tool-error-responses",
+   "multi-agent-systems"
   ]
  },
  {
@@ -483,10 +541,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールの入力スキーマは、モデルが正しい値を作りやすい形にします。選択肢が決まっているものは enum にし、各引数に説明を付けます。",
+  "explanation": "正解は a です。記事 Writing effective tools for agents は、期待する入力を明確に説明し、厳密なデータモデルで強制して曖昧さをなくすよう勧めています。記事 Building effective agents も、間違えにくいように引数を変える(poka-yoke)よう勧めています。公式ドキュメント(Define tools)の例のように、enum で取りうる値を決められます。集計できる値が要るこの場面では、理由を enum にし、当てはまらないときの「その他」と補足の文字列を用意するのが当てはまります。\n\n見分け方: 自由記述のまま(b)では、集計できない値が入り続けます。引数の削除(c)は、必要な情報を失います。数値の ID だけ(d)について、記事 Writing effective tools for agents は、エージェントは意味の分からない識別子より自然な言葉の名前をはるかにうまく扱うと述べています。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+   "https://www.anthropic.com/research/writing-tools-for-agents",
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools"
+  ],
+  "topics": [
+   "define-tools",
+   "building-effective-agents"
   ]
  },
  {
@@ -521,10 +584,16 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールの選択が偏るときは、ツールの説明だけでなく、システムプロンプトの文言も見直します。キーワードに反応する規則は、誤った結び付きを生みます。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、プロンプトに複雑で壊れやすい規則を書き込んでエージェントの振る舞いを細かく決めようとすると、もろくなり保守の手間が増えると述べています。記事 How we built our multi-agent research system も、固い規則より良い指針を与える方針をとっています。ツールの説明を整えても、システムプロンプトが「注文」という語で照会を必ず行わせていれば、その規則に沿って lookup_order が呼ばれると考えられます。\n\n見分け方: 説明の長さ(b)については、公式ドキュメント(Define tools)はむしろ詳しい説明を勧めています。接続の不安定さ(c)は、特定の語に結び付いた選択の偏りを説明しません。Claude は 1 回の応答で複数のツールを呼べ、並列のツール呼び出しは既定で有効なので、d は誤りです。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use"
+  ],
+  "topics": [
+   "context-engineering",
+   "define-tools"
   ]
  },
  {
@@ -559,9 +628,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "説明や名前が似ているツールは、誤った振り分けの原因になります。名前の変更と、説明の書き分けで、重なりをなくします。",
+  "explanation": "正解は a です。記事 Writing effective tools for agents は、ツールの機能が重なっていたり目的が曖昧だったりすると、エージェントはどれを使うかで混乱すると述べ、作るツールにはそれぞれ明確で異なる目的を持たせるよう勧めています。記事 Effective context engineering for AI agents も、人間の技術者がどのツールを使うべきか断言できないなら、エージェントにそれ以上を期待できないとしています。get_order と get_order_details の違いが分からないこの場面では、名前と説明で役割を分けるか、必要なら 1 つにまとめるのが当てはまります。\n\n見分け方: 両方を毎回呼ばせる(b)と、不要な呼び出しが増え、コンテキストも消費します。取り違えをエラーにする(c)だけでは、取り違える原因が残ります。ツールを増やす(d)と、選択はさらに難しくなります。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://www.anthropic.com/research/writing-tools-for-agents",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools"
+  ],
+  "topics": [
+   "writing-tools-for-agents",
+   "define-tools"
   ]
  },
  {
@@ -596,9 +671,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "似た説明のツールは、誤った振り分けの原因です。名前と説明で、役割の境界を示します。",
+  "explanation": "正解は a です。記事 Writing effective tools for agents は、機能が重なるツールや目的の曖昧なツールはエージェントを混乱させるとし、ツールの説明は新しく入ったチームメンバーに説明するつもりで、暗黙の前提を明示して書くよう勧めています。記事 Building effective agents も、良いツールの定義には他のツールとの明確な境界が含まれ、似たツールが多いときに特に重要だとしています。説明がほぼ同じこの場面では、名前と説明で対象(Web ページか文書か)と目的を書き分けるのが当てはまります。\n\n見分け方: 両方のサブエージェントに両方を与える(b)と、重なりが広がります。説明の削除(c)は振り分けの手がかりをなくし、無作為の振り分け(d)は誤りを増やすだけです。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://www.anthropic.com/research/writing-tools-for-agents",
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "writing-tools-for-agents",
+   "building-effective-agents"
   ]
  },
  {
@@ -633,9 +714,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "MCP のリソースは、読み取り用のデータを公開する仕組みです。目録やスキーマを公開すると、エージェントが全体像を把握できます。",
+  "explanation": "正解は a です。MCP の仕様(Resources)によると、リソースは、ファイル、データベースのスキーマ、アプリケーション固有の情報など、言語モデルの文脈になるデータをサーバーが共有する仕組みで、URI で識別されます。サーバーの概念の説明でも、リソースは文脈のための読み取り専用のデータ源で、文書の取得や知識ベースへのアクセスに使うとされています。文書庫の目録をリソースとして公開すれば、この場面のエージェントは手探りの検索を重ねる前に全体像を参照できます。\n\n見分け方: 呼び出しを 1 回に制限する(b)と、必要な検索までできなくなります。全文をシステムプロンプトに入れる(c)のは、記事 Effective context engineering for AI agents が紹介する、軽い識別子を持たせて必要なときに読み込む方法と逆向きです。MCP のプロンプト(d)は、やり取りを組み立てる再利用可能なひな形で、資料を置く場所ではありません。",
   "refs": [
-   "https://modelcontextprotocol.io/docs/learn/architecture"
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/resources",
+   "https://modelcontextprotocol.io/docs/learn/server-concepts",
+   "https://modelcontextprotocol.io/docs/learn/architecture",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "mcp-architecture"
   ]
  },
  {
@@ -670,9 +757,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "汎用のツールは、誤用されやすくなります。入力を検証して、目的に合う範囲に制限します。",
+  "explanation": "正解は a です。記事 Building effective agents は、間違えにくいように引数を変える(poka-yoke)よう勧め、相対パスの誤りを絶対パスの必須化で防いだ例を挙げています。MCP の仕様も、サーバーはツールのすべての入力を検証し、適切なアクセス制御を実装しなければならない(MUST)としています。任意の URL を受け付けて関係のないサイトまで取得しているこの場面では、受け付ける範囲を用途に合わせて絞り、範囲外は理由を付けて拒否するのが当てはまります。\n\n見分け方: 現状のまま(b)では誤用が続きます。説明に注意書きを足す(c)のは、記事 Writing effective tools for agents が勧める「期待する入力を説明し、厳密なデータモデルで強制する」のうち説明だけで、強制力がありません。ツールの廃止(d)は、必要な読み込みもできなくします。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+   "https://www.anthropic.com/research/writing-tools-for-agents"
+  ],
+  "topics": [
+   "building-effective-agents",
+   "mcp-tools-spec"
   ]
  },
  {
@@ -707,10 +800,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "段階の間で受け渡すデータは、共通の構造にします。内容とメタデータを分けておくと、帰属が保たれます。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system は、オーケストレーターが作業を割り振るとき、各サブエージェントに目的、出力の形式、使うツールと情報源の指針、明確な作業の境界を渡すとしています。公式ドキュメント(Structured outputs)によると、JSON outputs を使えば応答を指定した JSON Schema に従わせ、必須フィールドと型を保証できます。サブエージェントごとに項目名や日付の表記が違うこの場面では、主張、出典、日付などの共通のスキーマを定めるのが当てはまります。\n\n見分け方: 統合の段階で推測して対応付ける(b)のは、この場面の誤りの原因をそのまま残します。形式を各サブエージェントに任せる(c)のは、出力の形式を渡すという記事の方針に反し、現状のままです。出典の省略(d)は、出典付きのレポートという要件を満たせなくなります。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "multi-agent-systems",
+   "structured-outputs"
   ]
  },
  {
@@ -745,9 +842,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "Edit は、一意に一致する文字列を置き換えます。一致が複数ある場合は、範囲を広げて特定するか、Read と Write で確実に書き換えます。",
+  "explanation": "正解は a です。Claude Code のツールのリファレンス(Tools reference)によると、Edit は old_string を new_string に置き換える完全一致の置換で、old_string はファイルにちょうど 1 回だけ現れる必要があります。複数あるときは、前後を含めた長い文字列で 1 か所に絞るか、replace_all: true ですべてを置き換えます。この場面では、前後の行を含めて対象を一意にするのが、リファレンスの示す対処に当たります。\n\n見分け方: 同じ Edit の繰り返し(b)は同じ理由で失敗します。ファイルの削除(c)は破壊的で、編集の放棄(d)では作業が進みません。なお a の後半の「Read で読んで Write で書き直す」について、リファレンスは既存のファイルの部分的な変更には Write ではなく Edit を使うとしており、示している代わりの手段は replace_all です。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview"
+   "https://code.claude.com/docs/en/tools-reference"
+  ],
+  "topics": [
+   "builtin-tools"
   ]
  },
  {
@@ -782,9 +882,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "Glob は、**/*.test.tsx のようなパターンでファイルを探します。中身の検索には Grep を使います。",
+  "explanation": "正解は a です。Claude Code のツールのリファレンス(Tools reference)によると、Glob はファイル名のパターンでファイルを探すツールで、** による再帰的な一致に対応します(例: **/*.js はあらゆる深さの .js ファイル)。結果は更新日時の順に並び、100 件で打ち切られます。名前が .test.tsx で終わるファイルの一覧は、**/*.test.tsx のパターンで Glob に探させるのが当てはまります。\n\n見分け方: Grep(b)はファイルの中身の行をパターンで検索するツールです。Read(c)は指定したファイルの内容を読むツールで、ファイルを探しません。Edit(d)はファイルの文字列を置き換えるツールです。なお Glob は既定では .gitignore を考慮せずに無視されたファイルも見つけ、Grep は .gitignore に従います。",
   "refs": [
+   "https://code.claude.com/docs/en/tools-reference",
    "https://code.claude.com/docs/en/agent-sdk/overview"
+  ],
+  "topics": [
+   "builtin-tools"
   ]
  },
  {
@@ -819,10 +923,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "テストやビルドの実行には、Bash を使います。実行できるコマンドは、権限の設定で制限できます。",
+  "explanation": "正解は a です。Claude Code のツールのリファレンス(Tools reference)によると、Bash は利用者の環境でシェルコマンドを実行するツールで、各コマンドを別のプロセスで実行します。テストの実行はコマンドの実行なので、Bash が当てはまります。権限のドキュメントによると、Bash(npm run *) のようなルールで、実行を許すコマンドをパターンで指定でき、権限ルールはモデルではなく Claude Code が強制します。\n\n見分け方: Glob(b)はファイル名のパターンでファイルを探すツール、Read(c)はファイルの内容を読むツール、Write(d)はファイルを作成または上書きするツールです。いずれもコマンドを実行できません。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview",
+   "https://code.claude.com/docs/en/tools-reference",
    "https://code.claude.com/docs/en/permissions"
+  ],
+  "topics": [
+   "builtin-tools",
+   "claude-code-permissions"
   ]
  },
  {
@@ -857,9 +965,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "チームで使うサーバーはプロジェクトスコープに、個人的なものや実験的なものはユーザースコープに置きます。",
+  "explanation": "正解は a です。Claude Code の MCP のドキュメントによると、MCP サーバーの設定のスコープは 3 つです。user スコープは ~/.claude.json に保存され、自分のすべてのプロジェクトで読み込まれ、チームには共有されません。project スコープはプロジェクトのルートの .mcp.json に保存され、バージョン管理でチームと共有されます。選択肢の中で、リポジトリに入れずに自分だけで使えるのは a です。ただしドキュメントは、実験的な設定の置き場所として、既定の local スコープ(追加したプロジェクトだけで読み込まれる自分専用の設定)を挙げています。\n\n見分け方: .mcp.json(b)はチームに共有されます。CLAUDE.md(c)と package.json(d)は、MCP サーバーの接続を設定する場所ではありません。",
   "refs": [
    "https://code.claude.com/docs/en/mcp"
+  ],
+  "topics": [
+   "claude-code-mcp"
   ]
  },
  {
@@ -894,9 +1005,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "標準的なサービスには、既存の MCP サーバーがあることが多く、それを使うのが早道です。導入の際は、提供元の信頼性を確認します。",
+  "explanation": "正解は a です。Claude Code の MCP のドキュメントは、審査済みのコネクタを Anthropic Directory で探せ、そこにあるリモートサーバーは claude mcp add で追加できると案内し、自作する場合の手引きは別に示しています。あわせて、接続する前に各サーバーを信頼できるか確かめるよう警告しています。一般的な機能で足りるこの場面では、既存のサーバーを確かめて使い、自作はチーム固有の業務に絞るのが当てはまります(自作の範囲の線引きは公式資料の記述ではなく、一般的な判断です)。\n\n見分け方: 必ず自作する(b)と、既存のサーバーで足りる部分まで作って保守することになります。連携の断念(c)は不要です。API の全エンドポイントをツールに写す(d)について、記事 Writing effective tools for agents は、既存の機能や API のエンドポイントを包むだけのツールをよくある誤りとしています。",
   "refs": [
-   "https://code.claude.com/docs/en/mcp"
+   "https://code.claude.com/docs/en/mcp",
+   "https://www.anthropic.com/research/writing-tools-for-agents"
+  ],
+  "topics": [
+   "claude-code-mcp",
+   "writing-tools-for-agents"
   ]
  },
  {
@@ -931,9 +1047,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "リソースは、エージェントが参照できるデータです。スキーマ、目録、文書の階層などを公開すると、手探りの呼び出しが減ります。",
+  "explanation": "正解は a です。MCP のアーキテクチャの説明は、データベースの文脈を提供するサーバーの例として、クエリ用のツール、データベースのスキーマを収めたリソース、ツールの使い方の few-shot の例を含むプロンプトを公開する形を挙げています。仕様(Resources)も、リソースはデータベースのスキーマのような文脈のデータを言語モデルと共有する仕組みだとしています。構造を知るためのクエリを繰り返しているこの場面では、スキーマをリソースとして公開するのが当てはまります。\n\n見分け方: クエリのツールの削除(b)は、必要な照会もできなくします。ツール名にテーブルや列を埋め込む(c)のは、スキーマを伝える仕組みではありません(MCP の仕様はツール名を 128 文字以内にするよう求めています)。名前から推測させる(d)のは、この場面の手探りをそのまま残します。",
   "refs": [
-   "https://modelcontextprotocol.io/docs/learn/architecture"
+   "https://modelcontextprotocol.io/docs/learn/architecture",
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/resources"
+  ],
+  "topics": [
+   "mcp-architecture"
   ]
  },
  {
@@ -957,7 +1077,7 @@
    {
     "id": "c",
     "text": "ツールは、利用者が毎回手で読み込む",
-    "why": "接続の時点で取得される。"
+    "why": "ツールは接続したサーバーから自動で取得される。tool search が有効なら、定義は Claude が必要に応じて読み込み、利用者が手で読み込む必要はない。"
    },
    {
     "id": "d",
@@ -968,10 +1088,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "設定したすべての MCP サーバーのツールが、まとめて利用可能になります。数が増えると選択が難しくなるため、必要なものに絞ります。",
+  "explanation": "正解は a です。MCP のアーキテクチャの説明によると、AI アプリケーションは接続したすべての MCP サーバーからツールを取得し、言語モデルが使える 1 つのツールの登録簿にまとめます。Claude Code と Agent SDK でも、設定した複数のサーバーのツールを同じセッションで合わせて使えます。ただし現在は tool search が既定で有効で、ツールの定義は必要になるまでコンテキストに読み込まれず、Claude が必要なものを探して読み込みます。\n\n見分け方: サーバーを 1 つずつ切り替える(b)必要はなく、最初の定義だけが有効になる(d)こともありません(同じサーバーが複数の場所で定義されたときに、優先度の高い定義だけを使う規則はあります)。ツールを利用者が毎回手で読み込む(c)必要もなく、必要な定義は Claude が tool search で読み込みます。",
   "refs": [
-   "https://code.claude.com/docs/en/mcp",
-   "https://modelcontextprotocol.io/docs/learn/architecture"
+   "https://modelcontextprotocol.io/docs/learn/architecture",
+   "https://code.claude.com/docs/en/agent-sdk/mcp",
+   "https://code.claude.com/docs/en/mcp"
+  ],
+  "topics": [
+   "mcp-architecture",
+   "claude-code-mcp"
   ]
  },
  {
@@ -1006,10 +1131,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "エラーは、種類と、再試行の可否と、次の行動を伝えます。秘密情報は、応答に含めません。",
+  "explanation": "正解は a です。Messages API のドキュメント(Handle tool calls)は、失敗したときは is_error: true を付け、\"failed\" のような汎用の文言ではなく、何が起きたかと次に何を試すべきかを書くよう勧めています。認証の期限切れは同じ呼び出しを繰り返しても直らず、利用者の再認証が要るので、この場面ではそのことを伝えるのが当てはまります。Agent SDK の安全なデプロイのガイドは、認証情報をエージェントの境界の外に置き、プロキシで注入してエージェントには見せない方法を挙げています。\n\n見分け方: 「エラー」とだけ返す(b)と、エージェントは原因も次の行動も分かりません。空の結果を成功として返す(c)と、データがないと誤解されます。期限切れのトークンの値を返す(d)のは、認証情報をエージェントに見せない方針に反します。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents",
-   "https://modelcontextprotocol.io/docs/learn/architecture"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+   "https://code.claude.com/docs/en/agent-sdk/secure-deployment",
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/tools"
+  ],
+  "topics": [
+   "tool-error-responses",
+   "agent-credentials"
   ]
  },
  {
@@ -1044,9 +1174,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "部分的な変更には Edit を、新しいファイルの作成や全面的な書き換えには Write を使います。",
+  "explanation": "正解は a です。Claude Code のツールのリファレンス(Tools reference)によると、Edit は特定のファイルに的を絞った編集を行うツールで、old_string を new_string に置き換えます。Write は新しいファイルを作るか、渡した内容全体で既存のファイルを上書きするツールで、追記や結合はしません。リファレンスは、既存のファイルの部分的な変更には Write ではなく Edit を使うとしており、1 行だけを変えるこの場面に当てはまります。\n\n見分け方: Write(b)は全体の書き直しになり、部分的な変更には使わないとされています。Glob(c)はファイル名のパターンでファイルを探すツール、Grep(d)はファイルの中身を検索するツールで、どちらもファイルを書き換えません。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview"
+   "https://code.claude.com/docs/en/tools-reference"
+  ],
+  "topics": [
+   "builtin-tools"
   ]
  },
  {
@@ -1081,9 +1214,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "権限の規則は、ツールの種類だけでなく、コマンドのパターンでも指定できます。",
+  "explanation": "正解は a です。Claude Code の権限のドキュメントによると、権限ルールは Bash(npm run *) のように、ツール名にコマンドのパターンを付けて指定できます。非対話モードのドキュメントには、--allowedTools \"Bash(git diff *),Bash(git log *),Bash(git status *),Bash(git commit *)\" のように許すコマンドを列挙する例があり、claude -p の Manual モードでは、承認が要る呼び出しは何かが承認しない限り拒否されます。テストの実行と git の参照だけを許したいこの場面に当てはまります。\n\n見分け方: Bash の無条件の許可(b)では、任意のコマンドが実行できます。権限ルールはモデルではなく Claude Code が強制するもので、プロンプトや CLAUDE.md の指示(c)ではルールは変わりません。Bash を使わせない(d)と、テストを実行できません。",
   "refs": [
-   "https://code.claude.com/docs/en/permissions"
+   "https://code.claude.com/docs/en/permissions",
+   "https://code.claude.com/docs/en/headless"
+  ],
+  "topics": [
+   "claude-code-permissions",
+   "claude-code-headless"
   ]
  },
  {
@@ -1118,9 +1256,15 @@
   "answer": [
    "a"
   ],
-  "explanation": ".mcp.json は環境変数の展開に対応しているので、秘密情報をファイルに含めずに済みます。",
+  "explanation": "正解は a です。Claude Code の MCP のドキュメントによると、.mcp.json は環境変数の展開に対応しており、${VAR} の形で、設定を共有しながら API キーのような機微な値を外から渡せます。非対話モードのドキュメントによると、claude -p のセッションはプロジェクトの .mcp.json のサーバーに接続し、サーバーごとの承認の確認は出しません。GitHub Actions のドキュメントも、認証情報はリポジトリに直接コミットせず、シークレットに保存して参照するよう警告しています。この場面の CI でも、同じ .mcp.json を使い、値だけをシークレットから環境変数で渡せます。\n\n見分け方: 認証情報を .mcp.json に直接書く(b)と、秘密の値がリポジトリに入ります。CI でも MCP は使えます(c)。プロンプトにサーバーの設定を書いても(d)、接続の設定にはなりません。",
   "refs": [
-   "https://code.claude.com/docs/en/mcp"
+   "https://code.claude.com/docs/en/mcp",
+   "https://code.claude.com/docs/en/headless",
+   "https://code.claude.com/docs/en/github-actions"
+  ],
+  "topics": [
+   "agent-credentials",
+   "claude-code-mcp"
   ]
  },
  {
@@ -1155,10 +1299,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールの数と権限は、最小限にします。自動実行では、人の目が届かないため、特に重要です。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、膨らんだツール群をよくある失敗に挙げ、最小限で実用になるツールの組を厳選する利点を述べています。Agent SDK の安全なデプロイのガイドも、最小権限として、エージェントをタスクに必要な能力だけに絞る方法を挙げています。この場面の CI では、CLI の --tools で使える組み込みツールを絞れます(MCP のツールは対象外で、--disallowedTools \"mcp__*\" などで外します)。--allowedTools は確認なしで使えるようにする事前の許可で、使えるツールを絞るものではありません。\n\n見分け方: すべてを与える(b)と、選択が難しくなり、誤用の危険も広がります。ツールを一切与えない(c)と、レビューやテストの作業ができません。無作為の選択(d)には根拠がありません。",
   "refs": [
-   "https://www.anthropic.com/engineering/writing-tools-for-agents",
-   "https://code.claude.com/docs/en/permissions"
+   "https://code.claude.com/docs/en/cli-reference",
+   "https://code.claude.com/docs/en/agent-sdk/secure-deployment",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "claude-code-headless",
+   "writing-tools-for-agents"
   ]
  },
  {
@@ -1193,10 +1342,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "特定のツールの強制は、手順の最初の一手を固定するために使われてきました。ただし、一部の新しいモデルでは、強制の指定が使えません。その場合は、段階ごとにリクエストを分け、各段階で与えるツールを 1 つに絞る、あるいは構造化出力を使う、といった方法を取ります。",
+  "explanation": "正解は a です。公式ドキュメント(Define tools)によると、tool_choice に {\"type\": \"tool\", \"name\": …} を指定すると Claude に特定のツールを必ず使わせられ、応答はツールの呼び出しから始まります。最初のリクエストで classify_document を強制し、その結果を受けて次のリクエストで抽出するのが従来の方法に当たります。ただし Claude Opus 5.5、Claude Sonnet 5.5、Claude Fable 5.2 などでは tool と any が 400 エラーになり、ドキュメントは代わりに auto と strict tool use、または構造化出力を勧めています。\n\n見分け方: none(b)はツールの使用を止めます。説明に「最初に呼ぶこと」と書くだけ(c)では、プロンプトで auto の選択を促すだけで、呼び出しは保証されません。両方を同時に呼ばせる(d)と、種別の判定の結果を見る前に抽出が始まります。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "define-tools",
+   "structured-outputs"
   ]
  },
  {
@@ -1231,10 +1384,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツール呼び出しは、構造化された出力を得る確実な方法の 1 つです。strict を付けると、引数がスキーマに適合します。",
+  "explanation": "正解は a です。公式ドキュメント(How tool use works)は、ツールが向く場面の 1 つに、決まったフィールドを持つ JSON が必要なときの構造化出力を挙げ、ツールのスキーマが形を強制するとしています。Claude がツールを呼ぶと、応答の tool_use ブロックに、ツール名と引数の JSON オブジェクトが入ります。抽出したい構造をツールの input_schema として定義し、呼び出しの引数として結果を受け取るのがこの方法です。strict: true を付けると、入力がスキーマに必ず合うようになります。\n\n見分け方: 文書を読んで抽出するのは Claude で、ツールは結果の受け皿です(b)。定義だけして呼ばせない(c)と、引数としての結果を受け取れません。ツールの結果(tool_result)はアプリケーションが Claude に返すもので(d)、抽出結果の受け取り口ではありません。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use"
+  ],
+  "topics": [
+   "tool-use-basics",
+   "strict-tool-use"
   ]
  },
  {
@@ -1269,10 +1426,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "strict は、スキーマに沿った引数を保証します。オブジェクトには additionalProperties: false が必要です。数値の範囲の制約や再帰的なスキーマなど、使えない機能もあります。任意の値は、null を許す型として表します。",
+  "explanation": "正解は a です。公式ドキュメント(Structured outputs)によると、JSON outputs と strict tool use は同じ JSON Schema の制限を共有し、オブジェクトでは additionalProperties を false にする必要があります。数値の範囲や文字列の長さの制約、再帰的なスキーマ、oneOf などは使えず、使うと 400 エラーになります。抽出用のツールに strict: true を付けるこの場面では、各オブジェクトに additionalProperties: false を書くことが条件に当たります。\n\n見分け方: どんなスキーマでも使える(b)わけではありません。フィールドが 1 つで文字列だけ(c)という条件はなく、object や array などの基本の型を使えます。説明(d)も書け、Strict tool use のページの例もプロパティに description を書いています。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use"
+  ],
+  "topics": [
+   "strict-tool-use",
+   "structured-outputs"
   ]
  },
  {
@@ -1291,7 +1452,7 @@
    {
     "id": "b",
     "text": "バッチは、往復を自動で行う",
-    "why": "行わない。"
+    "why": "アプリケーションが実行するツールの往復は、自動では行わない(サーバーツールのループはバッチの中でも動く)。"
    },
    {
     "id": "c",
@@ -1307,9 +1468,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "バッチは、独立した 1 回のリクエストの集まりです。ツールの結果を返して続ける処理には、通常の API を使うか、段階ごとにバッチを分けます。",
+  "explanation": "正解は a です。公式ドキュメント(Batch processing)によると、バッチの各リクエストは通常の Messages API のリクエストで、それぞれ独立に処理されます。ツール使用や複数ターンの会話もバッチに入れられますが、アプリケーションが実行するツールを Claude が呼ぶと、その応答は stop_reason が tool_use で終わり、結果は次のリクエストで tool_result として返す必要があります(Handle tool calls)。往復が必要なこの場面の処理は、バッチの 1 件の中では完結しません。\n\n見分け方: バッチは、アプリケーションが実行するツールの往復を自動では行いません(b)。ただし Web 検索やコード実行のようなサーバーツールは、バッチの中でも同期の API と同じサーバー側のループで動きます。ツールの定義(c)はバッチでも使えます。注意点がない(d)わけではありません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+   "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls"
+  ],
+  "topics": [
+   "batch-processing",
+   "tool-use-basics"
   ]
  },
  {
@@ -1344,10 +1510,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールの引数を使う前に、stop_reason を確認します。打ち切りの場合は、上限を上げるか、抽出を分割します。",
+  "explanation": "正解は a です。公式ドキュメント(Stop reasons and fallback)によると、stop_reason が \"max_tokens\" のときは、応答が指定した max_tokens の上限に達しています。打ち切られた応答に不完全な tool_use ブロックが含まれる場合は、max_tokens を上げて再試行し、完全なツールの呼び出しを得る必要があります。引数の JSON が途中で切れていたこの場面では、引数を使う前に stop_reason を確かめるのが当てはまります。\n\n見分け方: ツール名の長さ(b)と文書のファイル名(c)は、出力が途中で切れる原因になりません。API キーの有効期限(d)も、応答の途中での打ち切りとは関係がありません。ドキュメントは、本文を使う前に stop_reason を確かめ、値ごとに扱いを変えるよう求めています。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use"
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ],
+  "topics": [
+   "stop-reasons"
   ]
  },
  {
@@ -1382,9 +1550,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "MCP サーバーのスコープは 3 つあります。ローカルは既定で、追加したプロジェクトだけで読み込まれ、チームには共有されません。プロジェクトは、プロジェクトのルートの .mcp.json に保存され、バージョン管理を通じて共有されます。ユーザーは、自分のすべてのプロジェクトで読み込まれ、共有されません。ローカルとユーザーの設定は、どちらも ~/.claude.json に保存されます。",
+  "explanation": "正解は d です。Claude Code の MCP のドキュメントによると、local スコープが既定で、追加したプロジェクトだけで読み込まれ、自分専用です。設定は ~/.claude.json のそのプロジェクトの項目に保存されるため、ほかのプロジェクトには現れません。自分のすべてのプロジェクトで使うには、--scope user で user スコープに追加します。user スコープも ~/.claude.json に保存され、チームとは共有されません。\n\n見分け方: 既定は project スコープではなく(a)、.mcp.json を複製してコミットすると、チームにも共有されます。既定は user スコープでもありません(b)。設定は ~/.claude.json に保存されて次のセッションでも読み込まれるので、毎回追加し直す必要はありません(c)。",
   "refs": [
    "https://code.claude.com/docs/en/mcp"
+  ],
+  "topics": [
+   "claude-code-mcp"
   ]
  },
  {
@@ -1419,9 +1590,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "MCP の仕様では、API の失敗、入力データの検証エラー、業務ロジックのエラーを、ツール実行エラーとして扱います。ツールの結果に isError: true を付けて返すと、内容がモデルに渡り、モデルは次の行動を決められます。未知のツールなど、リクエストの構造そのものの問題は、プロトコルエラーで返します。",
+  "explanation": "正解は a です。MCP の仕様(Tools)は、ツールのエラーの伝え方を 2 つに分けています。未知のツール、不正な形式のリクエスト、サーバーのエラーはプロトコルエラーで、通常の JSON-RPC のエラーとして返します。API の失敗、入力の検証エラー、業務ロジックのエラーはツール実行エラーで、ツールの結果に isError: true を付けて返し、クライアントはこれをモデルに渡すべき(SHOULD)とされます。入力の形式が正しく、返品期限という業務上の規則に反しているこの場面は、業務ロジックのエラーに当たります。\n\n見分け方: プロトコルエラー(b)はリクエストの構造そのものの問題に使い、モデルが直せる見込みは低いとされます。成功として返す(c)と、エージェントは返金できたと誤って案内します。タイムアウトさせる(d)と、一時的な障害と区別できず、再試行を招きます。",
   "refs": [
    "https://modelcontextprotocol.io/specification/2026-07-28/server/tools"
+  ],
+  "topics": [
+   "mcp-tools-spec",
+   "tool-error-responses"
   ]
  }
 ]
