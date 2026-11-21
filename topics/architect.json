@@ -407,7 +407,8 @@
    "多くのサブエージェントが詳しい結果を返すと、メインのコンテキストを大きく消費しうる。ベストプラクティスは、短い要約を返させるよう勧めている",
    "費用は主にトークン。新しいサブエージェントは会話が既に持つ文脈を集め直すため、かえって遅くなることもある。既定では同じモデル(またはより小さいモデル)が同じ作業をするので、答えが賢くなるわけではない",
    "定義の必須フィールドは name と description。tools で使えるツールを制限でき(省くと使えるツールをすべて引き継ぐ)、model で Haiku のような安いモデルに回せる",
-   "Agent SDK では query() の agents パラメータでプログラムから定義する方法が推奨されている。Claude は Agent ツールでサブエージェントを呼び出す"
+   "Agent SDK では query() の agents パラメータでプログラムから定義する方法が推奨されている。AgentDefinition は description(いつ使うか)と prompt(システムプロンプト)が必須で、tools、model、maxTurns などは任意。Claude は Agent ツールでサブエージェントを呼び出す(system:init のツール一覧では Task と表示され、Claude Code v2.1.63 より前は tool_use ブロックでも Task)",
+   "メインのスレッドとして動くエージェントの tools から Agent を外すと、サブエージェントを起動できない。Agent SDK の allowedTools は列挙したツールを事前に許可するだけで使えるツールを絞らず、Agent のように確認なしで動くツールは列挙しなくても動く"
   ],
   "sources": [
    {
@@ -421,6 +422,10 @@
    {
     "url": "https://code.claude.com/docs/en/best-practices",
     "title": "Best practices for Claude Code"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/agent-sdk/permissions",
+    "title": "Configure permissions"
    }
   ],
   "checked": "2026-11-21"
@@ -1099,6 +1104,169 @@
    {
     "url": "https://code.claude.com/docs/en/agent-sdk/structured-outputs",
     "title": "Get structured output from agents"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "agentic-workflow-patterns",
+  "title": "ワークフローのパターン(チェーン・ルーティング・並列化・オーケストレーター・評価者)",
+  "summary": "記事「Building effective agents」は、本番でよく見られるワークフローを 5 つ挙げています。プロンプトチェーンは、タスクを順番の段階に分け、各 LLM 呼び出しが前の段階の出力を処理する方法で、途中のどの段階にもプログラムによる検査(図の「ゲート」)を置けます。ルーティングは、入力を分類して、それに特化した後続の処理に振り分けます。並列化は、出力をプログラムで集約する方法で、独立したサブタスクを並行して動かす「分割(sectioning)」と、同じタスクを複数回動かして多様な出力を得る「投票(voting)」の 2 種類があります。オーケストレーターとワーカーは、中心の LLM がタスクを動的に分解してワーカーの LLM に任せ、結果を統合します。評価者と最適化器は、一方の呼び出しが応答を生成し、もう一方が評価とフィードバックを返すことをループで繰り返します。",
+  "points": [
+   "プロンプトチェーン: タスクを固定のサブタスクにきれいに分解できるときに向く。各呼び出しを易しくして、遅延と引き換えに精度を上げる。例は、マーケティング文を作ってから別の言語に翻訳する、アウトラインを書いて基準を満たすか確かめてから本文を書く",
+   "Prompting best practices も、途中の出力を確かめたいときや決まった処理の流れを強制したいときは、明示的なチェーン(順番の API 呼び出し)が今も役立つとしている",
+   "ルーティング: 別々に扱うほうがよい明確な種類があり、分類を正確に行えるときに向く。例は、一般的な質問・返金依頼・技術サポートを別々の処理、プロンプト、ツールへ送る、簡単な質問を小型で費用効率のよいモデルへ、難しい質問を高性能なモデルへ送る",
+   "並列化: 分割の例は、1 つのインスタンスが問い合わせを処理し、別のインスタンスが不適切な内容を審査するガードレールや、観点ごとに別の呼び出しで評価する自動評価。投票の例は、複数の異なるプロンプトでコードの脆弱性を審査して問題を指摘する、内容の不適切さを複数のプロンプトで判定する",
+   "複数の観点がある複雑なタスクでは、各観点を別々の LLM 呼び出しで扱うほうが一般に成績が良い",
+   "オーケストレーターとワーカー: 必要なサブタスクを予測できない複雑なタスクに向く(例: 変更するファイルの数と内容が依頼によって変わるコーディング)。並列化と形は似ているが、サブタスクが事前に決まっておらず、入力に応じてオーケストレーターが決める",
+   "評価者と最適化器: 明確な評価基準があり、反復による改善に測れる価値があるときに向く。人が具体的に指摘すると応答が良くなり、LLM がその指摘を出せることが目安。例は文学作品の翻訳"
+  ],
+  "sources": [
+   {
+    "url": "https://www.anthropic.com/research/building-effective-agents",
+    "title": "Building effective AI agents"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "agent-sdk-sessions",
+  "title": "Agent SDK のセッション(continue・resume・fork)",
+  "summary": "Agent SDK のセッションは、エージェントの作業中に SDK がためる会話の履歴で、プロンプト、ツールの呼び出しと結果、応答を含みます。SDK はこれを自動でディスクに書くので、後から戻れます。保存するのは会話で、ファイルシステムではありません(ファイルの変更を戻すにはファイルのチェックポイントを使います)。既存のセッションに戻る方法は 3 つあります。continue と resume は、どちらも既存のセッションを続けて追記し、違いはセッションの見つけ方です。continue は現在のディレクトリで最も新しいセッションを探すので、ID を管理する必要がなく、1 度に 1 つの会話を扱うアプリに向きます。resume は特定のセッション ID を受け取り、利用者ごとにセッションを持つ複数利用者のアプリのように複数のセッションがある場合や、最新でないセッションに戻る場合に必要です。fork は、元の履歴の写しから始まる新しいセッションを作り、元は変えません。",
+  "points": [
+   "セッション ID は結果メッセージ(ResultMessage / SDKResultMessage)の session_id から取る。成功でもエラーでも入っている",
+   "Python では continue_conversation=True、TypeScript では continue: true",
+   "1 つのプロセス内の複数ターンの会話は、ClaudeSDKClient(Python)や continue: true(TypeScript)で SDK が自動で追跡する",
+   "error_max_turns や error_max_budget_usd で終わった実行は、上限を上げて resume で続けられる",
+   "セッションのファイルは作ったマシンのローカルにある。別のホストで再開するには、sessionStore / session_store のアダプターを渡す、セッションファイルを移す、またはセッションの再開に頼らず必要な結果をアプリの状態として新しいセッションに渡す",
+   "fork が分けるのは会話の履歴で、ファイルシステムではない"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/agent-sdk/sessions",
+    "title": "Work with sessions"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "agent-sdk-loop",
+  "title": "Agent SDK のエージェントループと結果メッセージ",
+  "summary": "Agent SDK のエージェントループでは、1 ターンは、Claude が出力し、ツール呼び出しがあれば SDK が実行して結果を Claude に返す、という 1 回分の流れです。ターンは Claude がツール呼び出しのない出力をするまで続き、ループが終わると最終結果が届きます。ループの上限は max_turns / maxTurns(ターン数)と max_budget_usd / maxBudgetUsd(推定の支出)で設定でき、どちらも既定は無制限です。ループが終わると ResultMessage が返り、その subtype が終わり方を調べる主な手段です。subtype には success(通常に完了)、error_max_turns(maxTurns の上限に達した)、error_max_budget_usd、error_during_execution(取り消しなどでループが中断した)、error_max_structured_output_retries があります。",
+  "points": [
+   "result フィールド(最終のテキスト出力)は success のときだけあるので、読む前に subtype を確かめる",
+   "すべての subtype に total_cost_usd、usage、num_turns、session_id が入り、エラーの後でも費用の把握や再開ができる",
+   "max_turns には、ツール呼び出しのあるターンに加えて、最後のテキストだけの応答の 1 ターンも数える",
+   "1 回だけの query() 呼び出しがエラーの結果で終わると、結果メッセージを返した後に例外を送出する",
+   "ResultMessage の stop_reason は最後のターンでモデルが生成を止めた理由で、end_turn、max_tokens、refusal などがある"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/agent-sdk/agent-loop",
+    "title": "How the agent loop works"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/agent-sdk/hosting",
+    "title": "Hosting the Agent SDK"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "claude-code-hooks",
+  "title": "フックによる決定的な制御(Claude Code と Agent SDK)",
+  "summary": "フックは、エージェントの実行の決まった時点(ツールの呼び出しの前後、セッションの開始、停止など)で利用者のコードを動かす仕組みです。Claude Code では設定ファイルの hooks にシェルコマンドなどを書き、Agent SDK ではオプションの hooks にコールバック関数を渡します(設定ファイルのシェルコマンドのフックも、settingSources が有効なら読み込まれます)。Claude Code のベストプラクティスは、モデルが読んで判断する非決定的な指示(プロンプト、CLAUDE.md、スキル)と、ハーネスが必ず適用する決定的な仕組み(フック、deny ルール、管理設定)を分け、毎回必ず起きてほしいこと、決して起きてはならないことは後者にするよう勧めています。PreToolUse はツールの実行前に走り、permissionDecision で呼び出しを許可(allow)、拒否(deny)、確認(ask)、保留(defer)でき、updatedInput で入力を書き換えられます。PostToolUse は実行後に走り、additionalContext でツールの結果に情報を足すほか、updatedToolOutput で Claude が見る前に出力を置き換えられます。",
+  "points": [
+   "フックは例外のない規則のためのもの。ベストプラクティスの例では、.env を読まない、編集後に整形する、migrations を触らない、のうち「ほぼ守られる」では足りないものをフックに移し、Prefer named exports のように例外の多い規則は CLAUDE.md に残す",
+   "prompt と agent のフックは別のモデルが判断するので決定的ではない。確実に強制するには command、http、mcp_tool のフックを使い、フック自体が失敗したときも止めるなら onFailure: \"block\" を付ける",
+   "Claude Code のコマンドのフックは、終了コード 2 で動作を止め、標準エラーに書いた理由がイベントによっては Claude にフィードバックとして渡る",
+   "PreToolUse の deny の理由(permissionDecisionReason)は Claude に示される。複数のフックの判定が分かれたときは deny、defer、ask、allow の順に優先される",
+   "マッチャーはイベントの対象(ツールのフックではツール名)に対するパターン(例: \"Write|Edit\"、\"^mcp__\")。MCP のツールの名前は mcp__<server>__<action> の形",
+   "Write|Edit に一致させたフックは、Claude が Bash のコマンドでファイルを書く場合には動かない。Bash での書き込みを止めるにはサンドボックスの設定を使う",
+   "updatedToolOutput は組み込みのツールと MCP のツールの両方で使える。以前からある updatedMCPToolOutput は MCP のツールの出力だけを置き換える",
+   "Prompting best practices は、支払いを扱うエージェント向けの推奨の指示文について、Claude を導くだけで何も強制しないとし、お金を動かせるツールの呼び出しはすべて人が承認するよう勧めている"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "title": "Intercept and control agent behavior with hooks"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/hooks",
+    "title": "Hooks reference"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/hooks-guide",
+    "title": "Automate actions with hooks"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "customer-support-agents",
+  "title": "カスタマーサポートのエージェント(タスクの分解・人への引き継ぎ・ガードレール)",
+  "summary": "Claude のドキュメントのガイド Customer support agent は、サポートの対話を、質問への回答、情報の取得、依頼への対応といった複数のタスクを 1 つのやり取りにまとめたものと捉え、作る前に理想の対話を Claude にさせたいタスクごとに分解するよう勧めています。分解しておくと、タスクごとにプロンプトと評価を用意でき、テストケースで扱うべき対話の幅も分かります。成功の基準は、サポートのチームと一緒に、測れる目標を持つものとして定めます。口座の残高や契約の詳細のようにリアルタイムの情報が要る問い合わせには、ツールで顧客情報の照会、注文の詳細の取得、注文の取り消しなどを行えます。記事 Building effective agents も、カスタマーサポートは会話の流れと外部の情報や操作を組み合わせ、返金やチケットの更新をプログラムで扱え、利用者が定めた解決で成功を明確に測れるため、エージェントに向くとしています。",
+  "points": [
+   "ガイドの成功の基準の例: 人の介入が必要な問い合わせを見分けて適切に引き継ぐ Escalation efficiency(目標 95% 以上)、人の介入なしで解決できた割合の Deflection rate(目安 70〜80%)、会話の初めと終わりで顧客の感情を保つか改善する Sentiment maintenance",
+   "ガードレールの例: 権限のない約束や合意をしない(Avoid contractual commitments)、応答が会社の方針や既知の事実に合うかを確かめる(Cross-check information)、明示的に必要で許可された場合を除き応答から PII を除く",
+   "プロンプトには、理想の対話を表す良いやり取りの例を少なくとも 4〜5 件加える。例にはガードレールやツール呼び出しを含めてよい",
+   "扱うタスクが多様なら、最初の問い合わせを振り分ける意図の分類器を加え、それぞれのツールとシステムプロンプトを持つ専用の会話へ送れる。ただし Claude の呼び出しが 1 回増え、遅延が増えうる",
+   "記事 Building effective agents によると、成功した解決にだけ課金する利用量ベースの料金を採る企業もあり、エージェントの有効性への自信を示している",
+   "Prompting best practices の、支払いや口座番号を扱うエージェント向けの推奨の指示文は、確認を行ったと言うのはそのセッションのツールの結果が行動の前にそれを示したときだけにするよう求めている。指示文は何も強制しないので、お金を動かすツールの呼び出しは人が承認する"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/about-claude/use-case-guides/customer-support-chat",
+    "title": "Customer support agent"
+   },
+   {
+    "url": "https://www.anthropic.com/research/building-effective-agents",
+    "title": "Building effective AI agents"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "claude-code-parallel-sessions",
+  "title": "並行セッションと大量の作業の進め方(worktree・スクリプト・/batch)",
+  "summary": "Claude Code で別々の作業を同時に進めるとき、ベストプラクティスは、それぞれに独自のチェックアウトを与えて編集が衝突しないようにするよう勧めています。git の worktree は、独自のファイルとブランチを持つ別の作業ディレクトリで、リポジトリの履歴とリモートは共有します。claude --worktree <名前>(-w)で始めると、既定ではリポジトリのルートの .claude/worktrees/<名前>/ に、worktree-<名前> という新しいブランチで作られます。多くのファイルに同じ変更を加える作業は、claude -p をシェルのループから 1 件ずつ呼んで処理できます。ベストプラクティスの例は、ファイルの一覧を 1 件ずつ claude --bare -p で処理して OK か FAIL を返させ、--allowedTools で必要な操作を事前に許可し、--permission-mode dontAsk でそれ以外を拒否し、--max-turns で上限を設けています。まず 3 つのファイルで試し、うまくいかない点を見てプロンプトを直してから残りを実行します。",
+  "points": [
+   "worktree は新しいチェックアウトなので、.env のような gitignore 対象のファイルはなく、依存関係も入っていない。必要なファイルはリポジトリのルートの .worktreeinclude に書くと、作られる worktree に写される",
+   "名前のない worktree のセッションを終えると、変更がなければ Claude Code が作った worktree を削除する。名前付きや変更のあるものは扱いを尋ねる。claude -p --worktree の実行は自分で片付ける",
+   "1 つの大きな機械的な変更には /batch を使える。作業を 5〜30 の単位に分けて計画を示し、承認すると各単位が独自の worktree で動き、PR を開くか結果を報告する",
+   "サブエージェントは 1 つのセッションの中で作業を分け、worktree はファイルの編集を分ける",
+   "2 つ目のセッションは手軽な独立したレビュアーになる。書く過程を見ていないセッションにレビューさせ、指摘を最初のセッションに戻す",
+   "無人で走らせる前に確かめる点: 完了の条件、自分の作業を確かめる手段、触れてよい範囲、止める仕組み(--max-turns、--max-budget-usd など)、結果の行き先と承認する人",
+   "スクリプトの例では、ターン数の上限に達した実行は OK や FAIL を返さず、エラーで終わる"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/worktrees",
+    "title": "Run parallel sessions with worktrees"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/common-workflows",
+    "title": "Common workflows"
    }
   ],
   "checked": "2026-11-21"
