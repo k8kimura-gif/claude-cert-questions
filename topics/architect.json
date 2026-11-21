@@ -902,5 +902,179 @@
    }
   ],
   "checked": "2026-11-21"
+ },
+ {
+  "id": "be-clear-and-direct",
+  "title": "明確で直接的な指示と背景の伝え方",
+  "summary": "Prompting best practices は、Claude は明確で明示的な指示によく応えるとし、Claude を「優秀だが、あなたの規範や仕事の流れについての背景を持たない新しい従業員」と考えるよう勧めています。望むことを正確に説明するほど結果は良くなり、作業が厳密に求める以上のことをしてほしいときは、曖昧なプロンプトから推し量らせずに明示的に頼みます。分かりやすさを確かめる Key test は、作業の背景をほとんど知らない同僚にプロンプトを見せて従ってもらうことで、相手が迷うなら Claude も迷う、というものです。指示の背景や動機(なぜその振る舞いが重要か)を添えると、Claude は目的についての情報を得て的を絞った応答ができ、説明から一般化もできます。一方、強い言い回しや強調は基準の代わりになりません。Claude Opus 4.5 と Claude Opus 4.6 は強い言い回しで overtrigger しうるとされ、Claude Code のベストプラクティスも、IMPORTANT や大文字での強調を積み増す助言はもう不要で、強調はむしろ規則の過剰な適用を招くとしています。",
+  "points": [
+   "出力の形式と制約を具体的に書く",
+   "手順の順序や網羅が重要なときは、番号付きリストや箇条書きで順を追った指示にする",
+   "指示には理由や動機を添える。Claude は説明から一般化できる(例: 「省略記号を使うな」より、「読み上げエンジンが発音できないので省略記号を使わない」)",
+   "Key test: 背景をほとんど知らない同僚が迷うプロンプトは、Claude も迷う",
+   "Claude Opus 4.5 と Claude Opus 4.6 は以前のモデルよりシステムプロンプトへの反応がよく、「CRITICAL: You MUST use this tool when...」のような強い言い回しで overtrigger しうる。「Use this tool when...」のような普通の言い方にする",
+   "Claude Code のベストプラクティス: IMPORTANT や大文字の強調を足すのは古い助言。現在のモデルは普通に書いた 1 行に従い、強調を重ねると規則を過剰に当てはめやすい。曲げられない規則はフックや deny ルールにする",
+   "調査の作業では、何をもって成功した答えとするかの基準を明確にし、複数の情報源で確かめるよう促す"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "claude-code-prompting",
+  "title": "Claude Code への依頼の仕方(具体的なプロンプト・インタビュー・確かめる手段)",
+  "summary": "Claude Code のベストプラクティスは、セッションが期待どおりに進まない原因の多くを、Claude がリポジトリから読み取れない情報を持っていないこと、自分の作業を確かめる手段がないこと、に求めています。具体的なプロンプトは、Claude が持っていない情報を与えるので効果があり、ファイルを名指しし、症状を書き、「直った」状態を先に言えば、修正の往復を 1 回減らせることが多いとされます。妥当なやり方が 2 つあるときの好みもコードからは読めないので、こだわるなら先に伝えます。何を作りたいかがまだ固まっていないときは、Claude にインタビューさせて仕様を書かせ、新しいセッションでその仕様から作らせます。また Claude は、作業が終わったように見えた時点で止まります。合否を返すもの(テスト、ビルドの終了コード、リンターなど)を渡すと、変更、確認、出力を読んでの修正を自分で繰り返せます。",
+  "points": [
+   "依頼の例: 「HotDogWidget.php のパターンに従ってカレンダーのウィジェットを作る。新しいライブラリは使わない」のように手本と制約を名指しする",
+   "持っているものは説明せずに渡す: @ とパスでファイルの内容を含める、デザインやエラーのスクリーンショットを貼る、cat error.log | claude -p でコマンドの出力を渡す",
+   "何が欲しいか固まっていないときは「仕様が書けるまで私にインタビューして、SPEC.md に書いて」と頼む。Claude は決まっていない点を選択式で質問する。SPEC.md ができたら新しいセッションで作らせる",
+   "確かめる手段の例: テストファイル、ビルドの終了コード、リンター、出力をフィクスチャと比べるスクリプト、モックアップと並べたブラウザのスクリーンショット",
+   "確かめ方の強さは段階がある: プロンプトで「テストが通るまで続けて」と頼む、/goal で条件を課す、Stop フックで強制する、書いた本人でないもの(/code-review)にレビューさせる",
+   "「全テスト合格」とだけ言わせず、実行したコマンドと出力などの証拠を求める",
+   "同じことを 2 回直しても直らなければ、3 回目を重ねず /clear して、学んだことを織り込んだ新しいプロンプトを 1 つ書く",
+   "「think hard」「be thorough」は普通の文で、考える深さの主な制御は effort。「be ambitious」は範囲(どこまで作るか)を伝える言葉として今も役立つ"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "claude-code-code-review",
+  "title": "Claude によるコードレビューと指摘の調整(Code Review・REVIEW.md)",
+  "summary": "Claude Code の Code Review は、GitHub のプルリクエストを Claude がレビューするサービスで、Team と Enterprise のプランで Owner が有効にします。複数のエージェントが差分と周辺のコードを並行して調べ(Find)、検証の段階が候補の指摘をコードと照らして誤検知を除き(Verify)、残った指摘を重複を除いて重大度で順位づけし(Rank)、行ごとのコメントと要約、チェックランとして投稿します(Post)。レビューがプルリクエストを承認したりブロックしたりすることはなく、マージの判断はチームに残ります。既定では正しさ、つまり本番を壊すバグに集中し、書式の好みやテストの網羅の不足は対象にしません。何を指摘させるかは、リポジトリの CLAUDE.md(すべての作業の文脈)と REVIEW.md(レビュー専用の指示)で調整します。自分の CI で Claude を動かす方法(GitHub Actions、GitLab CI/CD)や、セッションの中で実行する /code-review もあります。",
+  "points": [
+   "REVIEW.md で、Important とする指摘の種類と、Nit にとどめる種類(書式、命名、リファクタリングの提案など)を定義し直せる",
+   "Nit の件数に上限を設ける(「1 回のレビューで Nit は 5 件まで」)と、レビューが行動につながる量に保たれる",
+   "CI が既に強制していること(lint、整形、型エラー)や生成ファイル、ロックファイルを指摘の対象から外す",
+   "誤りと分かる指摘が多い種類には、投稿の前に根拠を求める(例: 振る舞いの主張には、名前からの推測ではなくソースの file:line の引用を付ける)",
+   "毎回確かめてほしいチームの規則(新しい API のルートには結合テストがある、など)を書き足せる",
+   "REVIEW.md はベースまたは既定のブランチから読み、プルリクエスト自身の変更からは読まない。/code-review は CLAUDE.md を読み、REVIEW.md は読まない",
+   "Claude Code のベストプラクティス: 仕様に照らしたレビューを頼むときは「skip style」を外さない。問題を探すよう頼まれたレビュアーは必ず何かを見つける"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/code-review",
+    "title": "Code Review"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/code-review-customize",
+    "title": "Customize Code Review"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "multishot-prompting",
+  "title": "例の示し方(few-shot / multishot)",
+  "summary": "例は、Claude の出力の形式、口調、構造を導く最も確実な方法の 1 つで、よく作られた数件の例(few-shot または multishot prompting)は正確さと一貫性を高めます。Prompting best practices は、例を次の 3 点を満たすように作るよう勧めています。関連性(実際の用途を忠実に映す)、多様性(エッジケースを含め、Claude が意図しないパターンを拾わない程度にばらつかせる)、構造化(<example> タグで囲み、複数なら <examples> タグに入れて、指示と区別できるようにする)。最良の結果には 3〜5 件を目安にします。記事 Effective context engineering for AI agents は、few-shot を引き続き強く勧める一方、従うべき規則をすべて言い表そうとして例外的な事例の長い一覧をプロンプトに詰め込むことは勧めず、期待する振る舞いを効果的に描く、多様で典型的な(canonical)例を厳選するよう勧めています。",
+  "points": [
+   "例は関連性、多様性、構造化の 3 点を満たすように作る",
+   "<example> タグで囲み、複数の例は <examples> タグにまとめる",
+   "3〜5 件の例が最良の結果の目安",
+   "Claude に例の関連性と多様性を評価させたり、最初の例をもとに追加の例を作らせたりできる",
+   "出力の例を示すことは、抽象的な指示より効果的(Increase output consistency)",
+   "例外的な事例の長い一覧を詰め込まず、多様で典型的な例を厳選する(Effective context engineering for AI agents)",
+   "例は思考とも併用できる。問題、適用する方法、期待する答えの形で示した例は、Claude の思考の進め方にも影響する"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   },
+   {
+    "url": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+    "title": "Effective context engineering for AI agents"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency",
+    "title": "Increase output consistency"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "increase-consistency",
+  "title": "出力の一貫性を高める",
+  "summary": "Increase output consistency は、Claude の応答の一貫性を高める方法をまとめたページです。冒頭で、特定の JSON スキーマに必ず従う有効な JSON が必要なら、プロンプトの工夫ではなく Structured outputs を使うよう勧めています。structured outputs は制約付きデコードによってスキーマに合う応答を保証し、JSON 出力(output_config.format)と strict tool use(strict: true)の 2 つの機能があります。プロンプトの手法としては、JSON、XML、独自のテンプレートで出力形式を正確に定める、望む出力の例を示す(抽象的な指示より効果的)、チャットボットやナレッジベースのように一貫した文脈が必要な作業では検索(retrieval)で応答を決まった情報に基づかせる、複雑な作業を小さな下位作業に分けてプロンプトを連鎖させる、役割を演じるアプリケーションではシステムプロンプトで役割を定める、が挙げられています。Assistant ターンの事前入力(prefill)も載っていますが、Claude 4.6 以降のモデルと Claude Mythos Preview では使えません。",
+  "points": [
+   "スキーマへの準拠を保証したいときは Structured outputs を使う(制約付きデコード)",
+   "structured outputs は JSON 出力(output_config.format)と strict tool use(strict: true)の 2 つ",
+   "出力形式を JSON、XML、独自のテンプレートで正確に定める",
+   "望む出力の例を示す。抽象的な指示より効果的",
+   "一貫した文脈が必要な作業では、検索で決まった情報に基づかせる",
+   "複雑な作業は小さな下位作業に分け、各プロンプトが 1 つの下位作業を扱うようにする",
+   "prefill は Claude 4.6 以降のモデルと Claude Mythos Preview では使えない"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency",
+    "title": "Increase output consistency"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "title": "Structured outputs"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "output-format-control",
+  "title": "出力形式の制御",
+  "summary": "Prompting best practices は、出力の書式を導く特に効果的な方法として 4 つを挙げています。1 つ目は、してほしくないことではなく、してほしいことを伝えることで、「Do not use markdown in your response」の代わりに「Your response should be composed of smoothly flowing prose paragraphs.」と書く例が示されています。2 つ目は、「散文の部分を <smoothly_flowing_prose_paragraphs> タグの中に書く」のように XML タグで出力の形を示すこと。3 つ目は、プロンプト自体の書き方を望む出力の書き方に合わせることで、プロンプトから Markdown を取り除くと出力の Markdown が減ることがあります。4 つ目は、書式の好みを詳しいプロンプトで明示することです。なお、Claude 4.6 以降のモデルと Claude Mythos Preview では最後の assistant ターンの事前入力(prefill)が使えず、400 エラーになります。形式の強制には structured outputs、前置きの省略にはシステムプロンプトでの直接の指示などに移行します。",
+  "points": [
+   "禁止ではなく、望む形を肯定形で伝える",
+   "XML タグで出力の形を示す(XML format indicators)",
+   "プロンプトの書き方を望む出力の書き方に合わせる。プロンプトの Markdown を減らすと出力の Markdown も減りうる",
+   "書式の細かい好みは、詳しいプロンプトで明示する",
+   "最新のモデルは数式に既定で LaTeX を使う。プレーンテキストにしたいときは指示する",
+   "Claude 4.6 以降のモデルでは最後の assistant ターンの prefill は 400 エラー。形式の強制は structured outputs などに移行する"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   }
+  ],
+  "checked": "2026-11-20"
+ },
+ {
+  "id": "prompt-chaining",
+  "title": "プロンプトの連鎖(chain complex prompts)",
+  "summary": "プロンプトの連鎖は、作業を順に実行する複数の API 呼び出しに分ける手法です。Prompting best practices は、adaptive thinking とサブエージェントの編成によって、Claude は多段階の推論の大半を内部で処理できるとしたうえで、明示的な連鎖は、途中の出力を確かめたいときや、決まったパイプラインの構成を強制したいときに今も役立つとしています。最もよく使う形は自己修正で、下書きを作る、基準に照らして Claude に見直させる、見直しに基づいて Claude に改善させる、という流れです。各段階を別の API 呼び出しにするので、どの時点でも記録、評価、分岐ができます。Increase output consistency も、複雑な作業を小さく一貫した下位作業に分け、各プロンプトが 1 つの下位作業だけを扱うようにすると、規模の大きな処理での一貫性の誤りが減るとしています。",
+  "points": [
+   "プロンプトの連鎖は、作業を順に実行する複数の API 呼び出しに分けること",
+   "途中の出力を確かめたいときや、決まったパイプラインを強制したいときに役立つ",
+   "最もよく使う形は自己修正: 下書き → 基準に照らした見直し → 改善",
+   "各段階が別の呼び出しなので、どの時点でも記録、評価、分岐ができる",
+   "各プロンプトが 1 つの下位作業だけを扱うと、一貫性の誤りが減る(Increase output consistency)",
+   "多段階の推論の大半は adaptive thinking とサブエージェントの編成で Claude が内部で処理できる"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency",
+    "title": "Increase output consistency"
+   }
+  ],
+  "checked": "2026-11-20"
  }
 ]
