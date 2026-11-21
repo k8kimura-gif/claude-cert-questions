@@ -111,12 +111,12 @@
 - Claude Code と Agent SDK では tool search が既定で有効で、開始時に読み込むのはツール名とサーバーの指示だけ(arch-tool-026)。
 - Message Batches の 1 件の中でも、サーバーツール(web search など)のループは回る。往復が要るのはクライアントツール(arch-tool-035)。
 
-未修正のまま報告したもの(2026-11-21 時点):
+あとから直したもの(2026-11-21):
 
-- arch-prompt-032: Structured outputs は文字列の `format`(`date` など)に対応するので、誤答「スキーマをさらに厳密にする」でも日付の表記を制約できる。
+- arch-prompt-032: Structured outputs は文字列の `format`(`date` など)と `pattern` に対応するので、「スキーマをさらに厳密にする」は誤答として成り立たなかった。表記に効かない変更(required に加える)に差し替えた。`format: "date"` で出力の表記がどう強制されるかはページに書かれていない。
 - arch-agent-026: Agent SDK の `allowedTools` は事前承認で、使えるツールを絞らない。Agent は確認なしで動くツール。
 - arch-cc-013: 読み込まれた CLAUDE.md やルールの確認は `/context`(`/context all`)。`/memory` は場所の一覧と編集用。
-- arch-cc-037: プロジェクトの `.claude/settings.json` の `permissions.allow` は workspace trust を受け入れた後にだけ使われ、`claude -p` と SDK は trust のダイアログを出さない。信頼していないフォルダでは deny と ask だけが効く。
+- arch-cc-037: プロジェクトの `.claude/settings.json` の `permissions.allow` は workspace trust を受け入れた後にだけ使われ、`claude -p` と SDK は trust のダイアログを出さない。信頼していないフォルダでは deny と ask だけが効く。正解は `--settings`(GitHub Actions では `settings` 入力)にした。`--settings` の allow が trust を経ずに効くという直接の記述はなく、GitHub Actions のページの記述に基づく。
 - arch-cc-026: Best practices の「What you can stop doing」は「CLAUDE.md に構成とファイル配置を書く」を古い助言とする。一方 Memory のページは project layout を書く例に残しており、2 ページが食い違う。
 
 ほかに覚えておくこと:

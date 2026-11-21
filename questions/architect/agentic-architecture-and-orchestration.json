@@ -1054,37 +1054,38 @@
   "domain": "agentic-architecture-and-orchestration",
   "type": "single",
   "scenarioId": "research",
-  "stem": "コーディネーターがサブエージェントを起動しようとしても、起動できない。コーディネーターに許可したツールは Read と WebSearch だけである。原因はどれか。",
+  "stem": "Agent SDK のコーディネーターの agents にサブエージェントを定義したが、コーディネーターはサブエージェントを起動しない。コーディネーターの tools オプションに指定したのは Read と WebSearch だけである。原因はどれか。",
   "choices": [
    {
     "id": "a",
-    "text": "サブエージェントを起動するためのツール(Agent。以前の版では Task)が、許可したツールに含まれていない",
-    "why": "サブエージェントは、専用のツールを通じて起動する。"
+    "text": "サブエージェントを起動する Agent ツール(以前の名前は Task)が tools になく、コーディネーターが使えない",
+    "why": "Claude は Agent ツールでサブエージェントを呼び出す。tools オプションに挙げた組み込みのツールだけが Claude のコンテキストに入るので、Agent を挙げないと使えない。"
    },
    {
     "id": "b",
-    "text": "サブエージェントの数が多すぎる",
-    "why": "起動そのものができていない。"
+    "text": "allowedTools に Agent を入れていないため、Agent の呼び出しが承認されずに止まっている",
+    "why": "allowedTools は列挙したツールを事前に承認するだけで、使えるツールを絞らない。Agent は実行の前に確認を求めないツールで、列挙しなくても動く。"
    },
    {
     "id": "c",
-    "text": "WebSearch を許可していることが原因である",
-    "why": "関係がない。"
+    "text": "サブエージェントは description が合えば SDK が自動で起動するので、description の書き方だけが原因である",
+    "why": "Claude は description をもとにどのサブエージェントに任せるかを決めるが、起動は Agent ツールの呼び出しで行う。Agent が使えるツールにない限り起動できない。"
    },
    {
     "id": "d",
-    "text": "サブエージェントは、定義さえしておけば必要なときに自動的に起動するので、ツールに関する設定は不要である。原因は別にある",
-    "why": "起動のためのツールが必要である。"
+    "text": "サブエージェントの定義で tools を省略しているため、その定義が無効なものとして扱われている",
+    "why": "AgentDefinition の tools は任意で、省略すると、サブエージェントが使えるツールをすべて引き継ぐ。定義が無効になるわけではない。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "正解は a です。Agent SDK のサブエージェントのページによると、Claude は Agent ツール(Claude Code v2.1.63 より前の tool_use ブロックでは Task)でサブエージェントを呼び出します。Claude Code のサブエージェントのページは、メインのスレッドとして動くエージェントの tools の一覧から Agent を外すと、サブエージェントを起動できないとしています。この場面では使えるツールが Read と WebSearch だけなので、Agent がなく起動できないと考えるのが当てはまります。\n\n見分け方: 数が多すぎる(b)のでは、起動自体の失敗を説明できません。WebSearch(c)は起動と関係しません。定義しておけば自動で起動する(d)のではなく、Claude が Agent ツールを呼び出して起動します。なお、allowedTools は列挙したツールを事前に許可するだけで、使えるツールを限りません。",
+  "explanation": "正解は a です。Subagents in the SDK によると、Claude は Agent ツールでサブエージェントを呼び出します。Custom tools によると、tools オプションは使えるツールを決め、挙げた組み込みのツールだけが Claude のコンテキストに入ります。この場面では tools が Read と WebSearch だけなので Agent がなく、起動できません。Create custom subagents も、claude --agent について同じことを述べています。\n\n見分け方: allowedTools(b)は事前の承認で、使えるツールを絞りません。Configure permissions によると、Agent のように確認なしで動くツールは列挙しなくても動きます。description(c)は任せる先の判断に使われ、起動は Agent ツールの呼び出しです。tools を省いた定義(d)は、ツールをすべて引き継ぎます。",
   "refs": [
    "https://code.claude.com/docs/en/agent-sdk/subagents",
-   "https://code.claude.com/docs/en/sub-agents",
-   "https://code.claude.com/docs/en/agent-sdk/permissions"
+   "https://code.claude.com/docs/en/agent-sdk/custom-tools",
+   "https://code.claude.com/docs/en/agent-sdk/permissions",
+   "https://code.claude.com/docs/en/sub-agents"
   ],
   "topics": [
    "claude-code-subagents"

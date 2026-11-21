@@ -1304,29 +1304,29 @@
   "choices": [
    {
     "id": "a",
-    "text": "プロンプトに、正規化の規則(例: YYYY-MM-DD に統一する)を書き、スキーマの説明にも明記する",
-    "why": "型だけでは、表記は揃わない。"
+    "text": "プロンプトに正規化の規則(例: YYYY-MM-DD に統一する)を書き、スキーマのフィールドの説明にも同じ規則を書く",
+    "why": "そろえる先の表記を規則として明示する。Increase output consistency は出力の形式を正確に定めるよう、Prompting best practices は出力の形式と制約を具体的に書くよう勧めている。"
    },
    {
     "id": "b",
-    "text": "スキーマを、さらに厳密にするだけにする",
-    "why": "「厳密に」が何を指すかが定まっていない。型や必須の指定を厳しくしても、文字列の表記はそろわない(スキーマで表記を制約するなら、format や pattern でそろえる表記そのものを指定する必要がある)。"
+    "text": "スキーマで日付のフィールドを required に加え、どの文書からも必ず値が入るようにするだけにする",
+    "why": "required はフィールドが必ず出力されることを保証するが、文字列の表記は決めない。必須にしても「2026/3/5」と「Mar 5, 2026」が混在したままになる。"
    },
    {
     "id": "c",
-    "text": "表記は、揃えない",
-    "why": "下流で、処理できない。"
+    "text": "プロンプトに「日付は統一された正しい形式で出力すること」とだけ書き足し、形式の選択は Claude に任せる",
+    "why": "どの表記にそろえるかが書かれていない。Increase output consistency は、出力の形式を正確に定めるよう勧めている。"
    },
    {
     "id": "d",
-    "text": "日付を、抽出しない",
-    "why": "必要な情報が失われる。"
+    "text": "日付のフィールドを string と null の型の配列にし、日付が読み取れない文書では null を返させるようにする",
+    "why": "null を許すのは値が読み取れないときの扱いで、値があるときの表記はそろわない。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "正解は a です。Increase output consistency は出力の形式を正確に定めるよう勧め、Prompting best practices も出力の形式と制約を具体的に書くよう勧めています。この場面では、どの表記にそろえるか(YYYY-MM-DD など)の規則をプロンプトに書き、スキーマのフィールドの説明にも書いておくのが当てはまります。なお、Structured outputs は文字列の format(date など)と簡単な正規表現の pattern に対応しているので、スキーマの側でも表記を制約できます。\n\n見分け方: (b)の「さらに厳密に」は、何をどう厳密にするかが定まっていません。型や必須の指定を厳しくしても文字列の表記はそろわず、表記を制約するなら、format や pattern でそろえる表記そのものを指定する必要があります。表記をそろえない(c)と下流で処理できず、日付を抽出しない(d)と必要な情報が失われます。",
+  "explanation": "正解は a です。Increase output consistency は出力の形式を正確に定めるよう勧め、Prompting best practices も望む出力の形式と制約を具体的に書くよう勧めています。この場面では、文字列型というだけではどの表記にそろえるかが決まらないので、規則(YYYY-MM-DD など)をプロンプトとフィールドの説明に書くのが当てはまります。なお Structured outputs が対応する JSON Schema の機能には、文字列の format(date など)と簡単な正規表現の pattern もあり、スキーマの側で format や pattern を指定することもできます。\n\n見分け方: required(b)はフィールドが必ず出ることを保証しますが、表記は決めません。「統一された形式で」とだけ書く(c)と、そろえる先が定まりません。null を許す(d)のは値が読み取れないときの扱いで、表記はそろいません。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency",
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",

@@ -507,40 +507,41 @@
   "domain": "claude-code-configuration-and-workflows",
   "type": "single",
   "scenarioId": "codegen",
-  "stem": "セッションによって Claude Code の挙動が違う。どの CLAUDE.md やルールが読み込まれているかを確かめたい。使うコマンドはどれか。",
+  "stem": "セッションによって Claude Code の挙動が違う。どの CLAUDE.md やルールが読み込まれているかを、まず確かめたい。ドキュメントの勧めに沿うコマンドはどれか。",
   "choices": [
    {
     "id": "a",
-    "text": "/memory",
-    "why": "CLAUDE.md などのメモリファイルの場所を一覧し、開いて編集できる。読み込まれたかは /context の内訳でも確かめられる。"
+    "text": "/memory を実行し、一覧に表示されたユーザーとプロジェクトの CLAUDE.md、CLAUDE.local.md の項目を確かめる",
+    "why": "/memory はメモリファイルの場所を一覧し、開いて編集するためのコマンドで、一覧にはまだ存在しないファイルの項目も出る。読み込まれたかの確認にはならない。"
    },
    {
     "id": "b",
-    "text": "/clear",
-    "why": "会話を消すコマンドである。"
+    "text": "/compact を実行し、要約のあとにも守られている指示から、どのファイルが読み込まれたかを推し量る",
+    "why": "/compact はここまでの会話を要約してコンテキストを空けるコマンドで、読み込まれたファイルの内訳は示さない。"
    },
    {
     "id": "c",
-    "text": "/compact",
-    "why": "会話を要約するコマンドである。"
+    "text": "/context を実行し(fullscreen では /context all)、Memory files などの内訳を見る",
+    "why": "Debug your configuration は、CLAUDE.md やルールが読み込まれているかを、まず /context の内訳で確かめるよう勧めている。fullscreen では内訳が畳まれるので /context all を使う。"
    },
    {
     "id": "d",
-    "text": "/review",
-    "why": "確認の用途ではない。"
+    "text": "/clear で新しい会話を始め、空のコンテキストで同じ依頼を試して、前のセッションとの挙動を見比べる",
+    "why": "/clear は空のコンテキストで新しい会話を始めるコマンドで、何が読み込まれたかは示さない。"
    }
   ],
   "answer": [
-   "a"
+   "c"
   ],
-  "explanation": "正解は a です。Claude Code のドキュメント(How Claude remembers your project)によると、/memory はユーザーとプロジェクトの CLAUDE.md、CLAUDE.local.md などのメモリファイルの場所を一覧し、選んだファイルをエディタで開いて編集できます。ただし Debug your configuration のページは、CLAUDE.md やルールが読み込まれたかを、まず /context(fullscreen では /context all)の内訳で確かめるよう勧め、/memory はその後に詳しく見るコマンドとしています。/memory の一覧には、まだ存在しないファイルの項目も含まれます。\n\n見分け方: /clear(b)は空のコンテキストで新しい会話を始め、/compact(c)は会話を要約してコンテキストを空けます。/review(d)は差分をレビューする /code-review の別名です。",
+  "explanation": "正解は c です。Claude Code のドキュメント(Debug your configuration)によると、/context は現在のセッションのコンテキストを占めるものをカテゴリごとに示し、CLAUDE.md、ルール、スキルの説明が読み込まれているかを、まずこれで確かめるよう勧めています。fullscreen では内訳が畳まれるので /context all を使います(Memory のページも、/context all の Memory files の一覧で確かめるよう書いています)。挙動の違いの原因を探るこの場面では、まず何が読み込まれたかを見るのが当てはまります。\n\n見分け方: /memory(a)はメモリファイルの場所を一覧して開き、編集するためのもので、まだ存在しないファイルも一覧に出るため、読み込まれた証拠になりません。/compact(b)は会話を要約し、/clear(d)は新しい会話を始めるもので、どちらも読み込まれたものの内訳は示しません。",
   "refs": [
-   "https://code.claude.com/docs/en/memory",
    "https://code.claude.com/docs/en/debug-your-config",
+   "https://code.claude.com/docs/en/memory",
    "https://code.claude.com/docs/en/commands"
   ],
   "topics": [
-   "claude-md"
+   "claude-md",
+   "claude-code-context"
   ]
  },
  {
@@ -1048,39 +1049,40 @@
   "domain": "claude-code-configuration-and-workflows",
   "type": "single",
   "scenarioId": "devtools",
-  "stem": "新しいメンバーが、コードベースの構成(どこに何があるか、よく使うコマンド)を、Claude Code に毎回説明している。改善策はどれか。",
+  "stem": "新しいメンバーが、テストやビルドのコマンド、コードからは分からない注意点を、Claude Code に毎回説明し直している。チームとしての改善策はどれか。",
   "choices": [
    {
     "id": "a",
-    "text": "プロジェクトの CLAUDE.md に、構成の概要と、よく使うコマンドを書く",
-    "why": "毎回、自動的に読み込まれる。"
+    "text": "プロジェクトの CLAUDE.md に、よく使うコマンドと、コードから読み取れない注意点を書いてコミットする",
+    "why": "プロジェクトの CLAUDE.md はバージョン管理でチームと共有され、各セッションの開始時に読み込まれる。Best practices は、Claude がコードから読み取れないことだけを書くよう勧めている。"
    },
    {
     "id": "b",
-    "text": "毎回、説明を続ける",
-    "why": "手間がかかる。"
+    "text": "各メンバーが CLAUDE.local.md に同じ説明を書き、自分の環境のセッションでだけ読み込ませるようにする",
+    "why": "CLAUDE.local.md は自分だけの、そのプロジェクト用の指示で、.gitignore に加えるファイル。チームとは共有されず、各自が同じ内容を書くことになる。"
    },
    {
     "id": "c",
-    "text": "構成の説明を、各自の端末のメモに書いておき、必要なときに貼り付けて使ってもらうようにする",
-    "why": "共有されない。"
+    "text": "auto memory に任せ、Claude が説明を覚えて次のセッションから使うようになるまで説明を続ける",
+    "why": "auto memory はマシンごとの記録で、ほかのマシンとは共有されない。何を保存するかも Claude が決める。"
    },
    {
     "id": "d",
-    "text": "説明を、省く",
-    "why": "毎回の説明をやめるだけでは、テストやビルドの正確なコマンドなど、コードから読み取れない情報が伝わらない。構成そのものは Claude がリポジトリを読んで把握できる。"
+    "text": "各メンバーの ~/.claude/CLAUDE.md に書き、各自のマシンのすべてのプロジェクトで読み込ませる",
+    "why": "ユーザーの CLAUDE.md は自分の全プロジェクト向けの個人の指示で、チームとは共有されない。リポジトリ固有の指示は、プロジェクトの CLAUDE.md をコミットする。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "正解は a です。Claude Code のドキュメント(How Claude remembers your project)によると、CLAUDE.md はセッションの開始時に読み込まれ、毎回説明し直すことになる内容を書く場所で、ビルドのコマンドや規約など毎回のセッションで必要な事実を書くよう勧めています。この場面は毎回の説明をやめたいので、プロジェクトの CLAUDE.md に書いてコミットするのが当てはまります。ただしベストプラクティスは、Claude はリポジトリを自分で読むとして、アーキテクチャやファイル構成の説明を古い助言に挙げ、コマンドやコードから読み取れない点に絞るよう勧めています。\n\n見分け方: 説明を続ける(b)のは、CLAUDE.md が置き換える手間そのものです。各自のメモを貼る(c)のは、チームで共有されません。説明を省く(d)と、テストやビルドの正確なコマンドなど、コードから読み取れない情報が伝わりません。",
+  "explanation": "正解は a です。Claude Code の Memory のページによると、CLAUDE.md は毎回説明し直すことになる内容を書く場所で、各セッションの開始時に読み込まれ、プロジェクトの CLAUDE.md はバージョン管理でチームと共有されます。Best practices は、正確なテストのコマンド、紛らわしい箇所、リポジトリにない決定など、Claude がコードから読み取れないことだけを書くよう勧め、アーキテクチャやファイル構成を書く助言は古いものとしています(Memory のページは project layout を書く例に残しています)。この場面の説明はまさにそうした内容です。\n\n見分け方: CLAUDE.local.md(b)と ~/.claude/CLAUDE.md(d)は自分だけの指示で、チームとは共有されません。auto memory(c)はマシンごとの記録でほかのマシンと共有されず、何を保存するかも Claude が決めます。",
   "refs": [
-   "https://code.claude.com/docs/en/memory",
-   "https://code.claude.com/docs/en/best-practices"
+   "https://code.claude.com/docs/en/best-practices",
+   "https://code.claude.com/docs/en/memory"
   ],
   "topics": [
-   "claude-md"
+   "claude-md",
+   "claude-code-config-scopes"
   ]
  },
  {
@@ -1512,41 +1514,43 @@
   "domain": "claude-code-configuration-and-workflows",
   "type": "single",
   "scenarioId": "cicd",
-  "stem": "CI 用の Claude Code の権限の設定を、チームで管理したい。置き場所はどれか。",
+  "stem": "CI のランナーで、チェックアウトしたリポジトリに対して claude -p を実行している。このフォルダで workspace trust のダイアログを受け入れたことはない。CI で事前に許可するツールの設定を、リポジトリでチームとして管理したい。適切な方法はどれか。",
   "choices": [
    {
     "id": "a",
-    "text": "リポジトリの .claude/settings.json",
-    "why": "共有の設定として、バージョン管理できる。"
+    "text": ".claude/settings.json の permissions.allow に許可するツールを書いてコミットし、CI の claude -p にそのまま自動で読み込ませる",
+    "why": "プロジェクトの .claude/settings.json の permissions.allow は、workspace trust を受け入れた後にだけ使われる。claude -p と SDK は trust のダイアログを出さないので、信頼していないフォルダでは allow が効かない(deny と ask は効く)。"
    },
    {
     "id": "b",
-    "text": "各自の ~/.claude/settings.json",
-    "why": "CI の環境には存在しない。"
+    "text": "許可のルールを書いた CI 用の設定ファイルをコミットし、claude -p に --settings で渡す(GitHub Actions では settings 入力)",
+    "why": "--settings は設定の JSON ファイルのパスか JSON 文字列を受け取り、そのセッションに適用する。GitHub Actions のページは、ツールを与える方法として settings 入力の permissions.allow を挙げている。"
    },
    {
     "id": "c",
-    "text": ".claude/settings.local.json",
-    "why": "個人用で、コミットしない。"
+    "text": ".claude/settings.local.json の permissions.allow に許可するツールを書き、git で追跡してリポジトリでチームと共有しておく",
+    "why": "settings.local.json は自分だけの、そのプロジェクト用の設定で、通常はコミットしない。git で追跡すると、リポジトリが与えるものとして扱われ、信頼するまで allow ルールは使われない。"
    },
    {
     "id": "d",
-    "text": "CI サービスの画面に、手で入力する",
-    "why": "変更の履歴が残らない。"
+    "text": "各メンバーの ~/.claude/settings.json に同じ permissions.allow を書き、CI を含めたチーム全員の設定をそろえておく",
+    "why": "ユーザー設定は、そのマシンのすべてのプロジェクトで自分に適用される個人の設定で、CI のランナーには届かない。"
    }
   ],
   "answer": [
-   "a"
+   "b"
   ],
-  "explanation": "正解は a です。Claude Code のドキュメント(Settings files and precedence)によると、.claude/settings.json は共有のプロジェクトの設定で、コミットすればリポジトリを取得した全員が同じ権限、フック、プラグインの設定を使います。この場面はチームで管理したいので、リポジトリの共有の設定が当てはまります。ただし Configure permissions によると、信頼の確認を経ていないフォルダの claude -p では、このファイルの permissions.allow は使われません(deny と ask は効きます)。\n\n見分け方: 各自のユーザー設定(b)は自分の全プロジェクト用で、CI の環境には届きません。settings.local.json(c)はそのプロジェクトでの自分だけの設定で、コミットされません。CI サービスの画面に手で入れる(d)と設定がリポジトリの外に置かれ、変更を差分としてレビューできません。",
+  "explanation": "正解は b です。Configure permissions によると、プロジェクトの .claude/settings.json の permissions.allow は workspace trust を受け入れた後にだけ使われ、claude -p と SDK はそのダイアログを出しません。信頼したことのないフォルダで -p を実行するこの CI では、allow が使われません。GitHub Actions のページは settings 入力の permissions.allow でツールを与える方法を挙げており、CLI reference の --settings も設定の JSON ファイルを受け取ります。\n\n見分け方: .claude/settings.json(a)は、この CI では allow が使われません。git で追跡した settings.local.json(c)も信頼を待ちます。各自のユーザー設定(d)は、CI には届きません。",
   "refs": [
-   "https://code.claude.com/docs/en/settings",
    "https://code.claude.com/docs/en/permissions",
-   "https://code.claude.com/docs/en/github-actions"
+   "https://code.claude.com/docs/en/github-actions",
+   "https://code.claude.com/docs/en/cli-reference",
+   "https://code.claude.com/docs/en/settings"
   ],
   "topics": [
-   "claude-code-config-scopes",
-   "claude-code-permissions"
+   "claude-code-permissions",
+   "claude-code-headless",
+   "claude-code-config-scopes"
   ]
  },
  {
