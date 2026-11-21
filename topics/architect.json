@@ -1270,5 +1270,37 @@
    }
   ],
   "checked": "2026-11-21"
+ },
+ {
+  "id": "api-errors",
+  "title": "API のエラーと再試行",
+  "summary": "Claude API のエラーは、HTTP ステータスコードと、type と message を必ず持つ JSON の error オブジェクトで返ります。主なものは、400 invalid_request_error(リクエストの形式や内容の問題)、401 authentication_error(API キーの問題)、402 billing_error(請求や支払いの情報の問題)、403 permission_error、404 not_found_error、409 conflict_error、413 request_too_large、429 rate_limit_error、500 api_error(Anthropic 内部の予期しないエラー)、504 timeout_error、529 overloaded_error(API が一時的に過負荷)です。再試行で解決する一時的な失敗と、リクエストを直す必要がある失敗を分けて扱います。公式 SDK は、接続エラー、レート制限、5xx などの一時的な失敗を、指数バックオフで既定 2 回自動的に再試行し、retry-after ヘッダーがあれば従います。すべての応答には一意の request-id ヘッダーが付き、エラーの本文の request_id と同じ値なので、サポートへの問い合わせに添えます。",
+  "points": [
+   "再試行の回数は max_retries(TypeScript では maxRetries)で変更・無効化できる。Python SDK の自動再試行の対象は、接続エラー、408、409、429、500 以上",
+   "Python SDK の既定のタイムアウトは 10 分で、タイムアウトしたリクエストも既定で 2 回再試行される",
+   "SDK はエラーを型付きの例外として送出する。メッセージの文字列を照合するのではなく、例外の型で捕まえ、具体的なクラスから処理する",
+   "429 の原因は、レート制限、使用ティアの月の支出上限、Claude Code のワークスペースの支出上限。ティアの上限による 429 には retry-after がなく、利用が再開するまで失敗し続ける",
+   "自分で設定した組織やワークスペースの支出上限(spend limit)に達すると、429 ではなく 400 が返る",
+   "409 conflict_error はリソースの状態との競合で、競合を解消してから再試行する。500 api_error は指数バックオフで再試行し、続くときはリクエスト ID を添えてサポートに連絡する",
+   "リクエストの大きさの上限は、Messages API と Token Counting API が 128 MB、Message Batches API が 256 MB、Files API が 500 MB。超えると 413 request_too_large",
+   "長時間のリクエスト(特に 10 分を超えるもの)には、ストリーミングか Message Batches API を使う。ストリーミング(SSE)では、200 の応答の後にエラーが起きることがある",
+   "メッセージが CORS requests are not allowed で始まる 401 は、API キーの問題ではなく、ブラウザから直接呼び出したことによる",
+   "API のバージョン管理の方針により、エラーのオブジェクトの値は増えることがあり、新しい type が現れることもある"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/api/errors",
+    "title": "Claude API errors"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/python",
+    "title": "Python SDK"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/api/overview",
+    "title": "API overview"
+   }
+  ],
+  "checked": "2026-11-21"
  }
 ]
