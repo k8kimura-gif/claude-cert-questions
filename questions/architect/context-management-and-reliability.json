@@ -31,10 +31,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "段階的な要約には、数値、割合、日付、顧客が述べた期待値を曖昧にする危険があります。確定した事実は構造化して別に持ち、要約とは独立に引き継ぎます。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、コンパクションでは何を残し何を捨てるかの選択が要で、削りすぎると後で重要になる細かな文脈を失うと述べ、コンテキストの外にメモを書き残して後で読み戻す構造化したメモを勧めています。Memory tool のページも、コンパクションと併用し、要約を経ても残すべき情報はメモリで保つよう勧めています。この場面の返金額や注文番号は後の判断に欠かせない事実なので、要約の対象から外して別のブロックで毎回渡すのが当てはまります。\n\n見分け方: 要約をさらに短くする(b)のは、記事が注意する削りすぎに当たります。あふれるまで全履歴を送る(c)と、トークンが増えるほど想起が落ちる context rot を招き、入力がコンテキストウィンドウを超えればリクエストは 400 エラーになります。顧客に毎回書いてもらう(d)のは、事実の管理を顧客に移すだけで、取り違えの原因に手を付けていません。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
    "https://platform.claude.com/docs/en/build-with-claude/compaction"
+  ],
+  "topics": [
+   "compaction",
+   "context-engineering"
   ]
  },
  {
@@ -69,10 +74,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "引き継ぎでは、受け手が持っていない文脈を補います。構造化した要約により、顧客が同じ説明を繰り返す必要がなくなります。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、システムプロンプトの典型的な失敗の 1 つに、共有していない文脈を前提にすることを挙げ、コンテキストには最小限で情報価値の高いトークンを選ぶよう勧めています。記事 How we built our multi-agent research system も、新しいコンテキストに移るときは丁寧な引き継ぎで継続性を保つとしています。この場面の担当者は会話の記録を見られないので、顧客 ID、原因、実施済みの対応、推奨する次の対応をまとめて渡すのが当てはまります。\n\n見分け方: 「至急お願いします」の一文(b)や最後のメッセージだけ(d)では、担当者が持っていない経緯と対応が伝わらず、顧客に聞き直すことになります。ツール呼び出しの生ログ(c)は、情報は含んでいても情報価値の高い部分に絞られておらず、必要な事実を探す手間を担当者に負わせます。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "context-handoff",
+   "context-engineering"
   ]
  },
  {
@@ -108,10 +117,14 @@
    "a",
    "b"
   ],
-  "explanation": "長いセッションではコンテキストが劣化します。対策は、発見を外部のメモに残す、サブエージェントに調査を任せる、構造化した要約で新しいセッションに引き継ぐ、/compact を使う、といったものです。",
+  "explanation": "正解は a と b です。記事 Effective context engineering for AI agents は、トークンが増えるほどコンテキストから情報を正確に思い出す力が下がる現象を context rot と呼び、長い作業の手法として、コンテキストの外にメモを書いて後で読み戻す構造化したメモと、要約して新しいコンテキストで続けるコンパクションを挙げています。Claude Code のベストプラクティスも、関係のない作業の間の /clear と、残す内容を指定した /compact を勧めています。前半のクラス名が出なくなったのは、この想起の低下に当たると考えられます。\n\n見分け方: 同じ質問の繰り返し(c)は、コンテキストにやり取りを積み増すだけです。ベストプラクティスも、2 回直しても直らないときは 3 回目を重ねるより、/clear して新しいプロンプトを書くよう勧めています。すべてのファイルの読み直し(d)も、コンテキストの消費を増やし、劣化の原因を強めます。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
    "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "context-engineering",
+   "claude-code-context"
   ]
  },
  {
@@ -146,10 +159,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "要約の段階では、出典の帰属が失われやすくなります。主張と出典の対応を構造化したまま下流に渡します。信頼できる出典どうしで数値が食い違う場合は、一方を恣意的に選ばず、両方を出典付きで示します。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system によると、調査の後で CitationAgent が文書とレポートを処理して引用箇所を特定し、すべての主張を出典に帰属させます。記事の付録は、サブエージェントの成果を外部に保存して軽い参照だけを渡すと、多段の処理での情報の損失を防げるとしています。この場面では統合の段階で帰属が失われているので、主張と出典の対応を構造化したまま下流へ渡すのが当てはまります。\n\n見分け方: 末尾の URL 一覧(b)では、どの主張がどの出典に基づくかが分かりません。統合の後で合いそうな出典を探し直す(c)と、元の根拠と一致する保証がありません。記事の CitationAgent も統合の後に働きますが、照合するのは調査で集めた文書です。出典の記載をやめる(d)のは、出典付きのレポートを作るというシステムの要件に反します。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system",
+   "https://www.anthropic.com/research/multi-agent-research-system",
    "https://platform.claude.com/docs/en/build-with-claude/citations"
+  ],
+  "topics": [
+   "multi-agent-systems",
+   "citations"
   ]
  },
  {
@@ -184,10 +201,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "エラーは握りつぶさず、回復に使える文脈を付けて伝えます。アクセスの失敗(再試行の判断が必要)と、有効な空の結果(該当なし)は区別します。最終レポートには、調査できなかった範囲を明記します。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system は、ツールが失敗していることをエージェントに知らせて適応させるとうまく働くとし、再試行の仕組みや定期的なチェックポイントのような決定的な安全策と組み合わせたと述べています。記事 Writing effective tools for agents も、エラーの応答では不透明なエラーコードではなく、具体的で行動につながる内容を伝えるよう勧めています。この場面では、失敗の種類、試した検索語、部分的な結果、代替案を返せば、コーディネーターが再試行するか別の手段を取るかを判断できます。\n\n見分け方: 空の結果を成功として返す(b)と、「該当する情報がない」という正当な結果と区別できず、レポートに気付かれない穴が開きます。一文だけの報告(c)には、回復の判断に必要な情報がありません。調査全体を終了させる(d)と、他のサブエージェントの成果まで失います。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system",
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://www.anthropic.com/research/writing-tools-for-agents"
+  ],
+  "topics": [
+   "multi-agent-systems",
+   "writing-tools-for-agents"
   ]
  },
  {
@@ -222,10 +243,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "サブエージェントは、独立したコンテキストで詳細な調査を行い、圧縮した結果だけを返します。調査の各段階の要点を要約して次の段階の入力にすると、長い調査でも文脈を保てます。",
+  "explanation": "正解は a です。Agent SDK のドキュメント(Subagents in the SDK)によると、サブエージェントはそれぞれ自分の会話で動き、途中のツール呼び出しと結果はサブエージェントの中にとどまり、親には最後のメッセージだけが返ります。記事 Effective context engineering for AI agents も、メインのエージェントが高い水準の計画で調整し、サブエージェントが詳しい調査をして要約だけを返す構成を示しています。認証、課金、通知は独立した観点なので、この構成が当てはまります。\n\n見分け方: メインのエージェントがすべてのファイルを読む(b)と、探索の結果がメインのコンテキストにたまります。調査結果をシステムプロンプトに追記し続ける(c)のも、コンテキストを増やし続けるだけです。古いメッセージの無作為な削除(d)は、記事が要とする「何を残し何を捨てるか」の選択をしておらず、重要な情報を失うおそれがあります。",
   "refs": [
-   "https://code.claude.com/docs/en/sub-agents",
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   "https://code.claude.com/docs/en/agent-sdk/subagents",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "claude-code-subagents",
+   "context-engineering"
   ]
  },
  {
@@ -260,10 +285,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "集計した精度は、区分ごとの弱点を隠すことがあります。信頼度の高い抽出からも層別に無作為抽出して誤り率を測り続けると、新しい誤りの傾向を検出できます。フィールド単位の信頼度は、正解付きの検証データで較正します。",
+  "explanation": "正解は a です。公式ドキュメント(Define success criteria and build evaluations)は、評価を実際のタスクの分布に合わせ、境界事例も含めるよう勧め、多くの用途で複数の観点の評価が要るとしています。記事 Demystifying evals for AI agents も、実際の使われ方と合わない評価は誤った安心感を生みうると指摘しています。全体の 97% は区分の差をならした数値なので、この場面では確認を省く前に区分ごとの精度を確かめるのが当てはまります。区分ごとに測ることは、この原則の当てはめです。\n\n見分け方: 全体の数値だけで省く(b)と、特定の区分に集中した誤りを見逃します。モデルが自己申告する信頼度をそのまま使う(c)のは、較正していない値に頼ることです。記事も、モデルによる採点には人との較正が必要としています。苦情を待つ(d)について、記事は、利用者の報告はまばらで偏りがあり、それに主に頼ると利用者に悪影響が出うるとしています。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
-   "https://platform.claude.com/docs/en/test-and-evaluate/define-success"
+   "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "human-review-and-monitoring",
+   "success-criteria-evals"
   ]
  },
  {
@@ -298,10 +327,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールの結果は、関連性に比べて過大なトークンを消費しがちです。必要な項目に絞ってから、履歴に加えます。",
+  "explanation": "正解は a です。記事 Writing effective tools for agents は、ツールは判断に役立つ情報だけを返し、大きくなりうる応答には絞り込みや切り詰めなどを入れるよう勧めています。記事 Effective context engineering for AI agents も、コンテキストを収穫逓減のある有限の資源とし、履歴の深くにある古いツール結果の消去を、最も安全で手軽なコンパクションの 1 つに挙げています。返品の判断に必要なのが 5 項目なら、残りの 35 項目以上は判断に使わないトークンなので、この場面では必要な項目に絞ってコンテキストに積むのが当てはまります。\n\n見分け方: すべての項目を 2 回ずつ送る(b)と、コンテキストの圧迫が倍になります。顧客に注文の内容を尋ねる(c)と、システムが持つ正確な注文の情報を使えなくなります。max_tokens(d)は生成する出力の上限で、入力に積まれたツール結果の量は変わりません。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://www.anthropic.com/research/writing-tools-for-agents",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "writing-tools-for-agents",
+   "context-engineering",
+   "context-editing"
   ]
  },
  {
@@ -310,36 +344,38 @@
   "domain": "context-management-and-reliability",
   "type": "single",
   "scenarioId": "support",
-  "stem": "長いプロンプトの中ほどに置いた情報が、見落とされやすい。重要な事実を確実に参照させる配置はどれか。",
+  "stem": "サポートのエージェントに、長い社内資料(製品の手引きや返品の規定)と顧客の過去の問い合わせ履歴をプロンプトに入れて、顧客の質問に答えさせる。応答の質を上げる配置として、公式のプロンプトの指針に沿うものはどれか。",
   "choices": [
    {
     "id": "a",
-    "text": "要点のまとめを先頭に置き、詳細は見出しを付けて整理する",
-    "why": "先頭と末尾の情報は、参照されやすい。"
+    "text": "何を答えるべきかが先に伝わるよう、質問と指示を先頭に置き、長い資料と履歴をその後に続ける",
+    "why": "Prompting best practices は、長い資料を質問・指示・例より上に置くよう勧めている。質問を先頭に置くのは逆の配置である。"
    },
    {
     "id": "b",
-    "text": "前後の文脈で理解されるよう、重要な事実を中ほどに埋め込む",
-    "why": "見落とされやすい位置である。"
+    "text": "長い資料と履歴をプロンプトの上部に置いて XML タグで区切り、質問と指示は末尾に置く",
+    "why": "長い資料を上部に、質問を末尾に置き、複数の文書は <document> タグで 1 つずつ囲むという指針に沿う。"
    },
    {
     "id": "c",
-    "text": "重要でなさそうな事実を削除して、メモのファイルを常に短く保つ",
-    "why": "参照できなくなる。"
+    "text": "資料と履歴を、区切りのタグを付けずに 1 つの文章につなげて上部に置き、質問は末尾に置く",
+    "why": "位置は指針に沿うが、複数の文書は <document> タグで 1 つずつ囲み、出典などをサブタグで分けるよう勧められている。"
    },
    {
     "id": "d",
-    "text": "偏りを避けるため、すべての情報を無作為な順序に並べ替える",
-    "why": "見落としが、増える。"
+    "text": "資料と履歴をそれぞれ <document> タグで囲み、質問と指示を先頭と末尾の両方に置いて資料を挟む",
+    "why": "タグの使い方は指針に沿うが、指針は長い資料を質問や指示より上に置くよう勧めており、先頭にも質問と指示を置く配置はこれに沿わない。"
    }
   ],
   "answer": [
-   "a"
+   "b"
   ],
-  "explanation": "長い入力では、中ほどに置いた情報が見落とされやすい傾向が知られています。公式のドキュメントは、長い資料をプロンプトの上部に、質問や指示を末尾に置くことを勧めています。重要な内容は、先頭にまとめて示します。",
+  "explanation": "正解は b です。公式の Prompting best practices は、20k トークン以上の大きな文書やデータの多い入力では、長い資料をプロンプトの上部、つまり質問、指示、例より前に置くよう勧め、質問を末尾に置くとテストで応答の質が最大 30% 上がったとしています。複数の文書は <document> タグで囲み、<document_content> と <source> などのサブタグで内容とメタデータを分けるよう勧めています。この場面では、社内資料と履歴をタグで区切って上部に置き、顧客の質問と指示を末尾に置くのが当てはまります。\n\n見分け方: 質問と指示を先頭に置く(a)のは、勧められている配置の逆です。タグを付けずにつなげる(c)と、位置は合っていても、文書ごとに囲む勧めに沿いません。タグで囲んでも、質問と指示を先頭にも置いて資料を挟む(d)と、資料を質問や指示より上に置く勧めに沿いません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips",
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "long-context-prompting"
   ]
  },
  {
@@ -363,7 +399,7 @@
    {
     "id": "c",
     "text": "履歴はサーバーが会話ごとに保持しているので、クライアントは新しい発言だけを送ればよい",
-    "why": "保持しない。"
+    "why": "通常の Messages API はステートレスで、会話を保持しない。ベータの message threads も保持は短時間で、失効すれば会話全体を送り直す。"
    },
    {
     "id": "d",
@@ -374,10 +410,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "履歴を毎回渡すことで、Claude は経緯を踏まえて応答します。長くなった場合は、重要な事実を保ったまま整理します。",
+  "explanation": "正解は a です。API リファレンスと Using the Messages API によると、Messages API はステートレスで、複数ターンの会話では、それまでの会話の履歴全体を毎回 API に送ります。履歴を渡すことで、Claude はそれまでの経緯を踏まえて応答できます。この場面のサポートでも一貫した応答には毎回の履歴が要り、長くなった履歴はコンパクションなどで整理して渡せます。\n\n見分け方: 最新のメッセージだけ(b)や顧客の名前だけ(d)では、それまでの経緯が伝わりません。サーバーが会話を保持する(c)のは、通常の Messages API には当てはまりません。ベータの message threads は会話をサーバーに短時間保持しますが、最後のリクエストから 5 分で失効するベストエフォートの仕組みで、続けられないときは会話全体を送り直します。Agent SDK のセッションも、会話の履歴を SDK の側でディスクに保存して再開に使う仕組みです。",
   "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/working-with-messages",
    "https://platform.claude.com/docs/en/api/messages",
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   "https://platform.claude.com/docs/en/build-with-claude/message-threads"
+  ],
+  "topics": [
+   "messages-api-basics"
   ]
  },
  {
@@ -412,10 +452,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "進行できない場合は、状況を構造化して引き継ぎます。何が確認でき、何ができなかったかを明確にします。",
+  "explanation": "正解は a です。記事 Building effective agents は、エージェントは各ステップで環境から ground truth(ツール呼び出しの結果など)を得て進み具合を評価し、チェックポイントや障害に当たったときには人のフィードバックを待てると述べています。ツールの障害で進めないこの場面は、人に戻す場面に当たります。受け手がすぐ続きに着手できるよう、顧客の要望、確認できた事実、試した操作と失敗の内容、残りの作業を渡します。\n\n見分け方: 「対応できません」の一言(b)や何も伝えずに終える(c)では、担当者は状況を最初から調べ直すことになり、顧客は放置されます。失敗を伏せて成功と伝える(d)のは虚偽です。Prompting best practices が支払いや口座番号を扱うエージェントに勧める指示も、確認を行ったと言うのは、そのセッションのツールの結果が行動の前にそれを示したときだけにするよう求めています。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "context-handoff",
+   "autonomous-agents"
   ]
  },
  {
@@ -450,10 +494,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "全体の数値は、種類ごとの弱点を隠します。層別の抜き取りによる確認を続けると、新しい誤りの傾向も見つかります。",
+  "explanation": "正解は a です。記事 Demystifying evals for AI agents は、本番の性能を知るには、利用者のフィードバック、会話記録を人が読む確認、人による体系的な評価などを組み合わせるよう勧め、会話記録は毎週抜き出して読むよう述べ、人の採点の方法に抜き取り(spot-check sampling)を挙げています。この場面では、案件の種類ごとに無作為に抜き出して人が確認すれば、種類ごとの誤りの偏りも測れます。種類ごとに分けて抜くのは、この原則の当てはめです。\n\n見分け方: 「解決済み」という自己申告をそのまま集計する(b)と、誤りに気付けません。記事 Effective harnesses for long-running agents も、Claude が十分に確かめずに完了と記す失敗を報告しています。苦情の来た案件だけ(c)について、記事は、利用者の報告はまばらで自己選択的で、深刻な問題に偏るとしています。返金の案件だけ(d)では、他の種類の誤りを見逃します。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
-   "https://platform.claude.com/docs/en/test-and-evaluate/define-success"
+   "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
+   "https://www.anthropic.com/research/effective-harnesses-for-long-running-agents"
+  ],
+  "topics": [
+   "human-review-and-monitoring"
   ]
  },
  {
@@ -488,10 +535,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "会話を再開するときは、経緯は引き継ぎつつ、状態を表すデータは取り直します。",
+  "explanation": "正解は a です。記事 Building effective agents は、エージェントが各ステップで環境から ground truth(ツール呼び出しの結果など)を得て進み具合を評価することが重要だとしています。記事 Effective context engineering for AI agents は、ファイルパスやリンクのような軽い識別子を持ち、データは実行時にツールで読み込む just in time の方法を紹介しています。前回の会話に残る注文の状態は取得した時点の値なので、この場面では経緯は引き継ぎつつ、注文番号をもとに lookup_order で状態を取り直すのが当てはまります。\n\n見分け方: 履歴にある状態をそのまま案内する(b)と、その後に変わった状態を見落とし、誤った案内になりえます。履歴をすべて捨てる(c)と、前回の経緯が失われます。顧客に状態を尋ねる(d)のは、システムが持つ正確な状態の代わりに、顧客の把握に頼ることになります。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://code.claude.com/docs/en/agent-sdk/overview"
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "autonomous-agents",
+   "context-engineering"
   ]
  },
  {
@@ -526,10 +577,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "要約には、金額や日付などの具体的な事実を、曖昧にせずに含めます。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、コンパクションの例として、Claude Code が設計上の決定、未解決のバグ、実装の詳細を残し、重複したツール出力を捨てることを挙げ、削りすぎると後で重要になる細かな文脈を失うと注意しています。記事 How we built our multi-agent research system も、新しいコンテキストに移るときは丁寧な引き継ぎで継続性を保つとしています。この場面では、顧客の識別情報、確定した事実、行った対応、未解決の事項が、続きに欠かせない状態に当たります。\n\n見分け方: 全履歴をそのまま複製する(b)と、新しいコンテキストも同じ長さで始まり、切り替える意味がありません。最後のメッセージだけ(c)では経緯が伝わらず、何も引き継がない(d)と最初からやり直しになります。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://platform.claude.com/docs/en/build-with-claude/compaction"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "context-handoff",
+   "compaction"
   ]
  },
  {
@@ -564,10 +619,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "調査の詳細はサブエージェントに閉じ込め、メインの会話には結論だけを残します。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Create custom subagents)によると、Claude は、変更を加えずにコードベースを検索・理解する必要があるとき、組み込みの Explore サブエージェントに任せ、探索の結果をメインの会話のコンテキストに入れずに済ませます。サブエージェントは自分のコンテキストで作業し、要約だけを返します。ベストプラクティスも、広いコードベースの検索は Claude が自分から Explore に回すと説明しています。この場面の「メインの会話を検索結果で埋めたくない」は、まさにこの用途です。\n\n見分け方: 関係しそうなファイルをすべてメインの会話で読む(b)と、検索結果やファイルの中身が、その後のセッションにずっと残ります。調査を省く(c)と、必要な理解が得られません。max_tokens(d)は生成する出力の上限で、入力の圧迫は変わりません。",
   "refs": [
    "https://code.claude.com/docs/en/sub-agents",
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "claude-code-subagents"
   ]
  },
  {
@@ -602,10 +660,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "段階ごとの要約は、長い作業で文脈を保つ基本的な方法です。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system は、長い会話の管理として、エージェントが完了した作業の段階を要約し、次のタスクに進む前に重要な情報を外部のメモリに保存する方法を紹介しています。記事 Effective context engineering for AI agents も、最小限で情報価値の高いトークンを選ぶよう勧めています。調査、設計、実装と段階を進めるこの場面では、各段階の結論を要約して次の段階の前提にするのが当てはまります。\n\n見分け方: 全段階の出力をそのまま残す(b)と、次の段階に要らない詳細でコンテキストが埋まります。前の段階の内容をすべて忘れさせる(c)と、次の段階の前提となる結論まで失います。段階を分けない(d)について、Prompting best practices は、Claude は一度にすべてをこなそうとせず、少しずつ着実に進めることで長い作業の方向を保つと説明しています。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://platform.claude.com/docs/en/build-with-claude/compaction"
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "multi-agent-systems",
+   "context-engineering"
   ]
  },
  {
@@ -629,7 +692,7 @@
    {
     "id": "c",
     "text": "進み具合を、会話の中で随時報告させて管理し、ファイルなどの外部には何も書き出さないようにする",
-    "why": "セッションと一緒に、失われる。"
+    "why": "進み具合が会話の履歴にしか残らず、新しいコンテキストからは読み戻せない。"
    },
    {
     "id": "d",
@@ -640,10 +703,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "長い作業では、状態を外部のファイルに残します。再開のときは、その内容をプロンプトに読み込みます。",
+  "explanation": "正解は a です。Prompting best practices は、複数のコンテキストウィンドウにまたがる作業について、進み具合を progress.txt のようなメモに、テストの状態を tests.json のような構造化した形式に残し、git でも状態を追うよう勧めています。記事 Effective harnesses for long-running agents も、進み具合のファイルと git の履歴で、新しいセッションがすぐ状態を把握できたと報告しています。この場面にそのまま当てはまります。\n\n見分け方: 何も残さない(b)と、最初からやり直しになります。会話の中だけで報告させる(c)と、進み具合が会話の履歴にしか残らず、新しいコンテキストからは読み戻せません。作業を 1 回の依頼に詰め込む(d)のは、記事が失敗の型に挙げた「一度にやりすぎる」ことで、途中でコンテキストを使い切ると、次は中途半端な状態から推測で始めることになります。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://www.anthropic.com/research/effective-harnesses-for-long-running-agents"
+  ],
+  "topics": [
+   "agent-state-persistence"
   ]
  },
  {
@@ -678,10 +744,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "コンテキストにあるファイルの内容は、読んだ時点のものです。外部で変更があったときは、読み直させます。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Tools reference)によると、Claude が最後に読んだ後でディスク上の内容が変わったファイルは、編集の結果にそのことが示され、Claude は周りの内容に依存する編集の前に読み直します。コンテキストにあるファイルの内容は読んだ時点のものなので、ブランチの切り替えのように会話の外で起きた変更は、伝えたうえで読み直させるのが当てはまります。\n\n見分け方: そのまま続ける(b)と、切り替え前の内容を前提にした編集になります。ブランチの切り替えを禁じる(c)のは、読み直せば済むことのために開発の進め方を縛ります。作業中のファイルの削除(d)は破壊的な操作で、Prompting best practices は、破壊的な操作の前には確認を求め、作業中かもしれない見慣れないファイルを捨てないよう指示する例を示しています。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://code.claude.com/docs/en/best-practices"
+   "https://code.claude.com/docs/en/tools-reference",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "claude-code-context"
   ]
  },
  {
@@ -716,9 +785,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "出典の食い違いは、隠さずに示します。調査の時期や定義の違いが原因のことも多いため、日付や条件も添えます。",
+  "explanation": "正解は a です。公式ドキュメント(Reduce hallucinations)は、主張ごとに引用と出典を示させて応答を検証できるようにし、裏付けの引用が見つからない主張は取り下げさせる方法を勧めています。Prompting best practices も、調査では複数の出典で情報を確かめさせるよう勧めています。記事 How we built our multi-agent research system の採点基準にも、主張が出典と合っているかという事実の正確さが含まれます。この場面では、両方の数値をそれぞれの出典とともに示し、食い違いを明記すれば、どの主張も出典と対応したままになります。\n\n見分け方: 大きい方を採る(b)のは、根拠のない選択です。2 つの平均(c)は、どの出典にもない数値で、裏付けとなる引用を示せません。指標に触れない(d)と、採点基準にある網羅性(求められた観点をすべて扱っているか)を欠きます。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "reduce-hallucinations",
+   "multi-agent-systems"
   ]
  },
  {
@@ -753,10 +828,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "時点の情報がないと、時期による違いが矛盾に見えます。日付を必須の項目にします。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system は、各サブエージェントに目的と出力の形式などを渡すよう勧めています。構造化出力のドキュメント(Structured outputs)によると、JSON outputs は制約付きデコードでスキーマに従う出力を保証し、必須フィールドの欠落を防げます。記事 Effective context engineering for AI agents も、タイムスタンプは情報をいつどう使うかを判断する手がかりになるとしています。この場面では、出典の公開日やデータの対象時点を出力の必須の項目にすれば、時点の違いを矛盾と取り違えずに済みます。\n\n見分け方: 数値だけを集める(b)と、時点の違いが分かりません。古い出典の数値を捨てる(c)と、推移を示す情報まで失います。新しい数値で古い数値を上書きする(d)と、出典の内容を改変することになります。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system",
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "structured-outputs",
+   "multi-agent-systems"
   ]
  },
  {
@@ -791,10 +871,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "統合では、どの知見が十分に裏付けられ、どこに不足があるかを示します。調査できなかった出典がある場合は、その旨を書きます。",
+  "explanation": "正解は a です。公式ドキュメント(Reduce hallucinations)は、Claude に「分からない」と言うことを明示的に許すよう勧め、裏付けのない主張を取り除くときは、取り除いた箇所を空の [] で示させる例を挙げています。Prompting best practices も、複雑な調査では競合する仮説を立て、確信の度合いを進み具合のメモに記録させる方法を示しています。この場面では、確立した知見と争いのある知見を分け、調べきれなかった範囲を明記すれば、読者に根拠の強さの違いが伝わります。\n\n見分け方: すべてを同じ確かさで断定する(b)と、根拠の差が伝わりません。根拠の弱い記述を黙って削る(c)と、何が分かっていないかが読者に見えません。出典の例も、削った箇所に印を残させています。確かさの表示をすべて省く(d)と、読者は記述ごとの確かさを判断できません。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system",
-   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "reduce-hallucinations"
   ]
  },
  {
@@ -829,10 +912,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "上流のエージェントは、下流のコンテキストの制約を考えて、出力を圧縮します。冗長な推論の経過は含めません。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents によると、サブエージェントは数万トークン以上を使って詳しく調べても、返すのは要約(多くは 1,000〜2,000 トークン)だけで、詳しい探索の文脈はサブエージェントの中にとどまります。記事 How we built our multi-agent research system も、サブエージェントは最も重要なトークンに圧縮して主エージェントに渡すとし、委任では出力の形式を指定するよう勧めています。この場面では、要点、出典、関連度を構造化して返させれば、統合のサブエージェントが必要とする情報に絞れます。\n\n見分け方: 報告をさらに詳しくする(b)や全文を 2 回読ませる(d)と、統合の側のコンテキストの圧迫が悪化します。報告を返させず作業ログを後から読む(c)と、結果を受け渡す形がなくなります。付録が勧める外部への保存でも、軽い参照は渡します。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system",
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "context-engineering",
+   "multi-agent-systems"
   ]
  },
  {
@@ -841,36 +928,40 @@
   "domain": "context-management-and-reliability",
   "type": "single",
   "scenarioId": "research",
-  "stem": "多数のサブエージェントの結果を、統合のサブエージェントに渡す。重要な発見が見落とされないようにする渡し方はどれか。",
+  "stem": "多数のサブエージェントの調査結果を、統合のサブエージェントに 1 つのプロンプトで渡し、報告書にまとめさせる。結果を取り違えずに統合させる渡し方として、公式のプロンプトの指針に沿うものはどれか。",
   "choices": [
    {
     "id": "a",
-    "text": "主要な発見のまとめを先頭に置き、詳細は見出しで区切って続ける",
-    "why": "先頭の情報は、確実に参照される。"
+    "text": "各サブエージェントの結果を、区切りも出典も付けずに、到着した順に手を加えずにそのまま 1 つの文章として連結する",
+    "why": "結果ごとの区切りも出典もなく、どの結果に基づく記述かを示せない。指針は、複数の文書を <document> タグで 1 つずつ囲むよう勧めている。"
    },
    {
     "id": "b",
-    "text": "各サブエージェントの結果を、手を加えずに、到着した順にそのまま連結する",
-    "why": "重要な発見が、中ほどに埋もれる。"
+    "text": "統合の指示をプロンプトの先頭に置き、各結果を <document> タグで 1 つずつ囲んで、その後に続けて並べる",
+    "why": "タグの使い方は指針に沿うが、指針は長い資料を質問や指示より上に置くよう勧め、質問を末尾に置くと応答の質が上がったとしている。"
    },
    {
     "id": "c",
-    "text": "印象に残るよう、最も重要な発見を、最後の段落の途中にまとめて入れる",
-    "why": "見落とされやすい。"
+    "text": "出典の情報は統合の作業には要らないので取り除き、各結果の本文だけを <document> タグで 1 つずつ囲んで並べる",
+    "why": "指針は、内容と出典などのメタデータをサブタグで分けて付けるよう勧めている。記事 How we built our multi-agent research system でも、調査の後に CitationAgent が主張を出典に帰属させている。"
    },
    {
     "id": "d",
-    "text": "偏りが出ないよう、各サブエージェントの結果を無作為な順に並べてつなげる",
-    "why": "見落としが増える。"
+    "text": "各結果を <document> タグで囲んで出典を <source> などのサブタグに入れ、統合の指示は末尾に置く",
+    "why": "複数の文書を <document> で囲み、<document_content> と <source> などのサブタグに分け、長い資料を上部に、質問や指示を末尾に置くという指針に沿う。"
    }
   ],
   "answer": [
-   "a"
+   "d"
   ],
-  "explanation": "長い入力では、中ほどに置いた情報が見落とされやすい傾向が知られています。公式のドキュメントは、長い資料をプロンプトの上部に、質問や指示を末尾に置くことを勧めています。重要な内容は、先頭にまとめて示します。",
+  "explanation": "正解は d です。公式の Prompting best practices は、長い資料をプロンプトの上部(質問、指示、例より前)に置くよう勧め、質問を末尾に置くとテストで応答の質が最大 30% 上がったとしています。複数の文書は <document> タグで 1 つずつ囲み、<document_content> と <source> などのサブタグで内容とメタデータを分けるよう勧めています。この場面では、各結果を 1 つの文書として出典を付けて囲み、統合の指示を末尾に置くのが当てはまります。\n\n見分け方: 到着順にそのまま連結する(a)と、結果ごとの区切りも出典もありません。指示を先頭に置く(b)のは、長い資料を指示より上に置く勧めの逆です。出典を取り除く(c)のは、メタデータをサブタグで付ける勧めに反し、記事 How we built our multi-agent research system が CitationAgent で主張を出典に帰属させていることとも合いません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips",
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "long-context-prompting",
+   "multi-agent-systems"
   ]
  },
  {
@@ -905,10 +996,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "部分的な失敗では、成果を活かしつつ、欠落を明示します。黙って穴を残すことも、全体を捨てることも避けます。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system は、エージェントは状態を持ち、エラーのたびに最初からやり直すのは高くつくとし、ツールの失敗をエージェントに知らせて適応させるとうまく働くと述べています。公式ドキュメント(Reduce hallucinations)は、「分からない」と言うことを許し、裏付けのない主張は取り下げさせるよう勧めています。この場面では、得られた 3 つの結果で進め、調べられなかった範囲をレポートに明記するのが当てはまります。\n\n見分け方: 調査全体を破棄する(b)と、得られた成果まで失います。欠けた範囲を他の結果から推測で埋める(c)のは、出典の裏付けのない記述を加えることで、裏付けのない主張は取り下げるという勧めと逆です。欠落に触れずに完全なレポートとして出す(d)と、読者は調べていない範囲まで調べたものと誤解します。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system",
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "multi-agent-systems",
+   "reduce-hallucinations"
   ]
  },
  {
@@ -943,10 +1038,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "発見の記録を、コンテキストの外に持つことは、長い作業の基本です。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、エージェントが定期的にコンテキストの外へメモを書き、後でコンテキストに読み戻す構造化したメモ(NOTES.md など)を、長い作業の手法に挙げています。Memory tool のページも、コンパクションと併用し、要約を経ても残すべき情報はメモリで保つよう勧めています。この場面の主要なクラスやデータの流れは、コンテキストの整理の後も使う事実なので、ファイルに書き出して参照させるのが当てはまります。\n\n見分け方: 会話の中で覚えておくよう頼む(b)と、事実は会話の中にしか残りません。Claude Code のベストプラクティスも、auto モードについて、会話で伝えた一文はコンパクションで失われうると注意しています。質問のたびに同じ調査をやり直す(c)と、時間とトークンを毎回費やします。ツールの名前や説明に事実を埋め込む(d)のは、ツールの使い方を伝える場所の流用です。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+   "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "agent-state-persistence",
+   "context-engineering"
   ]
  },
  {
@@ -981,10 +1081,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "長時間の処理では、状態の書き出しと、再開の手順を、最初から設計します。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system は、エージェントは長時間動いて状態を持つため、エラーが起きたら最初からやり直すのではなく、エラーが起きた地点から再開できる仕組みを作り、再試行や定期的なチェックポイントのような決定的な安全策と組み合わせたと述べています。主エージェントは計画をメモリに保存し、コンテキストが切り詰められても計画を失わないようにしています。この場面では、各エージェントの状態を決まった場所に書き出し、再開時にコーディネーターが読み込むのが当てはまります。\n\n見分け方: 状態をプロセスのメモリの中だけに持つ(b)と、プロセスと一緒に失われます。落ちたら最初からやり直す(c)のは、記事が高くつき利用者を苛立たせるとした方法です。落ちないことを前提にする(d)について、記事は、対策がなければ小さなシステムの障害がエージェントには致命的になりうるとしています。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "agent-state-persistence",
+   "multi-agent-systems"
   ]
  },
  {
@@ -1019,9 +1122,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "回答が一般論に寄る、以前の発見と矛盾する、といった変化は、コンテキストを整理する合図です。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、トークンが増えるほどコンテキストから情報を正確に思い出す力が下がる現象を context rot と呼び、すべてのモデルに現れるとしています。コンテキストウィンドウのドキュメントも、トークン数が増えると正確さと想起が落ちると説明しています。以前に特定した具体的な名前や事実の代わりに一般論が増えるのは、この想起の低下として現れうる変化で、コンテキストを整理する合図になります。この対応づけは、出典の原則をこの場面に当てはめたものです。\n\n見分け方: 応答が速くなる(b)、ツール呼び出しの成功率が上がっていく(c)、テストが通る(d)は、どれも具体的な情報への参照が弱まったことを示すものではなく、劣化の兆候とは言えません。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+  ],
+  "topics": [
+   "context-engineering",
+   "context-windows"
   ]
  },
  {
@@ -1056,9 +1164,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "モデルの自己申告は、検証して初めて使えます。検証用のデータで、しきい値を決めます。",
+  "explanation": "正解は a です。公式ドキュメント(Define success criteria and build evaluations)は、LLM による採点について、まず信頼性を確かめてから規模を広げるよう勧め、成功の基準を held-out のテストセットでの指標のように測定できる形で定める例を示しています。記事 Demystifying evals for AI agents も、モデルによる採点は精度のために人の採点者との較正が必要だとしています。モデルが出す信頼度もモデルの出力なので、この場面では、正解付きの検証データで信頼度と実際の正答率の関係を確かめ、しきい値を決めてから振り分けに使うのが当てはまります。\n\n見分け方: 信頼度をそのまま信じる(b)と、値が実際の正しさと合っているかを確かめないまま、振り分けを任せることになります。信頼度を使わない(c)と、振り分けの手がかりを捨てることになります。すべてを最大にする(d)と、信頼度が振り分けの役に立たなくなります。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+   "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "human-review-and-monitoring",
+   "success-criteria-evals"
   ]
  },
  {
@@ -1093,9 +1206,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "確認の人手は、誤りの可能性が高い部分に振り向けます。信頼度の高い部分も、抜き取りで監視を続けます。",
+  "explanation": "正解は a です。公式ドキュメント(Define success criteria and build evaluations)は、人による採点を、最も柔軟で質が高い一方、遅く高価な方法としています。記事 Demystifying evals for AI agents も、人の採点は高価で遅く、規模を広げるには専門家を集める必要があることが多いとしています。人手が限られるこの場面では、誤りの可能性が高いもの、つまり信頼度の低い抽出や、原本が曖昧または矛盾している抽出に人の確認を集中させるのが当てはまります。ドキュメントも、人でも判断が分かれる曖昧な事例を境界事例の例に挙げています。\n\n見分け方: すべてを同じ割合で確認する(b)と、限られた人手が誤りの少ない部分にも分散します。信頼度の高い抽出だけを確認する(c)のは、誤りの多い部分を外す逆の配分です。全体から無作為に選ぶだけ(d)では、全体の傾向はつかめても、誤りの多い部分に人手を集められません。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+   "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "human-review-and-monitoring"
   ]
  },
  {
@@ -1130,10 +1247,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "長い文書は、分割して処理します。境界をまたぐ条項があるため、分割の単位と、統合の方法を設計します。",
+  "explanation": "正解は a です。PDF support のドキュメントによると、Claude API の 1 回のリクエストに入れられる PDF は 600 ページ(リクエストのコンテキストウィンドウが 1M トークン未満なら 100 ページ)までで、文字の細かいページや図表の多い PDF は、ページの上限より先にコンテキストウィンドウを埋めることがあります。その場合は文書を節に分割するよう勧められています。この場面の 300 ページの契約書も、章などの単位に分けて部分ごとに抽出し、結果を統合します。条項が分割の境界をまたぐことへの注意は、出典の記述ではなく一般的な設計上の注意です。\n\n見分け方: 先頭の 100 ページだけを処理する(b)と、残りの条項が黙って失われます。文書を画像 1 枚に縮小する(c)と、文字が判読できなくなります。PDF の処理は Claude の画像理解に基づくため、画像と同じ制約を受けます。処理をあきらめる(d)必要はなく、分割すれば処理できます。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
    "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+  ],
+  "topics": [
+   "pdf-support",
+   "context-windows"
   ]
  },
  {
@@ -1168,9 +1289,15 @@
   "answer": [
    "c"
   ],
-  "explanation": "要約を重ねると、金額、日付、顧客が述べた期待といった具体的な値が、あいまいな表現に置き換わることがあります。取引の事実は、要約される履歴とは別の構造化されたブロックに取り出し、毎回のプロンプトに含めます。これは設計上の判断を問う問題で、出典は、コンテキストの外に構造化したメモを保つ手法を述べています。",
+  "explanation": "正解は c です。記事 Effective context engineering for AI agents は、コンパクションでは何を残し何を捨てるかの選択が要で、削りすぎると後で重要になる細かな文脈を失うと述べ、コンテキストの外にメモを保つ構造化したメモを勧めています。Memory tool のページも、コンパクションと併用し、要約を経ても残すべき情報はメモリで保つよう勧めています。この場面の日付と金額は、後の返金額の案内に欠かせない事実なので、要約とは別の「事実」のブロックに取り出して毎回渡すのが当てはまります。\n\n見分け方: 要約の頻度を上げる(a)と、要約のたびに数値や日付が丸められる危険は残ります。古いメッセージから削除する(b)と、そこにある事実がそのまま失われます。「正確に要約すること」と書き足す(d)だけでは、何を残すかが決まりません。API のコンパクションの独自の要約の指示も、ドキュメントの例では残すものを具体的に指定しています。",
   "refs": [
-   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+   "https://platform.claude.com/docs/en/build-with-claude/compaction-on-demand"
+  ],
+  "topics": [
+   "compaction",
+   "context-engineering"
   ]
  },
  {
@@ -1205,10 +1332,13 @@
   "answer": [
    "c"
   ],
-  "explanation": "長く動くエージェントは状態を持つため、障害のたびに最初からやり直すと損失が大きくなります。各エージェントが、完了した作業と得られた結果を決まった場所に書き出しておくと、コーディネーターは再開時にそれを読み込み、続きから進められます。これは設計上の判断を問う問題で、出典は、エラーが起きた時点から再開できる仕組みの必要を述べています。",
+  "explanation": "正解は c です。記事 How we built our multi-agent research system は、エージェントは状態を持つため、エラーが起きたら最初からやり直すのではなく、エラーが起きた地点から再開できる仕組みを作ったと述べています。付録は、サブエージェントが成果を外部に保存して軽い参照だけをコーディネーターに渡す方法を勧め、大きな出力を会話の履歴に写す負担も減るとしています。この場面では、各エージェントが状態を決まった場所に書き出し、再開時にコーディネーターがそれを読み込んで各エージェントに渡すのが当てはまります。\n\n見分け方: 全出力をコーディネーターの履歴に残す(a)のは、付録が減らすよう勧める、会話の履歴を通じた大きな出力の受け渡しに当たり、コンテキストを圧迫します。最初からやり直す前提で範囲を広げる(b)と、失敗したときの損失がさらに大きくなります。エージェントを 1 つにまとめても(d)、状態を外部に残さない点は変わりません。",
   "refs": [
-   "https://www.anthropic.com/research/multi-agent-research-system",
-   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "agent-state-persistence",
+   "multi-agent-systems"
   ]
  }
 ]

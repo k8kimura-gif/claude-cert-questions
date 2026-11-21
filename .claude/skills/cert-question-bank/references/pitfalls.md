@@ -97,3 +97,31 @@
 - dev-app-039 の d、dev-app-046 の b: 誤答として弱い。
 - asc-eval-027: Sonnet 4.6 がまだモデル選択の画面にあるかは確かめていない。
 - Team プランのページは 200K のコンテキストと書いており、コンテキストウィンドウの記事と食い違う。どちらかを問う問題を作るときは両方のページを確かめる。
+
+## CCAR-F の全問トピック付けで見つかったもの(2026-11-21)
+
+担当を直列に回し、前の担当の `topics/architect.json` を次の担当が読んでから作業した。直列にすると ID の衝突は起きず、統合の工程が要らなかった。ただし developer と同じ ID のトピックを CCAR-F 向けに作り直したもの(`compaction`、`multi-agent-systems`、`claude-code-subagents`、`claude-code-hooks`、`claude-md` など)は、developer 版をコピーして上書きしないよう、指示書で毎回伝えた。
+
+現在の仕様と食い違っていたもの(問題文・選択肢を直した):
+
+- 「長いプロンプトの中ほどが見落とされやすい」は公式資料にない。公式の長文の配置は、長い資料を上部に、質問と指示を末尾に置く(テストで最大 30% 改善)、複数の文書は `<document>` で囲み `<source>` などのサブタグを付ける(arch-ctx-009、arch-ctx-023)。
+- few-shot の例の数の目安は、Prompting best practices で 3〜5 件(arch-prompt-002)。
+- Edit の置換で `old_string` が一意でないときは、前後を含めて一意にするか `replace_all: true`。部分的な変更に Write を使わない(arch-tool-020)。
+- 個人用・実験的な MCP サーバーは、既定の local スコープが勧められる。user スコープは複数のプロジェクトで使うもの向け(arch-tool-023)。
+- Claude Code と Agent SDK では tool search が既定で有効で、開始時に読み込むのはツール名とサーバーの指示だけ(arch-tool-026)。
+- Message Batches の 1 件の中でも、サーバーツール(web search など)のループは回る。往復が要るのはクライアントツール(arch-tool-035)。
+
+あとから直したもの(2026-11-21):
+
+- arch-prompt-032: Structured outputs は文字列の `format`(`date` など)と `pattern` に対応するので、「スキーマをさらに厳密にする」は誤答として成り立たなかった。表記に効かない変更(required に加える)に差し替えた。`format: "date"` で出力の表記がどう強制されるかはページに書かれていない。
+- arch-agent-026: Agent SDK の `allowedTools` は事前承認で、使えるツールを絞らない。Agent は確認なしで動くツール。
+- arch-cc-013: 読み込まれた CLAUDE.md やルールの確認は `/context`(`/context all`)。`/memory` は場所の一覧と編集用。
+- arch-cc-037: プロジェクトの `.claude/settings.json` の `permissions.allow` は workspace trust を受け入れた後にだけ使われ、`claude -p` と SDK は trust のダイアログを出さない。信頼していないフォルダでは deny と ask だけが効く。正解は `--settings`(GitHub Actions では `settings` 入力)にした。`--settings` の allow が trust を経ずに効くという直接の記述はなく、GitHub Actions のページの記述に基づく。
+- arch-cc-026: Best practices の「What you can stop doing」は「CLAUDE.md に構成とファイル配置を書く」を古い助言とする。一方 Memory のページは project layout を書く例に残しており、2 ページが食い違う。
+
+ほかに覚えておくこと:
+
+- Claude Code の Best practices の「What you can stop doing」には、もう不要とされた助言が並ぶ(コンテキストを守るためにサブエージェントを使う、など)。古い助言を正解の根拠にしない。
+- `slash-commands` のページは転送されるだけなので、refs から外す。
+- 強制のツール指定(`tool_choice` の `any` と `tool`)は、Opus 5.5、Sonnet 5.5、Fable 5.2 などで 400 エラーになる。
+- 記事の本文は空白が連続するので、照合の正規表現は語の間を `\s+` でつなぐ。

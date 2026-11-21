@@ -31,10 +31,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "決定的な順守が必要な業務ルールは、プロンプトの指示ではなく、フックやツール側の前提条件チェックで強制します。プロンプトによる指示は確率的で、失敗率をゼロにできません。",
+  "explanation": "正解は a です。Claude Code のベストプラクティスは、プロンプトや CLAUDE.md の指示はモデルが読んで判断するもので守られる保証はなく、毎回必ず守らせたい規則はフックや deny ルールのようにハーネスが強制する仕組みにするよう勧めています。Agent SDK のフックのページでは、PreToolUse のコールバックが permissionDecision: \"deny\" を返すとツールの呼び出しを止められます。この場面の本人確認は抜けると誤った返金になる手順なので、確認済みの顧客 ID がない process_refund をコードで拒否するのが当てはまります。\n\n見分け方: システムプロンプトでの強調(b)や few-shot の例(c)はモデルへの指示で、守られない事例が残ります。分類器でツールを有効にする(d)のは使えるかどうかの制御で、呼び出しの順序を保証しません。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview",
-   "https://code.claude.com/docs/en/hooks"
+   "https://code.claude.com/docs/en/agent-sdk/hooks",
+   "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "claude-code-hooks",
+   "customer-support-agents"
   ]
  },
  {
@@ -69,10 +73,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "複数の用件を含む依頼は、用件ごとに分解して調査し、最後に統合します。独立した照会は並列のツール呼び出しで同時に実行できます。",
+  "explanation": "正解は a です。Claude のドキュメントのガイド Customer support agent は、サポートの対話は質問への回答、情報の取得、依頼への対応といった複数のタスクを 1 つのやり取りにまとめたものだとし、タスクに分解して設計するよう勧めています。記事 Building effective agents のオーケストレーターとワーカーも、タスクを分解して結果を統合する形です。この場面では 3 件を個別に調べ、確認済みの顧客情報を共有したまま 1 つの回答にまとめるのが当てはまります。互いに依存しない照会は、並列のツール呼び出しにできます。\n\n見分け方: 1 件だけ処理して出し直させる(b)と、初回解決の目標に反し、顧客に手間をかけます。すべてを人に引き継ぐ(c)と、エージェントで解決できる用件まで手放します。別々のセッションに分ける(d)と、顧客情報の照会が重複し、回答もばらばらになります。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://code.claude.com/docs/en/agent-sdk/overview"
+   "https://platform.claude.com/docs/en/about-claude/use-case-guides/customer-support-chat",
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use"
+  ],
+  "topics": [
+   "customer-support-agents",
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -107,10 +116,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "Agent SDK のフックは、ツール呼び出しの前後に処理を挟めます。実行前のフックは、規程に反する操作を止めて別の手順へ誘導する用途に向きます。",
+  "explanation": "正解は a です。Agent SDK のフックのページによると、PreToolUse はツールの呼び出しの前に走り、呼び出しを止めたり入力を変えたりでき、用途の例に危険な操作の阻止や、慎重を要する操作への人の承認が挙げられています。Hooks reference によると、deny の理由(permissionDecisionReason)は Claude に示されます。この場面では、金額を検査して上限を超える process_refund を拒否し、理由を受け取った Claude を escalate_to_human へ進ませるのが当てはまります。\n\n見分け方: システムプロンプト(b)やツールの説明(c)に上限を書いても、モデルへの指示にとどまり、従わない呼び出しを止める仕組みがありません。完了後に検査して取り消す(d)のは、返金が実行された後の対応で、上限を守らせたことになりません。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview",
-   "https://code.claude.com/docs/en/hooks"
+   "https://code.claude.com/docs/en/agent-sdk/hooks",
+   "https://code.claude.com/docs/en/hooks",
+   "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "claude-code-hooks",
+   "customer-support-agents"
   ]
  },
  {
@@ -145,10 +159,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "生成と評価は分けると効果的です。独立したレビュー用のインスタンスは、生成時の推論を持たないため、見落としを発見しやすくなります。",
+  "explanation": "正解は a です。Claude Code のベストプラクティスは、作業の確かめ方の 1 つに、コードを書いていない者によるレビューを挙げています。/code-review は会話を見ていない新しいサブエージェントで差分をレビューするので、コードを生んだ推論に左右されないとし、2 つ目のセッションも、書く過程を見ていない独立したレビュアーになるとしています。この場面の同じセッションでのレビューは実装の推論を持ったままなので、経緯を持たないインスタンスに任せるのが当てはまります。\n\n見分け方: 同じセッションで厳しく頼む(b)のと 3 回繰り返す(d)のは、実装の推論が残った同じコンテキストで見直すだけです。レビューを省いてテストに任せる(c)について、記事 Building effective agents は、自動テストは機能の確認に役立つが、システム全体の要件に合うかを確かめるには人のレビューが欠かせないとしています。",
   "refs": [
    "https://code.claude.com/docs/en/best-practices",
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "claude-code-prompting",
+   "claude-code-subagents"
   ]
  },
  {
@@ -183,9 +201,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "マルチエージェントの失敗を調べるときは、どの段階で情報が欠けたかを追います。サブエージェントが正しく動いていて範囲が欠けているなら、コーディネーターのタスク分解を疑います。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system によると、主エージェントは問い合わせをサブタスクに分解してサブエージェントに説明し、各サブエージェントには目的、出力の形式、ツールと情報源の指針、明確な作業の境界が必要です。説明が足りないと、作業の重複や抜けが起きます。この場面では各サブエージェントが割り当てどおりに完了しているので、音楽、文芸、映像が抜けたのは、割り当ての段階、つまりコーディネーターの分解が狭かったためと考えるのが当てはまります。記事は、本番の追跡(tracing)で失敗の原因を診断したとも述べています。\n\n見分け方: 検索の取りこぼし(b)は、各サブエージェントが作業を正しく完了したという前提と合いません。統合の段階での削除(c)は、他分野の調査がそもそも割り当てられていないので起こりません。max_tokens の不足(d)なら出力が途中で切れるはずで、特定の分野だけが欠ける説明になりません。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "multi-agent-systems",
+   "context-handoff"
   ]
  },
  {
@@ -220,10 +242,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "サブエージェントは、親のコンテキストを自動的には受け継ぎません。コーディネーターは、先行する作業の結果を、内容と出典を分けた構造化データとしてプロンプトに含めて渡します。",
+  "explanation": "正解は a です。Agent SDK のサブエージェントのページによると、フォークを除くサブエージェントは親の会話なしの新しいコンテキストで始まり、親から渡る内容は Agent ツールのプロンプトの文字列だけです。そのため、必要なファイルのパス、エラーメッセージ、決定はそのプロンプトに直接含めるよう勧めています。この場面の統合のサブエージェントは、コーディネーターが受け取った検索結果を自動では見られないので、起動時のプロンプトに含めなかったことが原因と考えるのが当てはまります。\n\n見分け方: サブエージェントどうしが自動で共有するメモリ(b)について、同じページはサブエージェントが親の会話履歴もツールの結果も受け取らないとしており、結果を自動で同期する仕組みは書かれていません。モデルの大きさ(c)は、渡されていない情報を補えません。Web 検索の結果が 5 分で失効する(d)という仕組みは、公式資料にありません。",
   "refs": [
-   "https://code.claude.com/docs/en/sub-agents",
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://code.claude.com/docs/en/agent-sdk/subagents",
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "claude-code-subagents",
+   "context-handoff"
   ]
  },
  {
@@ -258,10 +284,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "独立したサブタスクは並列に実行します。コーディネーターが 1 ターンに複数のサブエージェント起動を発行すると、それらが同時に走ります。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system によると、初期のエージェントは検索を順に実行して遅かったため、主エージェントが 3〜5 のサブエージェントを順にではなく並列に起動するなどして、複雑な問い合わせの調査時間を最大 90% 短縮しました。Agent SDK のサブエージェントのページも、複数のサブエージェントを同時に動かせば、独立したサブタスクは合計ではなく最も遅いものの時間で終わるとしています。この場面の 5 つのサブトピックは独立しているので、起動の呼び出しをまとめて出し、並列に動かすのが当てはまります。\n\n見分け方: 1 つずつ起動する(b)のは、依存のない作業を直列にするだけです。1 つのサブエージェントにまとめる(c)と並列になりません。コーディネーターがすべて自分で調べる(d)のも直列で、結果がコーディネーターのコンテキストにたまります。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system",
-   "https://code.claude.com/docs/en/sub-agents"
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://code.claude.com/docs/en/agent-sdk/subagents",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use"
+  ],
+  "topics": [
+   "multi-agent-systems",
+   "claude-code-subagents"
   ]
  },
  {
@@ -296,10 +327,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "コーディネーターは、タスクの分解、割り当て、結果の集約、次に呼ぶサブエージェントの判断を担います。依頼の複雑さに応じて、必要なサブエージェントだけを動的に選びます。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system の構成では、主エージェントが調査を計画してサブエージェントを作り、結果を統合して追加の調査が要るかを判断します。Agent SDK でも、サブエージェントの途中のツール呼び出しと結果は中にとどまり、最後のメッセージだけが親に返ります。やり取りを中央に集めると情報の流れとエラーへの対応を一か所で扱えるという利点は、公式資料が直接述べるものではなく一般的な設計の考え方ですが、この構成の性質から導けます。\n\n見分け方: 常に速い(b)とは言えず、記事は、主エージェントがサブエージェントの完了を待つ同期的な実行が情報の流れのボトルネックになると述べています。サブエージェントはコーディネーターの会話履歴を引き継ぎません(c)。トークンが必ず減る(d)こともなく、記事ではマルチエージェントはチャットの約 15 倍のトークンを使い、大きな出力を会話履歴に写す負担も挙げています。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system",
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://code.claude.com/docs/en/agent-sdk/subagents"
+  ],
+  "topics": [
+   "multi-agent-systems",
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -334,10 +369,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "コードベースの調査は段階的に行います。検索で手がかりを見つけ、関係するファイルだけを読み、参照をたどります。関数の利用箇所を追うときは、まずエクスポートされた名前を特定し、それを全体で検索します。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、データを先にすべて読み込まず、ファイルパスのような軽い識別子を持ってツールで実行時に読み込む just in time の方式を紹介し、Claude Code は glob や grep で環境を探って必要なファイルを読み込むとしています。Claude Code の Common workflows も、広い質問から始めて特定の部分に絞るよう勧めています。この場面では、Grep で入口を探し、Read で参照をたどるのが当てはまります。\n\n見分け方: すべてのファイルを最初に読む(b)と、記事が注意する、網羅的でも無関係かもしれない情報に埋もれる状態になります。ファイル名だけで推測する(c)のと README だけで答える(d)のは、実装のコードを確かめておらず、文書化されていない処理の流れを把握できません。",
   "refs": [
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
-   "https://code.claude.com/docs/en/agent-sdk/overview"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://code.claude.com/docs/en/common-workflows",
+   "https://code.claude.com/docs/en/tools-reference"
+  ],
+  "topics": [
+   "context-engineering",
+   "builtin-tools"
   ]
  },
  {
@@ -372,10 +412,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "セッションの再開は、以前の文脈がまだ有効な場合に役立ちます。変更が広範囲に及び、過去のツール結果の大半が古い場合は、構造化した要約を持って新しいセッションを始める方が確実です。",
+  "explanation": "正解は a です。Agent SDK のセッションのページによると、セッションを再開すると、エージェントは読んだファイル、行った分析、下した決定を含む以前の文脈をすべて持ちます。一方で、セッションが保存するのは会話で、ファイルシステムではありません。この場面では、昨日読んだ 3 つのファイルの内容が会話に古いまま残っているので、再開したうえで変更されたファイルを伝え、その部分を調べ直させるのが当てはまります。変更のない部分の分析はそのまま生かせます。\n\n見分け方: 何も伝えずに続ける(b)と、会話に残った古い内容を前提に判断することになります。ファイルが変更されると再開できない(c)という制約はドキュメントになく、すべてを最初から調べ直すと変更のない部分の調査まで繰り返します。同僚に変更を取り消させる(d)のは、開発の進行を妨げます。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview",
+   "https://code.claude.com/docs/en/agent-sdk/sessions",
    "https://code.claude.com/docs/en/common-workflows"
+  ],
+  "topics": [
+   "agent-sdk-sessions"
   ]
  },
  {
@@ -410,10 +453,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "大きなレビューは複数のパスに分割します。局所的な問題はファイル単位で、インターフェースやデータの流れは別のパスで確認します。",
+  "explanation": "正解は a です。記事 Building effective agents は、複数の観点がある複雑なタスクでは、各観点を別々の LLM 呼び出しで扱うとそれぞれに注意を集中でき、一般に成績が良いとしています。Claude Code の Code Review も、複数のエージェントが差分と周辺のコードを並行して調べ、検証の段階で誤検知を除く構成です。この場面では、1 回のパスで 14 ファイルを見ると深さがばらつくので、ファイルごとの局所的なレビューと、ファイル間のデータの流れを見る統合のレビューに分けるのが当てはまります。\n\n見分け方: コンテキストウィンドウの大きいモデル(b)に替えても、1 回の呼び出しに多くの観点を詰め込む構成は変わりません。同じプロンプトでの再実行(c)は、同じ構成を繰り返すだけです。最初の 3 ファイルに絞る(d)と、残りのファイルがレビューされません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts",
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://code.claude.com/docs/en/code-review"
+  ],
+  "topics": [
+   "agentic-workflow-patterns",
+   "claude-code-code-review"
   ]
  },
  {
@@ -448,9 +495,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "バッチ処理では、custom_id でリクエストと結果を対応付け、失敗分だけを直して再送します。本番の投入前に少数の文書でプロンプトを調整しておくと、再送の回数が減ります。即時の結果が必要な処理(マージ前の検査など)には、同期の API を使います。",
+  "explanation": "正解は a です。Batch processing のページによると、バッチの各リクエストは独立に処理され、結果は作成時の順序と一致しないことがあるため、custom_id で結果とリクエストを対応付けます。結果の種別のうち errored は課金されず、サンプルコードは、invalid_request_error は本文を直してから送り直し、サーバーのエラーはそのまま再試行できるとしています。この場面の文書が長すぎる失敗は、リクエストを直さないと繰り返すので、custom_id で失敗分を特定し、分割などをして失敗分だけを再送するのが当てはまります。\n\n見分け方: バッチ全体の再送(b)は、成功した分まで処理し直し、長すぎる文書は再び失敗します。失敗した文書の破棄(c)は、処理すべき文書を落とします。同期の API に切り替える(d)と、すべての利用が標準料金の 50% になるバッチの割引を失い、長すぎる文書の問題も解決しません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ],
+  "topics": [
+   "batch-processing"
   ]
  },
  {
@@ -485,10 +535,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "ループの制御は stop_reason で行います。自然言語の解析や、テキストの有無による判定は、誤った終了や継続を招きます。",
+  "explanation": "正解は a です。How tool use works によると、クライアントツールのループは stop_reason を軸にした while ループで、stop_reason が \"tool_use\" の間はツールを実行して結果を返し、それ以外(\"end_turn\"、\"max_tokens\" など)でループを抜けます。Stop reasons and fallback のページも、end_turn は自然な完了を表すとしています。この場面の自前のループでも、継続と終了はこの値で判定するのが当てはまります。\n\n見分け方: 「完了しました」のような文言を探す(b)のは、生成された文章の表現に頼る判定です。テキストの有無で終える(c)と、Handle tool calls の応答の例のように、テキストと tool_use ブロックが同じ応答に入る場合に誤って終了します。常に 5 回で打ち切る(d)と、それ以上の反復が要る案件が途中で終わります。",
   "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works",
    "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
-   "https://code.claude.com/docs/en/agent-sdk/overview"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls"
+  ],
+  "topics": [
+   "stop-reasons",
+   "tool-use-basics"
   ]
  },
  {
@@ -523,10 +578,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "反復の上限は必要ですが、通常の完了は Claude 自身の判断(end_turn)に任せます。上限に達した場合は、未完了として引き継ぎます。",
+  "explanation": "正解は a です。記事 Building effective agents によると、エージェントのタスクは完了で終わるのが普通で、制御を保つために最大反復回数のような停止条件を入れることもよくあります。Agent SDK のエージェントループのページでも、ループは Claude がツール呼び出しのない応答を出すと終わり、max_turns の例には暴走したセッションを防ぐというコメントが付いています。上限に達すると結果は error_max_turns のサブタイプになります。この場面では、完了の判定は stop_reason に任せ、上限は余裕を持った安全装置にするのが当てはまります。\n\n見分け方: 上限を 1 回に下げる(b)と、途中で終わる案件がさらに増えます。上限を外すだけ(c)では、暴走を止める停止条件がなくなります。上限に達した対応を成功として返す(d)のは、SDK が success と区別している未完了の状態を、完了と偽ることになります。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://code.claude.com/docs/en/agent-sdk/agent-loop",
    "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ],
+  "topics": [
+   "agent-sdk-loop",
+   "autonomous-agents"
   ]
  },
  {
@@ -561,10 +621,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "エージェントのループでは、ツールの結果を履歴に積み上げながら進みます。これにより、Claude は状況に応じて次のツールを選べます。",
+  "explanation": "正解は a です。Handle tool calls のページによると、クライアントツールを実行したら、新しいリクエストでそれまでのメッセージを残し、応答の content をそのまま assistant メッセージとして加え、続けて tool_use ブロックごとの tool_result を入れた user メッセージを加えます。Using the Messages API も、API はステートレスで、毎回会話の履歴全体を送るとしています。この場面の lookup_order の結果も、履歴に加えて送らなければ Claude には見えません。\n\n見分け方: 顧客の新しい発言だけを送る(b)と、Claude はツールの呼び出しも結果も見られません。システムプロンプトに上書きする(c)と、tool_result を tool_use の直後に置く形にならず、経緯も失われます。顧客に口頭で伝える(d)だけでは、Claude の次の判断の材料になりません。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works",
+   "https://platform.claude.com/docs/en/build-with-claude/working-with-messages"
+  ],
+  "topics": [
+   "tool-use-basics",
+   "messages-api-basics"
   ]
  },
  {
@@ -599,10 +664,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "フックは、ツールの呼び出しを止めるだけでなく、結果を変換する用途にも使えます。形式の統一のような機械的な処理は、コードで行います。",
+  "explanation": "正解は a です。Agent SDK のフックのページは、フックの用途にツールの入力と出力の変換を挙げ、PostToolUse ではツールの結果を Claude が見る前に updatedToolOutput で置き換えられるとしています。この置き換えは組み込みのツールと MCP のツールの両方で使え、MCP のツールは mcp__<server>__<action> の名前でマッチャーに指定できます。この場面では、各ツールの日時をコードで 1 つの形式にそろえてから渡せば、モデルの解釈に頼らず毎回同じ形で届くので、PostToolUse のフックが当てはまります。\n\n見分け方: システムプロンプトで形式を説明して頭の中で変換させる(b)のは、変換をモデルの判断に任せる方法で、毎回正しく変換される保証がありません。顧客に言い直してもらう(c)のは、ツールが返す形式の問題に手を付けていません。日付を使う処理をやめる(d)と、日付に基づく判断ができなくなります。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview",
-   "https://code.claude.com/docs/en/hooks"
+   "https://code.claude.com/docs/en/agent-sdk/hooks",
+   "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "claude-code-hooks"
   ]
  },
  {
@@ -637,9 +705,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "顧客が人の対応を明示的に求めた場合は、調査を挟まずに引き継ぎます。不満を述べているだけの場合は、まず解決を申し出て、重ねて求められたら引き継ぎます。",
+  "explanation": "正解は a です。Claude のドキュメントのガイド Customer support agent は、成功の基準の 1 つに、人の介入が必要な問い合わせを見分けて適切に引き継ぐ力(Escalation efficiency)を挙げています。記事 Building effective agents も、エージェントが価値を出すのは人による意味のある監督を組み込める作業だとしています。顧客が人の担当者を明示的に求めたらすぐ引き継ぐという規則そのものは公式資料にありませんが、この場面では顧客の希望が明確なので、調査や説得を挟まずに escalate_to_human で引き継ぐのが当てはまります。\n\n見分け方: 先に自分で解決を試みる(b)のと、「私が対応できます」と説得を繰り返す(d)のは、明確に示された希望を後回しにします。理由を問いただす(c)のは、引き継ぎの前に顧客へ不要な負担をかけます。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://platform.claude.com/docs/en/about-claude/use-case-guides/customer-support-chat",
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "customer-support-agents",
+   "autonomous-agents"
   ]
  },
  {
@@ -674,9 +747,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "規程が曖昧な場合や、定めがない場合は、引き継ぎの対象です。エージェントは、定められた範囲で確実に動くことを優先します。",
+  "explanation": "正解は a です。Claude のドキュメントのガイド Customer support agent は、ガードレールとして、エージェントが権限のない約束や合意をしないこと(Avoid contractual commitments)と、応答が会社の方針や既知の事実に合うかを確かめること(Cross-check information)を挙げています。この場面の他店との差額の返金は規程に定めがなく、エージェントが応じれば権限のない約束になり、断るべきかも規程からは決まりません。そのため、判断を人の担当者に引き継ぐのが当てはまります。\n\n見分け方: 近い規程を当てはめて差額を返す(b)のと、他店の価格を自分で調べて規程の範囲とみなす(d)のは、規程にない対応をエージェントが作り出すことになります。理由を告げずに断る(c)のも、規程が定めていない判断をエージェントが下すことになり、顧客には事情も伝わりません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://platform.claude.com/docs/en/about-claude/use-case-guides/customer-support-chat",
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "customer-support-agents"
   ]
  },
  {
@@ -711,9 +788,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "顧客の感情は、案件の複雑さを表しません。引き継ぎは、顧客の希望、規程の空白、進行不能といった条件で判断します。",
+  "explanation": "正解は a です。Claude のドキュメントのガイド Customer support agent は、成功の基準として、人の介入なしで解決できた割合(Deflection rate)と、人の介入が必要なものを見分けて引き継ぐ正確さ(Escalation efficiency)の両方を挙げ、会話の初めと終わりで顧客の感情を保つか改善すること(Sentiment maintenance)も挙げています。この場面は標準的な返品でエージェントが解決でき、顧客は人を求めていないので、不満を受け止めつつ解決を進め、重ねて人を求められたら引き継ぐのが当てはまります。この段取りは公式資料の記述ではなく、これらの基準からの当てはめです。\n\n見分け方: 不満を検知した時点で引き継ぐ(b)と、解決できる案件まで人に回すことになります。不満に触れず事務的に処理する(c)のは、顧客の感情への配慮を欠きます。対応を打ち切る(d)と、問題が解決されません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://platform.claude.com/docs/en/about-claude/use-case-guides/customer-support-chat",
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "customer-support-agents"
   ]
  },
  {
@@ -748,9 +829,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "本人の特定が曖昧なときは、追加の情報を求めます。もっともらしい候補を、発見的な規則で選んではいけません。",
+  "explanation": "正解は a です。Prompting best practices が支払いや口座番号を扱うエージェント向けに勧める指示文は、確認を行ったと言うのは、そのセッションのツールの結果が行動の前にそれを示したときだけにするよう求めています。並列のツール呼び出しの例文も、欠けたパラメータを推測で埋めないよう指示しています。この場面では名前の検索だけでは本人を特定できていないので、メールアドレスや注文番号など追加の識別情報を尋ね、1 人に絞るのが当てはまります。\n\n見分け方: 最も新しく登録された顧客を選ぶ(b)のは、根拠のない推測です。3 人全員の注文を調べる(c)と、本人でない顧客の情報を不必要に扱います。3 人の一覧を見せる(d)と、他人の個人情報を開示します。Customer support agent のガイドも、明示的に必要で許可された場合を除き、応答から PII を除くよう勧めています。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://platform.claude.com/docs/en/about-claude/use-case-guides/customer-support-chat"
+  ],
+  "topics": [
+   "customer-support-agents"
   ]
  },
  {
@@ -785,10 +870,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "指示による制御は柔軟ですが、確実ではありません。金銭、権限、法令に関わる手順は、フックや前提条件で強制します。",
+  "explanation": "正解は a です。Claude Code のベストプラクティスは、例外を許さない規則はフック、deny ルール、管理設定のようにハーネスが適用する仕組みに移し、例外のある規則は CLAUDE.md の指針として残すよう勧めています。フックは例外がゼロの規則のためのもので、Prefer named exports のように例外の多いものは CLAUDE.md に残す例が示されています。この場面では、返金前の本人確認は抜けると金銭の損害になる手順なので、プログラムで強制するのが当てはまります。\n\n見分け方: 口調(b)、挨拶の言い回し(c)、回答の長さの目安(d)は、多少ぶれても損害が生じない決まりなので、プロンプトの指示で扱う指針に当たります。Prompting best practices も、支払いに関する推奨の指示文は Claude を導くだけで何も強制しないとし、お金を動かせるツールの呼び出しは人が承認するよう勧めています。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview",
-   "https://code.claude.com/docs/en/hooks"
+   "https://code.claude.com/docs/en/best-practices",
+   "https://code.claude.com/docs/en/agent-sdk/hooks",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "claude-code-hooks"
   ]
  },
  {
@@ -823,9 +912,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "ワークツリーは、同じリポジトリの別々の作業用ディレクトリです。独立した作業を、並行して進められます。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Run parallel sessions with worktrees)によると、git の worktree は独自のファイルとブランチを持つ別の作業ディレクトリで、リポジトリの履歴とリモートは共有します。各セッションを別の worktree で動かすと、それぞれが編集するファイルの写しが分かれ、変更が衝突しません。claude --worktree feature-auth のように名前を付けて始めます。ベストプラクティスも、別々の作業を同時に進めるときは、それぞれに独自のチェックアウトを与えるよう勧めています。\n\n見分け方: 1 つのセッションで交互に進める(b)と、3 つの機能の文脈が 1 つの会話に混ざります。同じディレクトリで 3 つのセッションを動かす(c)と、同じファイルを編集し合うため変更が衝突しえます。worktree を使えば並行して進められるので、順番にしか進められない(d)は誤りです。",
   "refs": [
+   "https://code.claude.com/docs/en/worktrees",
+   "https://code.claude.com/docs/en/best-practices",
    "https://code.claude.com/docs/en/common-workflows"
+  ],
+  "topics": [
+   "claude-code-parallel-sessions"
   ]
  },
  {
@@ -844,7 +938,7 @@
    {
     "id": "b",
     "text": "200 個のファイルを 1 回の依頼にまとめ、1 つの会話の中で最初から最後まで続けて処理させる",
-    "why": "コンテキストがあふれ、後半の質が落ちる。"
+    "why": "1 つの会話でまとめて処理すると、ファイルごとの成否を確かめにくく、少数で試してから広げる段階もない。"
    },
    {
     "id": "c",
@@ -860,10 +954,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "大量の定型作業は、分割して扇状に展開します。少数で試してプロンプトを直してから、全体に適用します。",
+  "explanation": "正解は a です。Claude Code のベストプラクティスは、claude -p はスクリプトやシェルのループで使えるとし、ファイルの一覧を 1 件ずつ claude --bare -p で処理して OK か FAIL を返させるループを例に示しています。そのうえで、まず 3 つのファイルで試し、うまくいかない点を見てプロンプトを直してから残りを実行するよう勧めています。1 つの大きな機械的な変更には、作業を 5〜30 の単位に分けて計画を示す /batch もあります。この場面の 200 ファイルの書き換えにも、この分割と試行の進め方が当てはまります。\n\n見分け方: 1 つの会話で全件を続けて処理する(b)と、ファイルごとの成否を区別しにくく、少数で試して直す段階もありません。手作業(c)は自動化の利点を捨てます。試さずに全件を実行する(d)と、プロンプトの誤りが全件に及びます。",
   "refs": [
-   "https://code.claude.com/docs/en/headless",
-   "https://code.claude.com/docs/en/best-practices"
+   "https://code.claude.com/docs/en/best-practices",
+   "https://code.claude.com/docs/en/headless"
+  ],
+  "topics": [
+   "claude-code-parallel-sessions",
+   "claude-code-headless"
   ]
  },
  {
@@ -898,10 +996,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "手順の決まった作業には、固定の連鎖が向きます。探索的な作業には、途中の結果に応じて分解を変える進め方が向きます。",
+  "explanation": "正解は a です。記事 Building effective agents によると、ワークフローは手順の決まったタスクに予測可能性と一貫性をもたらし、エージェントは必要な手順の数を予測しにくく固定の経路を決められない、答えの決まっていない問題に向きます。エージェントは各ステップで環境から「正解の手がかり」(ツールの結果など)を得て進み具合を評価します。Common workflows のテストの例も、まずテストのない部分を特定するところから始めています。この場面の作業は範囲が決まっていないので、構造を把握して優先順位を付け、分かったことに応じて計画を見直すのが当てはまります。\n\n見分け方: 最初の手順を変えない(b)のは固定の経路を前提にしたやり方で、途中で見つかった依存関係に合わせられません。アルファベット順に同じ数のテストを足す(c)のは、影響の大きさを反映しません。構造を調べずに書き始める(d)と、的外れなテストになりやすくなります。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://www.anthropic.com/research/building-effective-agents",
    "https://code.claude.com/docs/en/common-workflows"
+  ],
+  "topics": [
+   "building-effective-agents",
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -936,10 +1038,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "生成と検証の役割を分けると、品質が上がります。レビュー側には、成果物と基準だけを渡します。",
+  "explanation": "正解は a です。Claude Code のベストプラクティスは、サブエージェントが役立つ場面に、コードがどう書かれたかを見ていないレビュアーを得ることを挙げ、読めても編集できないツールだけを与えたレビュアーの定義例を示しています。/code-review も、会話を見ていない新しいサブエージェントでレビューするため、コードを生んだ推論に左右されないとしています。この場面では、実装とレビューを別のセッションやサブエージェントに分け、レビュー側には実装の経緯を渡さず、成果物と基準だけを渡すのが当てはまります。\n\n見分け方: 実装直後の自己レビュー(b)と、思考の記録をすべて渡す(d)のは、レビュー側に実装の推論を持ち込み、独立した視点という利点を失います。レビューを行わない(c)と、テストで捉えられない問題が残ります。",
   "refs": [
    "https://code.claude.com/docs/en/best-practices",
    "https://code.claude.com/docs/en/sub-agents"
+  ],
+  "topics": [
+   "claude-code-subagents",
+   "claude-code-prompting"
   ]
  },
  {
@@ -948,36 +1054,41 @@
   "domain": "agentic-architecture-and-orchestration",
   "type": "single",
   "scenarioId": "research",
-  "stem": "コーディネーターがサブエージェントを起動しようとしても、起動できない。コーディネーターに許可したツールは Read と WebSearch だけである。原因はどれか。",
+  "stem": "Agent SDK のコーディネーターの agents にサブエージェントを定義したが、コーディネーターはサブエージェントを起動しない。コーディネーターの tools オプションに指定したのは Read と WebSearch だけである。原因はどれか。",
   "choices": [
    {
     "id": "a",
-    "text": "サブエージェントを起動するためのツール(Agent。以前の版では Task)が、許可したツールに含まれていない",
-    "why": "サブエージェントは、専用のツールを通じて起動する。"
+    "text": "サブエージェントを起動する Agent ツール(以前の名前は Task)が tools になく、コーディネーターが使えない",
+    "why": "Claude は Agent ツールでサブエージェントを呼び出す。tools オプションに挙げた組み込みのツールだけが Claude のコンテキストに入るので、Agent を挙げないと使えない。"
    },
    {
     "id": "b",
-    "text": "サブエージェントの数が多すぎる",
-    "why": "起動そのものができていない。"
+    "text": "allowedTools に Agent を入れていないため、Agent の呼び出しが承認されずに止まっている",
+    "why": "allowedTools は列挙したツールを事前に承認するだけで、使えるツールを絞らない。Agent は実行の前に確認を求めないツールで、列挙しなくても動く。"
    },
    {
     "id": "c",
-    "text": "WebSearch を許可していることが原因である",
-    "why": "関係がない。"
+    "text": "サブエージェントは description が合えば SDK が自動で起動するので、description の書き方だけが原因である",
+    "why": "Claude は description をもとにどのサブエージェントに任せるかを決めるが、起動は Agent ツールの呼び出しで行う。Agent が使えるツールにない限り起動できない。"
    },
    {
     "id": "d",
-    "text": "サブエージェントは、定義さえしておけば必要なときに自動的に起動するので、ツールに関する設定は不要である。原因は別にある",
-    "why": "起動のためのツールが必要である。"
+    "text": "サブエージェントの定義で tools を省略しているため、その定義が無効なものとして扱われている",
+    "why": "AgentDefinition の tools は任意で、省略すると、サブエージェントが使えるツールをすべて引き継ぐ。定義が無効になるわけではない。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "Agent SDK では、コーディネーターが Agent ツールを通じてサブエージェントを起動します。このツールは、以前の版では Task という名前でした。コーディネーターの許可したツールに含めておく必要があります。",
+  "explanation": "正解は a です。Subagents in the SDK によると、Claude は Agent ツールでサブエージェントを呼び出します。Custom tools によると、tools オプションは使えるツールを決め、挙げた組み込みのツールだけが Claude のコンテキストに入ります。この場面では tools が Read と WebSearch だけなので Agent がなく、起動できません。Create custom subagents も、claude --agent について同じことを述べています。\n\n見分け方: allowedTools(b)は事前の承認で、使えるツールを絞りません。Configure permissions によると、Agent のように確認なしで動くツールは列挙しなくても動きます。description(c)は任せる先の判断に使われ、起動は Agent ツールの呼び出しです。tools を省いた定義(d)は、ツールをすべて引き継ぎます。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview",
+   "https://code.claude.com/docs/en/agent-sdk/subagents",
+   "https://code.claude.com/docs/en/agent-sdk/custom-tools",
+   "https://code.claude.com/docs/en/agent-sdk/permissions",
    "https://code.claude.com/docs/en/sub-agents"
+  ],
+  "topics": [
+   "claude-code-subagents"
   ]
  },
  {
@@ -1012,10 +1123,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "サブエージェントは、役割ごとに説明、システムプロンプト、ツールの制限を持ちます。",
+  "explanation": "正解は a です。Agent SDK のサブエージェントのページによると、AgentDefinition の必須の項目は、いつこのエージェントを使うかを自然言語で示す description と、役割と振る舞いを定めるシステムプロンプトの prompt です。任意の tools で使えるツールを限れ、省くと使えるツールをすべて引き継ぎます。ほかに model や maxTurns なども指定できます。選択肢の説明、システムプロンプト、ツールの範囲は、この 3 つに当たります。\n\n見分け方: GPU の種類やメモリの量(b)は、AgentDefinition の項目にありません。コーディネーターの会話履歴やツールの結果(c)は定義に含めるものではなく、フォークを除くサブエージェントは親の会話履歴もツールの結果も受け取りません。利用者のパスワード(d)も、AgentDefinition の項目にはありません。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview",
+   "https://code.claude.com/docs/en/agent-sdk/subagents",
    "https://code.claude.com/docs/en/sub-agents"
+  ],
+  "topics": [
+   "claude-code-subagents"
   ]
  },
  {
@@ -1050,10 +1164,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "コーディネーターは、依頼を分析して、どのサブエージェントを使うかを動的に決めます。固定の全段階を毎回通す必要はありません。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system は、エージェントは課題に見合った労力を判断するのが苦手なため、労力の規則をプロンプトに入れたと述べています。単純な事実の確認は 1 エージェントで 3〜10 回のツール呼び出し、直接の比較は 2〜4 のサブエージェントといった規則で、単純な問い合わせへの過剰な投資を防ぎました。Prompting best practices も、単純な作業はサブエージェントに任せず直接行うよう指示する例文を示しています。この場面の設立年の質問は単純な事実の確認なので、自分で答えるのが当てはまります。\n\n見分け方: 常に全サブエージェントを通す(b)のと、起動する数をさらに増やす(c)のは、記事が初期の失敗に挙げた、単純な問い合わせに 50 のサブエージェントを起動するような過剰な投資に当たります。単純な質問を受け付けない(d)のは、利用者の依頼に応えていません。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system",
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "multi-agent-systems"
   ]
  },
  {
@@ -1088,9 +1205,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "コーディネーターは、統合の結果を評価し、不足があれば的を絞って再度委任します。この反復が、網羅性を高めます。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system によると、主エージェントはサブエージェントの結果を統合し、さらに調査が要るかを判断して、要るなら追加のサブエージェントを作るか戦略を練り直します。サブエージェントには目的と明確な作業の境界を渡すよう勧めています。この場面では、根拠の薄いサブトピックを特定し、その点に絞った調査を追加で割り振ってから統合し直すのが当てはまります。\n\n見分け方: 不足に触れずに提出する(b)と、弱い根拠がレポートに残ります。記事が使った採点の基準も、主張が出典と合うか(事実の正確さ)や、求められた面をすべて扱っているか(網羅性)を見ています。調査全体をやり直す(c)と、十分な部分まで繰り返します。推測で根拠を補う(d)と、出典に基づかない主張になります。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "multi-agent-systems"
   ]
  },
  {
@@ -1114,7 +1234,7 @@
    {
     "id": "c",
     "text": "サブエージェントが互いに相談して同じ結論に寄ってしまうからである。相談を禁止する設定にすれば解決する",
-    "why": "サブエージェントは、直接やり取りしない。"
+    "why": "記事の調査システムでは、サブエージェントどうしは連携しない。記事が重複の原因に挙げるのは、境界の曖昧な委任の指示である。"
    },
    {
     "id": "d",
@@ -1125,9 +1245,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "委任のときは、担当する範囲と、担当しない範囲を伝えます。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system によると、各サブエージェントには目的、出力の形式、使うツールと情報源の指針、明確な作業の境界が必要で、説明が足りないとエージェントは作業を重複させたり抜けを残したりします。記事は、「半導体不足を調べて」のような短い指示で、2 つのサブエージェントが同じ調査を重ねた例を挙げています。この場面の重複も、割り振りの境界が曖昧なことが原因と考え、コーディネーターが担当範囲を分けて伝えるのが当てはまります。\n\n見分け方: 記事は重複の原因を委任の指示に置いており、同じモデルであること(b)は挙げていません。記事の調査システムではサブエージェントどうしは連携しておらず(c)、相談を禁じても担当の境界は明確になりません。指示で防げるので、対策がない(d)わけではありません。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://www.anthropic.com/research/multi-agent-research-system"
+  ],
+  "topics": [
+   "multi-agent-systems"
   ]
  },
  {
@@ -1162,10 +1285,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "手順が予測できる作業には固定の連鎖が、予測できない作業には動的な分解が向きます。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system は、調査は必要な手順を前もって予測しにくく、固定の経路をハードコードできない問題で、人も発見に応じてやり方を更新し続けると述べています。モデルは途中の発見をもとに方向を決めながら多くのターンを動く必要があり、直線的な 1 回きりのパイプラインでは扱えないとしています。この場面は見通しの立たない探索的な調査なので、分かったことに応じて次のサブタスクを決めるのが当てはまります。\n\n見分け方: 決めた 5 つの手順を固定で実行する(b)のは、記事 Building effective agents が手順の決まったタスクに向けるワークフローのやり方で、途中の発見を生かせません。1 回の呼び出しで済ませる(c)のは、記事が扱えないとした 1 回きりの処理です。無作為に選ぶ(d)のは根拠がありません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "multi-agent-systems",
+   "autonomous-agents"
   ]
  },
  {
@@ -1200,10 +1327,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツールは役割に合わせて絞りますが、頻繁に必要になる単純な操作には、範囲を限定したツールを用意すると、往復を減らせます。",
+  "explanation": "正解は a です。Agent SDK のサブエージェントのページによると、AgentDefinition の tools でサブエージェントが使えるツールを制限でき、省略すると使えるツールをすべて引き継ぎます。記事 Writing effective tools for agents は、影響の大きい作業に絞った少数のツールを作るよう勧め、多すぎるツールや重なり合うツールは効率のよい進め方の妨げになるとしています。この場面では、頻繁に必要な単純な事実確認だけを範囲を絞ったツールで統合のサブエージェントに与え、複雑な調査はコーディネーター経由に残すのが当てはまります。\n\n見分け方: 全ツールを与える(b)と、検索のような役割の外の作業までできるようになります。事実確認をやめる(c)と誤りが残ります。コーディネーターをなくす(d)と、調査の計画と結果の統合を担う役が失われます。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system",
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://code.claude.com/docs/en/agent-sdk/subagents",
+   "https://www.anthropic.com/research/writing-tools-for-agents"
+  ],
+  "topics": [
+   "claude-code-subagents",
+   "writing-tools-for-agents"
   ]
  },
  {
@@ -1238,9 +1369,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "セッションの分岐は、共通の基盤から異なる方針を試すときに使います。",
+  "explanation": "正解は a です。Agent SDK のセッションのページによると、fork は元の履歴の写しから始まる新しいセッションを作り、元のセッションは変わりません。元を失わずに別のやり方を試すときの方法とされ、fork は独自のセッション ID を持つので、元と fork を別々に再開できます。この場面では、調査を終えた時点のセッションを分岐させれば、共通の調査結果を出発点に 2 通りの構成を試せます。\n\n見分け方: 同じ調査を 2 回行う(b)と、調査の時間と費用が二重にかかり、同じ調査結果になるとも限りません。1 つのセッションで交互に書く(c)と、2 つの案の文脈が 1 つの履歴に混ざります。片方だけを作る(d)と比べられません。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview"
+   "https://code.claude.com/docs/en/agent-sdk/sessions"
+  ],
+  "topics": [
+   "agent-sdk-sessions"
   ]
  },
  {
@@ -1275,10 +1409,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "マルチエージェントは、費用と複雑さを伴います。範囲の狭い依頼には、単純な構成を使います。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system によると、マルチエージェントのシステムはチャットの約 15 倍のトークンを使うため、性能の向上に見合う価値の高いタスクが必要で、並列化の多い作業や 1 つのコンテキストウィンドウを超える情報を扱う作業に向きます。記事 Building effective agents も、できるだけ単純な解決策から始め、必要なときだけ複雑さを増すよう勧めています。この場面の、1 つの文書についての短い質問は範囲が狭く並列化する部分もないので、単一のエージェントで足ります。\n\n見分け方: 10 の業界を並行して調べる(b)のと、独立した多数の文書を同じ観点で分析する(d)のは、独立した方向を同時に追う並列化の多い作業です。多数の出典を突き合わせる包括的な調査(c)は、1 つのコンテキストを超える情報を扱う作業です。どれもマルチエージェントの向く条件に当たります。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system",
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "multi-agent-systems",
+   "building-effective-agents"
   ]
  },
  {
@@ -1313,9 +1451,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "マルチエージェントの問題は、段階ごとの入出力を見ないと特定できません。委任の内容と結果を記録します。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system によると、エージェントは同じプロンプトでも実行ごとに判断が変わるためデバッグが難しく、本番の追跡(tracing)を全面的に入れたことで、失敗の理由を診断して体系的に直せるようになりました。Agent SDK のフックも、サブエージェントの中で発火したときは入力に agent_id と agent_type が入ります。この場面では、コーディネーターを通るすべての委任と結果を記録し、どのサブエージェントのどの段階で誤りが生じたかを追えるようにするのが当てはまります。\n\n見分け方: サブエージェントどうしを直接やり取りさせて記録を減らす(b)と、流れがさらに追いにくくなります。記録を取らない(c)と原因を調べられません。最終レポートだけを保存する(d)と、どの段階で誤りが入ったかが分かりません。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://code.claude.com/docs/en/agent-sdk/hooks"
+  ],
+  "topics": [
+   "multi-agent-systems"
   ]
  },
  {
@@ -1350,10 +1492,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "サブエージェントへの指示は、手順の列挙より、目的と基準を示す方が、状況への適応を引き出します。",
+  "explanation": "正解は a です。記事 How we built our multi-agent research system は、各サブエージェントに目的、出力の形式、ツールと情報源の指針、明確な作業の境界を渡すよう勧め、プロンプトの方針は固い規則より良い経験則を持たせることに置いたと述べています。記事 Effective context engineering for AI agents も、壊れやすい if-else を書き込んだプロンプトと、一般的すぎるプロンプトの間の、適切な高度で書くよう勧めています。この場面では、検索結果に応じて手段を変えられるよう、手順の列挙ではなく目的と品質の基準を伝えるのが当てはまります。\n\n見分け方: 手順を 30 に増やす(b)と、壊れやすい書き方がさらに進みます。大文字で強調する(c)のは、手順に固執する問題を変えません。何も伝えない(d)のは一般的すぎる側の失敗で、目的も境界も分かりません。",
   "refs": [
-   "https://www.anthropic.com/engineering/multi-agent-research-system",
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+   "https://www.anthropic.com/research/multi-agent-research-system",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "multi-agent-systems",
+   "context-engineering"
   ]
  },
  {
@@ -1388,10 +1534,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "ラッパーを経由する利用は、名前を変えて現れます。エクスポートされた名前を洗い出してから検索します。",
+  "explanation": "正解は a です。記事 Effective context engineering for AI agents は、Claude Code が glob や grep で環境を探って必要なファイルを just in time に読み込むと述べ、探索で得た文脈が次の判断を導く(progressive disclosure)としています。Claude Code のツールのリファレンスでは、Grep はファイルの中身をパターンで検索するツールです。この場面の別名は元の名前で検索しても見つからないので、まずラッパーが再エクスポートしている名前を洗い出し、それぞれの名前で全体を検索するのが当てはまります。この段取りは公式資料の記述ではなく、一般的な調べ方です。\n\n見分け方: 元の関数名だけで検索する(b)と、別名での利用が漏れます。定義のあるファイルだけを読む(c)と、利用箇所は分かりません。推測する(d)のは、ツールの結果という裏付けがありません。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview",
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+   "https://code.claude.com/docs/en/tools-reference"
+  ],
+  "topics": [
+   "context-engineering",
+   "builtin-tools"
   ]
  },
  {
@@ -1405,7 +1555,7 @@
    {
     "id": "a",
     "text": "コマンドの実行前に走るフックで、危険なパターンを検査して拒否する",
-    "why": "コードによる検査は、必ず働く。"
+    "why": "フックはハーネスが毎回実行する決定的な仕組みで、モデルの判断に左右されない。"
    },
    {
     "id": "b",
@@ -1426,10 +1576,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "破壊的な操作の防止は、フックや権限の設定で強制します。隔離された環境での実行も、併用します。",
+  "explanation": "正解は a です。Claude Code のベストプラクティスは、プロンプトの指示はモデルが読んで判断するもので守られる保証はなく、毎回必ず守らせる規則はフックや deny ルールのようにハーネスが適用する仕組みにするよう勧めています。Agent SDK のフックでは、PreToolUse のコールバックが permissionDecision: \"deny\" を返すとツールの呼び出しが止まり、Hooks のリファレンスにも rm -rf を含むコマンドを拒否する例があります。この場面では、実行前のフックで危険なパターンを拒否するのが当てはまります。\n\n見分け方: システムプロンプトの指示(b)やエージェントへの信頼(c)は、モデルの判断に任せるだけです。実行後のログ確認(d)では、コマンドはもう実行されています。なお Agent SDK では、コールバックが例外で失敗すると既定では呼び出しが進むので、止めるには onFailure: \"block\" を指定します。",
   "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/hooks",
    "https://code.claude.com/docs/en/hooks",
-   "https://code.claude.com/docs/en/permissions"
+   "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "claude-code-hooks"
   ]
  },
  {
@@ -1464,10 +1618,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "独立した調査は、並列のサブエージェントに向きます。各サブエージェントは、要約だけを返します。",
+  "explanation": "正解は a です。Claude Code のサブエージェントのページは、独立した調査には複数のサブエージェントを同時に動かすよう勧め、認証、データベース、API のモジュールを別々のサブエージェントで並行して調べる例を挙げています。各サブエージェントは自分の領域を独立に調べ、Claude が結果を統合します。調査の道筋が互いに依存しないときに最もよく働き、サブエージェントは自分のコンテキストで作業して要約だけを返します。この場面の 4 つのモジュールは互いに独立しているので、モジュールごとのサブエージェントを並列に起動するのが当てはまります。\n\n見分け方: メインのエージェントが順番に読む(b)と、時間がかかり、読んだ内容がメインのコンテキストにたまります。1 つのサブエージェントに順に調べさせる(c)と並列になりません。推測する(d)のは裏付けがありません。",
   "refs": [
    "https://code.claude.com/docs/en/sub-agents",
-   "https://www.anthropic.com/engineering/multi-agent-research-system"
+   "https://code.claude.com/docs/en/agent-sdk/subagents"
+  ],
+  "topics": [
+   "claude-code-subagents"
   ]
  },
  {
@@ -1502,9 +1659,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "エージェントは、文脈に基づいてツールを選びます。固定の順序が必要なのは、業務上の制約がある部分だけです。",
+  "explanation": "正解は a です。記事 Building effective agents は、LLM とツールを定めたコードの経路で動かすワークフローと、LLM が処理の進め方とツールの使い方を動的に決めるエージェントを区別し、手順を予測しにくく固定の経路をハードコードできない問題にはエージェントが向くとしています。一方、Claude Code のベストプラクティスは、毎回必ず守らせる規則はフックのような決定的な仕組みにするよう勧めています。この場面では、どのツールを呼ぶかはモデルに判断させ、業務上欠かせない制約だけをコードで強制するのが当てはまります。\n\n見分け方: 分岐を細かく増やす(b)のは固定の経路を広げるだけで、想定外の質問は残ります。ツールをすべて外す(c)と作業ができません。想定外の質問を断る(d)と、利用者の依頼に応えられません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "building-effective-agents",
+   "claude-code-hooks"
   ]
  },
  {
@@ -1539,10 +1701,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "冗長なツール出力は、モデルに渡す前に絞ります。コマンドの側で、出力を減らすオプションを使う方法もあります。",
+  "explanation": "正解は a です。Agent SDK のフックのページによると、PostToolUse のフックは updatedToolOutput を返すと、Claude が見る前にツールの出力を置き換えられ、組み込みのツールと MCP のツールの両方で使えます。記事 Effective context engineering for AI agents は、望む結果の見込みを最大にする、最小限で情報価値の高いトークンの集合を探すよう勧めています。この場面では、ビルドのログからエラーの行だけを残して渡すのが当てはまります。Hooks のリファレンスは、Claude が必要とするエラーの詳細まで削ると誤った前提で進むおそれがあると注意しています。\n\n見分け方: ログをすべて残す(b)と、毎回数千行がコンテキストに入ります。ビルドを実行しない(c)と、結果を確かめられません。読まないよう指示する(d)だけでは、ログはすでにコンテキストに入っています。",
   "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/hooks",
    "https://code.claude.com/docs/en/hooks",
-   "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "claude-code-hooks",
+   "context-engineering"
   ]
  },
  {
@@ -1577,10 +1744,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "大きな依頼は、構造の把握、重点の特定、計画の順に進めます。計画は、分かったことに応じて見直します。",
+  "explanation": "正解は a です。Claude Code の Common workflows は、新しいコードベースを理解するとき、まず全体の概要を尋ね、主なアーキテクチャのパターンやデータモデルへと進むよう示し、広い質問から始めて特定の部分に絞るよう勧めています。記事 Effective context engineering for AI agents も、エージェントは探索を通じて関連する文脈を段階的に見つけられ、フォルダの構成や命名がその手がかりになるとしています。この場面では、入口と全体の構成を把握し、そこから調べる範囲の計画を立てるのが当てはまります。\n\n見分け方: 最初のファイルから順にすべて読み込む(b)と、重要度に関係なくコンテキストを使います。すぐに書き始める(c)と、理解の裏付けがないまま文書になります。依頼を断る(d)必要はなく、分けて進められます。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://code.claude.com/docs/en/common-workflows"
+   "https://code.claude.com/docs/en/common-workflows",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "context-engineering"
   ]
  },
  {
@@ -1615,10 +1785,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "エージェントは、環境からのフィードバックで自分の成果を直せます。検査の結果を、そのまま返します。",
+  "explanation": "正解は a です。Claude Code のベストプラクティスは、Claude は作業が終わったように見えた時点で止まるので、合否を返すもの(テスト、ビルドの終了コード、リンターなど)を渡すよう勧めています。そうすると Claude は、変更して検査を実行し、失敗すれば出力を読んで直すループを自分で回せます。型検査を Stop フックにすれば、通るまでターンを終えられないようハーネスが強制します。記事 Building effective agents も、エージェントは各ステップで環境から得た結果で進み具合を確かめるとしています。この場面には、型検査の失敗を返して直させるループが当てはまります。\n\n見分け方: 型検査をしない(b)と誤りが残ります。強く指示するだけ(c)では、終わったように見えるかどうかしか判断材料がありません。黙って捨てる(d)と、直す機会がありません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://code.claude.com/docs/en/best-practices"
+   "https://code.claude.com/docs/en/best-practices",
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "claude-code-prompting",
+   "autonomous-agents"
   ]
  },
  {
@@ -1637,7 +1811,7 @@
    {
     "id": "b",
     "text": "同じ実行に「この指摘に自信はあるか」と尋ね、自信があると答えた指摘だけを選んで投稿する",
-    "why": "自己申告は、当てにならない。"
+    "why": "指摘を出した推論を見ている同じ実行の自己評価で、独立した検証にならない。"
    },
    {
     "id": "c",
@@ -1653,10 +1827,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "検証の段階を分けると、精度が上がります。検証の側には、指摘と該当のコードだけを渡します。",
+  "explanation": "正解は a です。Claude Code の Code Review では、複数のエージェントが候補の指摘を見つけた後、検証の段階が指摘をコードと照らして誤検知を除いてから投稿します。Claude Code のベストプラクティスも、推論を見ていない新しいレビュアーは役に立つとし、/code-review は会話を見ていないサブエージェントで差分をレビューするので、コードを生んだ推論に引きずられないとしています。この場面では、別の実行で各指摘を実際のコードに照らして検証し、通ったものだけを投稿するのが当てはまります。\n\n見分け方: 同じ実行に自信を尋ねる(b)のは、指摘を出した推論を見ている実行の自己評価で、独立した検証になりません。無作為に半分捨てる(c)と、正しい指摘も失われます。検証せずにすべて投稿する(d)と、誤検知は減りません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
+   "https://code.claude.com/docs/en/code-review",
    "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "claude-code-code-review",
+   "claude-code-prompting"
   ]
  },
  {
@@ -1691,9 +1869,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "独立した作業の並列化は、時間を短縮します。ファイルをまたぐ問題は、別の段階で確認します。",
+  "explanation": "正解は a です。記事 Building effective agents は、独立したサブタスクを並行して動かす並列化の「分割(sectioning)」を、分けたサブタスクを並列にして速くできるときに有効だとしています。Agent SDK のサブエージェントのページも、コードレビューで複数のサブエージェントを同時に動かせば、合計ではなく最も遅いものの時間で終わるとし、Claude Code の Code Review も複数のエージェントが並行して調べます。この場面では、ファイル単位のレビューを並列に実行し、ファイルをまたぐ問題は後の統合のレビューで見るのが当てはまります。\n\n見分け方: 直列にレビューする(b)と、独立した作業でも時間が合計になります。対象を半分にする(c)と、残りがレビューされません。プルリクエストを禁止する(d)と、開発が止まります。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://code.claude.com/docs/en/agent-sdk/subagents",
+   "https://code.claude.com/docs/en/code-review"
+  ],
+  "topics": [
+   "agentic-workflow-patterns",
+   "claude-code-code-review"
   ]
  },
  {
@@ -1728,10 +1912,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "段階を分けると、各段階の質が上がります。分析の結果は、人が確認する機会にもなります。",
+  "explanation": "正解は a です。Prompting best practices は、途中の出力を確かめたいときや決まった処理の流れを強制したいときは、作業を順に実行する複数の API 呼び出しに分ける明示的な連鎖が今も役立つとしています。記事 Building effective agents のプロンプトチェーンも、各呼び出しを易しくして精度を上げる方法です。Claude Code の Common workflows のテストの手順も、まずテストされていない部分を特定させています。この場面では、検証が不足している重要な箇所の分析を先に行い、その結果をもとにテストを生成させるのが当てはまります。\n\n見分け方: 依頼を短くする(b)だけでは、どこを重点にするかは伝わりません。テストの数を増やす(c)と、重要でない箇所のテストも増えます。対象を無作為に選ばせる(d)のは、重要度を反映しません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts",
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://www.anthropic.com/research/building-effective-agents",
+   "https://code.claude.com/docs/en/common-workflows"
+  ],
+  "topics": [
+   "prompt-chaining",
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -1766,9 +1955,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "自動レビューは、人のレビューを助けるものです。誤りの可能性を前提に、人が最終的に判断する流れにします。",
+  "explanation": "正解は a です。Claude Code の Code Review は、指摘を該当の行へのコメントと要約、チェックランとしてプルリクエストに投稿し、レビューがプルリクエストを承認したりブロックしたりすることはなく、マージの判断はチームに残るとしています。記事 Building effective agents も、自動テストは機能の確認に役立つが、システム全体の要件に合うかを確かめるには人のレビューが欠かせないとしています。この場面には、指摘をコメントとして投稿し、マージの判断を人が行う流れが当てはまります。\n\n見分け方: 指摘がなければ自動でマージする(b)と、レビューが見落とした問題がそのまま入ります。指摘が 1 件でもあれば閉じる(c)と、誤検知でも作業が失われます。指摘を開発者に見せない(d)と、レビューの結果を生かせません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://code.claude.com/docs/en/code-review",
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "claude-code-code-review",
+   "building-effective-agents"
   ]
  },
  {
@@ -1803,10 +1997,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "自動化の失敗は、黙って通さないようにします。終了コードや出力を確認して、状態を正しく表示します。",
+  "explanation": "正解は a です。Claude Code の非対話モードのドキュメントによると、claude -p は成功すると終了コード 0、失敗すると 0 以外で終わるので、スクリプトは終了コードで分岐できます。再試行できる API のエラーでは、Claude Code は再試行の前に system/api_retry のイベントを出します。Claude API のエラーのページも、500 の api_error は指数バックオフで再試行するよう勧めています。この場面では、失敗を検知して再試行し、それでも失敗したらレビューが行われなかったことを明示するのが当てはまります。\n\n見分け方: 失敗を「問題なし」として通す(b)と、レビューされていない変更が確認済みに見えます。失敗の理由を記録しない(c)と、原因を調べられません。リポジトリを凍結する(d)のは、一時的な障害への対応として過剰です。",
   "refs": [
    "https://code.claude.com/docs/en/headless",
    "https://platform.claude.com/docs/en/api/errors"
+  ],
+  "topics": [
+   "claude-code-headless",
+   "api-errors"
   ]
  },
  {
@@ -1841,10 +2039,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "検証と再試行のループには、上限と、その後の扱いを決めておきます。",
+  "explanation": "正解は a です。Agent SDK の構造化出力のページによると、SDK は出力をスキーマで検証して合わなければ再度促しますが、再試行の上限までに有効な出力が得られなければ、結果は error_max_structured_output_retries のエラーになります。Handle tool calls も、失敗を is_error で返すと Claude が呼び直すことがあるので、ループで許す再試行の回数を制限するよう勧めています。記事 Building effective agents は、エージェントは障害に当たったときに人のフィードバックを待てるとしています。この場面では、上限に達した抽出を人の確認に回すのが当てはまります。\n\n見分け方: 制限なく繰り返す(b)と、原本に情報がない文書では終わりません。1 回も再試行しない(c)と、エラーの内容を渡せば直せる誤りも残ります。黙って破棄する(d)と、文書が抜け落ちたことに誰も気付けません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+   "https://code.claude.com/docs/en/agent-sdk/structured-outputs",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "structured-output-schema-design",
+   "tool-error-responses"
   ]
  },
  {
@@ -1879,9 +2082,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "期限から、処理にかかる最長の時間を引いた残りが、投入を待てる時間です。30 時間の期限なら、待てるのは 6 時間までです。",
+  "explanation": "正解は a です。Message Batches API のドキュメントによると、多くのバッチは 1 時間以内に終わりますが、結果はすべての処理が終わるか 24 時間が経つかの早いほうで取得でき、24 時間以内に処理が終わらなければ期限切れになります。この場面の期限は受け取りから 30 時間なので、処理に最長 24 時間かかると見ると、投入までに待てるのは 6 時間までです。数時間ごとの投入なら、待ち時間と処理時間の合計が期限に収まります。\n\n見分け方: 1 日 1 回の投入(b)では、投入まで最大 24 時間待つ文書があり、処理の 24 時間と合わせて期限を超ええます。週 1 回(c)は待ち時間がさらに長くなります。投入の間隔を短くすればバッチで間に合うので、すべてを同期の API にする(d)必要はありません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ],
+  "topics": [
+   "batch-processing"
   ]
  },
  {
@@ -1916,10 +2122,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "大量の処理の前に、少数で試して、初回の成功率を上げておくと、再送の費用を減らせます。",
+  "explanation": "正解は a です。Claude Code のベストプラクティスは、多くのファイルを claude -p で 1 件ずつ処理する例で、まず 3 つのファイルで試し、うまくいかない点を見てプロンプトを直してから残りを実行するよう勧めています。Message Batches API のドキュメントも、params の検証は非同期で、エラーはバッチ全体の処理が終わってから返るため、先に Messages API でリクエストの形を確かめるよう勧めています。この場面では、少数の文書で試してプロンプトとスキーマを直してから、1 万件に広げるのが当てはまります。\n\n見分け方: 試さずに全件を投入する(b)と、プロンプトやスキーマの誤りが全件に及びます。全件を 2 回ずつ投入する(c)と費用が倍になり、同じ誤りは両方に出ます。プロンプトを空にする(d)と、何を抽出するかが伝わりません。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+   "https://code.claude.com/docs/en/best-practices",
+   "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ],
+  "topics": [
+   "batch-processing",
+   "claude-code-parallel-sessions"
   ]
  },
  {
@@ -1938,7 +2148,7 @@
    {
     "id": "b",
     "text": "1 つの巨大なプロンプトとスキーマを作り、すべての種別を 1 回でまとめて扱う",
-    "why": "注意が分散し、スキーマも複雑になる。"
+    "why": "ある種別に合わせた最適化がほかの種別の性能を下げうる(Building effective agents)。スキーマも複雑になる。"
    },
    {
     "id": "c",
@@ -1954,10 +2164,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "入力に明確な種類があるときは、ルーティングが有効です。種別が不明なものの扱い(その他、人による確認)も決めておきます。",
+  "explanation": "正解は a です。記事 Building effective agents のルーティングは、入力を分類して、それに特化した後続の処理に振り分けるワークフローで、別々に扱うほうがよい明確な種類があり、分類を正確に行えるときに向くとされています。記事は、ルーティングがないと、ある種類の入力に合わせた最適化がほかの入力の性能を下げうるとしています。この場面の請求書、契約書、領収書は抽出項目も注意点も違う明確な種類なので、最初に種別を判定し、種別ごとのプロンプトとスキーマに振り分けるのが当てはまります。\n\n見分け方: 1 つの巨大なプロンプトとスキーマで扱う(b)と、記事のいう、ある種類への最適化がほかの種類を損なう状態になります。種別を毎回利用者に入力させる(c)と、自動化の利点が減ります。請求書だけを処理する(d)と、用途を満たせません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -1992,10 +2204,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "生成と検証は、分けると効果的です。検証は、原本との突き合わせに集中させます。",
+  "explanation": "正解は a です。Claude Code のベストプラクティスは、同じ作業をサブエージェントに渡しても答えは良くならないが、推論を見ていない新しいレビュアーは役に立つとしています。Prompting best practices も、下書きを作り、基準に照らして見直させ、見直しに基づいて改善させる自己修正の連鎖を、各段階を別の API 呼び出しにする形で示しています。この場面では、抽出を行った実行とは別の実行に、原本と抽出結果を渡して突き合わせさせるのが当てはまります。\n\n見分け方: 同じ実行にもう一度見直させる(b)と、抽出したときの判断を見たまま確かめることになり、独立した検証になりません。見直しをやめる(c)と誤りが残ります。項目の多い方を採用する(d)のは長さで選ぶだけで、正しさを確かめていません。",
   "refs": [
-   "https://www.anthropic.com/engineering/building-effective-agents",
-   "https://code.claude.com/docs/en/best-practices"
+   "https://code.claude.com/docs/en/best-practices",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "prompt-chaining",
+   "agentic-workflow-patterns"
   ]
  },
  {
@@ -2019,7 +2236,7 @@
    {
     "id": "c",
     "text": "すべての文書を連結して、1 回で抽出する",
-    "why": "注意が分散し、関係を取り違えやすい。"
+    "why": "文書ごとの抽出結果を途中で確かめる段階がなく、変更の関係の整理も 1 回の呼び出しに詰め込むことになる。"
    },
    {
     "id": "d",
@@ -2030,10 +2247,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "複数の文書にまたがる抽出は、局所的な段階と、統合の段階に分けます。",
+  "explanation": "正解は a です。Prompting best practices は、途中の出力を確かめたいときや決まった処理の流れを強制したいときは、作業を順に実行する複数の API 呼び出しに分ける連鎖が今も役立つとしています。記事 Building effective agents も、複数の観点がある複雑なタスクは、各観点を別々の LLM 呼び出しで扱うほうが一般に成績が良いとしています。この場面では、文書ごとの抽出と、どれがどれを変更したかを踏まえた統合を分けると、個々の抽出結果を確かめてから最新の条件を決められます。\n\n見分け方: 最初の文書だけ(b)では変更が反映されず、最後の文書だけ(d)では変更されていない条件が抜けます。連結して 1 回で抽出する(c)と、文書ごとの結果を確かめる段階がありません。複数の文書を 1 回で渡すなら、各文書を <document> タグで囲む構成が勧められています。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts",
-   "https://www.anthropic.com/engineering/building-effective-agents"
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+   "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "prompt-chaining",
+   "long-context-prompting"
   ]
  },
  {
@@ -2068,9 +2289,15 @@
   "answer": [
    "b"
   ],
-  "explanation": "PreToolUse フックは、ツールが呼ばれる前に実行されます。permissionDecision に deny を返すとツールの呼び出しが止まり、permissionDecisionReason でモデルに理由を伝えられます。モデルは、その理由を受けて、人への引き継ぎなど別の手順に進めます。PostToolUse はツールの実行後に走るため、止める用途には使えません。",
+  "explanation": "正解は b です。Agent SDK のフックのページによると、PreToolUse はツールの呼び出しの前に発火し、permissionDecision: \"deny\" を返すと呼び出しが止まり、permissionDecisionReason でモデルに理由を伝えられます。Claude Code のベストプラクティスも、毎回必ず守らせる規則はハーネスが適用するフックのような仕組みにするよう勧めています。この場面では、process_refund の金額を実行前に調べ、500 ドルを超えれば拒否して、理由に人への引き継ぎを書くのが当てはまります。\n\n見分け方: PostToolUse(a)はツールの実行後に発火し、Hooks のリファレンスは、出力を置き換えても実行の効果はすでに生じていると注意しています。Stop フック(c)も会話の終わりで、返金は行われた後です。システムプロンプトの指示(d)は、モデルが読んで判断するもので、守られる保証はありません。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/hooks"
+   "https://code.claude.com/docs/en/agent-sdk/hooks",
+   "https://code.claude.com/docs/en/hooks",
+   "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "claude-code-hooks",
+   "customer-support-agents"
   ]
  },
  {
@@ -2105,9 +2332,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "フォークは、元の履歴の写しから始まり、その時点から分かれる新しいセッションを作ります。フォークは独自の ID を持ち、元の ID と履歴は変わりません。ただし、分かれるのは会話の履歴で、ファイルシステムではありません。フォークしたエージェントがファイルを編集すると、同じディレクトリで動くどのセッションからも見えます。",
+  "explanation": "正解は d です。Agent SDK のセッションのページによると、fork は元の履歴の写しから始まり、その時点から分かれる新しいセッションを作ります。fork は独自のセッション ID を持ち、元の ID と履歴は変わりません。ただし分かれるのは会話の履歴で、ファイルシステムではありません。fork したエージェントの編集は実際に行われ、同じディレクトリで動くどのセッションからも見えます。この場面の 2 つの案を同じディレクトリで実装すると、互いの編集が混ざります。\n\n見分け方: 元のセッションは削除されず(a)、fork は元と別の ID を持つので両方を再開でき(b)、元の履歴の写しから始まるので調査結果を渡し直す必要もありません(c)。ファイルの変更を分けて戻すには、ページはファイルのチェックポイントを挙げています。",
   "refs": [
    "https://code.claude.com/docs/en/agent-sdk/sessions"
+  ],
+  "topics": [
+   "agent-sdk-sessions"
   ]
  },
  {
@@ -2142,9 +2372,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "continue は、現在のディレクトリで最も新しいセッションを続けます。追跡が不要なので、会話が 1 つだけのアプリケーションに向きます。resume は、指定したセッション ID のセッションを続けます。利用者ごとに 1 つずつセッションがある場合のように、複数のセッションを扱うときは resume が必要です。",
+  "explanation": "正解は a です。Agent SDK のセッションのページによると、continue と resume はどちらも既存のセッションを続けますが、見つけ方が違います。continue は現在のディレクトリで最も新しいセッションを探すので、1 度に 1 つの会話を扱うアプリに向きます。resume は特定のセッション ID を受け取り、利用者ごとにセッションがある複数利用者のアプリのように、複数のセッションがある場合に必要です。この場面では、結果メッセージの session_id を顧客ごとに保存して resume に渡すのが当てはまります。\n\n見分け方: continue(b)は最も新しいセッションを選ぶので、別の顧客の会話を続けかねません。fork(c)は元の履歴の写しから始まるので、直前の顧客の履歴を引き継ぎます。全文を貼り付ける(d)のは、再開の仕組みがあるのに履歴を自分で組み立てることになります。",
   "refs": [
    "https://code.claude.com/docs/en/agent-sdk/sessions"
+  ],
+  "topics": [
+   "agent-sdk-sessions",
+   "customer-support-agents"
   ]
  },
  {
@@ -2179,10 +2413,13 @@
   "answer": [
    "c"
   ],
-  "explanation": "AgentDefinition の tools は、そのサブエージェントに許すツール名の配列です。省略すると、サブエージェントが使えるツールをすべて引き継ぎます。統合の担当に検索のツールが見えていると、役割の外の作業を始める原因になります。役割に必要なツールだけを列挙します。",
+  "explanation": "正解は c です。Agent SDK のサブエージェントのページによると、AgentDefinition の tools は使えるツール名の配列で、省略するとサブエージェントが使えるツールをすべて引き継ぎます。ページは tools でサブエージェントのできることを制限する方法を示し、ファイルを編集させないレビュアーには Read、Grep、Glob だけを与える例を挙げています。この場面では、統合の担当に検索のツールまで渡っているので、統合に必要なツールだけを tools に列挙するのが当てはまります。\n\n見分け方: tools を省略してもツールがなくなるわけではありません(a)。tools は無視されず(b)、allowedTools は事前の許可で使えるツールを絞りません。description(d)は、Claude がいつそのサブエージェントを使うかを決めるための説明で、ツールの利用を制限しません。",
   "refs": [
    "https://code.claude.com/docs/en/agent-sdk/subagents",
-   "https://www.anthropic.com/engineering/writing-tools-for-agents"
+   "https://code.claude.com/docs/en/agent-sdk/permissions"
+  ],
+  "topics": [
+   "claude-code-subagents"
   ]
  }
 ]
