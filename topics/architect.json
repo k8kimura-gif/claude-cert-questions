@@ -1302,5 +1302,130 @@
    }
   ],
   "checked": "2026-11-21"
+ },
+ {
+  "id": "claude-md",
+  "title": "CLAUDE.md とルール(置き場所・読み込み・整理)",
+  "summary": "Claude Code の各セッションは新しいコンテキストで始まり、CLAUDE.md はセッションをまたいで持ち越す永続的な指示を書く Markdown のファイルです。置き場所でスコープが決まり、管理ポリシー(組織全体)、ユーザー(~/.claude/CLAUDE.md、自分の全プロジェクト)、プロジェクト(./CLAUDE.md か ./.claude/CLAUDE.md、バージョン管理でチームと共有)、ローカル(./CLAUDE.local.md、自分だけ)があります。作業ディレクトリとその上の階層の CLAUDE.md は起動時に読み込まれ、下の階層のものは Claude がその下のファイルを読む・書く・編集するときに読み込まれます。見つかったファイルは上書きし合わず、連結されます。CLAUDE.md は強制される設定ではなくコンテキストとして扱われるため、確かめられる具体的な指示を短く書き、1 ファイル 200 行未満を目安にします。コードベースの一部にだけ関係する指示はパスを絞ったルールに、複数の手順からなる作業はスキルに移します。",
+  "points": [
+   ".claude/rules/ には話題ごとのファイル(testing.md など)を置ける。paths のないルールは起動時に .claude/CLAUDE.md と同じ優先度で読み込まれ、フロントマターの paths に glob(例 \"src/api/**/*.ts\")を書いたルールは、一致するファイルを Read、Write、Edit で扱うときに読み込まれる",
+   "@path/to/import でほかのファイルを取り込める。相対パスは取り込み元のファイルから解決し、再帰は最大 4 段。取り込んだファイルは一緒に読み込まれるため、長いファイルの整理には役立つがコンテキストの消費は減らない",
+   "読み込まれたかは、まず /context(fullscreen では /context all)の内訳で確かめる。/memory はユーザーとプロジェクトのメモリファイルの場所を一覧し、開いて編集でき、auto memory の切り替えもできる。下の階層の CLAUDE.md は必要時に読み込まれるので起動時の内訳には出ない",
+   "claude -p は対話のセッションと同じように CLAUDE.md などを見つけて読み込む。--bare を付けると CLAUDE.md、フック、スキルなどの自動検出を飛ばす",
+   "2 つの指示が矛盾すると、Claude はどちらかを任意に選ぶことがある。CLAUDE.md、下の階層の CLAUDE.md、.claude/rules/ を定期的に見直す",
+   "決まった時点で必ず実行したいこと(コミットの前、ファイルの編集の後など)はフックにする。組織として強制する規則は、管理設定の permissions.deny などに書く",
+   "ベストプラクティスは、Claude がコードから読み取れないこと(テストや型検査のコマンド、紛らわしい箇所、リポジトリにない決定、2 回直したこと)だけを書くよう勧め、アーキテクチャやファイル構成を書く助言は古いものとしている。/init で出発点を作れる(既にあるときは上書きせず改善を提案する)",
+   "個人の、そのプロジェクトだけの指示は CLAUDE.local.md に書いて .gitignore に加える。全プロジェクトに当てはまる個人のルールは ~/.claude/rules/ に置ける"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/memory",
+    "title": "How Claude remembers your project"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/debug-your-config",
+    "title": "Debug your configuration"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/headless",
+    "title": "Run Claude Code programmatically"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "claude-code-skills",
+  "title": "Claude Code のスキル(置き場所・フロントマター・サブエージェントでの実行)",
+  "summary": "スキルは、SKILL.md に書いた指示で Claude ができることを広げる仕組みです。Claude は関係があるときにスキルを使い、利用者は /skill-name で直接呼び出せます。カスタムコマンドはスキルに統合され、既存の .claude/commands/ のファイルも引き続き動きますが、新しく作るものには補助ファイルも置けるスキルが勧められています。置き場所で読み込まれる範囲が決まり、個人用は ~/.claude/skills/<skill-name>/SKILL.md(自分の全プロジェクト)、プロジェクト用は .claude/skills/<skill-name>/SKILL.md(コミットしてチームと共有)、ほかに Enterprise やプラグインなどがあります。同じ名前のスキルがあると、Enterprise が個人より、個人がプロジェクトより優先されます。CLAUDE.md と違い、スキルの本文は使われるときにだけ読み込まれるため、チームの手順や長い参照資料に向きます。フロントマターはすべて任意で、Claude がいつ使うかを判断する description だけが推奨されています。",
+  "points": [
+   "allowed-tools: スキルを呼び出したターンの間、列挙したツールを確認なしで使えるよう許可する。次のメッセージを送ると許可は消える。使えるツールを制限するものではない",
+   "disallowed-tools: スキルが有効な間、列挙したツールを使えるツールから取り除く。次のメッセージを送ると制限は消える。すべてのスキルとプロンプトで止めるなら、権限設定の deny ルールを使う",
+   "argument-hint: 補完のときに期待する引数を示す(例 [issue-number])。引数は本文の $ARGUMENTS、位置で取り出す $ARGUMENTS[N] や $N で受け取る",
+   "context: fork: スキルを新しいサブエージェントで実行する。種類は agent で選び(Explore、Plan、general-purpose、.claude/agents/ の定義など。省略時は general-purpose)、サブエージェントは会話の履歴を見ない。結果はメインの会話に返る",
+   "disable-model-invocation: true にすると Claude は自分では呼び出さない(デプロイのように副作用のある作業向け)。user-invocable: false にすると Claude だけが呼び出せる",
+   "呼び出されたスキルの内容は 1 つのメッセージとして会話に入り、その後のターンでも残る。Claude Code はスキルのファイルを後のターンで読み直さない",
+   "Claude Code のスキルは Agent Skills のオープンな標準に従い、呼び出しの制御やサブエージェントでの実行などを拡張している"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/skills",
+    "title": "Extend Claude with skills"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "claude-code-permission-modes",
+  "title": "Claude Code の権限モードとプランモード",
+  "summary": "権限モードは、Claude がセッションの中で確認なしに行える操作の範囲を決めます。Manual(設定値は default)は作業ディレクトリ内のファイルの読み取りなど承認の要らない操作だけを確認なしで行い、acceptEdits は読み取り、ファイルの編集、一般的なファイル操作のコマンド、auto は背景の安全確認つきですべて、dontAsk は事前に許可したもの以外で確認が要る操作を拒否(CI やスクリプト向け)、bypassPermissions はすべて(隔離されたコンテナや VM のみ)を確認なしで行います。plan モードでは、Claude はファイルを読み、調査のためのシェルコマンドを実行して計画を書きますが、ソースは編集せず、計画を承認するまで編集は止められます。モードの表は plan を「変更の前にコードベースを探索する」用途とし、コマンドの一覧は /plan を大きな変更の前に plan モードへ切り替えるものとしています。",
+  "points": [
+   "plan モードには Shift+Tab、プロンプトの先頭の /plan、claude --permission-mode plan で入る。プロジェクトの既定にするには .claude/settings.json の defaultMode を plan にする",
+   "計画ができると、auto モードで進める、編集を 1 つずつ承認して進める、計画を続ける、から選ぶ。承認すると plan モードを抜け、選んだモードで編集に移る。Ctrl+G で計画をエディタで直せる",
+   "モードは基準を決めるもので、その上に権限ルールを重ねる。deny ルールは bypassPermissions を含むすべてのモードで効き、明示した ask ルールは auto モードでも確認を求める",
+   "開始のモードは、--permission-mode、設定の permissions.defaultMode、組み込みの既定の順に決まる。組み込みの既定は、対話型のターミナルと VS Code では v2.1.283 以降 auto、claude -p と Agent SDK では default(Manual)",
+   "Manual の claude -p では、承認が要る呼び出しは allow ルール、フック、canUseTool などで承認しない限り拒否される(v2.1.302 以降)",
+   "CI の例: claude -p \"run the test suite\" --permission-mode dontAsk --allowedTools \"Bash(npm test)\" \"Read\"",
+   "auto モードは権限の確認を減らすが、安全を保証するものではないと明記されている。組織は auto モードを無効にできる"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/permission-modes",
+    "title": "Choose a permission mode"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/common-workflows",
+    "title": "Common workflows"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/commands",
+    "title": "Commands"
+   }
+  ],
+  "checked": "2026-11-21"
+ },
+ {
+  "id": "claude-code-config-scopes",
+  "title": "Claude Code の設定の置き場所と共有の範囲(プロジェクトと個人)",
+  "summary": "Claude Code は、指示、設定、スキル、サブエージェント、メモリを、プロジェクトのディレクトリとホームディレクトリの ~/.claude から読み込みます。公式ドキュメント(Explore the .claude directory)は、プロジェクトのファイルは git にコミットしてチームと共有し、~/.claude のファイルは自分の全プロジェクトに適用される個人の設定だと説明しています。同じ種類のファイルに、共有用と個人用の置き場所が対になっています。CLAUDE.md はプロジェクト(./CLAUDE.md か ./.claude/CLAUDE.md)とユーザー(~/.claude/CLAUDE.md)、設定は共有のプロジェクト(.claude/settings.json)、プロジェクトの個人(.claude/settings.local.json)、ユーザー(~/.claude/settings.json)、スキルは .claude/skills/ と ~/.claude/skills/、サブエージェントは .claude/agents/ と ~/.claude/agents/、MCP サーバーはプロジェクトの .mcp.json と個人の ~/.claude.json です。組織全体には、管理設定や管理ポリシーの CLAUDE.md を配布できます。",
+  "points": [
+   "設定の優先順位は高い順に、管理設定、コマンドライン(--settings)、プロジェクトの個人、共有のプロジェクト、ユーザー。permissions.allow のような多くのリストは上書きせず統合される",
+   ".claude/settings.local.json は、Claude Code が書くときに git の除外に加える。手で作ったときは自分で .gitignore に加える。権限の確認で \"Yes, and don't ask again\" を選ぶと、allow ルールがこのファイルに保存される",
+   "settings.json の権限やフックは Claude Code が直接適用し、Claude が従うかに関係なく強制される。CLAUDE.md や .claude/rules/ は強制されない指示",
+   "同じ名前のスキルは Enterprise、個人、プロジェクトの順に優先する。同じ名前のサブエージェントは、管理設定、--agents、.claude/agents/、~/.claude/agents/、プラグインの順に優先する",
+   "~/.claude/CLAUDE.md はプロジェクトの CLAUDE.md と一緒に読み込まれ、矛盾するとどちらに従うかは決まらない。応答のスタイルやコミットの形式のように、どこでも当てはまる好みだけを書く",
+   "そのプロジェクトだけの個人の指示は ./CLAUDE.local.md に書き、.gitignore に加える",
+   ".claude/commands/ と ~/.claude/commands/ は単一ファイルのコマンドで、今も動く。新しく作るならスキルが勧められている"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/claude-directory",
+    "title": "Explore the .claude directory"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/settings",
+    "title": "Settings files and precedence"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/memory",
+    "title": "How Claude remembers your project"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/skills",
+    "title": "Extend Claude with skills"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/sub-agents",
+    "title": "Create custom subagents"
+   }
+  ],
+  "checked": "2026-11-21"
  }
 ]

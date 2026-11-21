@@ -31,9 +31,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "CLAUDE.md は置き場所によって適用範囲が変わります。ユーザーレベル(~/.claude/CLAUDE.md)は個人用、プロジェクトレベルはチームで共有されます。チームの規約はプロジェクトレベルに置きます。",
+  "explanation": "正解は a です。Claude Code のドキュメント(How Claude remembers your project)によると、~/.claude/CLAUDE.md は自分の全プロジェクトに適用される個人の指示で、共有されるのは本人だけです。チームで共有する規約は、プロジェクトの CLAUDE.md(./CLAUDE.md か ./.claude/CLAUDE.md)に書き、バージョン管理を通じて共有します。この場面の規約は個人のファイルにしかないので、プロジェクトの CLAUDE.md に移してコミットするのが当てはまります。\n\n見分け方: 個人のファイルのコピー(b)は各自の別々のファイルのままで、規約を直しても共有されません。毎回プロンプトで伝える(c)のは、CLAUDE.md が置き換える「毎回の説明し直し」そのものです。README.md(d)が指示として自動で読み込まれるという記述は出典になく、CLAUDE.md から @README のように取り込めば読み込まれます。",
   "refs": [
-   "https://code.claude.com/docs/en/memory"
+   "https://code.claude.com/docs/en/memory",
+   "https://code.claude.com/docs/en/claude-directory"
+  ],
+  "topics": [
+   "claude-md",
+   "claude-code-config-scopes"
   ]
  },
  {
@@ -68,9 +73,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "ディレクトリ単位の CLAUDE.md はそのディレクトリに結び付きます。複数のディレクトリにまたがる種類のファイルには、glob パターンで適用範囲を決めるルールが向きます。",
+  "explanation": "正解は a です。Claude Code のドキュメント(How Claude remembers your project)によると、.claude/rules/ のルールは YAML のフロントマターの paths に glob パターンを書いて対象を絞れ、絞ったルールは Claude が一致するファイルを Read、Write、Edit で扱うときにだけ読み込まれます。**/*.ts のような形は、どの階層のファイルにも一致します。この場面のテストファイルはディレクトリをまたいで散らばっているので、ファイルの種類で絞るルールが当てはまります。\n\n見分け方: 各ディレクトリの CLAUDE.md(b)は、同じ規約の写しが増えて保守が重くなります。ルートの CLAUDE.md(c)は毎回のセッションで読み込まれ、ドキュメントはコードベースの一部にだけ関係する指示をパスを絞ったルールに移すよう勧めています。手動で呼び出すスキル(d)は、呼び忘れると規約が入りません。",
   "refs": [
-   "https://code.claude.com/docs/en/memory"
+   "https://code.claude.com/docs/en/memory",
+   "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "claude-md"
   ]
  },
  {
@@ -105,10 +114,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "カスタムコマンドとスキルには、プロジェクト用(.claude/ 配下、チームで共有)と個人用(~/.claude/ 配下)があります。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Extend Claude with skills)によると、カスタムコマンドはスキルに統合され、既存の .claude/commands/ のファイルも引き続き動きます。プロジェクトのスキルは .claude/skills/<名前>/SKILL.md に置き、コミットするとチームも使えます。新しく作るなら、補助ファイルも置けるスキルが勧められています。この場面は、クローンやプルをした全員が使えることが条件なので、プロジェクトの .claude/ 配下に置いてコミットするのが当てはまります。\n\n見分け方: ~/.claude/commands/(b)は自分の全プロジェクトで使える個人の場所で、共有されません。CLAUDE.md(c)は毎回読み込まれる指示で、/ で呼び出すものではありません。.git/hooks/(d)は Git のフックの置き場所です。",
   "refs": [
-   "https://code.claude.com/docs/en/slash-commands",
-   "https://code.claude.com/docs/en/skills"
+   "https://code.claude.com/docs/en/skills",
+   "https://code.claude.com/docs/en/claude-directory"
+  ],
+  "topics": [
+   "claude-code-skills",
+   "claude-code-config-scopes"
   ]
  },
  {
@@ -143,10 +156,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "プランモードは、大規模な変更、複数の有効な方針がある作業、設計判断を伴う作業に向きます。スタックトレースが明確な 1 ファイルのバグ修正のような、範囲のはっきりした作業は直接実行で足ります。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Choose a permission mode)によると、plan モードでは Claude はファイルを読み、調査のためのコマンドを実行して計画を書きますが、ソースは編集せず、計画を承認するまで編集は止められます。モードの表は plan を変更の前にコードベースを探索する用途とし、コマンドの一覧も /plan を大きな変更の前に使うものとしています。この場面は数十のファイルに影響し、境界の方針も複数あるので、調査して方針を比べ、計画を確かめてから実装に入るのが当てはまります。\n\n見分け方: すぐに実装を始める(b)と、方針を確かめる段階がないまま多くのファイルが変わります。ファイルごとに別のセッションに分ける(c)と、ファイルの間の関係を 1 つの計画で扱えません。ベストプラクティスは、妥当なやり方が 2 つあるときの好みはコードから読み取れないので先に伝えるよう勧めており、判断をすべて任せる(d)のはこれに反します。",
   "refs": [
+   "https://code.claude.com/docs/en/permission-modes",
+   "https://code.claude.com/docs/en/commands",
    "https://code.claude.com/docs/en/common-workflows",
    "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "claude-code-permission-modes"
   ]
  },
  {
@@ -181,10 +199,16 @@
   "answer": [
    "a"
   ],
-  "explanation": "冗長な探索はサブエージェントに任せ、メインのエージェントは全体の調整に集中させます。スキルもサブエージェントとして分離実行するよう設定できます。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Create custom subagents)によると、サブエージェントは自分のコンテキストウィンドウで動き、後で参照しない検索結果やファイルの中身でメインの会話があふれるような作業を任せると、要約だけを返します。スキルのページによると、フロントマターに context: fork を書くとスキルは新しいサブエージェントで実行され(種類は agent で Explore などを選ぶ)、結果がメインの会話に返ります。この場面の大量の探索結果は、サブエージェントに任せて要約だけを受け取るのが当てはまります。\n\n見分け方: 出力を CLAUDE.md に追記する(b)と、以後のすべてのセッションで読み込まれ、200 行未満という目安にも反します。範囲を 1 ファイルに絞る(c)と、コードベース全体を調べるという目的が果たせません。モデルの切り替え(d)は、メインの会話に流れ込む出力の量を変えません。",
   "refs": [
    "https://code.claude.com/docs/en/sub-agents",
-   "https://code.claude.com/docs/en/skills"
+   "https://code.claude.com/docs/en/skills",
+   "https://code.claude.com/docs/en/best-practices",
+   "https://code.claude.com/docs/en/common-workflows"
+  ],
+  "topics": [
+   "claude-code-subagents",
+   "claude-code-skills"
   ]
  },
  {
@@ -198,7 +222,7 @@
    {
     "id": "a",
     "text": "調査済みのセッションをフォーク(分岐)し、共通の出発点から 2 つの方針を別々に進める",
-    "why": "分岐すれば、調査の文脈を共有したまま、互いに影響しない形で試せる。"
+    "why": "調査までの会話の履歴を写した新しいセッションで別の方針を試せ、元のセッションは変わらない。分かれるのは会話の履歴で、ファイルの変更は同じディレクトリの他のセッションからも見える。"
    },
    {
     "id": "b",
@@ -219,10 +243,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "セッションのフォークは、共通の分析結果を出発点にして、異なる方針を独立して試すための機能です。",
+  "explanation": "正解は a です。Agent SDK のドキュメント(Work with sessions)によると、fork は元のセッションの履歴の写しから始まる新しいセッションを作り、元のセッションは変わりません。fork したセッションは独自のセッション ID を持ち、2 つを別々に再開できます(Python は fork_session=True、TypeScript は forkSession: true、CLI は --resume と --fork-session)。この場面では、調査を終えた時点から fork し、2 つの方針を別々のセッションで進めるのが当てはまります。ただし fork が分けるのは会話の履歴で、ファイルシステムではありません。\n\n見分け方: 1 つのセッションで交互に進める(b)と、2 つの方針の変更と議論が同じ履歴に混ざります。方針ごとの調査のやり直し(c)は、同じ調査を 2 回行うことになります。片方を想像で比べる(d)のでは、比べる根拠がありません。",
   "refs": [
-   "https://code.claude.com/docs/en/agent-sdk/overview",
+   "https://code.claude.com/docs/en/agent-sdk/sessions",
    "https://code.claude.com/docs/en/cli-reference"
+  ],
+  "topics": [
+   "agent-sdk-sessions"
   ]
  },
  {
@@ -257,10 +284,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "-p フラグは、Claude Code を非対話(ヘッドレス)で実行します。CI や各種スクリプトからの利用では、これを使います。",
+  "explanation": "正解は a です。Claude Code の CLI reference によると、claude \"query\" は最初のプロンプトを付けて対話のセッションを始めるコマンドで、claude -p \"query\" は問い合わせて終了します。Run Claude Code programmatically のページも、-p(--print)を付けるとどの claude コマンドも非対話で実行でき、成功すると終了コード 0、失敗すると 0 以外で終わるとしています。この場面は -p なしで起動して対話のセッションが入力を待っているので、-p を付けるのが当てはまります。\n\n見分け方: CI で使えない(b)のではなく、ドキュメントは -p の実行をスクリプトや CI/CD 向けの使い方として説明しています。標準入力を /dev/null につなぐ(c)のは、出典が非対話の実行方法として挙げているものではありません。CLAUDE_HEADLESS(d)という環境変数は出典にありません。",
   "refs": [
    "https://code.claude.com/docs/en/headless",
    "https://code.claude.com/docs/en/cli-reference"
+  ],
+  "topics": [
+   "claude-code-headless"
   ]
  },
  {
@@ -295,10 +325,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "ヘッドレス実行では、出力形式を JSON にし、スキーマを指定して構造化された結果を受け取れます。CI ではこの出力を解析してコメントを投稿します。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Run Claude Code programmatically)によると、--output-format json は結果、セッション ID、メタデータを含む JSON を返し、--json-schema に JSON Schema を渡すと、スキーマに沿った出力が応答の structured_output フィールドに入ります。Claude が依頼を断った場合など、有効な出力なしで終わるとこのフィールドは付かないので、使う前に存在を確かめるよう勧めています。この場面では、ファイルパスや行番号をスキーマで定めて受け取れば、該当行へのコメントに変換できます。\n\n見分け方: 自由記述を正規表現で解析する(b)と、出力の書き方の揺れで壊れやすくなります。プロンプトで「JSON っぽく」と頼む(c)だけでは、スキーマに沿った形は保証されません。出力全体を 1 つのコメントにする(d)と、該当行へのコメントという要件を満たせません。",
   "refs": [
    "https://code.claude.com/docs/en/headless",
    "https://code.claude.com/docs/en/cli-reference"
+  ],
+  "topics": [
+   "claude-code-headless"
   ]
  },
  {
@@ -333,10 +366,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "CLAUDE.md は、CI で動く Claude Code にプロジェクトの文脈を伝える手段でもあります。テストの基準、フィクスチャ、レビューの観点を書いておきます。既存のテストファイルを文脈として渡すと、重複したテストの提案も減ります。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Run Claude Code programmatically)によると、claude -p は対話のセッションと同じように、作業ディレクトリや ~/.claude にある CLAUDE.md、スキル、フックなどを見つけて読み込みます(--bare を付けたときは読み込まない)。GitHub Actions のページも、リポジトリのルートの CLAUDE.md にコードスタイル、レビューの基準、プロジェクト固有の規則を書くと Claude が従い、毎回の実行で読むとしています。この場面のテスト規約とフィクスチャは、リポジトリの CLAUDE.md に書けば CI の実行にも届きます。\n\n見分け方: CI 担当者の ~/.claude/CLAUDE.md(b)は個人の端末にあり、CI の実行環境にはありません。毎回人が書き直す(c)のは、原因に手を付けていません。実行の頻度を下げても(d)、生成されるテストの質は変わりません。",
   "refs": [
+   "https://code.claude.com/docs/en/headless",
    "https://code.claude.com/docs/en/memory",
-   "https://code.claude.com/docs/en/headless"
+   "https://code.claude.com/docs/en/github-actions"
+  ],
+  "topics": [
+   "claude-md",
+   "claude-code-headless"
   ]
  },
  {
@@ -371,10 +409,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "自動実行では最小権限を原則とします。--tools は使えるツールを限定し、--disallowedTools や権限の拒否の規則は特定のツールを外します。--allowedTools は、確認なしで実行できるツールを指定するもので、使えるツールを絞る指定ではありません。認証情報の権限も、用途に合わせて絞ります。",
+  "explanation": "正解は a です。Claude Code の CLI reference によると、--tools は Claude が使える組み込みツールを制限するフラグです。--disallowedTools は拒否のルールで、ツール名だけならそのツールをコンテキストから取り除きます。--allowedTools は確認なしで実行するツールの指定で、使えるツールを絞るには --tools を使うよう明記されています。--tools は MCP のツールには効かないので、それも止めるなら --disallowedTools \"mcp__*\" を加えます。この場面では、読み取りと検索のツールだけで起動するのが当てはまります。\n\n見分け方: プロンプトでの禁止(b)は指示にすぎず、ベストプラクティスは必ず守らせたいことをフックや deny ルールにするよう勧めています。確認を省くオプション(c)は、deny や ask のルールにないものをすべて承認します。時間の制限(d)では、時間内の変更は止まりません。",
   "refs": [
+   "https://code.claude.com/docs/en/cli-reference",
    "https://code.claude.com/docs/en/permissions",
-   "https://code.claude.com/docs/en/cli-reference"
+   "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "claude-code-headless",
+   "claude-code-permissions"
   ]
  },
  {
@@ -409,9 +452,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "CLAUDE.md は、簡潔に保ちます。話題別のルールファイル(テスト、API の規約、デプロイなど)に分けると、見通しが良くなります。",
+  "explanation": "正解は a です。Claude Code のドキュメント(How Claude remembers your project)は、1 つの CLAUDE.md を 200 行未満に保つよう勧め、長いほどコンテキストを消費し、指示が守られにくくなるとしています。大きなプロジェクトでは .claude/rules/ に話題ごとのファイルを置けて、paths を付けたルールは一致するファイルを扱うときだけ読み込まれます。@ による取り込みも長いファイルの整理に役立ちますが、取り込んだファイルは一緒に読み込まれるため、コンテキストの消費は減りません。この場面では話題ごとに分けるのが当てはまります。\n\n見分け方: 1 行に詰める(b)のは、ドキュメントが勧める見出しと箇条書きによる整理に反します。CLAUDE.md の削除(c)では規約が伝わらなくなります。README などへの複製(d)は保守の手間を増やし、2 つの指示が食い違うと Claude はどちらかを任意に選ぶことがあります。",
   "refs": [
-   "https://code.claude.com/docs/en/memory"
+   "https://code.claude.com/docs/en/memory",
+   "https://code.claude.com/docs/en/best-practices"
+  ],
+  "topics": [
+   "claude-md"
   ]
  },
  {
@@ -446,9 +493,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "@ による取り込みを使うと、各パッケージの CLAUDE.md が、関係する規約のファイルだけを選んで参照できます。",
+  "explanation": "正解は a です。Claude Code のドキュメント(How Claude remembers your project)によると、CLAUDE.md は @path/to/import の記法でほかのファイルを取り込め、取り込んだファイルは展開されて、CLAUDE.md と一緒にコンテキストに読み込まれます。相対パスは作業ディレクトリではなく取り込み元のファイルから解決され、取り込みは再帰的に最大 4 段までです。この場面では、CLAUDE.md に @docs/coding-standards.md と書けば取り込めます。パスを取り込まずに文中で示したいときは、バッククォートで囲みます。\n\n見分け方: #include(b)や import 宣言(c)は、出典に書かれた取り込みの記法ではありません。取り込みはできない(d)のではなく、@ による取り込みが用意されています。なお、取り込みはファイルの整理には役立ちますが、コンテキストの消費は減らしません。",
   "refs": [
    "https://code.claude.com/docs/en/memory"
+  ],
+  "topics": [
+   "claude-md"
   ]
  },
  {
@@ -462,7 +512,7 @@
    {
     "id": "a",
     "text": "/memory",
-    "why": "読み込まれているメモリのファイルを、確認できる。"
+    "why": "CLAUDE.md などのメモリファイルの場所を一覧し、開いて編集できる。読み込まれたかは /context の内訳でも確かめられる。"
    },
    {
     "id": "b",
@@ -483,10 +533,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "挙動のばらつきを調べるときは、まず、どの設定ファイルが読み込まれているかを確認します。",
+  "explanation": "正解は a です。Claude Code のドキュメント(How Claude remembers your project)によると、/memory はユーザーとプロジェクトの CLAUDE.md、CLAUDE.local.md などのメモリファイルの場所を一覧し、選んだファイルをエディタで開いて編集できます。ただし Debug your configuration のページは、CLAUDE.md やルールが読み込まれたかを、まず /context(fullscreen では /context all)の内訳で確かめるよう勧め、/memory はその後に詳しく見るコマンドとしています。/memory の一覧には、まだ存在しないファイルの項目も含まれます。\n\n見分け方: /clear(b)は空のコンテキストで新しい会話を始め、/compact(c)は会話を要約してコンテキストを空けます。/review(d)は差分をレビューする /code-review の別名です。",
   "refs": [
    "https://code.claude.com/docs/en/memory",
-   "https://code.claude.com/docs/en/slash-commands"
+   "https://code.claude.com/docs/en/debug-your-config",
+   "https://code.claude.com/docs/en/commands"
+  ],
+  "topics": [
+   "claude-md"
   ]
  },
  {
@@ -521,9 +575,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "規約が、ディレクトリのまとまりに対応しているときは、ディレクトリ単位の CLAUDE.md が向きます。ディレクトリをまたぐ種類のファイルには、パスを条件にしたルールが向きます。",
+  "explanation": "正解は a です。Claude Code のドキュメント(How Claude remembers your project)によると、作業ディレクトリとその上の階層の CLAUDE.md は起動時に読み込まれ、作業ディレクトリより下の階層の CLAUDE.md は、Claude がその下のファイルを読む、書く、編集するときに読み込まれます。この場面では packages/api/CLAUDE.md を置けば、そこで起動したとき、またはルートから起動してその下のファイルを扱うときに読み込まれます。\n\n見分け方: ルートの CLAUDE.md(b)は毎回のセッションで読み込まれ、ドキュメントはコードベースの一部にだけ関係する指示をスキルやパスを絞ったルールに移すよう勧めています。~/.claude/CLAUDE.md(c)は個人の指示で、チームに共有されません。package.json(d)が指示として読み込まれるという記述は出典にありません。",
   "refs": [
    "https://code.claude.com/docs/en/memory"
+  ],
+  "topics": [
+   "claude-md"
   ]
  },
  {
@@ -558,9 +615,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "個人の好みはユーザーレベルに、チームの規約はプロジェクトレベルに置きます。",
+  "explanation": "正解は a です。Claude Code のドキュメント(How Claude remembers your project)によると、~/.claude/CLAUDE.md はユーザーのスコープで、自分の全プロジェクトに適用される個人の好みを書く場所であり、共有されるのは本人だけです。Explore the .claude directory のページも、このファイルはプロジェクトの CLAUDE.md と一緒に読み込まれるとし、応答のスタイルやコミットの形式のように、どこでも当てはまる好みだけを書くよう勧めています。この場面の「応答を短く」はどのプロジェクトにも当てはまる個人の好みなので、ここに置くのが当てはまります。\n\n見分け方: プロジェクトの CLAUDE.md(b)と .claude/rules/(c)は、バージョン管理でチームと共有されるプロジェクトの指示です。.mcp.json(d)は、チームで使うプロジェクトのスコープの MCP サーバーの設定です。",
   "refs": [
-   "https://code.claude.com/docs/en/memory"
+   "https://code.claude.com/docs/en/memory",
+   "https://code.claude.com/docs/en/claude-directory"
+  ],
+  "topics": [
+   "claude-md",
+   "claude-code-config-scopes"
   ]
  },
  {
@@ -595,9 +657,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "スキルのフロントマターには、disallowed-tools(スキルの実行中に使えなくするツール)と allowed-tools(確認なしで使えるようにするツール)があります。allowed-tools は制限ではないので、書き込みを防ぐ目的には disallowed-tools を使います。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Extend Claude with skills)によると、スキルのフロントマターの disallowed-tools に書いたツールは、スキルが有効な間、Claude が使えるツールから取り除かれ、次のメッセージを送ると制限が消えます。一方 allowed-tools は、スキルを呼び出したターンの間、列挙したツールを確認なしで使えるよう許可するもので、使えるツールを制限しません。この場面の「書き込みをさせない」は制限なので、disallowed-tools に書き込み系のツールを書くのが当てはまります。\n\n見分け方: allowed-tools に読み取り系だけを並べる(d)のは事前の許可で、書き込みのツールは呼び出せるまま、通常の権限の設定に従います。本文に「書き込み禁止」と書く(b)のは指示で、ツールは取り除かれません。名前を readonly にする(c)と動作が変わるという記述は出典にありません。",
   "refs": [
    "https://code.claude.com/docs/en/skills"
+  ],
+  "topics": [
+   "claude-code-skills"
   ]
  },
  {
@@ -632,10 +697,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "argument-hint は、スキルが期待する引数を利用者に示します。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Extend Claude with skills)によると、フロントマターの argument-hint は、補完のときに期待する引数を示すヒントで、例として [issue-number] や [filename] [format] が挙げられています。引数は本文の $ARGUMENTS や、位置で取り出す $ARGUMENTS[N]、$N で受け取れます。この場面では、argument-hint にチケット番号のヒントを書けば、/ でスキルを呼び出す人が入力の途中で、引数が要ることに気付けます。\n\n見分け方: スキルの削除(b)では、機能そのものがなくなります。よく使う番号を本文に固定する(c)と、ほかのチケットに使えなくなります。CLAUDE.md の注意書き(d)は、スキルを呼び出すときの補完には表示されません。",
   "refs": [
-   "https://code.claude.com/docs/en/skills",
-   "https://code.claude.com/docs/en/slash-commands"
+   "https://code.claude.com/docs/en/skills"
+  ],
+  "topics": [
+   "claude-code-skills"
   ]
  },
  {
@@ -670,9 +737,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "個人用のスキルは ~/.claude/skills/ に置きます。共有のものと名前を分けると、混同しません。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Extend Claude with skills)によると、個人のスキルは ~/.claude/skills/<名前>/SKILL.md に置き、自分の全プロジェクトで読み込まれます。プロジェクトのスキル(.claude/skills/)は、コミットするとチームの全員が使います。同じ名前のスキルが個人とプロジェクトの両方にあると、個人のものが優先されます。この場面では、自分用に変えた版を個人の場所に置けばチームのものは変わらず、別の名前にすれば共有のものも引き続き呼び出せます。\n\n見分け方: プロジェクトのスキルを直接書き換えてコミットする(b)と、リポジトリを使う全員の動作が変わります。削除(c)すると、チームの全員が使えなくなります。CLAUDE.md に変更点を書く(d)のは、スキルの定義を変えずに、毎回のセッションで読み込まれる指示を増やすだけです。",
   "refs": [
    "https://code.claude.com/docs/en/skills"
+  ],
+  "topics": [
+   "claude-code-skills",
+   "claude-code-config-scopes"
   ]
  },
  {
@@ -707,10 +778,15 @@
   "answer": [
    "a"
   ],
-  "explanation": "プランモードは、影響が広い変更や、方針の選択がある作業に使います。範囲のはっきりした修正は、直接実行します。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Choose a permission mode)は plan モードを変更の前にコードベースを探索する用途とし、コマンドの一覧も /plan を大きな変更の前に使うものとしています。ベストプラクティスは、ファイルを名指しし、症状を書き、「直った」状態を先に言えば、修正の往復を減らせることが多いとしています。この場面は対象のファイルと行がスタックトレースで分かっている小さな修正なので、計画の段階を挟まず、具体的に依頼して直接直させるのが当てはまります。\n\n見分け方: 小さな修正でも必ず plan モードを使う(b)ことは、出典の勧めにありません。サブエージェントを 5 つ起動する(c)と、トークンの費用が増え、ベストプラクティスによれば同じ作業を任せても答えが良くなるわけではありません。コードベース全体の読み直し(d)は、場所の分かっている修正には要らない探索です。",
   "refs": [
-   "https://code.claude.com/docs/en/common-workflows",
-   "https://code.claude.com/docs/en/best-practices"
+   "https://code.claude.com/docs/en/permission-modes",
+   "https://code.claude.com/docs/en/best-practices",
+   "https://code.claude.com/docs/en/commands"
+  ],
+  "topics": [
+   "claude-code-permission-modes",
+   "claude-code-prompting"
   ]
  },
  {
@@ -745,9 +821,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "2 つのモードは、組み合わせて使えます。調査で方針を固めてから、実装に移ります。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Choose a permission mode)によると、plan モードでは Claude はファイルを読み、調査のコマンドを実行して計画を書きますが、ソースは編集せず、計画を承認するまで編集は止められます。計画ができると、auto モードで進める、編集を 1 つずつ承認する、計画を続ける、から選べ、承認すると plan モードを抜けて選んだモードで編集に移ります。この場面は影響範囲が分からない移行なので、plan モードで調べて方針を決め、承認してから実装に移るのが当てはまります。\n\n見分け方: 最後まで plan モードのまま(b)では、ソースを編集できないので移行が終わりません。調査をしない(c)と、影響範囲が分からないまま変更が始まります。実装を先に行う(d)と、後の調査で見つかった影響に合わせて変更をやり直すことになります。",
   "refs": [
+   "https://code.claude.com/docs/en/permission-modes",
    "https://code.claude.com/docs/en/common-workflows"
+  ],
+  "topics": [
+   "claude-code-permission-modes"
   ]
  },
  {
@@ -782,9 +862,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "設定には、ユーザー、プロジェクト(共有)、プロジェクト(ローカル)などの階層があります。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Settings files and precedence)によると、.claude/settings.json は共有のプロジェクトの設定で、git のリポジトリではコミットしてチームに渡します。.claude/settings.local.json はそのプロジェクトでの自分だけの設定で、Claude Code がファイルを作るときは git から外し、手で作ったときは自分で .gitignore に加えます。優先順位は、プロジェクトの個人が共有のプロジェクトより高くなっています。この場面の使い分けには、この 2 つのファイルが当てはまります。\n\n見分け方: すべてを settings.local.json に書く(b)と、チームに共有されません。README(c)は設定として読み込まれません。分ける方法はない(d)のではなく、共有と個人の 2 つのファイルが用意されています。",
   "refs": [
-   "https://code.claude.com/docs/en/settings"
+   "https://code.claude.com/docs/en/settings",
+   "https://code.claude.com/docs/en/claude-directory"
+  ],
+  "topics": [
+   "claude-code-config-scopes",
+   "claude-code-permissions"
   ]
  },
  {
@@ -819,9 +904,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "サブエージェントの説明は、Claude がいつそれを使うかを判断する手がかりになります。",
+  "explanation": "正解は a です。Claude Code のドキュメント(Create custom subagents)によると、プロジェクトのサブエージェントは .claude/agents/ に置き、バージョン管理に入れるとチームで使えます。ファイルはフロントマターと Markdown の本文からなり、必須は name と description で、tools で使えるツールを指定でき(省くとすべて引き継ぐ)、本文がシステムプロンプトになります。Claude は description を見て任せる時期を判断します。この場面のレビュー担当は全員で使うので、.claude/agents/ に置くのが当てはまります。\n\n見分け方: ~/.claude/agents/(b)は自分の全プロジェクトで使える個人のサブエージェントの場所です。CLAUDE.md(c)は毎回読み込まれる指示で、サブエージェントを定義するものではありません。.mcp.json(d)はプロジェクトの MCP サーバーの設定です。",
   "refs": [
-   "https://code.claude.com/docs/en/sub-agents"
+   "https://code.claude.com/docs/en/sub-agents",
+   "https://code.claude.com/docs/en/claude-directory"
+  ],
+  "topics": [
+   "claude-code-subagents",
+   "claude-code-config-scopes"
   ]
  },
  {
