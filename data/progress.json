@@ -4,34 +4,34 @@
   "source": "muse-space:claudezi-ge-kuizu",
   "repo": "k8kimura-gif/claude-cert-questions",
   "path": "data/progress.json",
-  "exportedAt": "2026-11-20T22:25:53.073Z",
+  "exportedAt": "2026-11-22T04:06:46.574Z",
   "summary": {
-    "answered": 197,
-    "correct": 166,
+    "answered": 246,
+    "correct": 207,
     "accuracyPercent": 84,
     "certs": {
       "associate": {
         "code": "CCAO-F",
         "name": "Associate – Foundations",
-        "answered": 84,
-        "correct": 66,
-        "accuracyPercent": 79,
-        "askedCount": 97,
-        "sessionCount": 5,
-        "completedSessionCount": 4,
-        "lastAnsweredAt": "2026-11-20T12:52:48.591Z",
-        "confRated": 84,
-        "sureOkPercent": 65,
-        "unsureOk": 11,
-        "sureNg": 14,
+        "answered": 133,
+        "correct": 107,
+        "accuracyPercent": 80,
+        "askedCount": 175,
+        "sessionCount": 7,
+        "completedSessionCount": 6,
+        "lastAnsweredAt": "2026-11-22T04:05:09.438Z",
+        "confRated": 133,
+        "sureOkPercent": 67,
+        "unsureOk": 18,
+        "sureNg": 16,
         "domains": [
           {
             "id": "prompting-and-task-execution",
             "ja": "プロンプトとタスクの実行",
             "weight": 14,
-            "answered": 9,
-            "correct": 6,
-            "accuracyPercent": 67,
+            "answered": 14,
+            "correct": 11,
+            "accuracyPercent": 79,
             "unsureOk": 0,
             "sureNg": 2
           },
@@ -39,60 +39,60 @@
             "id": "output-evaluation-and-validation",
             "ja": "出力の評価と検証",
             "weight": 21,
-            "answered": 20,
-            "correct": 15,
-            "accuracyPercent": 75,
-            "unsureOk": 1,
-            "sureNg": 5
+            "answered": 29,
+            "correct": 22,
+            "accuracyPercent": 76,
+            "unsureOk": 2,
+            "sureNg": 6
           },
           {
             "id": "product-and-model-selection",
             "ja": "製品とモデルの選択",
             "weight": 12,
-            "answered": 11,
-            "correct": 9,
-            "accuracyPercent": 82,
-            "unsureOk": 2,
+            "answered": 19,
+            "correct": 16,
+            "accuracyPercent": 84,
+            "unsureOk": 3,
             "sureNg": 2
           },
           {
             "id": "workflow-integration-and-solution-design",
             "ja": "ワークフローへの統合とソリューション設計",
             "weight": 16,
-            "answered": 14,
-            "correct": 11,
-            "accuracyPercent": 79,
-            "unsureOk": 2,
-            "sureNg": 2
+            "answered": 21,
+            "correct": 17,
+            "accuracyPercent": 81,
+            "unsureOk": 3,
+            "sureNg": 3
           },
           {
             "id": "configuration-and-knowledge-management",
             "ja": "設定とナレッジ管理",
             "weight": 12,
-            "answered": 11,
-            "correct": 7,
-            "accuracyPercent": 64,
-            "unsureOk": 2,
+            "answered": 17,
+            "correct": 12,
+            "accuracyPercent": 71,
+            "unsureOk": 3,
             "sureNg": 3
           },
           {
             "id": "governance-risk-and-responsible-use",
             "ja": "ガバナンス・リスク・責任ある利用",
             "weight": 15,
-            "answered": 10,
-            "correct": 9,
-            "accuracyPercent": 90,
-            "unsureOk": 3,
+            "answered": 18,
+            "correct": 15,
+            "accuracyPercent": 83,
+            "unsureOk": 5,
             "sureNg": 0
           },
           {
             "id": "troubleshooting-and-optimization",
             "ja": "トラブルシューティングと最適化",
             "weight": 10,
-            "answered": 9,
-            "correct": 9,
-            "accuracyPercent": 100,
-            "unsureOk": 1,
+            "answered": 15,
+            "correct": 14,
+            "accuracyPercent": 93,
+            "unsureOk": 2,
             "sureNg": 0
           }
         ]
@@ -105,7 +105,7 @@
         "accuracyPercent": 88,
         "askedCount": 113,
         "sessionCount": 18,
-        "completedSessionCount": 17,
+        "completedSessionCount": 18,
         "lastAnsweredAt": "2026-11-20T22:25:26.267Z",
         "confRated": 58,
         "sureOkPercent": 60,
@@ -202,7 +202,7 @@
         "accuracyPercent": null,
         "askedCount": 5,
         "sessionCount": 1,
-        "completedSessionCount": 0,
+        "completedSessionCount": 1,
         "lastAnsweredAt": null,
         "confRated": 0,
         "sureOkPercent": null,
@@ -353,6 +353,15 @@
   "progress": {
     "associate": {
       "answers": {
+        "asc-cfg-001": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
         "asc-cfg-003": {
           "n": 1,
           "correct": 1,
@@ -361,6 +370,15 @@
           "last": "2026-11-19",
           "due": "2026-11-20",
           "c": 0
+        },
+        "asc-cfg-004": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
         },
         "asc-cfg-005": {
           "n": 1,
@@ -380,6 +398,24 @@
           "due": "2026-11-18",
           "c": 0
         },
+        "asc-cfg-009": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
+        "asc-cfg-013": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 0
+        },
         "asc-cfg-014": {
           "n": 1,
           "correct": 0,
@@ -396,6 +432,15 @@
           "ok": 1,
           "last": "2026-11-20",
           "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-cfg-019": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
           "c": 1
         },
         "asc-cfg-020": {
@@ -424,6 +469,15 @@
           "last": "2026-11-20",
           "due": "2026-11-21",
           "c": 1
+        },
+        "asc-cfg-024": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-23",
+          "c": 0
         },
         "asc-cfg-025": {
           "n": 1,
@@ -488,6 +542,15 @@
           "due": "2026-11-23",
           "c": 1
         },
+        "asc-eval-006": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
         "asc-eval-007": {
           "n": 1,
           "correct": 1,
@@ -542,6 +605,15 @@
           "due": "2026-11-23",
           "c": 1
         },
+        "asc-eval-021": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
         "asc-eval-022": {
           "n": 1,
           "correct": 1,
@@ -569,6 +641,24 @@
           "due": "2026-11-20",
           "c": 1
         },
+        "asc-eval-029": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-22",
+          "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-eval-030": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 0
+        },
         "asc-eval-032": {
           "n": 1,
           "correct": 0,
@@ -585,6 +675,15 @@
           "ok": 1,
           "last": "2026-11-20",
           "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-eval-036": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
           "c": 1
         },
         "asc-eval-037": {
@@ -614,6 +713,24 @@
           "due": "2026-11-20",
           "c": 1
         },
+        "asc-eval-042": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
+        "asc-eval-043": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-22",
+          "due": "2026-11-23",
+          "c": 0
+        },
         "asc-eval-044": {
           "n": 1,
           "correct": 0,
@@ -632,6 +749,24 @@
           "due": "2026-11-22",
           "c": 1
         },
+        "asc-eval-047": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
+        "asc-eval-052": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
         "asc-gov-001": {
           "n": 1,
           "correct": 1,
@@ -639,6 +774,15 @@
           "ok": 1,
           "last": "2026-11-19",
           "due": "2026-11-22",
+          "c": 1
+        },
+        "asc-gov-002": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
           "c": 1
         },
         "asc-gov-003": {
@@ -649,6 +793,15 @@
           "last": "2026-11-20",
           "due": "2026-11-23",
           "c": 1
+        },
+        "asc-gov-005": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 0
         },
         "asc-gov-008": {
           "n": 1,
@@ -666,6 +819,15 @@
           "ok": 1,
           "last": "2026-11-17",
           "due": "2026-11-18",
+          "c": 0
+        },
+        "asc-gov-015": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
           "c": 0
         },
         "asc-gov-016": {
@@ -686,6 +848,24 @@
           "due": "2026-11-23",
           "c": 1
         },
+        "asc-gov-019": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
+        "asc-gov-020": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
         "asc-gov-022": {
           "n": 1,
           "correct": 1,
@@ -704,6 +884,15 @@
           "due": "2026-11-23",
           "c": 1
         },
+        "asc-gov-029": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-22",
+          "due": "2026-11-23",
+          "c": 0
+        },
         "asc-gov-031": {
           "n": 1,
           "correct": 1,
@@ -713,6 +902,15 @@
           "due": "2026-11-21",
           "c": 0
         },
+        "asc-gov-032": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
         "asc-gov-034": {
           "n": 1,
           "correct": 1,
@@ -720,6 +918,24 @@
           "ok": 1,
           "last": "2026-11-20",
           "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-gov-035": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-23",
+          "c": 0
+        },
+        "asc-prm-001": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
           "c": 1
         },
         "asc-prm-005": {
@@ -738,6 +954,15 @@
           "ok": 0,
           "last": "2026-11-20",
           "due": "2026-11-21",
+          "c": 1
+        },
+        "asc-prm-007": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
           "c": 1
         },
         "asc-prm-008": {
@@ -776,6 +1001,24 @@
           "due": "2026-11-21",
           "c": 1
         },
+        "asc-prm-018": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
+        "asc-prm-024": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
         "asc-prm-025": {
           "n": 1,
           "correct": 0,
@@ -801,6 +1044,15 @@
           "ok": 1,
           "last": "2026-11-20",
           "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-prm-032": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
           "c": 1
         },
         "asc-prod-001": {
@@ -857,6 +1109,24 @@
           "due": "2026-11-20",
           "c": 1
         },
+        "asc-prod-008": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
+        "asc-prod-013": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
         "asc-prod-014": {
           "n": 1,
           "correct": 1,
@@ -864,6 +1134,33 @@
           "ok": 1,
           "last": "2026-11-20",
           "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-prod-015": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
+        "asc-prod-016": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 0
+        },
+        "asc-prod-017": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
           "c": 1
         },
         "asc-prod-018": {
@@ -893,6 +1190,33 @@
           "due": "2026-11-21",
           "c": 0
         },
+        "asc-prod-022": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
+        "asc-prod-024": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 0
+        },
+        "asc-prod-025": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
         "asc-prod-026": {
           "n": 1,
           "correct": 1,
@@ -909,6 +1233,15 @@
           "ok": 1,
           "last": "2026-11-20",
           "due": "2026-11-23",
+          "c": 1
+        },
+        "asc-trb-002": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
           "c": 1
         },
         "asc-trb-005": {
@@ -938,6 +1271,15 @@
           "due": "2026-11-22",
           "c": 1
         },
+        "asc-trb-009": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-22",
+          "due": "2026-11-23",
+          "c": 0
+        },
         "asc-trb-010": {
           "n": 1,
           "correct": 1,
@@ -945,6 +1287,24 @@
           "ok": 1,
           "last": "2026-11-17",
           "due": "2026-11-20",
+          "c": 1
+        },
+        "asc-trb-011": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
+        "asc-trb-014": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
           "c": 1
         },
         "asc-trb-015": {
@@ -955,6 +1315,15 @@
           "last": "2026-11-20",
           "due": "2026-11-23",
           "c": 1
+        },
+        "asc-trb-016": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-23",
+          "c": 0
         },
         "asc-trb-019": {
           "n": 1,
@@ -974,6 +1343,15 @@
           "due": "2026-11-23",
           "c": 1
         },
+        "asc-trb-023": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
+        },
         "asc-trb-024": {
           "n": 1,
           "correct": 1,
@@ -981,6 +1359,15 @@
           "ok": 1,
           "last": "2026-11-19",
           "due": "2026-11-22",
+          "c": 1
+        },
+        "asc-wf-002": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
           "c": 1
         },
         "asc-wf-003": {
@@ -1037,6 +1424,15 @@
           "due": "2026-11-23",
           "c": 1
         },
+        "asc-wf-013": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
         "asc-wf-016": {
           "n": 1,
           "correct": 1,
@@ -1055,6 +1451,15 @@
           "due": "2026-11-20",
           "c": 0
         },
+        "asc-wf-019": {
+          "n": 1,
+          "correct": 0,
+          "streak": 0,
+          "ok": 0,
+          "last": "2026-11-21",
+          "due": "2026-11-22",
+          "c": 1
+        },
         "asc-wf-020": {
           "n": 1,
           "correct": 0,
@@ -1063,6 +1468,42 @@
           "last": "2026-11-17",
           "due": "2026-11-18",
           "c": 0
+        },
+        "asc-wf-023": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
+        "asc-wf-025": {
+          "n": 1,
+          "correct": 1,
+          "streak": 0,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-23",
+          "c": 0
+        },
+        "asc-wf-026": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-22",
+          "due": "2026-11-25",
+          "c": 1
+        },
+        "asc-wf-028": {
+          "n": 1,
+          "correct": 1,
+          "streak": 1,
+          "ok": 1,
+          "last": "2026-11-21",
+          "due": "2026-11-24",
+          "c": 1
         },
         "asc-wf-031": {
           "n": 1,
@@ -1696,6 +2137,349 @@
           "d": "2026-11-20",
           "q": "asc-prm-025",
           "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "asc-wf-019",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "asc-prod-024",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "asc-cfg-013",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "asc-prod-016",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "asc-wf-028",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "asc-gov-005",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "asc-prod-008",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "asc-prod-013",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-21",
+          "q": "asc-gov-015",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "asc-eval-030",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-21",
+          "q": "asc-trb-023",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-wf-013",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-eval-021",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-prm-018",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-trb-009",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-wf-026",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-gov-002",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-wf-025",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-prm-001",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-cfg-009",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-eval-052",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-trb-011",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-prm-024",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-prm-007",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-eval-047",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-trb-014",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-gov-020",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-eval-029",
+          "ok": 0,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-eval-043",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-wf-023",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-wf-002",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-cfg-024",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-trb-016",
+          "ok": 1,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-prm-032",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-cfg-001",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-eval-006",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-gov-032",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-prod-015",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-prod-017",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-prod-022",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-eval-042",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-eval-036",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-trb-002",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-gov-019",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-prod-025",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-cfg-019",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-gov-029",
+          "ok": 0,
+          "m": "space",
+          "c": 0
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-cfg-004",
+          "ok": 1,
+          "m": "space",
+          "c": 1
+        },
+        {
+          "d": "2026-11-22",
+          "q": "asc-gov-035",
+          "ok": 1,
           "m": "space",
           "c": 0
         }
@@ -3470,12 +4254,30 @@
       },
       {
         "id": 24,
-        "status": "in_progress",
+        "status": "completed",
         "createdAt": "2026-11-20T11:52:33.221Z",
-        "completedAt": null,
+        "completedAt": "2026-11-21T05:56:07.083Z",
         "totalQuestions": 38,
         "answered": 26,
         "correct": 21
+      },
+      {
+        "id": 25,
+        "status": "completed",
+        "createdAt": "2026-11-21T06:05:43.398Z",
+        "completedAt": "2026-11-21T18:25:17.159Z",
+        "totalQuestions": 38,
+        "answered": 21,
+        "correct": 16
+      },
+      {
+        "id": 26,
+        "status": "in_progress",
+        "createdAt": "2026-11-21T18:34:57.422Z",
+        "completedAt": null,
+        "totalQuestions": 40,
+        "answered": 28,
+        "correct": 25
       }
     ],
     "developer": [
@@ -3598,9 +4400,9 @@
       },
       {
         "id": 15,
-        "status": "in_progress",
+        "status": "completed",
         "createdAt": "2026-11-16T00:06:33.969Z",
-        "completedAt": null,
+        "completedAt": "2026-11-21T05:56:07.116Z",
         "totalQuestions": 2,
         "answered": 2,
         "correct": 1
@@ -3645,9 +4447,9 @@
     "architect": [
       {
         "id": 2,
-        "status": "in_progress",
+        "status": "completed",
         "createdAt": "2026-11-14T13:18:13.820Z",
-        "completedAt": null,
+        "completedAt": "2026-11-21T05:56:07.131Z",
         "totalQuestions": 5,
         "answered": 0,
         "correct": 0
