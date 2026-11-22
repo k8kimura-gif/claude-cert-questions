@@ -294,5 +294,268 @@
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency"
   ]
+ },
+ {
+  "id": "arp-mod-009",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Sonnet 5.5 のアプリで、プロンプトは静的な社内規程のブロック 1〜5(合計約 30,000 トークン)と、現在時刻とユーザーの質問を入れたブロック 6 で構成される。自動キャッシュ(automatic caching)を使っているが、usage を見ると毎回 cache_creation_input_tokens が計上され、cache_read_input_tokens は 0 のままである。最も適切な対処はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "キャッシュの TTL を 1 時間に延ばす。既定の 5 分の寿命では、次のリクエストが届くまでに書き込んだエントリが失効してしまうためである。",
+    "why": "失効が原因ではない。ブロック 6 の時刻が毎回変わるのでプレフィックスのハッシュが毎回変わり、TTL を延ばしても読み出しは起きない。"
+   },
+   {
+    "id": "b",
+    "text": "自動キャッシュの代わりに、リクエスト間で内容が変わらない最後のブロックであるブロック 5 に、明示的な cache_control を置く。",
+    "why": "正しい。ドキュメントは、変化する接尾部があるときはブレークポイントを静的なプレフィックスの末尾に置くよう述べ、この構成では自動キャッシュではなくブロック 5 への明示のブレークポイントを使うとしている。"
+   },
+   {
+    "id": "c",
+    "text": "ブレークポイントはブロック 6 のままにする。読み出しのルックバックが変わらないブロック 1〜5 を後ろから見つけてキャッシュするので、数回のリクエストの後にはヒットし始める。",
+    "why": "ルックバックが探すのは以前のリクエストが書き込んだエントリで、安定した内容ではない。書き込みはブレークポイントでしか起きないので、ブロック 1〜5 の位置にエントリはできない。"
+   },
+   {
+    "id": "d",
+    "text": "時刻をブロック 1 に移して静的な規程をその後ろに並べる。変わる部分を先頭にまとめれば、後ろの規程部分がキャッシュの対象として扱われる。",
+    "why": "キャッシュは先頭から累積したプレフィックスのハッシュで照合されるので、先頭が毎回変わると後ろのすべてが一致しなくなる。静的な内容は前に置く。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。プロンプトキャッシュのドキュメントは、この構成を「よくある誤り」として挙げています。書き込みはブレークポイントでだけ起き、ハッシュは先頭からの累積なので、毎回変わる時刻を含むブロック 6 に置くと毎回書き込みだけが起きて読み出しは起きません。自動キャッシュも最後のキャッシュ可能なブロック(ここではブロック 6)にブレークポイントを置くため同じ問題が起きます。リクエスト間で同じ最後のブロック 5 に明示の cache_control を置けば、以後のリクエストはキャッシュを読めます。\n\n見分け方: ヒットしない原因が「寿命」(a)か「プレフィックスの不一致」かを分けます。ルックバックは過去の書き込みを探すだけで、安定した内容を見つけてキャッシュはしません(c)。変わる内容を先頭に置くと、後ろはすべて不一致になります(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "arp-mod-010",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Claude Opus 5.5 のコーディングエージェントで、ツール結果の消去(clear_tool_uses_20250919)を使い、プロンプトキャッシュも効かせている。運用で次の 2 つの問題が出た。(1) 少量の消去が頻繁に起き、そのたびにキャッシュの書き込み費用がかかる。(2) 最初に設計仕様を返した read_spec ツールの結果まで消され、後半で仕様を見失う。設定の見直しとして適切なものを 2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "clear_at_least を設定し、1 回の消去で指定した量以上のトークンを消せるときだけ消去が行われるようにする。",
+    "why": "正しい。ドキュメントは、ツール結果の消去はキャッシュされたプレフィックスを無効にするので、clear_at_least で 1 回に消す最小量を決め、無効化に見合う量を消すよう勧めている。"
+   },
+   {
+    "id": "b",
+    "text": "clear_tool_inputs を true にし、ツールの呼び出しのパラメータも結果と一緒に消す。こうすると消去してもキャッシュが無効にならない。",
+    "why": "clear_tool_inputs は、結果と一緒に呼び出しのパラメータも消すかどうかの設定である。キャッシュの無効化を防ぐ機能ではない。"
+   },
+   {
+    "id": "c",
+    "text": "exclude_tools に read_spec を指定し、このツールの呼び出しと結果が消去の対象にならないようにする。",
+    "why": "正しい。exclude_tools に挙げたツールの呼び出しと結果は消去されない。重要なコンテキストを残すのに使うとされている。"
+   },
+   {
+    "id": "d",
+    "text": "消去後の履歴をレスポンスから受け取り、クライアント側の会話履歴をその内容で置き換えて同期する。以後のリクエストのプレフィックスがそろい、キャッシュが安定する。",
+    "why": "消去はプロンプトが Claude に届く前にサーバー側で適用される。クライアントは編集前の完全な履歴を持ち続ければよく、同期する必要はないとされている。"
+   }
+  ],
+  "answer": [
+   "a",
+   "c"
+  ],
+  "explanation": "正解は a と c です。Context editing のドキュメントによると、ツール結果の消去は内容を消すたびにキャッシュされたプレフィックスを無効にします。そのため clear_at_least で 1 回に消す最小量を指定し、その量を消せないときは消去を行わないようにして、キャッシュを壊すだけの価値があるかを決めます。また exclude_tools に挙げたツールの呼び出しと結果は、決して消去されません。\n\n見分け方: clear_tool_inputs は消す範囲を広げる設定で、キャッシュの保護とは関係ありません(b)。消去はサーバー側で行われ、クライアントは完全な履歴をそのまま管理し続けるとドキュメントは述べています(d)。なお既定では trigger が入力 100,000 トークン、keep が直近 3 回のツール使用です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/context-editing"
+  ]
+ },
+ {
+  "id": "arp-mod-011",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Opus 5.5 を使う顧客対応のチャットアプリで、長い会話をコンテキストに収める仕組みを選ぶ。要件は、要約を作る間も会話を止めないこと、直近の数ターンを一字一句そのまま Claude に届けること、送り返している thinking ブロックを残すターンでも有効に保つことである。自前の要約コードはない。Compaction のドキュメントに照らして最も適切な構成はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Compaction at a token threshold を使う。通常のリクエストに 1 つのパラメータを加えるだけで、入力が閾値に達したときに API が要約する。",
+    "why": "閾値方式は、閾値に達したリクエストの中で要約するのでバックグラウンドでは動かない。再挿入するターンの thinking も残せず、取り除く必要がある。"
+   },
+   {
+    "id": "b",
+    "text": "Context editing の clear_thinking_20251015 と clear_tool_uses_20250919 を組み合わせ、古い thinking とツール結果を規則に従って消していく。サーバー側で適用されるので、会話を止めずに済む。",
+    "why": "Context editing は古いツール結果や thinking を規則で消す機能で、古いターンを要約で置き換えるものではない。要約による圧縮の要件に合わない。"
+   },
+   {
+    "id": "c",
+    "text": "要約用の呼び出しとプロンプトを自前で書き、要約を自分のメッセージとして履歴を書き換え、直近のターンは thinking ごとそのまま残し、要約は自分のコードの中でバックグラウンドで作る。",
+    "why": "自前の要約では、残したターンの thinking がプレフィックスの検査を通らないとされている。要約の呼び出し、プロンプト、履歴の書き換えも自分で書く必要がある。"
+   },
+   {
+    "id": "d",
+    "text": "Compaction on demand を使い、Compaction in the background で会話を続けながら要約を待ち、Compaction that keeps recent turns で直近のターンを残す。",
+    "why": "正しい。On demand の方式は、バックグラウンドでの実行と直近のターンの保持に対応し、条件を満たせば残すターンの thinking も保たれる。ドキュメントは、使える場所では on demand を使うよう勧めている。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Compaction overview は、使える場所では Compaction on demand を使うよう勧めています。比較表では、on demand は Compaction in the background で会話を続けながら要約でき、Compaction that keeps recent turns で直近のターンをそのまま残せます。preserved thinking のモデルでも、Compaction and preserved thinking の条件を満たせば残すターンの thinking が保たれます。\n\n見分け方: 要件ごとに表の行を当てはめます。閾値方式(a)は閾値に達したリクエストの中で動き、残すターンの thinking を保てません。自前の要約(c)は、残すターンの thinking がプレフィックスの検査を通りません。Context editing(b)は要約ではなく、規則で古い内容を消す機能です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/compaction",
+   "https://platform.claude.com/docs/en/build-with-claude/compaction-background"
+  ]
+ },
+ {
+  "id": "arp-mod-012",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "社内のデータ分析用の Agent Skill で、SKILL.md から advanced.md を参照し、advanced.md からさらに details.md(約 800 行の表定義)を参照している。運用すると、Claude が details.md の一部しか読まずに回答し、表の列を取り違えることがある。Skill authoring best practices に沿った改善はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "details.md の内容を SKILL.md の本文にすべて移し、Skill が起動したときに表定義の全文が必ず読み込まれるようにする。参照ファイルをたどる必要もなくなる。",
+    "why": "ベストプラクティスは SKILL.md の本文を 500 行未満に保ち、超えるなら別のファイルに分けるよう勧めている。800 行の表定義を本文に移すのはこれに反する。"
+   },
+   {
+    "id": "b",
+    "text": "description に details.md の列の一覧を書き、Skill が起動する前から列の情報が常にコンテキストに載っているようにする。参照ファイルを読みにいく前に必要な情報がそろう。",
+    "why": "description は、Skill が何をし、いつ使うかを書いて Skill を選ばせるための欄である。起動前から読み込まれる欄に資料の本体を置くのは用途が違う。"
+   },
+   {
+    "id": "c",
+    "text": "参照ファイルをすべて SKILL.md から直接リンクして参照を 1 階層にし、100 行を超える details.md の先頭には目次を付ける。",
+    "why": "正しい。ベストプラクティスは、入れ子の参照では head -100 などで一部だけを読むことがあるとして、参照を SKILL.md から 1 階層に保ち、100 行を超えるファイルには目次を付けるよう勧めている。"
+   },
+   {
+    "id": "d",
+    "text": "details.md を Skill から外し、表定義が必要なときは利用者が該当する部分を毎回プロンプトに貼り付けるよう案内する。コンテキストに載る量も利用者が調整できる。",
+    "why": "Skills は必要なときに読み込まれ、同じ案内を会話ごとに繰り返さなくて済む仕組みである。毎回の貼り付けに戻すとその利点を失う。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Skill authoring best practices は、参照先からさらに参照されたファイルについて、Claude が head -100 のようなコマンドで先頭だけを見て全体を読まず、情報が欠けることがあると述べています。対策として、すべての参照ファイルを SKILL.md から直接リンクして 1 階層に保つこと、100 行を超える参照ファイルには先頭に目次を付け、一部を読んだときにも全体の範囲が分かるようにすることを勧めています。\n\n見分け方: 段階的な開示(progressive disclosure)を保ったまま、読み落としの原因である入れ子を解消するものを選びます。SKILL.md の本文は 500 行未満が勧められます(a)。description は Skill を選ばせるための欄です(b)。毎回の貼り付け(d)は Skills を使う意味を失います。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices",
+   "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview"
+  ]
+ },
+ {
+  "id": "arp-mod-013",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "複数の Claude モデルを切り替えて使う社内基盤で、モデル選択の画面とリクエストの組み立てを作る。モデルごとに thinking: {type: \"disabled\"} を受け付けるかを判定し、画面ではモデルを系統(Opus、Sonnet など)ごとにまとめたい。Models overview の説明に沿った実装はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Models API の応答で、capabilities の thinking.types.disabled.supported を見て判定し、系統は各モデルの line フィールドで分ける。",
+    "why": "正しい。Models overview は、thinking.types.disabled で \"disabled\" を受け付けるかが分かるとし、系統はモデルの id から推測せずに line を読むよう述べている。"
+   },
+   {
+    "id": "b",
+    "text": "モデル ID の文字列を解析して系統と世代を取り出し、世代の番号が一定以上のモデルは thinking をオフにできないものとして扱う。",
+    "why": "ドキュメントは、系統を id から推測せずに line を読むよう述べている。thinking をオフにできるかも、capabilities で確かめるものである。"
+   },
+   {
+    "id": "c",
+    "text": "thinking.types.disabled.supported が true のモデルでは、effort をどの値にしても thinking をオフにしたリクエストが受け付けられるとみなし、エラー処理を省く。",
+    "why": "supported が true でも、そのモデルが thinking のオフと組み合わせられない effort の値など、別の理由で拒否されることがあると書かれている。"
+   },
+   {
+    "id": "d",
+    "text": "line の値は opus、sonnet、haiku の 3 種類に固定されているので、表示をこの 3 つに分け、ほかの値が返ったらエラーとして扱う。",
+    "why": "Anthropic が系統を追加する可能性があるので、line の値の集合を固定とみなさないよう書かれている。どの系統にも属さないモデルでは null になる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Models overview によると、Models API の応答には各モデルの capabilities があり、thinking.types.disabled はそのモデルが thinking: {type: \"disabled\"} を受け付けるかを示します。supported が false のモデルは 400 エラーで拒否します。また、各モデルの line は属する系統を示し、Claude Opus 4.5 と 4.6 はどちらも opus を返します。ドキュメントは、系統を id から推測せずに line を読むよう述べています。\n\n見分け方: 「ID から推測する」(b)、「値を固定とみなす」(d)、「supported が true なら必ず通る」(c)は、どれもドキュメントが明示的に避けるよう述べている扱いです。supported が true でも、effort の値など別の理由で拒否されることがあるので、エラー処理は残します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/models/overview"
+  ]
+ },
+ {
+  "id": "arp-mod-014",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "法務部向けのエージェントを設計する。社内規程と契約のひな形は更新が少なく、そのうち用語集と回答方針は毎回必要になる。一方、過去の契約書は数万件あり、案件ごとに必要なものが違う。応答の速さも求められる。記事 Effective context engineering for AI agents の考え方に最も沿った設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "1M トークンのコンテキストに収まる範囲で、規程、ひな形、過去の契約書をできるだけ多く毎回プロンプトに入れる。コンテキストに余裕があるなら、取りこぼしを防ぐことを優先する。",
+    "why": "記事は、コンテキストを限りのある資源として扱い、高信号のトークンの最小の集合を探すよう述べる。トークンが増えると想起の精度が下がる(context rot)とも述べている。"
+   },
+   {
+    "id": "b",
+    "text": "毎回必要な用語集と回答方針は最初からコンテキストに入れ、過去の契約書はファイルパスなどの軽い参照だけを持たせて、必要なときにツールで読み込ませる。",
+    "why": "正しい。記事は、速さのために一部のデータを先に取得し、残りはエージェントの判断で探索させるハイブリッドの戦略を挙げ、法務や金融のような変化の少ない文脈に向く場合があるとしている。"
+   },
+   {
+    "id": "c",
+    "text": "すべてをジャストインタイムで取得させる。毎回使う用語集や回答方針も含めて、必要になるたびにツールで検索させ、事前の取得は一切しない。",
+    "why": "記事は、実行時の探索は事前に用意したデータの取得より遅いというトレードオフを挙げている。毎回必要な情報まで探させると、速さの要件に合わない。"
+   },
+   {
+    "id": "d",
+    "text": "過去の契約書を読ませる代わりに、これまでに起きた例外の事例をすべて洗い出して規則の一覧にし、システムプロンプトに並べてあらゆる場合に備える。",
+    "why": "記事は、従わせたい規則をすべて書こうとして例外の事例を並べることは勧めず、多様で典型的な例を厳選するよう勧めている。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。記事 Effective context engineering for AI agents は、エージェントが軽い識別子(ファイルパス、保存したクエリ、リンクなど)を持ち、実行時にツールでデータを読み込む「just in time」の方式を紹介しています。一方で、実行時の探索は事前に用意したデータの取得より遅いというトレードオフも挙げ、速さのために一部を先に取得し、残りを自律的に探索させるハイブリッドの戦略を示しています。この戦略は、法務や金融のように内容の変化が少ない文脈に向く場合があるとしています。\n\n見分け方: 記事の原則は「望む結果の見込みを最大にする、高信号のトークンの最小の集合」です。すべてを詰め込む(a)のはこれに反し、すべてを探索させる(c)のは速さを損ないます。例外の羅列(d)は記事が勧めていません。",
+  "refs": [
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ]
+ },
+ {
+  "id": "arp-mod-015",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Claude Sonnet 4.5 で動いている文書生成アプリを Claude Opus 5.5 に移行する。このアプリは最後の assistant ターンへの事前入力(prefill)で、(1) 「Here is the requested summary:」と入れて前置きを省かせ、(2) max_tokens で途切れた応答をその末尾から続けさせている。移行後、これらのリクエストは 400 エラーになった。Prompting best practices に沿った移行方法を 2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "max_tokens を十分に大きくしたうえで、prefill はそのまま残す。応答が途中で途切れなければ、prefill を含むリクエストも受け付けられる。",
+    "why": "Claude 4.6 以降のモデルでは、最後の assistant ターンの prefill そのものが 400 エラーになる。max_tokens の大きさとは関係しない。"
+   },
+   {
+    "id": "b",
+    "text": "前置きについては、system プロンプトで「前置きなしで直接答え、'Here is...' などで始めない」と指示し、まれに残る前置きは後処理で取り除く。",
+    "why": "正しい。前置きを省くための prefill の移行先として、system プロンプトでの直接の指示と、まれに残ったものの後処理が挙げられている。"
+   },
+   {
+    "id": "c",
+    "text": "途切れた応答の続きは、途切れた応答の全文を最後の assistant メッセージとして送り直し、Claude にその続きを自動で書かせる。",
+    "why": "最後の assistant ターンに途中までの応答を置くことは、まさに prefill であり、このモデルでは 400 エラーになる。"
+   },
+   {
+    "id": "d",
+    "text": "途切れた応答の続きは user メッセージに移し、途切れた応答の末尾の文を含めて「前の応答はここで途切れた。続きから書け」と伝える。",
+    "why": "正しい。続きを書かせる用途の移行先として、続きの依頼を user メッセージに移し、途切れた応答の最後の文を含めるよう示されている。"
+   }
+  ],
+  "answer": [
+   "b",
+   "d"
+  ],
+  "explanation": "正解は b と d です。Prompting best practices によると、Claude 4.6 以降のモデルでは、最後の assistant ターンへの prefill は受け付けられず、400 エラーが返ります。ほかの位置の assistant メッセージは影響を受けません。用途ごとの移行先として、前置きを省くには system プロンプトで前置きなしに答えるよう直接指示し(XML タグ、構造化出力、ツール呼び出しも挙げられています)、残った前置きは後処理で取り除きます。続きを書かせるには、依頼を user メッセージに移し、途切れた応答の末尾を含めて伝えます。\n\n見分け方: 400 の原因は「最後の assistant ターンに部分的な応答を置くこと」そのものです。max_tokens を変えても(a)、全文を assistant として送り直しても(c)、prefill であることは変わりません。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ]
  }
 ]

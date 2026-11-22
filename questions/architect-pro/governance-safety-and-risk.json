@@ -331,5 +331,304 @@
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
   ]
+ },
+ {
+  "id": "arp-gov-010",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "医療系 SaaS が Claude API の 1 つの組織で、PHI(保護対象の医療情報)を含む診療記録の要約(Messages API)と、PHI を含まない社内の利用分析(Message Batches API と code execution tool を使う)を動かしている。PHI を扱うために HIPAA readiness を導入する。API and data retention のページに沿う構成はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "今の組織で HIPAA readiness を有効にし、利用分析も同じ組織で続ける。利用分析は PHI を含まないので、Batch API と code execution の呼び出しはそのまま受け付けられる。",
+    "why": "HIPAA readiness は組織単位で強制され、対象外の機能(Batch API と code execution はどちらも No)を含むリクエストは、PHI の有無に関係なく 400 エラーで拒否される。"
+   },
+   {
+    "id": "b",
+    "text": "HIPAA readiness を有効にした組織では、対象の機能だけで PHI を扱う要約を動かす。HIPAA の対象外の機能を使う利用分析は、HIPAA readiness を有効にしない別の組織に分ける。",
+    "why": "正しい。ページは、HIPAA readiness は組織単位で強制されるため、HIPAA が要らないワークロードには別の組織を使うよう述べている。"
+   },
+   {
+    "id": "c",
+    "text": "HIPAA readiness に加えて ZDR の取り決めも結ぶ。ZDR があれば、Batch API と code execution も HIPAA の保護の下で使えるようになる。",
+    "why": "PHI を扱う組織に必要なのは HIPAA readiness で、ZDR を重ねる必要はないとページは述べる。Batch API と code execution は ZDR でも HIPAA でも対象外(No)である。"
+   },
+   {
+    "id": "d",
+    "text": "まず今の組織全体で HIPAA readiness を試しに有効にし、利用分析に支障が出たら、管理者が設定を無効に戻して元の構成に戻す。",
+    "why": "HIPAA readiness は一度有効にすると恒久的な構成になり、管理者が無効にすることはできないとページは述べる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。API and data retention のページによると、HIPAA readiness は組織単位で強制され、対象外の機能を含むリクエストは 400 の invalid_request_error で拒否されます(詳細欄に「ブロックしない」とあるクライアント側のツールは例外)。機能の対象表では、Message Batches API と code execution tool はどちらも HIPAA の対象外です。そのため、同じ組織で HIPAA と HIPAA 以外のワークロードを動かさず、別の組織に分けるよう案内しています。\n\n見分け方: 拒否は PHI の有無ではなく機能で決まるので、同じ組織で続ける(a)は 400 になります。PHI を扱うなら HIPAA readiness だけでよく、ZDR を重ねても対象外の機能は対象になりません(c)。HIPAA readiness は有効にすると恒久的で、管理者は無効にできません(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention"
+  ]
+ },
+ {
+  "id": "arp-gov-011",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "HIPAA readiness を有効にした組織で、structured outputs を使って診察記録から JSON を抽出する。開発者が「患者ごとに既往歴の候補をスキーマの enum に入れ、患者 ID の形式を pattern に書けば精度が上がる」と提案した。API and data retention のページの PHI の扱いに沿う判断はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "structured outputs は HIPAA の対象外の機能なので、HIPAA を有効にした組織では使えない。JSON の形式はプロンプトの指示だけで守らせる。",
+    "why": "機能の対象表では、structured outputs は HIPAA の対象(Yes)である。制約があるのは、スキーマに PHI を入れることである。"
+   },
+   {
+    "id": "b",
+    "text": "スキーマはリクエストの一部としてメッセージ本文と同じ保護を受けるので、患者ごとの値を enum や pattern に入れてよい。",
+    "why": "ページは、スキーマは文法にコンパイルされてメッセージ本文とは別にキャッシュされ、プロンプトや応答と同じ PHI の保護を受けないと述べる。"
+   },
+   {
+    "id": "c",
+    "text": "スキーマは応答を返した時点で破棄されるので、患者 ID を pattern に書くのは問題ない。enum だけは、患者の値を避けて汎用の候補にする。",
+    "why": "ページによると、スキーマは最後の利用から最大 24 時間キャッシュされる。また、PHI を入れない対象には pattern も含まれる。"
+   },
+   {
+    "id": "d",
+    "text": "スキーマのプロパティ名、enum、const、pattern には PHI を入れない。患者に固有の情報は、HIPAA の保護を受けるメッセージ本文にだけ置く。",
+    "why": "正しい。ページは、JSON スキーマの定義に PHI を含めないよう求め、患者固有の情報はメッセージ本文にだけ置くよう述べている。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。API and data retention のページの PHI handling guidelines によると、structured outputs や strict: true のツールでは、API が JSON スキーマを文法にコンパイルし、メッセージ本文とは別にキャッシュします。このキャッシュはプロンプトや応答と同じ PHI の保護を受けません。そのため、スキーマの定義に PHI を含めてはならず、これはプロパティ名、enum の値、const の値、pattern の正規表現に当てはまります。患者固有の情報はメッセージ本文にだけ置きます。\n\n見分け方: structured outputs 自体は HIPAA の対象なので、使えないとする a は誤りです。スキーマは本文と同じ保護を受けません(b)。機能の対象表では、スキーマは最後の利用から最大 24 時間キャッシュされ、pattern も PHI を入れない対象です(c)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention"
+  ]
+ },
+ {
+  "id": "arp-gov-012",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "ZDR の取り決めがある組織で、ある新規プロジェクトだけが Covered Model の Claude Fable 5.2 を使いたい。ほかのプロジェクトのデータは ZDR のまま扱い続ける必要がある。API and data retention のページに沿う進め方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Default Workspace 以外のワークスペースをそのプロジェクト用に使い、Console の Data retention の設定で、そのワークスペースだけ Standard data retention(30 日の保持)を有効にする。",
+    "why": "正しい。ページは、ZDR の組織でもワークスペース単位で 30 日の保持を有効にでき、ほかのワークスペースは ZDR のままになると述べる。Default Workspace は組織の設定に従うので、別のワークスペースを使う。"
+   },
+   {
+    "id": "b",
+    "text": "Default Workspace の Data retention の設定で Standard data retention を有効にし、そのプロジェクトの API キーを Default Workspace に置く。ほかのプロジェクトのキーは、ZDR のままの別のワークスペースに移す。",
+    "why": "ページは、Default Workspace は常に組織の設定に従うので、別のワークスペースを使うよう述べている。"
+   },
+   {
+    "id": "c",
+    "text": "そのプロジェクトのリクエストに inference_geo: \"us\" を指定して、推論を米国内のインフラに限定する。データの所在を固定しておけば、Covered Model も組織の ZDR の取り決めのまま使える。",
+    "why": "inference_geo は推論の場所を決める設定で、保持の要件とは関係がない。Covered Model は、Anthropic が明示的に認めない限り ZDR では使えない。"
+   },
+   {
+    "id": "d",
+    "text": "保持の設定は組織単位でしか変えられず、ワークスペースごとの例外は設けられない。アカウント担当に依頼して組織全体の ZDR を解除し、全プロジェクトを 30 日の保持に切り替える。",
+    "why": "ページは、ワークスペース単位で 30 日の保持を有効にする手順を示している。組織全体の ZDR を解除する必要はない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。API and data retention のページによると、Claude Fable 5.2 などの Covered Model は 30 日のデータ保持を必要とし、Anthropic が明示的に認めない限り ZDR では使えません。ZDR の組織は、特定のワークスペースだけで 30 日の保持を有効にして、これらのモデルを使えるようにできます。ほかのワークスペースは ZDR のままです。Console の Data retention ページでワークスペースを選び、Standard data retention を選んで条件に同意します。Default Workspace は常に組織の設定に従うため、別のワークスペースを使います。\n\n見分け方: Default Workspace では例外を設けられません(b)。推論の場所(inference_geo)は保持の要件を満たしません(c)。ワークスペース単位で有効にできるので、組織全体の ZDR の解除(d)は不要です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention"
+  ]
+ },
+ {
+  "id": "arp-gov-013",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Claude API で ZDR の取り決めがある組織のアーキテクトが、データの扱いについて社内向けの説明を書いている。API and data retention のページの記述に合うものを 2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ZDR の組織が Message Batches API や Files API を使っても、API はリクエストを拒否しない。そのデータは ZDR の外に出ることになり、各機能の保持ポリシーが適用される。",
+    "why": "正しい。ページの FAQ は、ZDR で対象外(No)の機能を使ってもリクエストはブロックされず、その特定のデータについて ZDR の外に出る選択になると述べる。"
+   },
+   {
+    "id": "b",
+    "text": "ZDR は契約したアカウントの単位で有効になる。そのため、検証用などに同じアカウントの下で新しく作った組織にも、アカウント担当へ改めて依頼しなくても自動的に適用される。",
+    "why": "ページは、ZDR は組織ごとに有効にするもので、新しい組織はそれぞれ別に有効にする必要があり、同じアカウントのほかの組織に自動では広がらないと述べる。"
+   },
+   {
+    "id": "c",
+    "text": "ZDR があっても、法律で求められる場合や、Anthropic の自動の trust and safety システムでフラグが付いた場合は、入出力が最大 2 年保持されうる。",
+    "why": "正しい。ページの Retention regardless of arrangement は、法令で必要な場合やフラグが付いた場合に、ZDR や HIPAA の取り決めがあってもデータが保持されうると述べる。"
+   },
+   {
+    "id": "d",
+    "text": "Claude Console の playground での利用も、API の呼び出しと同じく ZDR の対象になる。そのため、本番の顧客データを使ったプロンプトの調整や比較は、Console の playground で行ってよい。",
+    "why": "ページは、playground を含む Claude Console での利用を ZDR の対象外に挙げている。"
+   }
+  ],
+  "answer": [
+   "a",
+   "c"
+  ],
+  "explanation": "正解は a と c です。API and data retention のページによると、ZDR の取り決めのもとでは、対象外(No)の機能を使っても API はリクエストをブロックしません。Batch API はジョブを、Files API はファイルを保存するなど、これらの機能は状態を持つため、使うことはそのデータについて ZDR の外に出る選択になり、各機能の保持ポリシーが適用されます(a)。また、ZDR や HIPAA の取り決めがあっても、法令で必要な場合や自動の trust and safety システムでフラグが付いた場合は、入出力が最大 2 年保持されることがあります(c)。\n\n見分け方: ZDR は組織ごとに有効にし、同じアカウントの新しい組織には自動で広がりません(b)。playground を含む Claude Console の利用は ZDR の対象外です(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention"
+  ]
+ },
+ {
+  "id": "arp-gov-014",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "金融機関の規制対応で、Claude API の推論を米国内に限ることを、あるワークスペースのすべての API キーで確実に守らせたい。このワークスペースのキーは複数のチームが別々のコードから使っている。Data residency のページに沿う設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各チームのコードで、すべてのリクエストに inference_geo: \"us\" を付けることを社内規約にし、コードレビューと静的解析で付け忘れがないかを確認する。ワークスペースの設定は既定のままにする。",
+    "why": "リクエストごとの指定は付け忘れると既定の global になりうる。ページは、ワークスペースの設定でキー全体に方針を強制できると述べる。"
+   },
+   {
+    "id": "b",
+    "text": "米国の workspace geo で作成したワークスペースにキーを集める。workspace geo が米国なら、保存データだけでなく、そのワークスペースのリクエストの推論も米国内に限られる。",
+    "why": "workspace geo が決めるのは、保存データの場所と、画像の変換やコード実行などのエンドポイント処理の場所である。推論の場所は inference geo が決める。"
+   },
+   {
+    "id": "c",
+    "text": "ワークスペースの allowed_inference_geos を [\"us\"] に、default_inference_geo を \"us\" に設定し、そのワークスペースのすべてのキーに方針を強制する。",
+    "why": "正しい。ページは、allowed_inference_geos にない geo を指定したリクエストは 400 になり、default_inference_geo は省略時の既定になると述べる。"
+   },
+   {
+    "id": "d",
+    "text": "推論がどこで実行されたかは Claude API の応答から確かめられないので、ワークロードを Amazon Bedrock に移し、リクエストの inference_geo で米国を指定して地域を管理する。",
+    "why": "応答の usage に inference_geo が入り、実行された場所を確かめられる。また Bedrock では推論の地域がエンドポイントや推論プロファイルで決まり、inference_geo は使わない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Data residency のページによると、推論の場所はリクエストの inference_geo(\"global\" が既定、\"us\" は米国内のみ)か、ワークスペースの既定で決まります。ワークスペースの allowed_inference_geos は使える geo を制限し、リストにない geo を指定したリクエストは 400 エラーになります。default_inference_geo は省略時の既定で、許可した geo の中から選びます。これらの設定で、ワークスペースのすべてのキーに方針を強制できます。\n\n見分け方: リクエストごとの指定だけ(a)では、付け忘れたリクエストが既定の global で動きえます。workspace geo は保存データとエンドポイント処理の場所を決める別の設定です(b)。応答の usage.inference_geo で実行場所を確かめられ、Bedrock では inference_geo は使いません(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/manage-claude/data-residency"
+  ]
+ },
+ {
+  "id": "arp-gov-015",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "倉庫で、作業員が歩く通路を走る搬送ロボットを、Claude の出力にもとづいて人の承認なしに動かす計画がある。Usage Policy の High-risk Physical Actions の要件に沿う設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "最高速度と立入禁止区域をシステムプロンプトに詳しく書き、Claude が出す移動の指示がそれを超えないようにする。プロンプトの評価で違反がないことを確かめてから導入する。",
+    "why": "Usage Policy は、速度などの動作の上限を、モデルの出力から独立した機器かコントローラーで強制するよう求める。プロンプトでモデルに守らせるだけでは満たさない。"
+   },
+   {
+    "id": "b",
+    "text": "Claude が出したすべての指示とロボットの動作のログを残し、事故やニアミスが起きたら有資格者が後から原因を確認できるようにする。稼働中に止めるかどうかは、現場の作業員の判断に任せる。",
+    "why": "Usage Policy は、稼働を観察していつでも止められる有資格者を置くよう求める。事後のログの確認では、この要件を満たさない。"
+   },
+   {
+    "id": "c",
+    "text": "Claude のサービスとの接続が切れても搬送が止まらないよう、ロボットは最後に受け取った移動の指示を最後まで実行する。その後は通路の中で待機し、再接続を待ってから次の指示を受ける。",
+    "why": "Usage Policy は、接続が失われたときに機器が停止するか安全な状態を保つよう求める。最後の指示を続けるのは逆である。"
+   },
+   {
+    "id": "d",
+    "text": "稼働を観察していつでも止められる有資格者を置き、介入時や接続断では停止か安全な状態を保つ。速度などの上限は、モデルの出力から独立した機器かコントローラーで強制する。",
+    "why": "正しい。Usage Policy の High-risk Physical Actions に対する要件(人による制御と、モデルから独立した安全上の制限)に一致する。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Usage Policy の High-risk Use Case Requirements は、人の承認なしにモデルの出力でハードウェアが動き、人がいる場所を移動しうる場合などを High-risk Physical Actions とします。その要件は、機器の稼働を観察していつでも止められる有資格者を置くこと、その人が介入したときや Anthropic のサービスとの接続が失われたときに機器が停止するか安全な状態を保つこと、出力や速度などの動作の上限をモデルの出力から独立した機器かコントローラーで強制することです。\n\n見分け方: 上限をプロンプトでモデルに守らせる(a)のは、モデルから独立した強制になりません。事後のログ確認(b)は、いつでも止められる人の要件を満たしません。接続断で動き続ける(c)のは、安全な状態を保つ要件の逆です。",
+  "refs": [
+   "https://www.anthropic.com/legal/aup"
+  ]
+ },
+ {
+  "id": "arp-gov-016",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "保険会社が、保険金請求の査定に Claude を組み込む。Usage Policy の High-risk Use Case Requirements に合う理解を 2つ選べ(法令による追加の要件はないものとする)。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude の推奨が請求額の一部だけを支払うものでも、支払いである以上は請求者に有利な決定なので、事前の人の確認なしに実行してよい。",
+    "why": "Usage Policy は、一部の承認、減額、条件付きの承認は「完全に有利(wholly favorable)」に当たらないとしている。"
+   },
+   {
+    "id": "b",
+    "text": "請求を全額支払うという、請求者に完全に有利な決定は、法令が許す範囲で、事前の人の確認(human-in-the-loop)なしに実行できる。",
+    "why": "正しい。Usage Policy は、保険金の支払いを、人の確認が要らない完全に有利な決定の例に挙げている。開示などの法的義務は残りうる。"
+   },
+   {
+    "id": "c",
+    "text": "査定担当者のために Claude が請求書類を社内で要約するだけの用途も、高リスクの推奨に当たるので、請求者への AI 利用の開示が必要になる。",
+    "why": "Usage Policy は、最終的な推奨にならない社内の起案、調査、要約、分析を、要件の適用除外に挙げている。"
+   },
+   {
+    "id": "d",
+    "text": "請求を否認する推奨は、変更する権限を持つ有資格者が実質的に確認してから決定に使う。請求者には、AI が使われたことを明確に伝える。",
+    "why": "正しい。請求の結果の判断は高リスク領域の Insurance に当たり、有資格者による確認と AI 利用の開示が要件になる。"
+   }
+  ],
+  "answer": [
+   "b",
+   "d"
+  ],
+  "explanation": "正解は b と d です。Usage Policy は、保険金請求の結果の判断を高リスク領域の Insurance に挙げています。高リスクの推奨には、変更する権限を持つ有資格者が実質的に確認してから伝えたり決定に使ったりすること、対象者に AI が使われたことを明確に伝えることを求めます。Anthropic や Claude の名前を示す必要はありません(d)。一方、法令が許す範囲で、保険金の支払いのように完全に有利な決定は、事前の人の確認なしに実行できます(b)。\n\n見分け方: 一部の承認や減額、条件付きの承認は「完全に有利」に当たりません(a)。最終的な推奨にならない社内の要約や分析は、要件の適用除外です(c)。",
+  "refs": [
+   "https://www.anthropic.com/legal/aup"
+  ]
+ },
+ {
+  "id": "arp-gov-017",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "組織の全開発者の Claude Code で、Claude が実行するシェルコマンドを必ずサンドボックスの中で動かしたい。サンドボックスが使えないマシンで非サンドボックスの実行に落ちることも、失敗したコマンドがサンドボックスの外で再試行されることも防ぎたい。Sandboxing のページに沿う設定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "managed settings で sandbox の enabled: true、failIfUnavailable: true、allowUnsandboxedCommands: false を配布する。",
+    "why": "正しい。ページは、この 3 つを managed settings で配布する構成を、全開発者にサンドボックスを必須にする例として示している。"
+   },
+   {
+    "id": "b",
+    "text": "各リポジトリの .claude/settings.json に sandbox.enabled: true を書いてコミットし、全員が同じ設定を使うようにする。サンドボックスで失敗したコマンドの扱いは既定のままにする。",
+    "why": "enabled だけでは、サンドボックスが使えないときの扱いと、dangerouslyDisableSandbox による非サンドボックスの再試行が残る。ページは組織への強制に managed settings を使うよう案内する。"
+   },
+   {
+    "id": "c",
+    "text": "managed settings の permissions.deny に Bash(curl *) や Bash(wget *) などを加え、外部と通信するコマンドを名前で止める。サンドボックスの有効化は各開発者の判断に任せる。",
+    "why": "deny ルールは書かれたとおりのコマンドに一致するだけである。ページは、コマンドの文字列に依存しないネットワークの強制にはサンドボックスを使うよう述べる。"
+   },
+   {
+    "id": "d",
+    "text": "managed settings で auto mode を既定の permission mode にする。分類器が危険なコマンドを実行前に止めるので、サンドボックスと同じ OS レベルの境界として働く。",
+    "why": "auto mode は各ツール呼び出しを実行するかを分類器で決めるもので、実行したコマンドが何にアクセスできるかを OS が制限するサンドボックスとは別の仕組みである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Sandboxing のページは、全開発者にサンドボックスを必須にするには、sandbox のキーを managed settings で配布するよう案内しています。例の構成は enabled: true に加え、failIfUnavailable: true(未対応の環境や依存関係の不足では Claude Code が起動しない)と allowUnsandboxedCommands: false(dangerouslyDisableSandbox による非サンドボックスの再試行を無視する)を設定します。なお、Read などの組み込みツール、MCP サーバー、フックはサンドボックスの外で動きます。\n\n見分け方: enabled だけ(b)では、使えない環境の扱いと再試行の抜け道が残ります。deny ルール(c)はコマンドの文字列に一致するだけです。auto mode(d)は実行の可否を決める仕組みで、OS が強制する境界ではありません。",
+  "refs": [
+   "https://code.claude.com/docs/en/sandboxing",
+   "https://code.claude.com/docs/en/security"
+  ]
  }
 ]
