@@ -7,6 +7,7 @@ const CERT_LABEL = { developer: ['Developer', 'Foundations'], architect: ['Archi
 const INTERVALS = [1, 3, 7, 14]; // 連続正解数ごとの復習間隔(日)
 const RESERVE_DAYS = 2;          // 試験直前は新規問題を出さず、模試と復習に充てる
 const MIN_DAILY = 5;
+const NO_DATE_DAYS = 30;          // 試験日が未定のとき、未出題の問題をこの日数で一巡する
 
 // ---------- 小道具 ----------
 const el = (tag, props = {}, ...kids) => {
@@ -122,8 +123,9 @@ function recentSolid() {
 // 試験日までに全問を一巡できる量 + 期限が来た復習。直近の正答率で増減する。
 function computePlan() {
   const t = today();
-  const daysToExam = diffDays(t, examDate());
-  const studyDays = Math.max(1, daysToExam - RESERVE_DAYS);
+  const date = examDate();
+  const daysToExam = date ? diffDays(t, date) : null;
+  const studyDays = date ? Math.max(1, daysToExam - RESERVE_DAYS) : NO_DATE_DAYS;
   const unseen = A.qs.filter((q) => !A.p.answers[q.id]);
   const due = A.qs.filter((q) => A.p.answers[q.id] && A.p.answers[q.id].due <= t);
   const acc = recentSolid();
@@ -196,8 +198,8 @@ routes.home = (msg) => {
         CERT_LABEL[c][0], el('small', {}, CERT_LABEL[c][1])))),
     el('div', { class: 'card' },
       el('div', { class: 'row' },
-        el('div', { class: 'grow' }, el('div', { class: 'muted' }, `${A.exam.code} 試験日 ${examDate()}`),
-          el('div', { class: 'big' }, d.daysToExam >= 0 ? `あと ${d.daysToExam} 日` : '試験日を過ぎています')),
+        el('div', { class: 'grow' }, el('div', { class: 'muted' }, `${A.exam.code} 試験日 ${examDate() || '未定'}`),
+          el('div', { class: 'big' }, d.daysToExam == null ? '試験日は設定で入力' : d.daysToExam >= 0 ? `あと ${d.daysToExam} 日` : '試験日を過ぎています')),
         el('div', {}, el('div', { class: 'muted' }, '今日の目標'), el('div', { class: 'big' }, `${done} / ${d.ids.length}`))),
       el('div', { class: 'meter' }, el('i', { style: `width:${pct(done, d.ids.length)}%` })),
       el('div', { class: 'muted' }, [breakdown, d.acc !== null && `直近の確信あり正答 ${Math.round(d.acc * 100)}%`, d.adjust].filter(Boolean).join(' ・ '))),
@@ -599,7 +601,7 @@ routes.settings = (msg) => {
   const box = el('textarea', { 'aria-label': '学習記録の JSON', placeholder: '書き出した JSON をここに貼り付けて「読み込む」を押す' });
   let armed = false;
   const dateRow = (cert, label) => {
-    const input = el('input', { type: 'date', value: settings.examDates[cert] || (cert === A.cert ? A.exam.examDate : '') });
+    const input = el('input', { type: 'date', value: settings.examDates[cert] || (cert === A.cert ? A.exam.examDate || '' : '') });
     input.addEventListener('change', async () => {
       if (!input.value) return;
       settings.examDates[cert] = input.value; saveSettings();

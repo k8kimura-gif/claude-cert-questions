@@ -2,7 +2,7 @@
  "id": "architect-pro",
  "code": "CCAR-P",
  "name": "Architect – Professional",
- "examDate": "2026-12-05",
+ "examDate": null,
  "questions": 63,
  "minutes": 120,
  "passGuidePercent": 72,
