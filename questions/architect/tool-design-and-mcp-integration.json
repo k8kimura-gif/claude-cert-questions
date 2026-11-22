@@ -180,31 +180,32 @@
   "choices": [
    {
     "id": "a",
-    "text": "${GITHUB_TOKEN} のような環境変数の展開を使い、トークンの値はファイルに書かない",
-    "why": "設定を共有しつつ、秘密情報はリポジトリに含めずに済む。"
+    "text": "${GITHUB_MCP_TOKEN} のような自前の名前の環境変数を展開して参照し、値はファイルに書かない",
+    "why": ".mcp.json の環境変数の展開で、設定を共有しつつ、秘密の値はリポジトリに含めずに済む。ドキュメントは、空として読まれる認証情報の値を渡すときも、自分で名付けた変数に写して参照するよう案内している。"
    },
    {
     "id": "b",
-    "text": "設定を 1 か所にまとめて管理するため、トークンの値を .mcp.json に直接書いてコミットする",
-    "why": "秘密情報がリポジトリの履歴に残る。"
+    "text": "設定を 1 か所にまとめて管理するため、トークンの値を .mcp.json に直接書いてリポジトリにコミットする",
+    "why": "秘密の値がリポジトリの履歴に残る。"
    },
    {
     "id": "c",
-    "text": "トークンを CLAUDE.md に書く",
-    "why": "CLAUDE.md もリポジトリで共有される。接続設定のファイルでもない。"
+    "text": "トークンを CLAUDE.md に書いておき、MCP サーバーに接続するたびに Claude に読み取らせて使わせる",
+    "why": "CLAUDE.md は MCP サーバーの接続を設定する場所ではない。プロジェクトの CLAUDE.md もバージョン管理でチームと共有される。"
    },
    {
     "id": "d",
-    "text": "全員が同じ個人トークンを使えるよう、チームのチャットに値を貼り付けて共有し、各自で設定してもらう",
+    "text": "全員が同じ個人トークンを使えるよう、トークンの値をチームのチャットに貼り付けて共有し、各自の環境で設定してもらう",
     "why": "漏えいの危険が高く、操作した人も特定できなくなる。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "正解は a です。Claude Code の MCP のドキュメントによると、project スコープのサーバーはプロジェクトのルートの .mcp.json に保存し、バージョン管理でチームと共有します。.mcp.json は環境変数の展開に対応しており、command、args、env、url、headers の値に ${VAR} や ${VAR:-default} の形で書け、設定を共有しながら API キーのような値を環境ごとに渡せます。値をファイルに書かずに共有の設定を作れるので、この場面に当てはまります。\n\n見分け方: 値を .mcp.json に書いてコミットする(b)と、秘密の値がリポジトリの履歴に入ります。CLAUDE.md(c)は MCP サーバーの接続を設定する場所ではありません。チャットでの共有(d)は漏えいの危険を広げます。また、リモートサーバーの url と headers では、Claude Code 自身の認証情報などに当たる変数名は空として読まれます。",
+  "explanation": "正解は a です。Claude Code の MCP のドキュメントによると、project スコープのサーバーはプロジェクトのルートの .mcp.json に保存し、バージョン管理でチームと共有します。.mcp.json は command、args、env、url、headers の値で ${VAR} や ${VAR:-default} の展開に対応し、設定を共有しながら API キーのような値を環境ごとに渡せます。ただしリモートサーバーの url と headers では、Claude Code 自身の認証情報などに当たる一部の変数名が空として読まれるため、ドキュメントは自分で名付けた変数に写して参照するよう案内しています。\n\n見分け方: 値を .mcp.json に書いてコミットする(b)と、秘密の値がリポジトリの履歴に入ります。CLAUDE.md(c)は MCP サーバーの接続を設定する場所ではなく、チームと共有されるファイルです。チャットでの共有(d)は漏えいの危険を広げます。",
   "refs": [
    "https://code.claude.com/docs/en/mcp",
+   "https://code.claude.com/docs/en/memory",
    "https://code.claude.com/docs/en/agent-sdk/mcp"
   ],
   "topics": [
@@ -303,37 +304,36 @@
   "domain": "tool-design-and-mcp-integration",
   "type": "single",
   "scenarioId": "extract",
-  "stem": "文書の種別ごとに別の抽出ツール(extract_invoice、extract_contract など)を定義している。種別が不明な文書に対して、Claude がツールを呼ばずに文章で答えてしまうことがある。tool_choice の設定として、従来から用いられてきたものはどれか。",
+  "stem": "文書の種別ごとに別の抽出ツール(extract_invoice、extract_contract など)を定義している。種別が不明な文書に対して、Claude がツールを呼ばずに文章で答えてしまうことがある。モデルは強制のツール指定に対応する Claude Haiku 5.5 で、手動の拡張思考は使っていない。tool_choice の設定として適切なものはどれか。",
   "choices": [
    {
     "id": "a",
-    "text": "tool_choice を \"any\" にし、いずれかのツールの呼び出しを必須にする",
-    "why": "\"any\" は、どのツールかを Claude に選ばせつつ、ツール呼び出し自体を必ず行わせる。"
+    "text": "tool_choice を \"any\" にし、どのツールかは Claude に選ばせて、呼び出しを必須にする",
+    "why": "\"any\" は、どのツールかを Claude に選ばせつつ、ツールの呼び出し自体を必ず行わせる。強制に対応するモデルでは、strict tool use と組み合わせると入力がスキーマに従うことも保証できる。"
    },
    {
     "id": "b",
-    "text": "tool_choice を既定の \"auto\" にしたまま、各ツールの説明をできるだけ短くする",
-    "why": "\"auto\" では、ツールを呼ばずに文章で答える選択が残る。"
+    "text": "tool_choice を既定の \"auto\" にしたまま、各ツールの説明を、迷わないようにできるだけ短くする",
+    "why": "\"auto\" では、ツールを呼ばずに文章で答える選択が残る。説明を短くするのは、詳しい説明を勧めるドキュメントとも逆である。"
    },
    {
     "id": "c",
-    "text": "tool_choice を \"none\" にし、ツールを呼ばずに JSON を本文で書かせる",
-    "why": "ツールが呼ばれなくなる。"
+    "text": "tool_choice を \"none\" にし、ツールは呼ばせずに、抽出結果の JSON を応答の本文に書かせる",
+    "why": "\"none\" はツールの使用を止める。"
    },
    {
     "id": "d",
     "text": "tool_choice で extract_invoice を固定し、すべての文書をまず請求書として抽出する",
-    "why": "種別が不明な文書まで、請求書として抽出される。"
+    "why": "種別が不明な文書や契約書まで、請求書として抽出される。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "正解は a です。公式ドキュメント(Define tools)によると、tool_choice は auto(既定。呼ぶかどうかを Claude が決める)、any(いずれかを必ず使う)、tool(指定したツールを必ず使う)、none(使わない)の 4 つです。種別が不明でもいずれかの抽出ツールを呼ばせたいこの場面では、any が従来の方法に当たります。ただし Claude Opus 5.5、Claude Sonnet 5.5、Claude Fable 5.2 などでは any と tool が 400 エラーになり、その場合は auto と strict tool use、または構造化出力を使うよう案内されています。\n\n見分け方: auto のままでは、ツールを呼ばずに答える選択が残ります。説明を短くする(b)のは、詳しい説明を勧めるドキュメントと逆です。none(c)はツールの使用を止めます。extract_invoice の固定(d)では、契約書まで請求書として抽出されます。",
+  "explanation": "正解は a です。公式ドキュメント(Define tools)によると、tool_choice の any は提供したツールのいずれかを必ず使わせ、どのツールかは指定しません。強制に対応するモデルでは、any と strict tool use を組み合わせると、いずれかのツールが呼ばれることと入力がスキーマに従うことの両方を保証できます。ただし手動の拡張思考では any と tool は使えず、Claude Opus 5.5 や Claude Sonnet 5.5 などでは 400 エラーになります。この場面は強制に対応するモデルなので、any が当てはまります。\n\n見分け方: auto のまま説明を短くする(b)と、ツールを呼ばずに答える選択が残り、詳しい説明を勧めるドキュメントとも逆です。none(c)はツールの使用を止めます。extract_invoice の固定(d)では、契約書まで請求書として抽出されます。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use",
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use"
   ],
   "topics": [
    "define-tools",
@@ -1230,33 +1230,33 @@
   "domain": "tool-design-and-mcp-integration",
   "type": "single",
   "scenarioId": "cicd",
-  "stem": "CI で、課題管理の MCP サーバーを使わせたい。設定の方法として適切なものはどれか。",
+  "stem": "CI のランナーで claude -p を実行し、課題管理の MCP サーバーを使わせたい。サーバーにはアクセストークンが必要である。設定の方法として適切なものはどれか。",
   "choices": [
    {
     "id": "a",
-    "text": "リポジトリの .mcp.json にサーバーを定義し、認証情報は、CI のシークレットから環境変数で渡す",
-    "why": "設定を共有し、秘密は外から注入する。"
+    "text": "リポジトリの .mcp.json にサーバーを定義し、トークンは自分で名付けた環境変数で参照して、CI のシークレットから渡す",
+    "why": ".mcp.json で設定を共有し、秘密の値は CI のシークレットから環境変数で渡す。ドキュメントは、空として読まれる認証情報の値を渡すときも、自分で名付けた変数に写して参照するよう案内している。"
    },
    {
     "id": "b",
-    "text": "認証情報を、.mcp.json に直接書く",
-    "why": "秘密が、リポジトリに入る。"
+    "text": "ランナーで確実に接続できるよう、トークンの値を .mcp.json の headers に直接書いて、リポジトリにコミットする",
+    "why": "秘密の値がリポジトリとその履歴に入る。"
    },
    {
     "id": "c",
-    "text": "CI では、MCP は使えない",
-    "why": "使える。"
+    "text": "claude -p はプロジェクトの .mcp.json を読み込まないので、MCP は使わず、課題の内容を取得してプロンプトに貼り付けて渡す",
+    "why": "--bare を付けなければ、-p のセッションもプロジェクトの .mcp.json のサーバーに接続する。サーバーごとの承認の確認も出さない。"
    },
    {
     "id": "d",
-    "text": "サーバーの設定を、プロンプトに書く",
-    "why": "接続の設定にはならない。"
+    "text": "サーバーの URL とトークンをプロンプトの本文に書き、そのサーバーに接続して課題の一覧を読み取るよう、Claude に毎回指示する",
+    "why": "プロンプトに書いた URL は接続の設定にはならない。トークンの値をプロンプトに書き込むことにもなる。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "正解は a です。Claude Code の MCP のドキュメントによると、.mcp.json は環境変数の展開に対応しており、${VAR} の形で、設定を共有しながら API キーのような機微な値を外から渡せます。非対話モードのドキュメントによると、claude -p のセッションはプロジェクトの .mcp.json のサーバーに接続し、サーバーごとの承認の確認は出しません。GitHub Actions のドキュメントも、認証情報はリポジトリに直接コミットせず、シークレットに保存して参照するよう警告しています。この場面の CI でも、同じ .mcp.json を使い、値だけをシークレットから環境変数で渡せます。\n\n見分け方: 認証情報を .mcp.json に直接書く(b)と、秘密の値がリポジトリに入ります。CI でも MCP は使えます(c)。プロンプトにサーバーの設定を書いても(d)、接続の設定にはなりません。",
+  "explanation": "正解は a です。Claude Code の MCP のドキュメントによると、.mcp.json は環境変数の展開に対応し、設定を共有しながら API キーのような機微な値を外から渡せます。リモートサーバーの url と headers では一部の認証情報の変数名が空として読まれるため、自分で名付けた変数で参照します。非対話モードのドキュメントによると、claude -p のセッションはプロジェクトの .mcp.json のサーバーに接続し、サーバーごとの承認の確認も出しません。GitHub Actions のドキュメントも、API キーなどを直接コミットせず、シークレットに保存して参照するよう求めています。\n\n見分け方: トークンを .mcp.json に直接書く(b)と、秘密の値がリポジトリに入ります。claude -p も .mcp.json のサーバーに接続するので、c の前提は誤りです。プロンプトに URL を書いても(d)、接続の設定にはなりません。",
   "refs": [
    "https://code.claude.com/docs/en/mcp",
    "https://code.claude.com/docs/en/headless",
@@ -1264,7 +1264,8 @@
   ],
   "topics": [
    "agent-credentials",
-   "claude-code-mcp"
+   "claude-code-mcp",
+   "claude-code-headless"
   ]
  },
  {
@@ -1316,40 +1317,43 @@
   "domain": "tool-design-and-mcp-integration",
   "type": "single",
   "scenarioId": "extract",
-  "stem": "抽出の前に、必ず文書の種別を判定するツール(classify_document)を呼ばせ、その結果に応じて抽出を行いたい。従来から用いられてきた方法はどれか。",
+  "stem": "抽出の前に、必ず文書の種別(請求書、契約書など)を判定させ、その結果に応じた抽出を行いたい。種別を判定するツール classify_document も用意してある。使っているモデルは Claude Opus 5.5 である。適切な方法はどれか。",
   "choices": [
    {
     "id": "a",
-    "text": "最初のリクエストで、tool_choice に classify_document を指定して呼び出しを強制し、その結果を受けて、次のリクエストで抽出を行う",
-    "why": "特定のツールの指定で、最初の一手を固定する。"
+    "text": "最初のリクエストで、種別を enum で返すスキーマを output_config.format に指定して判定させ、次のリクエストで抽出する",
+    "why": "構造化出力は、応答を決まった形の JSON にしたいときの手段で、強制のツール指定に対応しないモデルでも使える。判定と抽出を別のリクエストに分ければ、判定の結果を見てから抽出できる。"
    },
    {
     "id": "b",
-    "text": "tool_choice を \"none\" にする",
-    "why": "ツールが呼ばれなくなる。"
+    "text": "tool_choice は既定の auto のまま、classify_document の説明に「必ず最初に呼ぶこと」と書いて、判定と抽出の順序を Claude に任せる",
+    "why": "auto では、どのツールを選ぶかをプロンプトで左右できるだけで、最初に classify_document が呼ばれることは保証されない。"
    },
    {
     "id": "c",
-    "text": "ツールの説明に、「最初に呼ぶこと」と書くだけにする",
-    "why": "保証にはならない。"
+    "text": "classify_document と抽出のツールを一緒に渡し、1 回の応答の中で両方を並列に呼ばせて、あとから結果を突き合わせる",
+    "why": "並列に呼ばせると、判定の結果を見る前に抽出が始まり、順序が保証されない。"
    },
    {
     "id": "d",
-    "text": "両方のツールを、同時に呼ばせる",
-    "why": "順序が保証されない。"
+    "text": "最初のリクエストで tool_choice に classify_document を指定して呼び出しを強制し、その結果を受けて次のリクエストで抽出する",
+    "why": "Claude Opus 5.5 は強制のツール指定に対応しておらず、tool_choice の tool と any は 400 エラーになる。"
    }
   ],
   "answer": [
    "a"
   ],
-  "explanation": "正解は a です。公式ドキュメント(Define tools)によると、tool_choice に {\"type\": \"tool\", \"name\": …} を指定すると Claude に特定のツールを必ず使わせられ、応答はツールの呼び出しから始まります。最初のリクエストで classify_document を強制し、その結果を受けて次のリクエストで抽出するのが従来の方法に当たります。ただし Claude Opus 5.5、Claude Sonnet 5.5、Claude Fable 5.2 などでは tool と any が 400 エラーになり、ドキュメントは代わりに auto と strict tool use、または構造化出力を勧めています。\n\n見分け方: none(b)はツールの使用を止めます。説明に「最初に呼ぶこと」と書くだけ(c)では、プロンプトで auto の選択を促すだけで、呼び出しは保証されません。両方を同時に呼ばせる(d)と、種別の判定の結果を見る前に抽出が始まります。",
+  "explanation": "正解は a です。公式ドキュメント(Define tools と Errors)によると、Claude Opus 5.5 や Claude Sonnet 5.5 などは強制のツール指定に対応せず、tool_choice の any と tool は 400 エラーになります。代わりに、入力をスキーマに合わせるなら auto と strict tool use、応答そのものを決まった形の JSON にするなら構造化出力が案内されています。Prompting best practices は、決まったパイプラインを強制したいときに作業を順に実行する API 呼び出しに分ける連鎖を挙げており、判定を構造化出力の 1 回目に分けるのが当てはまります。\n\n見分け方: 説明に「最初に呼ぶこと」と書く(b)のは auto の選択をプロンプトで左右するだけで、保証になりません。並列に呼ばせる(c)と、判定を見る前に抽出が始まります。tool による強制(d)は、このモデルでは 400 エラーです。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
-   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+   "https://platform.claude.com/docs/en/api/errors",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
   ],
   "topics": [
    "define-tools",
-   "structured-outputs"
+   "structured-outputs",
+   "prompt-chaining"
   ]
  },
  {
