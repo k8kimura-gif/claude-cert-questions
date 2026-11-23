@@ -31,9 +31,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "出典の状態は、Active(完全にサポートされ推奨)、Legacy(更新なし、将来 Deprecated の可能性)、Deprecated(機能するが推奨されず、代替と廃止日がある)、Retired(利用不可でリクエストは失敗)の 4 つである。",
+  "explanation": "正解は b です。Model deprecations のページは、モデルのライフサイクルを 4 つの状態で説明しています。Deprecated は「まだ機能するが推奨されない」状態で、Anthropic が推奨の代替モデルを示し、廃止日(retirement date)を割り当てます。廃止されて Retired になると、リクエストは失敗します。同じページは、非推奨のモデルは Active のモデルより信頼性が低くなりやすいとも警告しています。\n\n見分け方: (a) の「利用できず、リクエストが失敗する」は Retired の定義です。(c) の「完全にサポートされ、利用が推奨される」は Active の定義です。(d) の「更新を受けなくなり、将来非推奨になるかもしれない」は Legacy の定義です。代替モデルと廃止日が示されるのは、Deprecated の定義に含まれる項目です。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ],
+  "topics": [
+   "model-migration"
   ]
  },
  {
@@ -68,9 +71,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "出典は、廃止予定のモデルを有効なデプロイで使っている顧客に、公開リリースされたモデルの廃止の少なくとも 60 日前に通知すると述べる。影響を受ける顧客には、メールとドキュメントで知らせる。",
+  "explanation": "正解は d です。Model deprecations のページの Notifications の節によると、Anthropic は、廃止が近いモデルを有効なデプロイ(active deployments)で使っている顧客に通知し、公開リリースされたモデルについては廃止の少なくとも 60 日前に知らせます。ページの冒頭では、影響を受ける顧客には必ずメールとドキュメントで通知すると述べています。廃止されたモデルへのリクエストは失敗するので、通知を受けたら廃止日より前に移行します。\n\n見分け方: (a) の 24 時間前と (b) の 30 日前は、どちらもページの「少なくとも 60 日前」より短く、通知の手段もメールとドキュメントです。(c) のように当日に通知するという記述はなく、事前に通知されたうえで、廃止後にリクエストが失敗します。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ],
+  "topics": [
+   "model-migration"
   ]
  },
  {
@@ -105,9 +111,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "Claude Console の Usage ページから Export を実行すると、API キーとモデルの別に集計された CSV が得られる。廃止予定のモデルを使っている箇所を見つけ、期日前に移行を優先付けできる。",
+  "explanation": "正解は a です。Model deprecations のページの Auditing model usage の節は、非推奨のモデルの利用箇所を見つける手順として、Claude Console の Usage ページで Export をクリックし、ダウンロードした CSV で API キーとモデルの別の利用状況を確かめる方法を示しています。この監査で、まだ非推奨のモデルを使っている箇所を見つけ、廃止日より前に新しいモデルへの更新を優先付けできるとしています。\n\n見分け方: (b) の自己申告に頼る方法はページになく、申告の漏れを防げません。(c) は廃止後に失敗してから対処するもので、ページは廃止日よりずっと前に新しいモデルでテストし、できるだけ早く移行するよう勧めています。(d) のように応答ヘッダーで非推奨を知らせるという記述は、ページにありません。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ],
+  "topics": [
+   "model-migration",
+   "usage-cost-analytics-api"
   ]
  },
  {
@@ -131,7 +141,7 @@
    {
     "id": "c",
     "text": "ドキュメントの日付は Anthropic 運用のプラットフォームに適用される。Bedrock などパートナー運用のものは独自のスケジュールで、状態や日付が異なりうる。",
-    "why": "正しい。出典は、Amazon Bedrock と Google 運用の Claude on Google Cloud が独自の廃止スケジュールを設定するため、状態と日付が異なりうると述べる。"
+    "why": "正しい。出典は、Amazon Bedrock と Claude Models on Google Cloud (Google managed) が独自の廃止スケジュールを設定するため、状態と日付が異なりうると述べる。"
    },
    {
     "id": "d",
@@ -142,9 +152,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "出典は、廃止の日付が Anthropic 運用のプラットフォーム(Claude API など)に適用されるとし、Amazon Bedrock などパートナー運用のプラットフォームは独自の廃止スケジュールをもつため、状態や日付が異なりうると述べる。",
+  "explanation": "正解は c です。Model deprecations のページによると、ページの日付は、Claude API など Anthropic が運用するプラットフォームに適用されます。パートナーが運用する Amazon Bedrock と Claude Models on Google Cloud (Google managed) は独自の廃止スケジュールを設定するため、同じモデルでもライフサイクルの状態や日付が異なることがあります。\n\n見分け方: (a) はすべてのプラットフォームで同じとしていますが、ページは異なりうると明記しています。(b) は Bedrock が Anthropic の日付に従うとしていますが、Bedrock は独自のスケジュールを設定します。(d) について、パートナー運用のプラットフォームでは廃止されないという記述はなく、独自のスケジュールで廃止されます。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ],
+  "topics": [
+   "model-migration"
   ]
  },
  {
@@ -179,9 +192,14 @@
   "answer": [
    "c"
   ],
-  "explanation": "temperature、top_p、top_k は API バージョン 2026-10-21 で削除され、指定すると 400 を返す。省略し、挙動の調整はプロンプトで行う。古いバージョンでも Claude 4.7 以降では、既定値以外を指定すると返される。",
+  "explanation": "正解は c です。Model deprecations のページの API parameter deprecations の表と API versions のページによると、temperature、top_p、top_k は API バージョン 2026-10-21 で削除され、送るとどのモデルでも 400 エラーになります。推奨される代替は、パラメータを省き、プロンプトでモデルの挙動を導くことです。それより前の API バージョンでも、Claude 4.7 以降のモデルで既定以外の値を指定すると 400 エラーになります。\n\n見分け方: (a) は無視されると考えていますが、削除されたパラメータは無視されずエラーになります。(b) の範囲の縮小ではなく、パラメータ自体が削除されています。(d) のように有料の機能になる、組織の設定で有効にできるという記述はありません。",
   "refs": [
-   "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+   "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+   "https://platform.claude.com/docs/en/api/versioning"
+  ],
+  "topics": [
+   "api-versioning",
+   "model-migration"
   ]
  },
  {
@@ -216,9 +234,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "出典は、モデルのライフサイクルを 4 つの状態で説明する。Active は完全にサポートされ推奨される。Legacy は更新を受けなくなり、将来非推奨になる可能性がある。Deprecated は機能するが推奨されず、推奨される代替モデルと廃止日が示される。Retired は利用できず、リクエストは失敗する。Legacy は「まだ使えるが、将来に備えて移行を考え始める」段階である。",
+  "explanation": "正解は a です。Model deprecations のページは、Legacy を「今後の更新を受けず、将来非推奨になるかもしれない」状態と定義しています。まだ利用はでき、推奨の代替モデルと廃止日が割り当てられるのは、その次の Deprecated の段階です。ほかの状態は、Active(完全にサポートされ推奨)、Deprecated(機能するが推奨されず、代替と廃止日がある)、Retired(利用できず、リクエストは失敗する)です。\n\n見分け方: (b) の廃止日の割り当ては Deprecated の定義に含まれる項目で、リクエストが失敗するのは Retired になってからです。(c) の「完全にサポートされ、新規の利用に推奨される」は Active の定義です。(d) の「利用できず、すべてのリクエストが失敗する」は Retired の定義です。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ],
+  "topics": [
+   "model-migration"
   ]
  },
  {
@@ -253,9 +274,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "出典は、非推奨のモデルはアクティブなモデルより信頼性が低くなりやすいと警告し、最高水準のサポートと信頼性を保つには、アクティブなモデルへ移行するよう述べる。廃止日を過ぎたモデルへのリクエストは失敗する。ベストプラクティスとして、廃止日よりずっと前に新しいモデルでアプリケーションをテストすること、推奨される代替モデルへできるだけ早くコードを更新することを挙げている。",
+  "explanation": "正解は d です。Model deprecations のページは、非推奨のモデルは Active のモデルより信頼性が低くなりやすいと警告し、最高水準のサポートと信頼性を保つために Active のモデルへ移すよう述べています。非推奨になったら廃止日より前にすべての利用を代替モデルへ移し、廃止されるとリクエストは失敗します。ベストプラクティスとして、廃止日よりずっと前に新しいモデルでテストすること、推奨の代替モデルへできるだけ早くコードを更新することが挙げられています。\n\n見分け方: (a) の自動転送の記述はなく、廃止後のリクエストは失敗します。(b) の「更新が止まるだけ」は Legacy の説明で、廃止後は動きません。(c) は廃止日が近づくまでテストを待つとしていますが、ページはずっと前にテストするよう勧めています。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ],
+  "topics": [
+   "model-migration"
   ]
  },
  {
@@ -268,8 +292,8 @@
   "choices": [
    {
     "id": "a",
-    "text": "日付なしの ID は、常に最新のスナップショットへ自動的に切り替わるエイリアスである。",
-    "why": "4.6 世代以降の日付なしの ID は、それ自体が固定されたスナップショットである。自動で切り替わるエイリアスではない。"
+    "text": "Claude Opus 5.5 のような日付なしの ID は、常に最新のスナップショットへ自動的に切り替わるエイリアスである。",
+    "why": "4.6 世代以降の日付なしの ID は、それ自体が固定されたスナップショットであり、自動で切り替わるエイリアスではない。最新の日付つきスナップショットを指すエイリアスがあるのは、4.6 世代より前のモデルである。"
    },
    {
     "id": "b",
@@ -290,9 +314,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "出典は、Claude API のモデル ID は、4.6 世代以降の日付なしの ID を含め、すべて固定されたスナップショットだと述べる。4.6 より前のモデルでは、エイリアスは日付つき ID を指す便利なポインタにすぎない。4.6 世代以降の日付なしの ID はそれ自体が固定されたスナップショットで、エイリアスの行はその ID を繰り返している。",
+  "explanation": "正解は b です。Models overview によると、日付なしの ID を含め、すべての Claude モデル ID は固定されたスナップショット(pinned snapshot)です。Model IDs and versioning のページは、4.6 世代以降の日付なしの ID はそのリリースの正式なモデル ID で、1 つの固定されたスナップショットに対応し、Anthropic は既存の ID の重みや設定を更新せず、更新版は新しい ID で出すと説明しています。\n\n見分け方: (a) と (c) は日付なしの ID を最新版へ切り替わる指し先とみていますが、ページはこれをよくある誤解として否定しています。最新の日付つきスナップショットを指すエイリアスがあるのは、4.6 世代より前のモデルです。(d) のように混み具合で挙動が変わるという記述はありません。なお、ルーターなど提供基盤の更新で、観察される挙動に小さな違いが出ることはあるとされています。",
   "refs": [
-   "https://platform.claude.com/docs/en/models/overview"
+   "https://platform.claude.com/docs/en/models/overview",
+   "https://platform.claude.com/docs/en/about-claude/models/model-ids-and-versions"
+  ],
+  "topics": [
+   "models-overview"
   ]
  },
  {
@@ -320,16 +348,20 @@
    },
    {
     "id": "d",
-    "text": "ほとんどのワークロードは最も安価な Claude Haiku 5.5 から始め、問題が起きた場合にだけ上位のモデルへ切り替える。",
-    "why": "出典の「最新モデル」の節が、迷ったときの出発点として案内しているのは Opus 5.5 である。価格だけで最小のモデルから始める進め方は、この案内に沿わない。"
+    "text": "最も安価な Claude Haiku 5.5 を、自社の評価をせずにそのまま本番に出し、利用者から問題が報告された場合にだけ上位のモデルへ切り替える。",
+    "why": "Choosing the right model の効率優先の進め方も Haiku 5.5 から始めるが、十分にテストし、評価で要件を満たすかを確かめてから、必要な場合にだけ上げる手順である。評価を省いて問題の報告を待つ進め方は、どちらの案内にも沿わない。"
    }
   ],
   "answer": [
    "b"
   ],
-  "explanation": "出典の「最新モデル」の節は、どのモデルを使うか迷う場合、ほとんどのワークロードではまず Claude Opus 5.5 から始めるよう案内する。要求の厳しい推論や、長期にわたるエージェント作業、あるいは Opus 5.5 を高い effort で評価しても基準に届かないときには、Claude Fable 5.2 を使う。つまり、評価の結果を見て、必要なときだけ上位のモデルに移る進め方である。",
+  "explanation": "正解は b です。Models overview は、どのモデルを使うか迷う場合、ほとんどのワークロードでは Claude Opus 5.5 から始めるよう案内しています。要求の厳しい推論や長期にわたるエージェント作業、または Opus 5.5 を高い effort で評価しても基準に届かない場合には、Claude Fable 5.2 を使うとしています。Choosing the right model のページも、用途に合った評価セットを作ることが最も重要な手順だとしています。\n\n見分け方: (a) は評価をせずに最上位のモデルに固定しており、評価の結果で Fable 5.2 に移るという案内に沿いません。(c) は評価の方法を決めないまま始めています。(d) について、Choosing the right model には Haiku 5.5 から始める進め方もありますが、十分にテストして評価し、要件に足りない場合にだけ上げる方法とされています。評価をせずに本番に出す点が案内と違います。",
   "refs": [
-   "https://platform.claude.com/docs/en/models/overview"
+   "https://platform.claude.com/docs/en/models/overview",
+   "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+  ],
+  "topics": [
+   "choosing-a-model"
   ]
  },
  {
@@ -367,6 +399,9 @@
   "explanation": "正解は c です。成功基準と評価のドキュメント(Define success criteria and build evaluations)は、LLM アプリの構築を、成功基準を明確に定めることから始めるとしています。良い基準は、具体的(Specific)、測定可能(Measurable)、達成可能(Achievable)、目的と利用者の必要に関連している(Relevant)ものです。よくある基準として、タスクの正確さ、一貫性、口調とスタイル、プライバシーの保護、レイテンシ、価格などを挙げ、ほとんどのユースケースでは複数の基準にわたる評価が必要だと述べています。\n\n見分け方: 正確さ 1 つに絞る(a)のは多次元の評価という原則に反します。承認だけを条件にする(b)のは測定できません。誤りゼロや常に即時(d)は、達成可能という条件を満たしません。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "success-criteria-evals"
   ]
  },
  {
@@ -404,6 +439,9 @@
   "explanation": "正解は a です。レート制限のドキュメントは、ここに示す制限は最大の許容量であって、保証された最低量ではないと述べています。また、たとえば 60 RPM が毎秒 1 リクエストとして適用されるように、より短い間隔で制限に当たることがあり、短時間の集中した要求は制限を超えてエラーになりうるとしています。Console の Usage ページにある 2 つのレート制限のグラフは、成長の余裕、利用のピーク、申請すべき制限を把握するのに使えます。\n\n見分け方: 制限はトークンバケット方式で継続的に補充され、決まった間隔でリセットされません(b)。OTPM は実際の出力だけを数え、max_tokens は関係しません(c)。急な増加は 429 を招きうるので、一斉投入(d)は避けます。",
   "refs": [
    "https://platform.claude.com/docs/en/api/rate-limits"
+  ],
+  "topics": [
+   "rate-limits"
   ]
  },
  {
@@ -442,6 +480,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/models/opus-5-5/migration-guide",
    "https://platform.claude.com/docs/en/api/service-tiers"
+  ],
+  "topics": [
+   "service-tiers",
+   "opus-5-5-migration"
   ]
  },
  {
@@ -479,6 +521,9 @@
   "explanation": "正解は b です。Model IDs and versioning のページは、各モデル ID は固定された版を指し、その ID の存続期間中、元のモデルは変わらないと述べています。Anthropic は既存の ID の重みや設定を更新せず、更新版は新しい ID で出します。一方で、ルーター、安全性の分類器、サンプリングの処理といった提供基盤は時間とともに変わりうるため、ID と重みが同じでも観察される挙動に小さな違いが出ることがあります。安定していた ID で予期しない違いに気付いた場合、最も考えられる原因は基盤の更新だとしています。\n\n見分け方: 日付なしの ID を最新版への指し先と見る(a)のは、ページが名指しする誤解です。重みの定期更新(c)は否定されています。挙動の変化と非推奨化(d)を結び付ける記述はありません。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/models/model-ids-and-versions"
+  ],
+  "topics": [
+   "models-overview"
   ]
  },
  {
@@ -517,6 +562,9 @@
   "explanation": "正解は a と d です。Claude Opus 5.5 の移行ガイドのチェックリストは、どの移行元にも共通する項目として、effort を明示すること(既定は medium で、Opus 5 は high)、選んだ effort でコストとレイテンシの基準を取り直すことを挙げます。Opus 5 からの移行の節(Opus 4.8 から移る場合にも当てはまる)は、既定の effort が high から medium に下がるので、自社の評価で effort の比較をやり直すよう勧めています。本番のトラフィックの切り替え前に開発環境でテストすることも推奨しています。\n\n見分け方: Opus 5.5 は thinking を無効にできず、disabled は 400 エラーになります。節約には低い effort を使います(b)。tool_choice の any と tool も 400 エラーになり、auto と strict tool use などに置き換えます(c)。",
   "refs": [
    "https://platform.claude.com/docs/en/models/opus-5-5/migration-guide"
+  ],
+  "topics": [
+   "opus-5-5-migration"
   ]
  },
  {
@@ -554,6 +602,9 @@
   "explanation": "正解は c です。Anthropic の記事「Building effective agents」は、LLM を使うアプリでは、できるだけ単純な解決策を探し、必要なときだけ複雑さを増すよう勧め、それはエージェント的なシステムをまったく作らないことでもありうるとしています。エージェント的なシステムは多くの場合、レイテンシとコストを払ってタスクの性能を高めるもので、この引き換えが見合うかを考えるよう述べています。多くの用途では、検索と文脈内の例で単一の LLM 呼び出しを最適化すれば十分だとしています。\n\n見分け方: エージェントはコストとレイテンシを下げるのではなく払うものです(a)。常に精度で勝るという記述はありません(b)。記事は単純なプロンプトから始め、足りないときだけ多段の仕組みを加える順序を勧めています(d)。",
   "refs": [
    "https://www.anthropic.com/research/building-effective-agents"
+  ],
+  "topics": [
+   "building-effective-agents"
   ]
  },
  {
@@ -591,6 +642,9 @@
   "explanation": "正解は b です。API versions のページによると、Anthropic はどの API バージョンについても、既存の入力パラメータと出力パラメータを保ちます。ただし、任意の入力の追加、出力への値の追加、特定のエラーの種類が返る条件の変更、列挙型の出力値への新しい値の追加(ストリーミングのイベントの種類など)は行いうるとしています。ドキュメントどおりに使っていれば、通常は利用が壊れることはないと述べ、可能な限り最新の API バージョンを使うよう勧めています。\n\n見分け方: 値の追加はありうるので、未知の値で即エラーにする設計(a)は壊れます。既存のパラメータは保たれます(c)。エラーの種類の発生条件は変わりえます(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/api/versioning"
+  ],
+  "topics": [
+   "api-versioning"
   ]
  },
  {
@@ -628,6 +682,9 @@
   "explanation": "正解は c です。Pricing ページによると、Claude Managed Agents はトークンとセッションの実行時間の 2 つで課金されます。トークンはモデルの料金で課金され、プロンプトキャッシュの倍率も同じように適用されますが、セッションはステートフルで対話的でバッチのモードがないため、Batch API の割引は適用されません。時間料金は 1 セッション時間あたり $0.08 で、ステータスが running の間だけ計上され、idle(次のメッセージやツールの確認を待つ間)、rescheduling、terminated の時間は数えません。\n\n見分け方: 夜間に動かしてもバッチ割引は付きません(a)。キャッシュの倍率は適用され、idle は数えません(b)。セッションの時間料金はコード実行のコンテナ時間の課金に置き換わるもので、コンテナ時間は別に請求されません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/pricing"
+  ],
+  "topics": [
+   "api-pricing"
   ]
  },
  {
@@ -665,6 +722,9 @@
   "explanation": "正解は a です。Pricing ページの Long context pricing によると、Claude 4.6 以降のモデル(Claude Haiku 5.5 を除く)は 1M トークンのコンテキスト全体を標準料金で使え、キャッシュとバッチの割引も全体に標準どおり適用されます。Claude Haiku 5.5 はプロンプトの長さで料金が変わり、10 万トークンを超えるリクエストは高い料金になります。プロンプトの長さには、キャッシュの読み出しと書き込みを含むすべての入力トークンが数えられます。\n\n見分け方: 一部がキャッシュヒットでも閾値を超えれば高い料金です(b)。Sonnet 5.5 に長いコンテキストの割増はなく、割引も適用されます(c)。各リクエストは単独で料金が決まり、前のリクエストは請求済みの料金のままです(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/pricing"
+  ],
+  "topics": [
+   "api-pricing"
   ]
  },
  {
@@ -702,6 +762,10 @@
   "explanation": "正解は d です。Service tiers のページによると、Priority Tier は稼働率 99.5% を目標とし、コミットメントを超えた要求は自動で標準の層に回ります。Priority Tier に割り当てられた要求は、Priority Tier の容量と通常のレート制限の両方を消費し、レート制限を超える場合は拒否されます。service_tier の既定は \"auto\" で、応答の usage に割り当てられた層が入るので、どの層で処理されたかを確かめられます。\n\n見分け方: 超過分は Priority Tier では処理されず、レート制限も免れません(a)。超過分は拒否されず標準の層に回り、\"standard_only\" は Priority Tier の容量を使いたくないときの指定です(b)。既定は \"auto\" で、明示してもレート制限は外れません(c)。",
   "refs": [
    "https://platform.claude.com/docs/en/api/service-tiers"
+  ],
+  "topics": [
+   "service-tiers",
+   "rate-limits"
   ]
  },
  {
@@ -739,6 +803,9 @@
   "explanation": "正解は b です。Pricing ページによると、Claude API の web search は検索 1,000 回あたり $10 で、検索で生まれた内容には標準のトークン料金もかかります。検索結果は、ターンの中で検索を続ける間も、後のターンでも入力トークンとして数えられます。web fetch には追加料金がなく、会話のコンテキストに入った取得内容のトークン料金だけを払います。\n\n見分け方: 検索は結果の件数にかかわらず 1 回と数え、エラーで失敗した検索は課金されません(a)。web fetch に回数の料金はなく、結果は後のターンでも数えられます(c)。web search には回数の料金があり、web_search_20260209 以降と一緒に使うコード実行は追加料金がかかりません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/pricing"
+  ],
+  "topics": [
+   "api-pricing"
   ]
  },
  {
@@ -776,6 +843,9 @@
   "explanation": "正解は c です。Rate limits のドキュメントによると、レート制限は使用量の層(usage tier)で決まり、組織は利用の履歴とアカウントの状況に基づいて自動で層に置かれ、時間とともに上の層へ移れます。新しい組織や利用の履歴が少ない組織は、標準の制限より低い Evaluation 層から始まることがあります。制限は組織の単位で、Console の Rate limits ページで層と現在の制限を確認でき、引き上げはそのページの Request tier increase で依頼します。\n\n見分け方: 層を前払いで選ぶ仕組みは書かれていません(a)。制限は組織の単位で、キーを増やしても変わりません(b)。毎月 1 段ずつという記述はなく、急な大量の送信はランプ制限を招きえます(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/api/rate-limits"
+  ],
+  "topics": [
+   "rate-limits"
   ]
  },
  {
@@ -814,6 +884,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/manage-claude/workspaces",
    "https://platform.claude.com/docs/en/api/rate-limits"
+  ],
+  "topics": [
+   "workspaces",
+   "rate-limits"
   ]
  },
  {
@@ -852,6 +926,9 @@
   "refs": [
    "https://platform.claude.com/docs/en/manage-claude/usage-cost-analytics-api",
    "https://platform.claude.com/docs/en/manage-claude/usage-cost-api"
+  ],
+  "topics": [
+   "usage-cost-analytics-api"
   ]
  },
  {
@@ -889,6 +966,9 @@
   "explanation": "正解は b です。Beta headers のページによると、beta の機能は実験的で、通知のうえで破壊的な変更が入る、非推奨になる・削除される、レート制限や料金が異なる、すべての地域で使えるとは限らない、という可能性があります。beta 名は文書に書かれたとおりの正確な名前を使い、beta の機能の更新はリリースノートで確認するよう案内しています。\n\n見分け方: 料金やレート制限が違いうるので、通常の機能と同じ扱いにはできません(a)。無効な beta 名や利用できない beta は 400 エラーになります(c)。すべてのプラットフォームがすべての beta を受け付けるわけではなく、InvokeModel API は本文の anthropic_beta 配列で受け取ります(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/api/beta-headers"
+  ],
+  "topics": [
+   "beta-headers"
   ]
  },
  {
@@ -927,6 +1007,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/manage-claude/data-residency",
    "https://platform.claude.com/docs/en/about-claude/pricing"
+  ],
+  "topics": [
+   "data-residency",
+   "api-pricing"
   ]
  }
 ]

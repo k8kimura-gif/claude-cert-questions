@@ -139,3 +139,27 @@
 - Agent SDK のフックは、コールバックが例外で失敗すると既定で呼び出しが進む。止めたいときは `onFailure: "block"`(Python は `on_failure="block"`)。
 - Claude Academy(academy.claude.com)の講座を refs に使った(arch-ctx-007、arch-ctx-029、arch-cc-019)。Anthropic の公式の学習サイトだが、ドキュメントより講座の改訂は追いにくい。同じ講座の別の回(AI-native SDLC playbook の「plan mode as the default starting point」)のように、文脈によっては誤答を支持すると読める記述もあるので、問題文の条件で区別できるかを確かめる。
 - 公式資料に直接の記述が見つからず、当てはめのまま残した問題: arch-ctx-028(自己申告の信頼度の較正)、arch-prompt-016(関係し合う問題を 1 つのメッセージでまとめて伝える)、arch-agent-017(明示的に人を求めたらすぐ引き継ぐ)、arch-agent-037(再エクスポートを洗い出してから検索する)。試験ガイドの論点と思われる。
+
+## CCAR-P の全問トピック付けで見つかったもの(2026-11-23)
+
+現在の仕様と食い違っていた・紛らわしかったもの(問題文・選択肢を直した):
+
+- Structured outputs の「プロンプトと出力は保存されず、JSON スキーマだけが最後の使用から最大 24 時間キャッシュされる」は、Data handling の表の Zero data retention の欄の記述。ZDR を前提にしない問題文で一般論として書かない(arp-int-010)。
+- Claude Platform on AWS は Claude API と「同じ形の API」だが、ベース URL、認証、anthropic-workspace-id ヘッダーが違う。「同じエンドポイント」と書かない(arp-int-029)。
+- 4.6 世代より前のモデルには、最新の日付つきスナップショットを指すエイリアス(`claude-sonnet-4-5` など)がある。「日付なしの ID はエイリアス」を誤答にするときは、現行の世代の ID に限定する(arp-stk-008)。
+- Choosing the right model は、Haiku 5.5 から始める効率優先の進め方(Option 1)と、Opus 5.5 から始める進め方(Option 2)の両方を挙げている。「安いモデルから始める」だけを誤答にしない。Option 1 も、十分にテストして評価してから必要なときだけ上げる手順である(arp-stk-009)。
+
+既存のトピックを流用するときに見つかったもの:
+
+- developer の `workspaces` の「組織あたり最大 100 個」と「開発・ステージング・本番に分ける例」、`api-pricing` の「思考のトークンは出力トークンとして課金される」、`token-counting` の「POST」は、それぞれの出典のページで確認できなかった。流用するときは points だけでなく summary も本文と照合する。
+- points が 8 個を超えていたトピックがあった(architect の `context-engineering`、`building-effective-agents`、`batch-processing`、`claude-code-permissions`、developer の `model-migration`、`rate-limits`)。`validate.mjs` は points の数を検査しないので、流用するときに数える。
+- Usage and Cost Analytics API(新)と旧来の Usage and Cost API は、データの鮮度が違う(新: 通常 4 時間以内、最大 24 時間。旧: 通常 5 分以内)。
+- Haiku 5.5 は Troubleshooting thinking の表で「Adaptive only」とされているが、effort が high 以下なら `thinking: {"type": "disabled"}` を受け付ける(脚注)。Opus 5.5 と Fable 5.x はオフにできず、Sonnet 5.5 は disabled の代わりに between_tools を使う。
+- Files API の期限(`expires_in_seconds`)の後も、メタデータは最大 30 日読める。「期限で完全に消える」と書かない。
+- Managed Agents の環境を API で作るときに networking を省くと `unrestricted` になる(Console の画面は Limited から始まる)。`agent_with_overrides` は設定とマージされず、丸ごと置き換わる。
+- Building effective agents(2024-12 の記事)のルーティングの例のモデル名は古い。モデル名を問う問題の出典にしない。
+
+作業上のつまずき:
+
+- 記事(`www.anthropic.com/research/*`)や MCP のページから抜き出した本文は、単語の間に空白が 2 つ以上入ることがある。照合の正規表現では、語の間を `\s+` でつなぐ。
+- `server_tools` のような短いキーは、Claude のドキュメントと MCP の仕様の両方のページに一致する。`2026_07_28_server_tools` のように長くする。

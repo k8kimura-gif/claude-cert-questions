@@ -31,9 +31,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "間接的なプロンプトインジェクションでは、信頼できない第三者のコンテンツを tool_result にだけ置き、出所と性質を明示し、システムプロンプトで「ツール結果は信頼できないデータ」と述べる。JSON エンコードも有効である。",
+  "explanation": "正解は c です。Mitigate jailbreaks and prompt injections のページは、間接的なプロンプトインジェクションへの対策として、第三者のコンテンツを tool_result ブロックの中だけで渡し、system プロンプトや通常の user の text ブロックには入れないよう述べています。あわせて、ツールの description か結果の構造でコンテンツの性質と出所(未知の送信者からの受信メールの本文など)を明示し、システムプロンプトで、ツールなどから返る内容は信頼できないデータで、システムプロンプトや利用者の依頼を上書きしてはならないと伝えるよう勧めています。\n\n見分け方: (a) のシステムプロンプトと (b) の通常の user のテキストブロックは、ページが第三者のコンテンツを入れないよう挙げている場所です。(d) について、ページは Claude がもともとこうした攻撃への耐性を持つとしたうえで、ガードレールを強める追加の手順を示しています。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks"
+  ],
+  "topics": [
+   "indirect-prompt-injection"
   ]
  },
  {
@@ -68,9 +71,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "出典は、インジェクションが成功しても被害を最小にするため、最小権限を適用するよう述べる。不要な秘密情報へのアクセスを与えず、ツールをサンドボックスで実行し、権限を可能な限り狭くする。",
+  "explanation": "正解は a です。Mitigate jailbreaks and prompt injections のページは、間接的なプロンプトインジェクションへの対策の 1 つとして、Claude が扱える機密データと操作を制限するよう述べています。インジェクションが成功しても被害を最小にするため、最小権限の原則を適用し、不要な秘密情報へのアクセスを与えない、ツールをサンドボックスの環境で実行する、権限をできるだけ狭くする、の 3 点を挙げています。\n\n見分け方: (b) は最初からすべての権限を与えるので、取り消す前の侵害は防げません。(c) のプロンプトによる指示は対策の 1 つにすぎず、ページは複数の対策を重ねる構成(chain safeguards)を勧めています。(d) の出力の監視は、ページでは注入が成功した兆候を探してプロンプトや検証を改善し続けるための手段で、被害の範囲を狭める対策ではありません。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks"
+  ],
+  "topics": [
+   "indirect-prompt-injection"
   ]
  },
  {
@@ -105,9 +111,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "出典の基本策は、「分からない」と言う許可を与える、長い文書(20k トークン超)では先に逐語の引用を抽出させて根拠にする、引用で検証する、の 3 つである。",
+  "explanation": "正解は b です。Reduce hallucinations のページは、基本の対策(Basic hallucination minimization strategies)として、「分からない」と認めることを明示的に許可する、20k トークンを超える長い文書では作業の前に一語一句そのままの引用を抜き出させ、それに基づいて作業させる、主張ごとに引用と出典を示させて検証する、の 3 つを挙げています。約 60,000 トークンの契約書は、引用を先に抜き出させる対象に当たります。\n\n見分け方: (a) の temperature を上げることや長い回答を選ぶことは、ページの対策にありません。(c) は元の文言ではなく要約に基づかせるので、実際の本文に根拠を置くという引用の狙いから外れます。(d) は逆で、ページは発展的な手法として、提供した文書の情報だけを使い一般知識を使わないよう指示する方法(External knowledge restriction)を挙げています。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "reduce-hallucinations"
   ]
  },
  {
@@ -142,9 +151,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "出典の「引用による検証」は、生成した主張のそれぞれについて裏付けとなる直接の引用を探させ、見つからなければ撤回させる手順である。出力を監査可能にする効果もある。",
+  "explanation": "正解は a です。Reduce hallucinations のページの基本の対策 Verify with citations は、主張ごとに引用と出典を示させて応答を監査できるようにし、さらに応答を生成した後で各主張を裏付ける引用を探させ、見つからなければその主張を取り下げさせる方法を示しています。ページの例(新製品のプレスリリースの起案)では、裏付けの引用が見つからない主張を削除し、削除した場所を空の [] で示させています。\n\n見分け方: (b) の確信度の自己申告と (c) の流暢さによる判断は、根拠となる引用があるかを確かめていません。(d) は表現を弱めて残すだけで、ページの手順では裏付けのない主張は削除します。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "reduce-hallucinations"
   ]
  },
  {
@@ -179,9 +191,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "出典は、Claude Haiku 5.5 の安全分類器がスクリーニング要求自体を拒否することがあるとし、stop_reason が refusal の応答を有害という判定として扱うよう述べる。判定が読み取れない状態を通してはならない。",
+  "explanation": "正解は b です。Mitigate jailbreaks and prompt injections のページは、ジェイルブレイクへの対策として、Claude Haiku 5.5 のような軽量モデルで利用者の入力を本来の会話に届く前に審査する harmlessness screen を挙げ、応答は structured outputs で単純な分類に制約するよう勧めています。そのうえで、Claude Haiku 5.5 は安全分類器を動かしており、審査の依頼そのものを断ることがあるので、stop_reason が \"refusal\" の応答は有害という判定として扱うよう述べています。\n\n見分け方: (a) は判定のない応答を安全とみなして通すので、ページの扱いと逆です。(c) の拒否されなくなるまでの再送や、(d) の審査の停止は、ページに挙げられた扱いではなく、入力の審査という対策を素通りさせることになります。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks"
+  ],
+  "topics": [
+   "mitigate-jailbreaks"
   ]
  },
  {
@@ -216,9 +231,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "出典は、漏えい耐性のあるプロンプト技術は「本当に必要なとき」だけ使うよう述べる。漏えい対策はタスクを複雑にし、他の部分の性能を落としうるからである。導入する場合は、追加の複雑さが性能と出力の質を損なわないか、十分にテストする。まず出力のスクリーニングや後処理といった監視手法を試すよう勧め、プロンプトと出力を定期的に見直す監査も挙げている。",
+  "explanation": "正解は d です。Reduce prompt leak のページは、漏えい対策のプロンプトの技法は本当に必要なとき(absolutely necessary)だけ使うよう勧めています。漏えいを防ごうとするとタスク全体が複雑になり、ほかの部分の性能が下がることがあるためです。導入するときは、加えた複雑さが性能や出力の質を損なわないかを十分にテストし、まずは出力の審査や後処理などの監視の手法を試すよう述べています。\n\n見分け方: (a) は、ページが注意する過度に複雑な漏えい対策で、結果を悪くしえます。(b) は逆で、ページは導入した対策のテストを求めています。(c) について、ページは監視の手法を先に試すことと、プロンプトと出力を定期的に見直すこと(Audit regularly)を勧めています。なお、ページはどの方法も確実ではない(no method is foolproof)としています。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak"
+  ],
+  "topics": [
+   "reduce-prompt-leak"
   ]
  },
  {
@@ -253,9 +271,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "出典は、漏えい対策として、Claude がタスクに必要としない独自情報はプロンプトに入れないよう述べる。余分な内容があると、「漏らさない」という指示への遵守が弱まるためである。ほかに、システムプロンプトで文脈をクエリから分離すること、キーワードなどによる出力の後処理、プロンプトと出力の定期的な監査が挙がっている。",
+  "explanation": "正解は a です。Reduce prompt leak のページは、漏えいを減らす戦略の 1 つとして、Claude がタスクに必要としない独自の詳細は含めないよう述べています(Avoid unnecessary proprietary details)。余分な内容があると、「漏らさない」という指示への従い方が弱まるためです。この場面で回答に必要なのは計算式だけなので、競合の比較表と過去のレポートの全文を外します。\n\n見分け方: (b) は逆で、ページは余分な内容が指示への従い方を弱めるとしています。(c) の無関係な情報に紛れ込ませる方法は、ページにありません。(d) について、ページの戦略はシステムプロンプトで重要な情報と文脈を利用者の問い合わせから切り離すことで、システムプロンプトを空にして情報をユーザーターンに移すことではありません。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak"
+  ],
+  "topics": [
+   "reduce-prompt-leak"
   ]
  },
  {
@@ -290,9 +311,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "出典は、攻撃を 2 つの脅威モデルに分ける。ユーザー自身が敵対者で、ガードレールの回避を試みるジェイルブレイクと直接のプロンプトインジェクション、および、ユーザーは信頼できるが、Claude が処理する第三者のコンテンツに敵対的な指示が含まれる間接インジェクションである。前者の対策の 1 つが、繰り返し違反するユーザーへの対応で、応答を調整し、同種の拒否を何度も受けるユーザーには違反にあたることを伝えて、スロットリングや停止を検討する。",
+  "explanation": "正解は c です。Mitigate jailbreaks and prompt injections のページは、利用者自身が攻撃者となるジェイルブレイクと直接のプロンプトインジェクションへの対策の 1 つとして、繰り返し違反する利用者への対応(Respond to repeat offenders)を挙げています。ガードレールの回避を繰り返す利用者には、応答を調整し、利用の制限(throttling)や利用停止(banning)を検討します。同じ種類の拒否が何度も起きる利用者には、利用ポリシーに反することを伝えて対処するよう述べています。\n\n見分け方: (a) は違反を伝えずに通常どおり応答し続けるので、ページの対応と逆です。(b) は問題のない利用者まで一律に制限しますが、ページの対応は繰り返し違反する利用者に向けたものです。(d) はガードレールを弱めるもので、ページは入力の検証やシステムプロンプトでガードレールを強める手順を示しています。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks"
+  ],
+  "topics": [
+   "mitigate-jailbreaks"
   ]
  },
  {
@@ -327,9 +351,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "出典は、ハルシネーションを減らす基本策として、「分からない」と言ってよいと明示的に許可すること(虚偽情報を大幅に減らせる)、長い文書では最初に字句どおりの引用を抽出させて根拠にすること、引用で検証すること(裏付けが見つからなければ取り下げる)を挙げる。高度な手法として、思考の検証、Best-of-N、反復的な改善、外部知識の制限(提供文書の情報だけを使わせる)もある。ただし、これらは完全にはなくせないので、重要な情報は必ず検証する。",
+  "explanation": "正解は c です。Reduce hallucinations のページは、基本の対策として「分からない」と認めることを明示的に許可する方法を挙げ、これで誤った情報を大きく減らせると述べています。また、発展的な手法の External knowledge restriction として、提供した文書の情報だけを使い、一般知識を使わないよう明示的に指示する方法を挙げています。資料にないことまで断定する問題には、この 2 つを組み合わせて当てられます。\n\n見分け方: (a) は必ず答えさせるので、「分からない」と言う許可と逆です。(b) について、ページはこれらの手法でもハルシネーションは完全にはなくならないとし、重要な情報は検証するよう述べています。モデルを替えればなくなるという記述はありません。(d) は逆で、ページは主張ごとに引用と出典を示させて検証する方法を勧めています。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+  ],
+  "topics": [
+   "reduce-hallucinations"
   ]
  },
  {
@@ -367,6 +394,9 @@
   "explanation": "正解は b です。API and data retention のページによると、HIPAA readiness は組織単位で強制され、対象外の機能を含むリクエストは 400 の invalid_request_error で拒否されます(詳細欄に「ブロックしない」とあるクライアント側のツールは例外)。機能の対象表では、Message Batches API と code execution tool はどちらも HIPAA の対象外です。そのため、同じ組織で HIPAA と HIPAA 以外のワークロードを動かさず、別の組織に分けるよう案内しています。\n\n見分け方: 拒否は PHI の有無ではなく機能で決まるので、同じ組織で続ける(a)は 400 になります。PHI を扱うなら HIPAA readiness だけでよく、ZDR を重ねても対象外の機能は対象になりません(c)。HIPAA readiness は有効にすると恒久的で、管理者は無効にできません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention"
+  ],
+  "topics": [
+   "api-data-retention"
   ]
  },
  {
@@ -404,6 +434,9 @@
   "explanation": "正解は d です。API and data retention のページの PHI handling guidelines によると、structured outputs や strict: true のツールでは、API が JSON スキーマを文法にコンパイルし、メッセージ本文とは別にキャッシュします。このキャッシュはプロンプトや応答と同じ PHI の保護を受けません。そのため、スキーマの定義に PHI を含めてはならず、これはプロパティ名、enum の値、const の値、pattern の正規表現に当てはまります。患者固有の情報はメッセージ本文にだけ置きます。\n\n見分け方: structured outputs 自体は HIPAA の対象なので、使えないとする a は誤りです。スキーマは本文と同じ保護を受けません(b)。機能の対象表では、スキーマは最後の利用から最大 24 時間キャッシュされ、pattern も PHI を入れない対象です(c)。",
   "refs": [
    "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention"
+  ],
+  "topics": [
+   "api-data-retention"
   ]
  },
  {
@@ -441,6 +474,9 @@
   "explanation": "正解は a です。API and data retention のページによると、Claude Fable 5.2 などの Covered Model は 30 日のデータ保持を必要とし、Anthropic が明示的に認めない限り ZDR では使えません。ZDR の組織は、特定のワークスペースだけで 30 日の保持を有効にして、これらのモデルを使えるようにできます。ほかのワークスペースは ZDR のままです。Console の Data retention ページでワークスペースを選び、Standard data retention を選んで条件に同意します。Default Workspace は常に組織の設定に従うため、別のワークスペースを使います。\n\n見分け方: Default Workspace では例外を設けられません(b)。推論の場所(inference_geo)は保持の要件を満たしません(c)。ワークスペース単位で有効にできるので、組織全体の ZDR の解除(d)は不要です。",
   "refs": [
    "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention"
+  ],
+  "topics": [
+   "api-data-retention"
   ]
  },
  {
@@ -479,6 +515,9 @@
   "explanation": "正解は a と c です。API and data retention のページによると、ZDR の取り決めのもとでは、対象外(No)の機能を使っても API はリクエストをブロックしません。Batch API はジョブを、Files API はファイルを保存するなど、これらの機能は状態を持つため、使うことはそのデータについて ZDR の外に出る選択になり、各機能の保持ポリシーが適用されます(a)。また、ZDR や HIPAA の取り決めがあっても、法令で必要な場合や自動の trust and safety システムでフラグが付いた場合は、入出力が最大 2 年保持されることがあります(c)。\n\n見分け方: ZDR は組織ごとに有効にし、同じアカウントの新しい組織には自動で広がりません(b)。playground を含む Claude Console の利用は ZDR の対象外です(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention"
+  ],
+  "topics": [
+   "api-data-retention"
   ]
  },
  {
@@ -516,6 +555,9 @@
   "explanation": "正解は c です。Data residency のページによると、推論の場所はリクエストの inference_geo(\"global\" が既定、\"us\" は米国内のみ)か、ワークスペースの既定で決まります。ワークスペースの allowed_inference_geos は使える geo を制限し、リストにない geo を指定したリクエストは 400 エラーになります。default_inference_geo は省略時の既定で、許可した geo の中から選びます。これらの設定で、ワークスペースのすべてのキーに方針を強制できます。\n\n見分け方: リクエストごとの指定だけ(a)では、付け忘れたリクエストが既定の global で動きえます。workspace geo は保存データとエンドポイント処理の場所を決める別の設定です(b)。応答の usage.inference_geo で実行場所を確かめられ、Bedrock では inference_geo は使いません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/manage-claude/data-residency"
+  ],
+  "topics": [
+   "data-residency"
   ]
  },
  {
@@ -553,6 +595,9 @@
   "explanation": "正解は d です。Usage Policy の High-risk Use Case Requirements は、人の承認なしにモデルの出力でハードウェアが動き、人がいる場所を移動しうる場合などを High-risk Physical Actions とします。その要件は、機器の稼働を観察していつでも止められる有資格者を置くこと、その人が介入したときや Anthropic のサービスとの接続が失われたときに機器が停止するか安全な状態を保つこと、出力や速度などの動作の上限をモデルの出力から独立した機器かコントローラーで強制することです。\n\n見分け方: 上限をプロンプトでモデルに守らせる(a)のは、モデルから独立した強制になりません。事後のログ確認(b)は、いつでも止められる人の要件を満たしません。接続断で動き続ける(c)のは、安全な状態を保つ要件の逆です。",
   "refs": [
    "https://www.anthropic.com/legal/aup"
+  ],
+  "topics": [
+   "usage-policy-high-risk"
   ]
  },
  {
@@ -591,6 +636,9 @@
   "explanation": "正解は b と d です。Usage Policy は、保険金請求の結果の判断を高リスク領域の Insurance に挙げています。高リスクの推奨には、変更する権限を持つ有資格者が実質的に確認してから伝えたり決定に使ったりすること、対象者に AI が使われたことを明確に伝えることを求めます。Anthropic や Claude の名前を示す必要はありません(d)。一方、法令が許す範囲で、保険金の支払いのように完全に有利な決定は、事前の人の確認なしに実行できます(b)。\n\n見分け方: 一部の承認や減額、条件付きの承認は「完全に有利」に当たりません(a)。最終的な推奨にならない社内の要約や分析は、要件の適用除外です(c)。",
   "refs": [
    "https://www.anthropic.com/legal/aup"
+  ],
+  "topics": [
+   "usage-policy-high-risk"
   ]
  },
  {
@@ -614,7 +662,7 @@
    {
     "id": "c",
     "text": "managed settings の permissions.deny に Bash(curl *) や Bash(wget *) などを加え、外部と通信するコマンドを名前で止める。サンドボックスの有効化は各開発者の判断に任せる。",
-    "why": "deny ルールは書かれたとおりのコマンドに一致するだけである。ページは、コマンドの文字列に依存しないネットワークの強制にはサンドボックスを使うよう述べる。"
+    "why": "deny ルールは書かれたコマンドの形に一致するだけで、パスで指定した同じプログラムや sh -c の中には一致しない。Configure permissions のページは、コマンドの文字列に依存しない強制にはサンドボックスを使うよう述べる。"
    },
    {
     "id": "d",
@@ -628,7 +676,12 @@
   "explanation": "正解は a です。Sandboxing のページは、全開発者にサンドボックスを必須にするには、sandbox のキーを managed settings で配布するよう案内しています。例の構成は enabled: true に加え、failIfUnavailable: true(未対応の環境や依存関係の不足では Claude Code が起動しない)と allowUnsandboxedCommands: false(dangerouslyDisableSandbox による非サンドボックスの再試行を無視する)を設定します。なお、Read などの組み込みツール、MCP サーバー、フックはサンドボックスの外で動きます。\n\n見分け方: enabled だけ(b)では、使えない環境の扱いと再試行の抜け道が残ります。deny ルール(c)はコマンドの文字列に一致するだけです。auto mode(d)は実行の可否を決める仕組みで、OS が強制する境界ではありません。",
   "refs": [
    "https://code.claude.com/docs/en/sandboxing",
-   "https://code.claude.com/docs/en/security"
+   "https://code.claude.com/docs/en/security",
+   "https://code.claude.com/docs/en/permissions"
+  ],
+  "topics": [
+   "claude-code-sandboxing",
+   "claude-code-permissions"
   ]
  },
  {
@@ -666,6 +719,9 @@
   "explanation": "正解は b です。Server-managed settings のページによると、セッションには、認証に使った資格情報を所有する組織の managed settings が届きます。Console の API キーは Console の組織に属し、claude.ai の組織とは別なので、CI ジョブには届きません。対処として、claude setup-token で作り組織に承認したトークンを CLAUDE_CODE_OAUTH_TOKEN に設定する(優先される ANTHROPIC_API_KEY は外す)方法と、実行マシンに managed settings のファイルを置く方法が示されています。\n\n見分け方: forceRemoteSettingsRefresh(a)は取得の失敗時に起動を止める設定で、別の組織に届けるものではありません。--bare(c)は CLAUDE_CODE_OAUTH_TOKEN を読みません。同じ会社でも Console の組織は別の組織です(d)。",
   "refs": [
    "https://code.claude.com/docs/en/server-managed-settings"
+  ],
+  "topics": [
+   "claude-code-server-managed-settings"
   ]
  },
  {
@@ -703,6 +759,9 @@
   "explanation": "正解は d です。Server-managed settings のページによると、Enterprise プランではグループごとに構成を割り当てられますが、各メンバーが受け取る構成は 1 つだけです。構成は互いにも組織全体の構成とも統合されないので、各構成にそのグループに必要な設定をすべて書き、全員に課す制限はすべてのグループの構成と catch-all に入れます。複数のグループに属するメンバーは順位が最も高い構成だけを受け取るので、制限の強いグループや範囲の狭いグループを上位に置きます。\n\n見分け方: 差分だけを書く(a)と制限が抜けます。構成は合成されません(b)。catch-all がないと、どのグループにも当たらないメンバーには server-managed settings が届きません(c)。",
   "refs": [
    "https://code.claude.com/docs/en/server-managed-settings"
+  ],
+  "topics": [
+   "claude-code-server-managed-settings"
   ]
  },
  {
@@ -740,6 +799,10 @@
   "explanation": "正解は a です。Development containers のページによると、--dangerously-skip-permissions で動かすと、悪意のあるプロジェクトがコンテナ内で読めるもの(~/.claude の認証情報を含む)を持ち出すことは防げません。ページは、信頼するリポジトリだけで使うこと、ホストの ~/.ssh などの秘密情報をマウントせずリポジトリ限定か短命のトークンを使うこと、非 root で動かすこと、外向き通信の制限と組み合わせることを挙げています。\n\n見分け方: コンテナでも中で読める秘密情報は守れません(b)。CLI は root ではこのフラグを拒否します(c)。Dockerfile はリポジトリにあり、書き込める人が変えられるので、外せないポリシーには server-managed settings か MDM を使います(d)。",
   "refs": [
    "https://code.claude.com/docs/en/devcontainer"
+  ],
+  "topics": [
+   "claude-code-devcontainer",
+   "claude-code-server-managed-settings"
   ]
  },
  {
@@ -778,6 +841,9 @@
   "refs": [
    "https://code.claude.com/docs/en/security",
    "https://code.claude.com/docs/en/cloud-environments"
+  ],
+  "topics": [
+   "claude-code-cloud-sessions-security"
   ]
  },
  {
@@ -817,6 +883,9 @@
    "https://platform.claude.com/docs/en/manage-claude/authentication",
    "https://platform.claude.com/docs/en/manage-claude/workspaces",
    "https://platform.claude.com/docs/en/manage-claude/admin-api"
+  ],
+  "topics": [
+   "api-key-types"
   ]
  },
  {
@@ -854,6 +923,9 @@
   "explanation": "正解は a です。Usage Policy の Additional Use Case Guidelines によると、社外の利用者と直接やり取りする消費者向けのチャットボットや AI エージェントは、人ではなく AI とやり取りしていることを利用者に開示しなければなりません。開示は少なくとも各チャットセッションの開始時か製品の画面で行い、Anthropic、Claude、使っているモデルを示す必要はありません。このガイドラインは、High-risk の推奨や物理的な動作を伴うかどうかに関係なく適用されます。\n\n見分け方: 名前の明示(b)は求められていません。尋ねられたときだけ答える形(c)は、開始時か画面での開示という最低限を満たしません。High-risk でなくても開示は要ります(d)。",
   "refs": [
    "https://www.anthropic.com/legal/aup"
+  ],
+  "topics": [
+   "usage-policy"
   ]
  },
  {
@@ -892,6 +964,9 @@
   "refs": [
    "https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training",
    "https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data"
+  ],
+  "topics": [
+   "model-training-data"
   ]
  },
  {
@@ -930,6 +1005,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
    "https://platform.claude.com/docs/en/build-with-claude/thinking"
+  ],
+  "topics": [
+   "reduce-hallucinations",
+   "thinking"
   ]
  }
 ]

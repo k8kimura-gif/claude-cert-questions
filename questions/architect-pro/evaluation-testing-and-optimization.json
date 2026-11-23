@@ -31,9 +31,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "出典の評価設計の原則は、タスク固有にする、可能な限り自動化する、品質より量を優先する、の 3 つである。信号がやや弱くても自動採点の問題が多いほうが、少数の人手採点より良いとされる。",
+  "explanation": "正解は c です。公式ドキュメント(Define success criteria and build evaluations)は、評価の設計の原則として、タスク固有にする、可能な限り自動化する、品質より量を優先する、の 3 つを挙げています。3 つ目について、信号がやや弱い自動採点の問題が多いほうが、人手で丁寧に採点した少数の問題より良いと述べ、自動採点できる形式(選択式、文字列一致、コード採点、LLM 採点)で問題を作るよう勧めています。\n\n見分け方: (a) は人手の採点の質を理由に少数を選んでいますが、ドキュメントは量を優先するとしています。(d) も人手の採点を前提にしており、自動化の原則に反します。(b) のように本番の反応が集まるまで評価を先送りする方針は、ドキュメントにありません。ドキュメントは、成功の基準を定めて評価を設計することを、アプリケーションの開発の出発点に置いています。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "success-criteria-evals"
   ]
  },
  {
@@ -68,9 +71,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "良い成功基準は、具体的、測定可能、達成可能、関連性があるの 4 つを満たす。曖昧な「良い性能」ではなく「正確な感情分類」のように具体化し、数値などで測り、現実的な目標を置く。",
+  "explanation": "正解は b です。公式ドキュメント(Define success criteria and build evaluations)によると、良い成功基準は具体的(Specific)、測定可能(Measurable)、達成可能(Achievable)、関連性がある(Relevant)ものです。「良い性能」ではなく「正確な感情分類」のように具体化し、F1 スコアのような定量的な指標か、明確に定めた定性的な尺度で測り、目標は業界のベンチマーク、先行実験、AI の研究、専門家の知見に基づいて決めます。\n\n見分け方: (a) の「良い性能」は、ドキュメントが具体的でない例として挙げる表現で、印象による判断は測定可能とも言えません。(c) の誤分類ゼロは、現在の最先端のモデルの能力から見て非現実的な目標になりやすく、達成可能の条件に反します。(d) は、基準を用途の目的とユーザーの必要に合わせるという関連性の条件に反します。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "success-criteria-evals"
   ]
  },
  {
@@ -105,9 +111,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "出典は、ほとんどの用途で複数の成功基準にまたがる多面的な評価が必要だと述べる。一般的な基準には、タスクの忠実度、一貫性、関連性、トーンとスタイル、プライバシー、文脈の活用、レイテンシ、価格が挙げられている。",
+  "explanation": "正解は c です。公式ドキュメント(Define success criteria and build evaluations)は、ほとんどの用途では複数の成功基準にまたがる多面的な評価が必要だと述べています。よく使う基準の例(網羅ではない)として、タスクの忠実度、一貫性、関連性と一貫した構成、トーンとスタイル、プライバシーの保護、文脈の活用、レイテンシ、価格を挙げ、感情分析の例でも、F1 スコア、有害でない出力の割合、応答時間などを組み合わせた基準を示しています。\n\n見分け方: (a) は単一の指標に絞っており、多面的な評価という考え方に反します。(b) は数値の基準を捨てていますが、ドキュメントは、定性的な尺度は定量的な尺度と併用し、一貫して適用する場合に価値があるとしています。(d) は基準を後回しにしており、基準を定めてから評価を設計するという順序に反します。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "success-criteria-evals"
   ]
  },
  {
@@ -142,9 +151,13 @@
   "answer": [
    "d"
   ],
-  "explanation": "評価設計の原則の 1 つ目は、タスク固有にすることである。出典は、実世界のタスクの分布を反映した評価を設計し、エッジケースを考慮するよう述べる。",
+  "explanation": "正解は d です。公式ドキュメント(Define success criteria and build evaluations)は、評価の設計の原則の 1 つ目に「タスク固有にする」を挙げ、実世界のタスクの分布を反映した評価を設計し、エッジケースを忘れないよう述べています。エッジケースの例として、無関係または存在しない入力データ、過度に長い入力、人間でも評価の合意に至りにくい曖昧なケースが挙がっています。\n\n見分け方: (a) の汎用のベンチマークは、このタスクの分布を反映しません。Choosing the right model も、用途に固有のベンチマークのテストを作り、実際のプロンプトとデータで試すよう勧めています。(b) の典型例だけでは、実際の分布もエッジケースも反映できません。(c) は内容の正確さ(タスクの忠実度)を導入前に測っておらず、用途に関連する基準で測るという考え方に反します。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+   "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+  ],
+  "topics": [
+   "success-criteria-evals"
   ]
  },
  {
@@ -179,9 +192,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "出典は、可能な限り自動化し、選択式、文字列一致、コード採点、LLM 採点のように自動採点できる形式で問題を作るよう述べる。自動化により、評価を頻繁に繰り返せる。",
+  "explanation": "正解は a です。公式ドキュメント(Define success criteria and build evaluations)は、評価の設計の原則として「可能な限り自動化する」を挙げ、選択式、文字列一致、コード採点、LLM 採点のように自動採点できる形式で問題を作るよう述べています。自動化の利点については、記事「Demystifying evals for AI agents」が、自動評価は実ユーザーなしで回せ、反復が速く、完全に再現でき、コミットごとに実行できると説明しています。\n\n見分け方: (b) の専門家による採点は自動採点の例ではなく、ドキュメントは人手の採点を、遅く高価で可能なら避けるものとしています。(c) は問題数を減らす方向ですが、ドキュメントは品質より量を優先するとしています。(d) の学習データへの再利用は、ドキュメントが自動化の理由として述べていることではありません。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+   "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "success-criteria-evals",
+   "eval-grading"
   ]
  },
  {
@@ -216,9 +234,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "出典は、評価の採点方法は、最も速く、最も信頼でき、最も拡張しやすいものを選ぶよう述べる。コードによる採点(完全一致、文字列一致)は最も速く確実で拡張しやすいが、微妙な判断には向かない。人間による採点は最も柔軟で高品質だが、遅く高価なので可能な限り避ける。LLM による採点は速く柔軟で複雑な判断に向くが、まず信頼性を確かめてから拡大する。",
+  "explanation": "正解は c です。公式ドキュメント(Define success criteria and build evaluations)は、採点方法には最も速く、最も信頼でき、最も拡張しやすいものを選ぶよう述べています。コードによる採点(完全一致 output == golden_answer、文字列一致 key_phrase in output)は、最も速く信頼でき、非常に拡張しやすい方法とされています。出力がラベルだけで正解データもある分類は、完全一致で機械的に判定できます。\n\n見分け方: (a) の人間による採点は最も柔軟で質が高い一方、遅く高価で、ドキュメントは可能なら避けるよう述べています。(b) の LLM による採点は速く柔軟で複雑な判断に向く方法で、一致の判定のような機械的に決まるものに使う必要はありません。(d) の問い合わせの数や応答時間は運用の指標で、分類の正しさを測りません。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "eval-grading"
   ]
  },
  {
@@ -253,9 +274,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "出典は、LLM による採点の工夫を 3 つ挙げる。詳細で明確なルーブリックを持たせること(1 つの用途に複数のルーブリックが必要なこともある)、「correct か incorrect」や 1〜5 の尺度など経験的で具体的な出力にすること、思考を有効にした採点モデルに推論させてから評価を出させることである。思考させると、複雑な判断を要するタスクで特に採点性能が上がる。",
+  "explanation": "正解は a です。公式ドキュメント(Define success criteria and build evaluations)は、LLM による採点の工夫を 3 つ挙げています。詳細で明確なルーブリックを持たせること(1 つの用途に複数のルーブリックが要ることもある)、「correct か incorrect」だけや 1〜5 の尺度のように経験的で具体的な出力を指示すること、思考(thinking)を有効にした採点モデルに評価の前に推論させることです。思考させると、複雑な判断を要するタスクで特に採点の性能が上がるとしています。\n\n見分け方: (b) は自由な論評を結果にしていますが、純粋に定性的な評価はすばやく大規模に判定しにくいとされています。(c) はルーブリックを短くし、思考もさせておらず、工夫の 2 つに反します。(d) はルーブリックも点数の定義もなく、具体的な出力形式に当たりません。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "eval-grading"
   ]
  },
  {
@@ -290,9 +314,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "出典の評価設計の原則の 1 つは、タスク固有であることで、実世界のタスクの分布を反映した評価を設計し、エッジケースも考慮する。例として、無関係または存在しない入力データ、過度に長い入力データやユーザー入力、(チャットの用途では)不適切、有害、無関係なユーザー入力、人間でも評価の合意に至りにくい曖昧なケースが挙がっている。",
+  "explanation": "正解は d です。公式ドキュメント(Define success criteria and build evaluations)は、評価の設計の原則の 1 つ目として「タスク固有にする」を挙げ、実世界のタスクの分布を反映し、エッジケースも考慮するよう述べています。エッジケースの例は、無関係または存在しない入力データ、過度に長い入力データやユーザー入力、(チャットの用途では)質の悪い、有害な、または無関係なユーザー入力、人間でも評価の合意に至りにくい曖昧なケースです。\n\n見分け方: (a) は典型例だけに絞っており、エッジケースを含めていません。(b) は難問だけに偏り、通常の問い合わせを含む実際の分布を反映しません。(c) の汎用のベンチマークは、自社のチャットボットの入力の分布もエッジケースも反映しません。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "success-criteria-evals"
   ]
  },
  {
@@ -327,9 +354,14 @@
   "answer": [
    "b"
   ],
-  "explanation": "出典は、採点方法を選ぶとき、最も速く、最も信頼でき、最も拡張しやすいものを選ぶよう述べる。LLM による採点は速く柔軟で、複雑な判断に向くが、まず信頼性をテストして確かめ、そのあとでスケールさせる。単純な一致で判定できる項目はコード採点が速く確実で、人手の採点は避けるのが望ましい。",
+  "explanation": "正解は b です。公式ドキュメント(Define success criteria and build evaluations)は、採点方法には最も速く、最も信頼でき、最も拡張しやすいものを選ぶよう述べ、LLM による採点を、速く柔軟で拡張しやすく、複雑な判断に向く方法としつつ、まず信頼性をテストしてからスケールさせるよう述べています。記事「Demystifying evals for AI agents」も、LLM の採点者は人間の専門家と密に較正し、人とモデルの採点の食い違いが小さいことを確かめるよう勧めています。\n\n見分け方: (a) は信頼性の確認を省いており、ドキュメントの順序に反します。(c) は LLM 採点を一律に避けていますが、人手の採点は遅く高価で、可能なら避けるものとされています。(d) の完全一致で判定できる項目は、コードによる採点のほうが速く確実で拡張しやすい方法です。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+   "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+   "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "eval-grading",
+   "human-review-and-monitoring"
   ]
  },
  {
@@ -364,9 +396,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "出典は、良い成功基準を具体的、測定可能、達成可能、関連性があるものと定義し、倫理や安全のような曖昧に見える話題も定量化できるとする。悪い例は「安全な出力」で、良い例は「10,000 回の試行のうち、コンテンツフィルタが有害性を指摘した出力が 0.1% 未満」である。定性的な尺度も、一貫して適用し、定量的な尺度と併用すれば価値がある。",
+  "explanation": "正解は b です。公式ドキュメント(Define success criteria and build evaluations)は、成功基準は測定可能であるべきだとし、倫理や安全性のような「曖昧な」話題も定量化できるとしています。安全性の基準の悪い例は「安全な出力」、良い例は「10,000 回の試行のうち、コンテンツフィルタが有害性(toxicity)を指摘した出力が 0.1% 未満」です。\n\n見分け方: (a) は、ドキュメントが悪い例とする「安全な出力」にとどまり、数値の目標がないので達成を判断できません。(c) は定性的な判断だけに頼っていますが、ドキュメントは、定性的な尺度は定量的な尺度と併用し、一貫して適用する場合に価値があるとしています。(d) の「一度も発生しない」は、現在の最先端のモデルの能力から見て非現実的な目標になりやすく、達成可能の条件に反します。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "topics": [
+   "success-criteria-evals"
   ]
  },
  {
@@ -404,6 +439,9 @@
   "explanation": "正解は d です。記事「Demystifying evals for AI agents」は、試行ごとに結果が変わることを踏まえた指標として 2 つを挙げています。pass@k は k 回のうち少なくとも 1 回成功する確率で、k を増やすほど上がります。pass^k は k 回すべてが成功する確率で、k を増やすほど下がります。記事の例では、1 回あたりの成功率が 75% で 3 回試行すると、pass^3 は (0.75)³ ≈ 42% です。記事は、毎回の信頼できる動作が期待される顧客向けのエージェントでは pass^k が特に重要だとしています。\n\n見分け方: 「1 回でも当たればよい」用途は pass@k(a)、「毎回確実に」は pass^k です。出力は実行ごとに変わるので複数の試行が要り(b)、2 つの指標が等しいのは k=1 のときだけです(c)。",
   "refs": [
    "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "agent-evals"
   ]
  },
  {
@@ -441,6 +479,9 @@
   "explanation": "正解は b です。記事「Demystifying evals for AI agents」は、最先端のモデルで多数の試行を行っても 0%(0% pass@100)であれば、それは多くの場合エージェントの能力不足ではなくタスクの不備の信号で、タスクの仕様と採点器を再確認すべきだと述べています。例として、タスクがスクリプトのファイルパスを指定していないのに、テストが特定のパスを前提にしていた事例を挙げています。また、全採点器を通る既知の出力である参照解を作ると、タスクが解けることと採点器の設定が正しいことを確かめられるとしています。\n\n見分け方: 「全滅」はまず評価の側を疑います。モデルを上げる(a)、試行を増やす(d)は原因に触れず、削除する(c)は不備を確かめないまま信号を捨てます。",
   "refs": [
    "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "agent-evals"
   ]
  },
  {
@@ -479,6 +520,9 @@
   "explanation": "正解は a と c です。記事「Demystifying evals for AI agents」は、能力評価を「このエージェントは何をうまくできるか」を問うもの、回帰評価を「以前できたタスクを今もこなせるか」を問うものと区別しています。能力評価は苦手なタスクを対象に低い通過率から始め、回帰評価はほぼ 100% の通過率であるべきです。能力評価で改良を進めるときは、変更がほかの箇所で問題を起こさないよう回帰評価も回すことが重要だとしています。さらに、通過率の高くなった能力評価は回帰スイートへ「卒業」し、ドリフトを捉えるために継続的に実行されます。\n\n見分け方: 能力評価は低い通過率から始めます(b)。回帰評価の低下は壊れた箇所の信号で、能力評価の向上と相殺して無視するものではありません(d)。",
   "refs": [
    "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "agent-evals"
   ]
  },
  {
@@ -516,6 +560,10 @@
   "explanation": "正解は c です。記事「Demystifying evals for AI agents」は、ツール呼び出しの順序のような特定の手順を確かめる採点は硬直的で壊れやすく、エージェントは設計者の想定しない妥当な方法を見つけるので、経路ではなく生み出したものを採点するほうがよいとしています。複数の要素からなるタスクには部分点を設け、成功の連続性を結果に表します。LLM ジャッジについては、情報が足りないときに「Unknown」を返す逃げ道を与えてハルシネーションを避け、観点ごとに独立したジャッジで採点することを勧めています。\n\n見分け方: 順序の厳密な照合(a)は硬直的、全観点の一括採点で点数を強いる(b)は記事の助言と逆です。記事は成果(outcome)を、予約が実際にデータベースにあるかのような環境の最終状態として定義しており、最終メッセージの文言(d)とは区別しています。",
   "refs": [
    "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "eval-grading",
+   "agent-evals"
   ]
  },
  {
@@ -553,6 +601,9 @@
   "explanation": "正解は b です。記事「Demystifying evals for AI agents」は、振る舞いが起きるべき場面と起きるべきでない場面の両方を試すよう勧め、片側だけの評価は片側だけの最適化を生むと述べています。例として、検索すべきときに検索するかだけを試すと、ほとんど何でも検索するエージェントになりうると挙げ、Claude.ai の Web 検索の評価では、検索すべき質問(天気など)と既存の知識で答えるべき質問(「Apple の創業者は誰か」など)の両方を含めたと説明しています。検索しなさすぎと検索しすぎの釣り合いを取ることが難しかったとも述べています。\n\n見分け方: 測っていない側の失敗は評価に現れません。検索すべき質問を増やす(a)、プロンプトだけを直す(c)、苦情を待つ(d)は、どれも検索しすぎを評価で測れないままです。",
   "refs": [
    "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "agent-evals"
   ]
  },
  {
@@ -590,6 +641,10 @@
   "explanation": "正解は a です。記事「Demystifying evals for AI agents」は、自動評価、本番監視、A/B テスト、ユーザーのフィードバック、トランスクリプトの手作業での確認、体系的な人による評価を比べ、開発の段階に対応させています。自動評価はリリース前と CI/CD で、変更やモデル更新のたびに回す最初の防御線です。本番監視はリリース後に分布のドリフトや想定外の失敗を見つけ、A/B テストは十分なトラフィックがあるときに大きな変更を検証します。体系的な人による評価は、LLM 採点器の較正や主観的な出力の評価に充てます。\n\n見分け方: 記事は、どの層もすべての問題は捉えられないとして、方法の組み合わせを勧めています。A/B テストは遅く(b)、本番監視は受け身で(c)、フィードバックはまばらで理由が書かれません(d)。",
   "refs": [
    "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "human-review-and-monitoring",
+   "agent-evals"
   ]
  },
  {
@@ -627,6 +682,9 @@
   "explanation": "正解は d です。プロンプトキャッシュのドキュメントによると、キャッシュの書き込みはブレークポイントの位置でだけ起き、そのブロックがリクエストごとに変わる(時刻、リクエストごとのコンテキストなど)と、プレフィックスのハッシュは一致しません。ベストプラクティスとして、ブレークポイントはリクエスト間で同一の最後のブロック、つまり固定のプレフィックスの末尾に置くよう挙げています。毎回の書き込み(cache_creation_input_tokens)があって読み出し(cache_read_input_tokens)が 0 なのは、この状態の現れです。\n\n見分け方: usage の 2 つの値で原因を切り分けます。両方が 0 なら最小キャッシュ長に届いていません(b)。書き込みだけが続くなら、プレフィックスが毎回変わっています。数秒おきのリクエストで寿命は効かず(a)、事前に温めても変わるブロックは一致しません(c)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-caching"
   ]
  },
  {
@@ -664,6 +722,9 @@
   "explanation": "正解は c です。Usage and Cost Analytics API のドキュメントによると、すべての応答に data_refreshed_at が含まれ、それより後の利用は欠けているか部分的です。データは通常 4 時間以内に更新され、最大 24 時間かかります。値は遅れて届くイベントや照合によって、暦月の終わりから約 7 日後まで改訂されることがあります。繰り返しの呼び出しで結果を安定させるには ending_at を既に見た data_refreshed_at 以前にし、確定値には終わってから少なくとも 7 日たった月だけを問い合わせるよう述べています。\n\n見分け方: 「5 分以内」は旧来の Usage and Cost API の値です(a)。data_refreshed_at は全ページで同じで(b)、Priority Tier のコミットメントで処理したリクエストのトークン費用は amount に入りません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/manage-claude/usage-cost-analytics-api"
+  ],
+  "topics": [
+   "usage-cost-analytics-api"
   ]
  },
  {
@@ -703,6 +764,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "batch-processing",
+   "prompt-caching"
   ]
  },
  {
@@ -740,6 +805,9 @@
   "explanation": "正解は b です。Reducing latency のドキュメントは、モデルやプロンプトに制約をかけずにうまく動くプロンプトをまず作り、その後でレイテンシの削減策を試すほうが常によいと注意しています。早すぎる削減は、最高の性能がどの程度かを見つける妨げになるからです。削減策としては、用途に合ったモデルを選ぶこと、プロンプトと出力のトークン数を減らすこと、応答をストリーミングすることが挙がっています。\n\n見分け方: 品質の基準を満たす前に速さの制約をかける(a)、指標を持たずに削る(c)、速さだけで選ぶ(d)は、どれも「品質を先、削減は後」という順序に反します。TTFT はストリーミングで特に重要とされる指標で、ほかの場合に意味がないとは書かれていません(c)。",
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency"
+  ],
+  "topics": [
+   "reduce-latency"
   ]
  },
  {
@@ -778,6 +846,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency",
    "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence"
+  ],
+  "topics": [
+   "reduce-latency",
+   "cost-optimization"
   ]
  },
  {
@@ -817,6 +889,10 @@
    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency",
    "https://platform.claude.com/docs/en/build-with-claude/streaming",
    "https://platform.claude.com/docs/en/build-with-claude/fast-mode"
+  ],
+  "topics": [
+   "reduce-latency",
+   "fast-mode"
   ]
  },
  {
@@ -855,6 +931,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/fast-mode",
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ],
+  "topics": [
+   "fast-mode",
+   "batch-processing"
   ]
  },
  {
@@ -893,6 +973,9 @@
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence",
    "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+  ],
+  "topics": [
+   "cost-optimization"
   ]
  },
  {
@@ -930,6 +1013,9 @@
   "explanation": "正解は a です。Optimizing for cost and intelligence のドキュメントによると、結果を確かめられるタスクでは、すべてを低い effort で実行し、失敗したものだけを高い effort で再実行する方針が、固定の設定より安くなります。Claude Opus 5.5 の測定では、low で 13% が失敗し、それを high で再実行すると、すべてを high にするより少し高い通過率を、半分強の費用で得ました。条件は 2 つで、失敗の信号(ここではテスト)が必要なことと、初回で失敗したタスクには 2 回分の実時間がかかることです。\n\n見分け方: high の失敗を high で再実行してもほぼ同じ点数で費用が高くなります(b)。悪い成果物を通す判定器では失敗が素通りします(c)。max_tokens はモデルに見えず、節約を促しません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence"
+  ],
+  "topics": [
+   "cost-optimization"
   ]
  },
  {
@@ -967,6 +1053,9 @@
   "explanation": "正解は d です。記事「Demystifying evals for AI agents」は、数百件のタスクが要ると考えて評価を遅らせるチームが多いが、実際には実際の失敗から取った 20〜50 件の単純なタスクで十分に始められると述べています。開発の初期は変更ごとの効果が大きいので、少ない件数で足ります。まず手作業で確かめている挙動から始め、本番稼働中ならバグ管理とサポートの窓口を見て、利用者が報告した失敗をテストケースに変え、利用者への影響で優先順位を付けるよう勧めています。\n\n見分け方: 件数がそろうまで待つ(a)、初期を避けて後で作る(c)は、評価は待つほど作りにくくなるという記事の指摘に反します。汎用のタスクへの置き換え(b)では、スイートが実際の使われ方を反映しません。",
   "refs": [
    "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "agent-evals"
   ]
  },
  {
@@ -1004,6 +1093,9 @@
   "explanation": "正解は c です。Token counting のドキュメントによると、count_tokens は Messages API が受け付ける入力のうち、advisor を除くサーバーツール(web search など)、MCP コネクタ、url や file をソースにした image と document のブロックに invalid_request_error を返します。画像と PDF は base64 で送れば数えられ、サーバーツールや MCP を使うリクエストは Messages API の応答の usage が使ったトークンを報告します。\n\n見分け方: 計数は無料で、メッセージ作成とは独立したレート制限です(a)。キャッシュの仕組みは使わず、キャッシュが働くのは実際のメッセージ作成のときだけです(b)。返る値は推定で、実際とわずかに異なることがあります(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/token-counting"
+  ],
+  "topics": [
+   "token-counting"
   ]
  },
  {
@@ -1041,6 +1133,9 @@
   "explanation": "正解は a です。記事「Demystifying evals for AI agents」は、評価の飽和を、解けるタスクをエージェントがすべて通して改善の余地がなくなる状態と説明しています。飽和に近づくと最も難しいタスクだけが残るので、大きな能力の向上が小さな点数の増加に見え、結果が誤解を招きます。記事は、点数は誰かが評価の詳細を調べてトランスクリプトを読むまで額面どおりに受け取らないとし、一発勝負の評価が長く複雑なタスクでの向上を捉えられなかった例も挙げています。\n\n見分け方: 高い点数の差の小ささは能力の同等を意味しません(b)。100% の評価も回帰は追跡できます(c)。硬直的な採点は妥当な解を罰します(d)。",
   "refs": [
    "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "agent-evals"
   ]
  },
  {
@@ -1078,6 +1173,9 @@
   "explanation": "正解は b です。記事「Demystifying evals for AI agents」は、評価のエージェントが本番とほぼ同じに動き、環境そのものがノイズを加えないことが不可欠だとして、各試行をクリーンな環境から始めて分離するよう述べています。残ったファイル、キャッシュされたデータ、資源の枯渇のような不要な共有の状態は、エージェントの性能ではなくインフラの不安定さによる相関した失敗を生み、性能を人工的に押し上げることもあります。記事は、Claude が前の試行の git の履歴を調べて不当に有利になった例を挙げ、メモリ不足のような同じ制約で失敗した試行は独立ではないとしています。\n\n見分け方: 相関した影響は回数を増やしても消えません(a)。共有の状態による向上は能力ではありません(c)。失敗だけを外しても水増しは残ります(d)。",
   "refs": [
    "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+  ],
+  "topics": [
+   "agent-evals"
   ]
  }
 ]

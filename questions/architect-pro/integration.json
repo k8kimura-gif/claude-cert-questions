@@ -31,9 +31,14 @@
   "answer": [
    "d"
   ],
-  "explanation": "tool_result は対応する tool_use の直後のユーザーメッセージに置き、content 配列の先頭に並べる。テキストはその後ろに置く。順序を誤ると、tool_use の ID に結果が見つからないという 400 エラーになる。",
+  "explanation": "正解は d です。Handle tool calls のドキュメントによると、ツールの結果は対応する tool_use の直後に置き、assistant のツール呼び出しのメッセージと user のツール結果のメッセージの間に、ほかのメッセージを挟めません。また、ツール結果を入れる user メッセージでは、tool_result ブロックを content 配列の先頭に置き、テキストはすべての結果の後に置きます。Parallel tool use のドキュメントも、tool_use ごとの tool_result を tool_use_id で対応付け、次の 1 つの user メッセージにまとめて返すよう述べています。\n\n見分け方: (a) は結果の間にメッセージを挟み、結果も別々のメッセージに分けています。(b) はテキストを tool_result の前に置いており、ドキュメントの例ではこの形が 400 エラーになります。(c) は 2 つ目の結果を返しておらず、tool_use ごとに 1 つの tool_result を返すという規則に反します。",
   "refs": [
-   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls"
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use"
+  ],
+  "topics": [
+   "handle-tool-calls",
+   "parallel-tool-use"
   ]
  },
  {
@@ -68,9 +73,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "ツール実行が失敗したときは、is_error を true にして内容を返す。出典は、汎用的な「failed」ではなく、何が起きたか、モデルが次に何を試すべきかを含む、指示的なメッセージを書くよう勧める。",
+  "explanation": "正解は a です。Handle tool calls のドキュメントによると、クライアントツールが失敗したときは、tool_result の is_error を true にし、エラーの内容を content に入れて返します。Claude はそれを受けてツールを呼び直すか、利用者に何が起きたかを伝えられます。エラーの文面は \"failed\" のような汎用の文言ではなく、何が起きたかと、Claude が次に何を試すべきかを含めるよう勧めています(例: \"Rate limit exceeded. Retry after 60 seconds.\")。\n\n見分け方: (b) の空の結果は成功と区別できず、エラーが伝わりません。(c) は一時的な失敗のたびに会話を捨てていますが、結果をエラーとして返せば Claude が対応を判断できます。(d) は is_error を付けず原因も書いていないので、Claude は回復の手がかりを得られません。なお、Claude が呼び直すことがあるので、ループで許す再試行の回数には上限を設けるよう勧められています。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls"
+  ],
+  "topics": [
+   "handle-tool-calls"
   ]
  },
  {
@@ -105,9 +113,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "支出上限の 429 は rate_limit_error でも retry-after がなく、error_code が enforced_spend_limit_reached になる。再試行は無駄で、上限の引き上げ依頼か翌月の再開を待つ。レート制限やランプ制限の 429 とはコードで区別できる。",
+  "explanation": "正解は d です。Rate limits のドキュメントによると、使用ティアの月の支出上限(spend cap)に達すると、上限の引き上げを依頼しない限り、翌月 1 日の 00:00 UTC まで API の利用が止まります。その間の要求は HTTP 429 を返し、エラーの種類はレート制限と同じ rate_limit_error ですが、retry-after ヘッダーはなく、Messages API では error.details.error_code が enforced_spend_limit_reached になります。SDK の自動再試行を含め、再試行は利用が再開するまで失敗し続けます。\n\n見分け方: (a) は再試行で回復すると考えていますが、retry-after のない支出上限の 429 には効きません。(b) の上限は組織の月の支出の上限で、モデルを替えても回避できません。(c) のランプ制限の 429 は error_code が ramp_limit_exceeded で、今回のコードとは違います。",
   "refs": [
    "https://platform.claude.com/docs/en/api/rate-limits"
+  ],
+  "topics": [
+   "rate-limits"
   ]
  },
  {
@@ -142,9 +153,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "ITPM に数えられるのは input_tokens と cache_creation_input_tokens で、cache_read_input_tokens は数えられない。繰り返し使う大きなプレフィックスをキャッシュすれば、同じ上限で処理できる入力が増える。",
+  "explanation": "正解は b です。Rate limits のドキュメントによると、既定の ITPM はキャッシュされていない入力トークンだけを数えます。ITPM に数えられるのは input_tokens と cache_creation_input_tokens で、cache_read_input_tokens は数えられません。そのため、繰り返し使う大きな文書をプロンプトキャッシュに入れると、上限を上げずに実際のスループットを大きく増やせると説明されています(2,000,000 ITPM でキャッシュの命中率が 80% なら、1 分あたり 10,000,000 トークンを処理できる例)。\n\n見分け方: (a) の OTPM は実際に生成されたトークンで数え、max_tokens は計算に入らず、そもそも ITPM の問題には効きません。(c) の上限は組織の単位で適用されるので、キーを分けても増えません。(d) はキャッシュへの書き込みが数えられる点だけを見ており、以降の読み出しが数えられないことを見落としています。",
   "refs": [
    "https://platform.claude.com/docs/en/api/rate-limits"
+  ],
+  "topics": [
+   "rate-limits"
   ]
  },
  {
@@ -179,9 +193,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "Message Batches API は料金が 50% 低く、1 バッチは 100,000 リクエストまたは 256 MB まで。多くは 1 時間以内に完了するが、24 時間で期限切れになる。結果は作成から 29 日間取得できる。",
+  "explanation": "正解は c です。Batch processing のドキュメントによると、Message Batches API の料金は標準の 50% で、1 つのバッチは 100,000 件か 256 MB の、先に達したほうが上限です。多くのバッチは 1 時間以内に終わりますが、24 時間以内に処理が終わらなければ期限切れになり、結果は作成から 29 日間取得できます。250,000 件は 1 つのバッチに入らないので、100,000 件以下に分けて送り、処理が終わってから結果を取得します。\n\n見分け方: (a) は 1 バッチの上限を超えています。(b) はバッチの料金が通常と同じとしていますが、実際は 50% で課金され、翌朝までに得られればよい処理はバッチの用途に合います。(d) はバッチが非同期であることを無視しており、結果は全件の処理が終わるか 24 時間が経ってから取得できます。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ],
+  "topics": [
+   "batch-processing"
   ]
  },
  {
@@ -216,9 +233,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "出典は、ツールの性能を最大にするための指針の筆頭に、極めて詳細な description を挙げ、これが「最も重要な要素」だとする。ツールが何をするか、いつ使うべきか(使うべきでないか)、各パラメータが何を意味しどう挙動に影響するか、重要な注意点や制限を説明する。各ツールにつき少なくとも 3〜4 文を目安とし、複雑なら増やす。複雑な入力のツールには input_examples も併用できるが、説明が優先である。",
+  "explanation": "正解は a です。Define tools のドキュメントは、極めて詳しい説明を書くことを、ツールの性能を左右する群を抜いて最も重要な要素としています。説明には、ツールが何をするか、いつ使うべきか(使うべきでないか)、各パラメータの意味と動作への影響、重要な注意点や制限を書き、1 つのツールにつき少なくとも 3〜4 文、複雑なツールではそれ以上を目安にします。\n\n見分け方: (b) はドキュメントの悪い例(\"Gets the stock price for a ticker.\")に当たり、短すぎてツールの動きと使いどころに多くの疑問を残すとされています。(c) の input_examples は入力の複雑なツールで検討するものですが、ドキュメントは説明を優先するよう述べています。(d) について、名前を短くする助言はなく、複数のサービスにまたがるときはサービス名の接頭辞を付けるよう勧めています。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools"
+  ],
+  "topics": [
+   "define-tools"
   ]
  },
  {
@@ -242,7 +262,7 @@
    {
     "id": "c",
     "text": "全ツールの description を同じ文面にそろえ、違いはパラメータ名だけで表すようにする。",
-    "why": "似たツールが多いときほど、description とパラメータ名・説明を具体的にして違いを明確にすることが重要だと、出典は述べている。"
+    "why": "出典は、ツールが何をするか、いつ使うか、各パラメータの意味まで詳しく説明するよう求めている。説明を同じ文面にすると違いが伝わらず、選択の曖昧さは減らない。"
    },
    {
     "id": "d",
@@ -253,9 +273,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "出典は、操作ごとにツールを作る(create_pr、review_pr、merge_pr)代わりに、action パラメータをもつ 1 つのツールにまとめることを勧める。少数で高機能なツールは、選択の曖昧さを減らし、ツールの全体像を Claude にとって把握しやすくする。また、ツールが複数のサービスやリソースにまたがるときは、github_list_prs や slack_send_message のようにサービス名を接頭辞にした意味のある名前空間を使うと、ライブラリが大きくなっても選択が曖昧にならない。",
+  "explanation": "正解は d です。Define tools のドキュメントのベストプラクティスは、create_pr、review_pr、merge_pr のように操作ごとにツールを作る代わりに、action パラメータを持つ 1 つのツールにまとめるよう勧めています。少数で高機能なツールは選択の曖昧さを減らし、ツール全体を Claude が扱いやすくします。また、ツールが複数のサービスやリソースにまたがるときは、github_list_prs、slack_send_message のようにサービス名を接頭辞にすると、ツールが増えても選択が曖昧になりにくく、tool search を使う場合は特に重要だとしています。\n\n見分け方: (a) は細分化でツールをさらに増やしており、助言と逆です。(b) の連番の名前は何をするツールかが分からず、意味のある名前空間を付ける助言に反します。(c) は説明を同じ文面にしており、各ツールの説明を詳しく書くという最も重要な助言に反します。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools"
+  ],
+  "topics": [
+   "define-tools"
   ]
  },
  {
@@ -290,9 +313,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "出典は、ツールの応答には高信号の情報だけを返すよう勧める。内部の不透明な参照ではなく、slug や UUID のような意味のある安定した識別子を使い、Claude が次のステップを判断するのに必要なフィールドだけを含める。肥大した応答はコンテキストを浪費し、Claude が重要な情報を取り出しにくくする。",
+  "explanation": "正解は b です。Define tools のドキュメントは、ツールの応答は判断に役立つ情報だけを返すよう設計し、不透明な内部参照ではなく、slug や UUID のような意味のある安定した識別子を返し、Claude が次の手を判断するのに必要なフィールドだけを含めるよう勧めています。肥大した応答はコンテキストを浪費し、Claude が重要な情報を取り出しにくくするとしています。なお、記事 Writing effective tools for agents は uuid のような低水準の識別子を避けるよう勧めており、UUID の扱いは出典によって言い方が違います。\n\n見分け方: (a) は肥大した応答そのものです。(c) はフィールドを削っていますが、残したのが不透明な内部の行 ID なので、次の判断に必要な情報が足りません。(d) は文章を足して応答をさらに大きくしています。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools"
+  ],
+  "topics": [
+   "define-tools"
   ]
  },
  {
@@ -327,9 +353,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "出典の「ツール使用を強制する」節は、すべてのモデルと設定が強制的なツール使用に対応しているわけではないと述べ、対応しない場合は tool_choice: any と tool: {...} が失敗する一方、auto(既定)と none は使えるとする。表では、手動の拡張思考と、Claude Opus 5.5 を含む複数のモデルが対象に挙がり、後者では 400 エラーとなる。代替として auto と strict tool use が案内されている。",
+  "explanation": "正解は b です。Define tools のドキュメントの Forcing tool use によると、すべてのモデルと設定が呼び出しの強制に対応しているわけではなく、対応しない場合は tool_choice の any と tool が失敗し、auto(既定)と none は使えます。表では、Claude Opus 5.5 を含む Claude Fable 5.2、Claude Sonnet 5.5 などのモデルで、any と tool は 400 エラーを返します。代わりに、auto と strict tool use(入力がスキーマに合うことを保証)を使うか、決まった形の JSON が要るなら構造化出力を使うよう案内されています。\n\n見分け方: (a) と (c) は、指定が受け付けられる、あるいは黙って auto として扱われるとしていますが、ドキュメントは 400 エラーと書いています。(d) の課金や max_tokens の制限について、ドキュメントにそうした記述はありません。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools"
+  ],
+  "topics": [
+   "define-tools"
   ]
  },
  {
@@ -338,7 +367,7 @@
   "domain": "integration",
   "type": "single",
   "scenarioId": null,
-  "stem": "セキュリティレビューで、Structured Outputs(JSON スキーマ)を使うと Anthropic 側で何がキャッシュされるのかを問われた。ドキュメントの記述に沿った回答はどれか。",
+  "stem": "ゼロデータ保持(ZDR)の取り決めがある組織のセキュリティレビューで、Structured Outputs(JSON スキーマ)を使うと Anthropic 側で何がキャッシュされるのかを問われた。ドキュメントの記述に沿った回答はどれか。",
   "choices": [
    {
     "id": "a",
@@ -364,9 +393,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "出典のデータ取り扱いの節によると、(保持の要件が別途定められた対象モデルを除き)プロンプトと Claude の出力は保存されず、キャッシュされるのは JSON スキーマだけで、最後の使用から最大 24 時間である。strict tool use(tools の strict: true)も同じ文法のパイプラインを使うので、同じ扱いになる。",
+  "explanation": "正解は d です。Structured outputs のドキュメントのデータの取り扱い(Data handling)によると、Zero data retention の対象では、プロンプトと Claude の出力は保存されず、キャッシュされるのは JSON スキーマだけで、最後に使われてから最大 24 時間です(Covered Models は対象外)。strict tool use(tools の strict: true)も同じ文法のパイプラインを使うので、同じ扱いです。スキーマはメッセージの内容とは別に文法としてキャッシュされるため、HIPAA の対象でもスキーマに PHI を入れないよう求められています。\n\n見分け方: (a) は逆で、キャッシュされるのはスキーマです。(b) は何もキャッシュされないとしていますが、コンパイルした文法は最後の使用から 24 時間キャッシュされ、以降の要求が速くなると説明されています。(c) は、プロンプトと出力は保存されないという記述と合いません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "structured-outputs"
   ]
  },
  {
@@ -401,9 +433,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "出典は、ランプ制限を、組織の特定モデルでのトークン利用が増える速さの上限と説明する。利用が急に増えると、ITPM と OTPM の上限の内側でも 429 になりうる。error.details.error_code は ramp_limit_exceeded で、レート制限と区別できる。対処は、retry-after の秒数以上待ち、成功する水準に流量を保ち、そこから 1 分あたり最大 1 ステップずつ上げることである。キャッシュから読んだトークンは数えられず、Message Batches API は対象外である。",
+  "explanation": "正解は a です。Rate limits のドキュメントによると、ランプ制限は組織のあるモデルでのトークンの利用が増える速さの上限で、利用が急に増えると ITPM や OTPM の上限の内側でも 429 になります。上限は直近の 1 分あたりの最大の利用量に 1 ステップを足した値です。エラーの種類はレート制限と同じ rate_limit_error で、Messages API では error.details.error_code が ramp_limit_exceeded になります。対処は、retry-after の秒数以上待ち、成功する水準で流量を保ち、そこから 1 分に最大 1 ステップずつ増やすことです。\n\n見分け方: (b) のランプ制限は ITPM の上限とは別に、直近の最大の利用量から決まります。(c) は誤りで、Message Batches API はランプ制限の対象外です。(d) は逆で、キャッシュから読んだトークンはランプ制限に数えられず、キャッシュへの書き込みと未キャッシュの入力が数えられます。",
   "refs": [
    "https://platform.claude.com/docs/en/api/rate-limits"
+  ],
+  "topics": [
+   "rate-limits"
   ]
  },
  {
@@ -438,9 +473,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "出典によると、バッチの結果は任意の順序で返りうるため、入力の順序に依存してはならず、一意で意味のある custom_id(1〜64 文字の英数字、ハイフン、アンダースコア)で対応付ける。結果の種類は succeeded、errored、canceled、expired の 4 つで、errored、canceled、expired は課金されない。結果は大きくなりうるので、まとめてダウンロードせず、results_url からストリームで取得することが勧められている。",
+  "explanation": "正解は c です。Batch processing のドキュメントによると、バッチの結果は任意の順序で返ることがあり、作成時の順序と一致しないため、custom_id で突き合わせます。custom_id は英数字、ハイフン、アンダースコアの 1〜64 文字で、順序が保証されないので意味のある値を付けるよう勧められています。結果の種類は succeeded、errored、canceled、expired の 4 つで、errored、canceled、expired のリクエストは課金されません。結果は大きくなりうるので、まとめてダウンロードせずストリームで取得するよう勧められています。\n\n見分け方: (a) は順序に依存しており、custom_id を軽視しています。(b) は errored などの結果を考えていません。種類ごとの件数は request_counts で確かめられます。(d) の expired は、24 時間の期限までにモデルに送られなかったリクエストで、課金されません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ],
+  "topics": [
+   "batch-processing"
   ]
  },
  {
@@ -479,6 +517,9 @@
   "refs": [
    "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/security-considerations",
    "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices"
+  ],
+  "topics": [
+   "mcp-security-best-practices"
   ]
  },
  {
@@ -517,6 +558,10 @@
   "refs": [
    "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http",
    "https://modelcontextprotocol.io/specification/2026-07-28/changelog"
+  ],
+  "topics": [
+   "mcp-transports-auth",
+   "mcp-2026-07-28-changes"
   ]
  },
  {
@@ -556,6 +601,11 @@
    "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
    "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices",
    "https://modelcontextprotocol.io/specification/2026-07-28/changelog"
+  ],
+  "topics": [
+   "mcp-tools-spec",
+   "mcp-security-best-practices",
+   "mcp-2026-07-28-changes"
   ]
  },
  {
@@ -596,6 +646,10 @@
    "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http",
    "https://modelcontextprotocol.io/specification/2026-07-28/basic",
    "https://modelcontextprotocol.io/specification/2026-07-28/changelog"
+  ],
+  "topics": [
+   "mcp-transports-auth",
+   "mcp-2026-07-28-changes"
   ]
  },
  {
@@ -633,6 +687,9 @@
   "explanation": "正解は b です。Tool search tool のドキュメントによると、tools 配列に検索ツールと全ツールの定義を入れ、すぐに読み込まなくてよいツールに defer_loading: true を付けます。defer_loading が制御するのはコンテキストに入るものであって、送るものではありません。遅延させたツールの完全な定義も、API が検索と tool_reference の展開に使うため毎回送ります。最適化の助言として、よく使う 3〜5 個のツールは遅延させないことが挙げられています。\n\n見分け方: (a) はすべてを遅延させており、少なくとも 1 つは遅延させないという規則に反して 400 になります。(c) は遅延させたツールの定義を送っておらず、検索も展開もできません。(d) は遅延させたツールに cache_control を付けており、これも 400 になります。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool"
+  ],
+  "topics": [
+   "tool-search"
   ]
  },
  {
@@ -670,6 +727,9 @@
   "explanation": "正解は a です。Anthropic の記事「Code execution with MCP」によると、ツールの定義を最初にすべて読み込むことと、中間結果がモデルを通ることが、コストと遅延を増やします。MCP サーバーをコードの API として見せると、必要な定義だけを読み、データを実行環境で絞り込んでから返せます。10,000 行の表の例では、モデルが見るのは絞り込んだ 5 行だけです。中間結果は既定で実行環境に留まり、ハーネスが個人情報をトークン化すれば、実データはモデルを通らずにサービスの間を流れます。一方で、生成されたコードを動かすにはサンドボックス、リソース制限、監視が必要で、その運用負担と比べて判断するよう記事は述べています。\n\n見分け方: (b) は中間結果を 2 回モデルに通す、記事が問題とする形です。(c) は定義を最初にすべて読み込みます。(d) は指示だけで、データはコンテキストに入ったままです。",
   "refs": [
    "https://www.anthropic.com/research/code-execution-with-mcp"
+  ],
+  "topics": [
+   "mcp-code-execution"
   ]
  },
  {
@@ -707,6 +767,9 @@
   "explanation": "正解は c です。Anthropic の記事「Contextual Retrieval」によると、Contextual Embeddings と Contextual BM25 の組み合わせで上位 20 チャンクの取りこぼしは 49% 減り、リランキングを加えると 67% 減りました。記事の実験では、初回の検索で上位 150 件を取り、リランカーで採点して上位 20 件をモデルに渡しています。リランキングは実行時に 1 段増えるため遅延が少し増え、多くのチャンクをリランクするほど性能が上がる一方で遅延とコストも増えるので、用途に合わせて設定を試すよう勧めています。\n\n見分け方: (a) は知識ベースが 200,000 トークンより小さい場合の方法です。(b) の一般的な要約を足す方法は、記事の実験で効果がごく限られていました。(d) は、記事が試した 5、10、20 件のうち 20 件が最も良かったという結果と合いません。",
   "refs": [
    "https://www.anthropic.com/research/contextual-retrieval"
+  ],
+  "topics": [
+   "retrieval-augmented-generation"
   ]
  },
  {
@@ -744,6 +807,9 @@
   "explanation": "正解は d です。Search results のドキュメントによると、自前のツールが search_result ブロックを返すと、Claude は Web 検索の結果と同じように、指定した source と title を付けて引用します。source には URL のほか kb://article-1234 のような社内の識別子も使えます。引用できる最小の単位は text ブロックなので、細かく引用させたいときは本文を複数のブロックに分けます。引用は既定で無効で、citations.enabled を明示的に true にします。\n\n見分け方: (a) は引用の設定を結果ごとに変えており、全部有効か全部無効かという規則に反してエラーになります。(b) はブロック全体しか引用されないので逆効果です。(c) は JSON だけの出力で引用がほとんど付かないことがあり、search_result を assistant メッセージに置くと拒否されます。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/search-results"
+  ],
+  "topics": [
+   "search-results"
   ]
  },
  {
@@ -781,6 +847,9 @@
   "explanation": "正解は b です。MCP connector のドキュメントによると、ツールの設定は configs のツールごとの設定、default_config、システムの既定の順に優先され、システムの既定は enabled: true です。許可リストの形は、default_config を enabled: false にしてから、使わせるツールだけを configs で有効にします。この形なら、サーバーに後から追加されたツールは default_config によって無効のままです。拒否リストの形も読み取り専用のアシスタントで勧められていますが、新しいツールは既定で有効になるので、この要件には許可リストが合います。\n\n見分け方: (a) は 1 つのサーバーに 2 つの toolset を割り当てており、検証の規則に反します。(c) はツールが有効なまま指示に頼っています。(d) は、存在しないツール名を書いてもエラーにならず警告が記録されるだけ、という仕様と合いません。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector"
+  ],
+  "topics": [
+   "mcp-connector"
   ]
  },
  {
@@ -819,6 +888,9 @@
   "explanation": "正解は a と c です。MCP の Client Best Practices の Programmatic Tool Calling / Code Mode の節によると、サンドボックスは直接のネットワークアクセスを持たず、外部との通信はすべて、認可とアクセス制御を行うホストのブローカーを通します。ブローカーは仕様上も MCP ホストなので、サンドボックスから来た呼び出しにも、直接の呼び出しと同じ人間の確認の方針を当てはめます。スクリプトを承認しても、実行時のすべての呼び出しを包括的に承認したことにはなりません。\n\n見分け方: (b) はトークンをサンドボックスに渡しており、認証情報はホストが持ち生成コードに見せない、という考慮事項に反します。(d) は出力の切り詰めに頼っていますが、ドキュメントは、あるサーバーの結果は別のサーバーにとって信頼できない入力であり、切り詰めだけでは持ち出しを防げないとしています。",
   "refs": [
    "https://modelcontextprotocol.io/docs/2026-07-28/develop/clients/client-best-practices"
+  ],
+  "topics": [
+   "mcp-code-execution"
   ]
  },
  {
@@ -857,6 +929,10 @@
   "refs": [
    "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices",
    "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization"
+  ],
+  "topics": [
+   "mcp-security-best-practices",
+   "mcp-transports-auth"
   ]
  },
  {
@@ -894,6 +970,9 @@
   "explanation": "正解は c です。Streaming messages の「Error recovery」によると、ネットワークの問題やタイムアウトで中断したストリームは、受け取り済みの部分を保存し、続きを求めるリクエストを作って再開できます。Claude 4.6 以降のモデルでは、部分的な応答を assistant メッセージに置くのではなく、部分的な応答と続きから書くよう求める指示を入れた user メッセージを加えます。また tool_use と thinking のブロックは部分的には回復できず、直近のテキストブロックから再開します。\n\n見分け方: (a) の assistant メッセージに置く方法は Claude 4.5 以前の手順で、途中の tool_use を含める点も誤りです。(b) は部分的に回復できない tool_use を補って使っています。(d) は全体をやり直しており、切断の原因も max_tokens ではありません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/streaming"
+  ],
+  "topics": [
+   "streaming"
   ]
  },
  {
@@ -932,6 +1011,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/streaming",
    "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ],
+  "topics": [
+   "streaming",
+   "stop-reasons"
   ]
  },
  {
@@ -970,6 +1053,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools",
    "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ],
+  "topics": [
+   "server-tools",
+   "stop-reasons"
   ]
  },
  {
@@ -1008,6 +1095,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/refusals-and-fallback",
    "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ],
+  "topics": [
+   "refusals-and-fallback",
+   "stop-reasons"
   ]
  },
  {
@@ -1046,6 +1137,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool",
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools"
+  ],
+  "topics": [
+   "web-search-tool",
+   "server-tools"
   ]
  },
  {
@@ -1068,8 +1163,8 @@
    },
    {
     "id": "c",
-    "text": "Claude Platform on AWS を使う。Anthropic が運用し、Claude API と同じエンドポイントを AWS の認証と AWS Marketplace の課金で使えるため、Files API などもそのまま使える。",
-    "why": "正しい。Claude Platform on AWS は Claude API と同等の機能(例外は一覧あり)を、AWS の認証と課金で提供する。"
+    "text": "Claude Platform on AWS を使う。Anthropic が運用し、Claude API と同じ形のリクエストを AWS の認証と AWS Marketplace の課金で送れるため、Files API などもそのまま使える。",
+    "why": "正しい。Claude Platform on AWS は Claude API(/v1/{endpoint})を、AWS の認証と課金で提供する。使えない機能は一覧で示されている。"
    },
    {
     "id": "d",
@@ -1085,6 +1180,9 @@
    "https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws",
    "https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock",
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool"
+  ],
+  "topics": [
+   "cloud-platforms"
   ]
  },
  {
@@ -1123,6 +1221,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-fetch-tool",
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools"
+  ],
+  "topics": [
+   "web-fetch-tool",
+   "server-tools"
   ]
  },
  {
@@ -1162,6 +1264,9 @@
    "https://modelcontextprotocol.io/specification/2026-07-28/changelog",
    "https://modelcontextprotocol.io/specification/2026-07-28/server/resources",
    "https://modelcontextprotocol.io/specification/2026-07-28/client/sampling"
+  ],
+  "topics": [
+   "mcp-2026-07-28-changes"
   ]
  },
  {
@@ -1199,6 +1304,9 @@
   "explanation": "正解は a です。Parallel tool use のドキュメントによると、複数の tool_use をどう実行するかはアプリケーションが決め、API は実行の順序を定めません。副作用や順序の要件があるツールは逐次の実行が向き、依存があるときは逐次実行して最初の失敗で止める方法が妥当とされています。どの方法でも、tool_use ごとの tool_result を次の 1 つの user メッセージにまとめ、実行しなかった呼び出しには is_error: true と短い説明を返します。\n\n見分け方: (b) は API が独立性を保証すると誤解しています。(c) は実行しなかった呼び出しの tool_result を省いています。(d) は結果を別々のメッセージで返しており、並列の呼び出しを妨げる誤った形です。",
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use"
+  ],
+  "topics": [
+   "parallel-tool-use"
   ]
  },
  {
@@ -1236,6 +1344,9 @@
   "explanation": "正解は c です。Claude Models on Google Cloud(Google managed)のドキュメントによると、endpoint のうち global は容量のある任意のリージョンへ、multi-region は米国または EU の中の任意のリージョンへ送り、後者は広い地域内のデータ所在と高い可用性が要る場合に向きます。regional endpoint は Claude Sonnet 4.6 以前のモデルだけを提供します。multi-region と regional は global より 10% 高くなります。\n\n見分け方: (a) の global はデータが EU の外に出る可能性があります。(b) の regional では Claude Opus 5.5 を使えず、料金も高くなります。(d) は 10% の上乗せと、provisioned throughput に regional endpoint が要ることを見落としています。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/google-managed"
+  ],
+  "topics": [
+   "cloud-platforms"
   ]
  },
  {
@@ -1275,6 +1386,10 @@
    "https://modelcontextprotocol.io/specification/2026-07-28/client/elicitation",
    "https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/mrtr",
    "https://modelcontextprotocol.io/specification/2026-07-28/changelog"
+  ],
+  "topics": [
+   "mcp-elicitation",
+   "mcp-2026-07-28-changes"
   ]
  }
 ]

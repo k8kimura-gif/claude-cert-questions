@@ -31,9 +31,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "出典の料金表では、キャッシュ読み出しは基本の入力料金の 0.1 倍、5 分 TTL の書き込みは 1.25 倍、1 時間 TTL の書き込みは 2 倍である。ただし読み出しの倍率には例外があり、Claude Opus 5.5 と Sonnet 5.5 では 0.05 倍、Claude Fable 5.2 などでは 0.025 倍である。Haiku 5.5 には標準の 0.1 倍が適用される。同じ大きなプレフィックスを繰り返し読む用途で効果が大きい。",
+  "explanation": "正解は d です。Prompt caching のドキュメントの料金表によると、キャッシュの読み出し(Cache hits and refreshes)は基本の入力料金の 0.1 倍です。例外は脚注にあり、Claude Opus 5.5 と Sonnet 5.5 が 0.05 倍、Claude Fable 5.2・Mythos 5.2・Fable 5.1・Mythos 5.1 が 0.025 倍です。Claude Haiku 5.5 は例外に入らず、表でも 100,000 トークン以下のプロンプトで入力 $0.10 / MTok に対して読み出しが $0.01 / MTok です。\n\n見分け方: 1.25 倍(a)は 5 分 TTL の書き込み、2 倍(b)は 1 時間 TTL の書き込みの倍率で、読み出しの倍率ではありません。読み出しは基本料金より大幅に安いので、処理時間だけが減るという c も誤りです。読み出しの倍率にはモデルごとの例外がある点にも注意します。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-caching"
   ]
  },
  {
@@ -68,9 +71,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "キャッシュのプレフィックスは tools、system、messages の順に作られる。ある階層の変更はその階層とそれ以降を無効にし、ツール定義の名前・説明・パラメータの変更はキャッシュ全体を無効にする。ツール一覧は固定するのが安全である。",
+  "explanation": "正解は a です。Prompt caching のドキュメントによると、キャッシュの接頭部分は tools、system、messages の順に作られ、ある階層の変更はその階層とそれ以降のすべてを無効にします。無効化の表では、ツール定義(名前、説明、パラメータ)の変更はキャッシュ全体を無効にするとされています。そのため、リクエストごとにツール一覧を差し替えると、system と messages が同じでも毎回キャッシュが外れます。\n\n見分け方: tools もキャッシュの対象で、階層の先頭にあります(b)。tool_choice の変更が影響するのは messages の階層だけで、ツール定義の変更を打ち消すものではありません(c)。既定の寿命は 5 分で、使われるたびに追加料金なしで更新されます。1 時間ごとに自動でリセットされる仕組みはありません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-cache-invalidation",
+   "prompt-caching"
   ]
  },
  {
@@ -105,9 +112,13 @@
   "answer": [
    "a"
   ],
-  "explanation": "thinking トークンは max_tokens の一部であり、出力トークンとして課金され、レート制限に数えられ、コンテキストウィンドウにも含まれる。過去ターンの thinking ブロックを残すかどうかはモデルごとに異なる。",
+  "explanation": "正解は a です。Context windows のドキュメントによると、thinking のトークンは max_tokens の一部で、出力トークンとして課金され、レート制限にも数えられます。そのターンで生成した拡張思考を含む出力も、コンテキストウィンドウに数えられます。前のターンの thinking ブロックを残すかどうかはモデルによって違い、Opus 4.5 以降の Opus、Sonnet 4.6 以降の Sonnet、Haiku 5.5 などでは既定で残り、ほかの入力と同じくウィンドウに数えられます。\n\n見分け方: thinking は別枠でも入力扱いでもなく、出力として課金されます(b)。課金の対象外とする c も誤りです。前のターンの thinking を自動で取り除くのは、それより前の Opus と Sonnet、Haiku 4.5 までの Haiku で、常にではありません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+  ],
+  "topics": [
+   "context-windows",
+   "thinking"
   ]
  },
  {
@@ -142,9 +153,14 @@
   "answer": [
    "a"
   ],
-  "explanation": "コンテキストウィンドウは作業記憶であり、大きいほど常に良いわけではない。トークン数が増えると精度と再現率が低下するコンテキストロットが起こるため、何を入れるかの選別が重要になる。",
+  "explanation": "正解は a です。Context windows のドキュメントによると、コンテキストウィンドウはモデルの作業記憶で、大きいほど自動的に良くなるわけではありません。トークン数が増えると正確さと想起が落ちる context rot が起こるため、何を入れるかの選別が、使える容量と同じくらい重要だとしています。記事 Effective context engineering for AI agents も、コンテキストを収穫逓減のある有限の資源として扱うよう述べています。\n\n見分け方: 1M トークンのウィンドウを持つモデルでは 1M が既定で、ベータヘッダーは要りません(b)。入れる量そのものがキャッシュを無効にするわけではなく、論点は課金ではありません(c)。コンテキストは学習データとは別の作業記憶で、ドキュメントは機密性の観点からこの問題を論じていません(d)。",
   "refs": [
-   "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+   "https://platform.claude.com/docs/en/build-with-claude/context-windows",
+   "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "context-windows",
+   "context-engineering"
   ]
  },
  {
@@ -179,9 +195,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "Claude 4.5 以降のモデルでは、入力トークンと max_tokens の合計がウィンドウを超えてもリクエストは受け付けられ、生成が上限に達すると model_context_window_exceeded で止まる。入力だけで超えた場合は 400 になる。",
+  "explanation": "正解は b です。Context windows のドキュメントの Context window overflow behavior によると、Claude 4.5 以降のモデルでは、入力トークンと max_tokens の合計がウィンドウを超えても、API はリクエストを受け付けます。生成がウィンドウの上限に達した場合は、stop_reason: \"model_context_window_exceeded\" で止まります。それより前のモデルでは検証エラーになります。\n\n見分け方: 合計の超過で常に 400 になる(a)のは以前のモデルの挙動です。max_tokens を API が書き換える(c)、入力の先頭を自動で切り捨てる(d)という記述はドキュメントにありません。入力だけでウィンドウを超えた場合は、どのモデルでも 400 の invalid_request_error(prompt is too long)になります。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+  ],
+  "topics": [
+   "context-windows"
   ]
  },
  {
@@ -216,9 +235,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "出典によると、budget_tokens は 1,024 トークン以上で、max_tokens 未満でなければならない。thinking トークンはそのターンの max_tokens に数えられるので、最終回答の分の余地を残す必要がある。例外は手動モードの interleaved thinking で、このとき budget_tokens は max_tokens を超えられる。また、予算は厳密な上限ではなく目標であり、max_tokens が総出力の上限として働く。",
+  "explanation": "正解は a です。Extended thinking のドキュメントの Budget rules によると、budget_tokens は 1,024 トークン以上で、max_tokens 未満でなければなりません。thinking のトークンはそのターンの max_tokens に数えられるため、最終回答の分を残す必要があるからです。例外は手動モードの interleaved thinking で、予算が 1 つの assistant ターンのすべての思考ブロックにまたがるため、max_tokens を超えられます。なお、このページは手動の拡張思考を legacy feature とし、Claude 4.7 以降のモデルは 400 エラーで拒否します。\n\n見分け方: 512(b)は最小値の 1,024 を下回ります。同じ値にそろえる c は「max_tokens 未満」を満たしません。budget_tokens が max_tokens を上回る d は、interleaved thinking を使わない今回の条件では許されません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking"
+  ],
+  "topics": [
+   "extended-thinking"
   ]
  },
  {
@@ -253,9 +275,13 @@
   "answer": [
    "c"
   ],
-  "explanation": "出典は、手動モードでは budget_tokens の値がプロンプトに反映されるため、リクエスト間で変更すると、思考モードの切り替えと同様にキャッシュのブレークポイントが無効になると説明する。メッセージ階層のブレークポイントは必ず外れ、ツールやシステムプロンプトの階層が外れるかどうかは、モデルが設定をどこに反映するかによる。実際には、予算を 1 つ選び、キャッシュした会話の間は固定するよう勧めている。",
+  "explanation": "正解は c です。Extended thinking のドキュメントの Prompt caching in manual mode によると、budget_tokens の値はプロンプトに反映されるため、リクエスト間で変えると、思考のモードを切り替えたときと同じようにキャッシュのブレークポイントが無効になります。予算を変えた後、メッセージ階層のブレークポイントは必ず外れます。ページの例でも、3 回目に予算を 4,000 から 8,000 に変えると、cache_read_input_tokens が 0 になり、cache_creation_input_tokens が計上されました。予算は 1 つ選び、キャッシュした会話の間は固定するよう勧めています。\n\n見分け方: 設定がキャッシュに影響しないとする a は、この例と矛盾します。増減の向きは関係しません(b)。ツールとシステムプロンプトの階層が外れるかは、モデルが設定をどこに反映するかによるので、常に外れるとは言えません(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking"
+  ],
+  "topics": [
+   "extended-thinking",
+   "prompt-cache-invalidation"
   ]
  },
  {
@@ -284,15 +310,19 @@
    {
     "id": "d",
     "text": "出力を受け取ったあとに自前のコードで検証し、不正なら同じリクエストを再試行する。",
-    "why": "検証と再試行は安全網にはなるが、保証ではない。失敗のたびに遅延とコストが増え、保証が必要なら Structured Outputs を使う、という出典の助言に沿わない。"
+    "why": "検証と再試行は失敗を後から拾う安全網で、スキーマへの準拠を保証しない。保証が必要な場合について出典が示すのは Structured Outputs である。"
    }
   ],
   "answer": [
    "c"
   ],
-  "explanation": "出典は、出力の一貫性を高める手法(出力形式の指定、例による制約、検索による文脈の固定、プロンプトの連鎖など)を紹介する冒頭で、常に有効でスキーマに適合した JSON が必要なら、これらのプロンプト手法の代わりに Structured Outputs を使うよう述べている。Structured Outputs はスキーマへの適合を保証するための機能であり、それ以外の手法は一般的な一貫性や、厳密な JSON スキーマ以外の柔軟さが必要な場合に使う。",
+  "explanation": "正解は c です。Increase output consistency のドキュメントは冒頭で、特定のスキーマに常に従う有効な JSON が必要なら、ページで紹介するプロンプトの手法ではなく Structured Outputs を使うよう述べています。Structured Outputs はスキーマへの準拠を保証する、まさにこの用途のための機能で、JSON 出力は output_config.format で指定します。プロンプトの手法は、一般的な一貫性や、厳密な JSON スキーマを超える柔軟さが必要なときに役立つとされています。\n\n見分け方: 出力形式の詳しい指定(a)と例の提示(b)は一貫性を高める手法ですが、スキーマへの準拠は保証しません。受け取った後の検証と再試行(d)は失敗を後から拾うもので、準拠そのものを保証しません。保証が必要な場合についてドキュメントが示すのは Structured Outputs です。",
   "refs": [
-   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency"
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency",
+   "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "topics": [
+   "increase-consistency"
   ]
  },
  {
@@ -330,6 +360,9 @@
   "explanation": "正解は b です。プロンプトキャッシュのドキュメントは、この構成を「よくある誤り」として挙げています。書き込みはブレークポイントでだけ起き、ハッシュは先頭からの累積なので、毎回変わる時刻を含むブロック 6 に置くと毎回書き込みだけが起きて読み出しは起きません。自動キャッシュも最後のキャッシュ可能なブロック(ここではブロック 6)にブレークポイントを置くため同じ問題が起きます。リクエスト間で同じ最後のブロック 5 に明示の cache_control を置けば、以後のリクエストはキャッシュを読めます。\n\n見分け方: ヒットしない原因が「寿命」(a)か「プレフィックスの不一致」かを分けます。ルックバックは過去の書き込みを探すだけで、安定した内容を見つけてキャッシュはしません(c)。変わる内容を先頭に置くと、後ろはすべて不一致になります(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-caching"
   ]
  },
  {
@@ -368,6 +401,9 @@
   "explanation": "正解は a と c です。Context editing のドキュメントによると、ツール結果の消去は内容を消すたびにキャッシュされたプレフィックスを無効にします。そのため clear_at_least で 1 回に消す最小量を指定し、その量を消せないときは消去を行わないようにして、キャッシュを壊すだけの価値があるかを決めます。また exclude_tools に挙げたツールの呼び出しと結果は、決して消去されません。\n\n見分け方: clear_tool_inputs は消す範囲を広げる設定で、キャッシュの保護とは関係ありません(b)。消去はサーバー側で行われ、クライアントは完全な履歴をそのまま管理し続けるとドキュメントは述べています(d)。なお既定では trigger が入力 100,000 トークン、keep が直近 3 回のツール使用です。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/context-editing"
+  ],
+  "topics": [
+   "context-editing"
   ]
  },
  {
@@ -406,6 +442,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/compaction",
    "https://platform.claude.com/docs/en/build-with-claude/compaction-background"
+  ],
+  "topics": [
+   "compaction",
+   "context-editing"
   ]
  },
  {
@@ -444,6 +484,9 @@
   "refs": [
    "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices",
    "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview"
+  ],
+  "topics": [
+   "agent-skills-best-practices"
   ]
  },
  {
@@ -481,6 +524,10 @@
   "explanation": "正解は a です。Models overview によると、Models API の応答には各モデルの capabilities があり、thinking.types.disabled はそのモデルが thinking: {type: \"disabled\"} を受け付けるかを示します。supported が false のモデルは 400 エラーで拒否します。また、各モデルの line は属する系統を示し、Claude Opus 4.5 と 4.6 はどちらも opus を返します。ドキュメントは、系統を id から推測せずに line を読むよう述べています。\n\n見分け方: 「ID から推測する」(b)、「値を固定とみなす」(d)、「supported が true なら必ず通る」(c)は、どれもドキュメントが明示的に避けるよう述べている扱いです。supported が true でも、effort の値など別の理由で拒否されることがあるので、エラー処理は残します。",
   "refs": [
    "https://platform.claude.com/docs/en/models/overview"
+  ],
+  "topics": [
+   "models-overview",
+   "thinking-types-by-model"
   ]
  },
  {
@@ -518,6 +565,9 @@
   "explanation": "正解は b です。記事 Effective context engineering for AI agents は、エージェントが軽い識別子(ファイルパス、保存したクエリ、リンクなど)を持ち、実行時にツールでデータを読み込む「just in time」の方式を紹介しています。一方で、実行時の探索は事前に用意したデータの取得より遅いというトレードオフも挙げ、速さのために一部を先に取得し、残りを自律的に探索させるハイブリッドの戦略を示しています。この戦略は、法務や金融のように内容の変化が少ない文脈に向く場合があるとしています。\n\n見分け方: 記事の原則は「望む結果の見込みを最大にする、高信号のトークンの最小の集合」です。すべてを詰め込む(a)のはこれに反し、すべてを探索させる(c)のは速さを損ないます。例外の羅列(d)は記事が勧めていません。",
   "refs": [
    "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents"
+  ],
+  "topics": [
+   "context-engineering"
   ]
  },
  {
@@ -556,6 +606,9 @@
   "explanation": "正解は b と d です。Prompting best practices によると、Claude 4.6 以降のモデルでは、最後の assistant ターンへの prefill は受け付けられず、400 エラーが返ります。ほかの位置の assistant メッセージは影響を受けません。用途ごとの移行先として、前置きを省くには system プロンプトで前置きなしに答えるよう直接指示し(XML タグ、構造化出力、ツール呼び出しも挙げられています)、残った前置きは後処理で取り除きます。続きを書かせるには、依頼を user メッセージに移し、途切れた応答の末尾を含めて伝えます。\n\n見分け方: 400 の原因は「最後の assistant ターンに部分的な応答を置くこと」そのものです。max_tokens を変えても(a)、全文を assistant として送り直しても(c)、prefill であることは変わりません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "output-format-control"
   ]
  },
  {
@@ -590,10 +643,14 @@
   "answer": [
    "c"
   ],
-  "explanation": "正解は c です。Prompting Claude Sonnet 5.5 のドキュメントによると、Sonnet 5.5 を最初の思考なしで動かすには thinking: {\"type\": \"between_tools\"} を送ります。この値は effort が high 以下のときに受け付けられ、xhigh や max では 400 エラーになります。また、考えないよう指示する文は取り除くよう案内しています。残すと内部の XML タグが見える出力に出やすくなるためです。\n\n見分け方: Thinking のトラブルシューティングによると、Sonnet 5.5 は disabled をどの effort でも拒否します。high 以下で受け付けるのは Opus 5 と Haiku 5.5 です(a)。between_tools は xhigh や max では使えず(b)、display や budget_tokens などのフィールドを一緒に送ると 400 エラーになります(d)。",
+  "explanation": "正解は c です。Prompting Claude Sonnet 5.5 のドキュメントによると、Sonnet 5.5 を最初の思考なしで動かすには thinking: {\"type\": \"between_tools\"} を送ります。この値は effort が high 以下のときに受け付けられ、xhigh や max では 400 エラーになります。また、考えないよう指示する文は取り除くよう案内しています。残すと内部の XML タグが見える出力に出やすくなるためです。\n\n見分け方: Troubleshooting thinking の表によると、Sonnet 5.5 は disabled をどの effort でも拒否し、high 以下で disabled を受け付けるのは Opus 5 と Haiku 5.5 です(a)。between_tools は xhigh や max と組み合わせると 400 エラーになります(b)。between_tools はほかのフィールドを取らず、budget_tokens などを一緒に送ると 400 エラーです(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5",
    "https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting"
+  ],
+  "topics": [
+   "thinking-types-by-model",
+   "effort"
   ]
  },
  {
@@ -633,6 +690,10 @@
    "https://platform.claude.com/docs/en/build-with-claude/effort-per-message",
    "https://platform.claude.com/docs/en/build-with-claude/effort",
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "effort",
+   "prompt-cache-invalidation"
   ]
  },
  {
@@ -651,7 +712,7 @@
    {
     "id": "b",
     "text": "thinking に budget_tokens を小さく指定して、思考に使うトークンの上限を決める。adaptive thinking でも予算を渡せば、その量で思考が打ち切られる。",
-    "why": "adaptive thinking では思考の予算を設定しない。Haiku 5.5 は思考の種類として adaptive だけに対応し、enabled を 400 エラーで拒否する。"
+    "why": "adaptive thinking では思考の予算を設定しない。Haiku 5.5 は budget_tokens を使う enabled を 400 エラーで拒否する。"
    },
    {
     "id": "c",
@@ -672,6 +733,10 @@
    "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost",
    "https://platform.claude.com/docs/en/build-with-claude/effort",
    "https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting"
+  ],
+  "topics": [
+   "effort",
+   "thinking"
   ]
  },
  {
@@ -710,6 +775,10 @@
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost",
    "https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting"
+  ],
+  "topics": [
+   "thinking",
+   "effort"
   ]
  },
  {
@@ -747,6 +816,9 @@
   "explanation": "正解は d です。Prompt caching のドキュメントによると、キャッシュの期限は、エントリを書き込むか読み出したリクエストの開始から数え、応答の完了からではありません。生成にかかった時間も期限に含まれ、たとえば応答のストリーミングに 4 分かかると、次のリクエストは完了から約 1 分以内に始める必要があります。応答が長く、次のリクエストが期限を過ぎるおそれがあるなら、1 時間の TTL を使うよう案内しています。1 時間の書き込みは基本の入力料金の 2 倍です。\n\n見分け方: 期限は完了からではなく開始から数えます(a)。期限はキャッシュが使われるたびに更新されます(b)。5 分と 1 時間でレイテンシは同じですが、ここで効くのは期限の長さです(c)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-caching"
   ]
  },
  {
@@ -784,6 +856,9 @@
   "explanation": "正解は a です。Prompt caching のドキュメントによると、5 分より短い間隔で使うプロンプトは 5 分のキャッシュのままにします。追加料金なしで更新され続けるためです。1 時間のキャッシュは、5 分より長く 1 時間より短い間隔で使われるプロンプトに向きます。1 つのリクエストで 1 時間と 5 分の cache_control を併用できますが、長い TTL のエントリが短いものより前に来なければなりません。キャッシュは tools、system、messages の順なので、マニュアル(system)に 1 時間、会話の末尾に 5 分を置けます。\n\n見分け方: 5 分の後ろに 1 時間を置く(b)のは順序の制約に反します。レイテンシは 5 分と 1 時間で同じです(c)。TTL は cache_control ごとに \"ttl\" で指定します(d)。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ],
+  "topics": [
+   "prompt-caching"
   ]
  },
  {
@@ -821,6 +896,9 @@
   "explanation": "正解は c です。Prompting best practices の Control the format of responses によると、出力の書式を導くには、してはいけないこと(「Markdown を使わない」)ではなく、してほしいこと(「なめらかに流れる散文の段落で書く」)を伝えるのが効果的です。また、プロンプトの書式は応答の書式に影響しうるので、プロンプトの書き方を望む出力に合わせ、プロンプトから Markdown を除くと出力の Markdown も減らせるとしています。\n\n見分け方: Opus 5 では effort を変えても見える応答の長さは確実には変わらず、簡潔さはプロンプトで明示するよう案内されています(a)。禁止の一覧を箇条書きで足す(b)のは、否定の形のままでプロンプトの書式も出力と食い違います。指示の場所を user メッセージに移しても(d)、否定の形は変わりません。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "output-format-control"
   ]
  },
  {
@@ -858,6 +936,9 @@
   "explanation": "正解は b です。Prompting best practices の Long context prompting によると、20k トークンを超えるような長い入力では、長い文書を質問、指示、例より上に置きます。末尾に置いた質問は、テストで応答の品質を最大 30% 改善したとされます。複数の文書は <document> で囲み、<document_content> と <source> などの子タグを付けます。さらに、先に関係する部分を引用させると、関係する内容に集中しやすくなるとしています。\n\n見分け方: 指示を冒頭に置いたままの区切り行(a)は、配置と構造化の助言に合いません。c は配置は正しいものの、勧められている引用を外しています。役割と例の増量(d)は配置の問題に答えておらず、例の目安は 3〜5 件です。",
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ],
+  "topics": [
+   "long-context-prompting"
   ]
  }
 ]
