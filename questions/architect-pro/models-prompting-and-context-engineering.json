@@ -557,5 +557,307 @@
   "refs": [
    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
   ]
+ },
+ {
+  "id": "arp-mod-016",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Sonnet 5 で動くツール付きのチャット窓口を Claude Sonnet 5.5 に移行する。現行は応答を速くするため thinking: {\"type\": \"disabled\"} と effort の xhigh を送り、システムプロンプトに「考えずに即答すること」という指示を入れている。移行後も、最初に考えずに応答させたい。ドキュメントに沿った構成はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "thinking: {\"type\": \"disabled\"} はそのまま送り、effort だけを high 以下に下げる。思考を止める disabled は、effort が high 以下なら Sonnet 5.5 でも受け付けられるため。",
+    "why": "Sonnet 5.5 は disabled をどの effort でも 400 エラーで拒否する。high 以下でなら disabled を受け付けるのは Opus 5 と Haiku 5.5 である。"
+   },
+   {
+    "id": "b",
+    "text": "thinking: {\"type\": \"between_tools\"} に変え、effort は xhigh のまま維持する。between_tools は effort の値にかかわらず、最初の思考だけを止める設定だから。",
+    "why": "between_tools が受け付けられるのは effort が high 以下のときだけで、xhigh や max と組み合わせると 400 エラーになる。"
+   },
+   {
+    "id": "c",
+    "text": "thinking: {\"type\": \"between_tools\"} に変えて effort を high 以下にし、システムプロンプトから「考えずに即答すること」という指示を取り除く。",
+    "why": "正しい。Sonnet 5.5 で最初の思考なしに応答させる設定は between_tools で、high 以下の effort で受け付けられる。考えないよう指示する文は取り除くよう案内されている。"
+   },
+   {
+    "id": "d",
+    "text": "thinking に {\"type\": \"between_tools\", \"budget_tokens\": 1024} を送り、ツール呼び出しの間に書くメモの量も上限で抑える。effort は xhigh のままにする。",
+    "why": "between_tools はほかのフィールドを取らず、budget_tokens などを付けると 400 エラーになる。xhigh との組み合わせも 400 エラーになる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Prompting Claude Sonnet 5.5 のドキュメントによると、Sonnet 5.5 を最初の思考なしで動かすには thinking: {\"type\": \"between_tools\"} を送ります。この値は effort が high 以下のときに受け付けられ、xhigh や max では 400 エラーになります。また、考えないよう指示する文は取り除くよう案内しています。残すと内部の XML タグが見える出力に出やすくなるためです。\n\n見分け方: Thinking のトラブルシューティングによると、Sonnet 5.5 は disabled をどの effort でも拒否します。high 以下で受け付けるのは Opus 5 と Haiku 5.5 です(a)。between_tools は xhigh や max では使えず(b)、display や budget_tokens などのフィールドを一緒に送ると 400 エラーになります(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5-5",
+   "https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting"
+  ]
+ },
+ {
+  "id": "arp-mod-017",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Opus 5.5 で、長い設計書をプロンプトキャッシュに載せた対話型のレビュー支援を作っている。会話の大半は既定の effort で進めるが、利用者が「この変更を承認」と返すだけの定型のターンは、もっと軽く処理したい。それまでのキャッシュの読み出しは保ちたい。ドキュメントに沿った方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "定型の利用者ターンの直後に、content が空で output_config.effort に low を入れた role: \"system\" のメッセージを加え、ベータヘッダーを付ける。トップレベルの effort は変えない。",
+    "why": "正しい。Per-message effort は messages 内の system メッセージで effort を変える方法で、トップレベルの値を変えないため、キャッシュされたプレフィックスが一致したまま残る。Opus 5.5 は対応モデルに含まれる。"
+   },
+   {
+    "id": "b",
+    "text": "定型のターンのリクエストだけ、トップレベルの output_config.effort を low にして送り、次のターンで既定の medium に戻す。effort は出力の量だけを調整する設定なので、キャッシュには影響しない。",
+    "why": "effort の値はプロンプトに描画されるため、トップレベルの値を変えると、キャッシュの全部または一部が無効になりうる。"
+   },
+   {
+    "id": "c",
+    "text": "定型のターンのリクエストだけ thinking: {\"type\": \"disabled\"} を送り、思考を止めて応答を軽くする。thinking の設定はキャッシュされるプレフィックスには含まれないので、それまでの読み出しは続く。",
+    "why": "Opus 5.5 は思考が常にオンで、disabled はどの effort でも 400 エラーになる。thinking の設定もプロンプトに描画され、変えるとメッセージのキャッシュが無効になる。"
+   },
+   {
+    "id": "d",
+    "text": "定型のターンのたびに、トップレベルの system フィールドの末尾へ「この要求は思考を控えて簡潔に処理すること」と書き足す。messages の会話の履歴は変えないので、キャッシュはそのまま読み出せる。",
+    "why": "キャッシュは tools、system、messages の順の階層で、system を変えるとその後ろの messages も含めて無効になる。会話の途中で指示を足すなら、messages に system メッセージを追加するよう案内されている。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Per-message effort のドキュメントによると、会話の途中で effort を変えるには、content が空で output_config.effort に新しい値を入れた role: \"system\" のメッセージを messages に加え、ベータヘッダーを送り、トップレベルの値は変えません。それより前が変わらないので、キャッシュされたプレフィックスは一致したままです。利用者のターンの直後に置けば、そのターンへの応答から新しい値が使われます。\n\n見分け方: Effort のドキュメントによると、トップレベルの effort を変えるとキャッシュの全部または一部が無効になりえます(b)。Opus 5.5 は thinking: {\"type\": \"disabled\"} をどの effort でも 400 エラーにします(c)。トップレベルの system を書き換えると、その後ろの messages のキャッシュも無効になります(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/effort-per-message",
+   "https://platform.claude.com/docs/en/build-with-claude/effort",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "arp-mod-018",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Haiku 5.5 で、大量の問い合わせを部門に振り分ける分類 API を運用している。thinking は指定しておらず、effort も既定のままである。単純な問い合わせでも思考が出てレイテンシの要件を超えるため、システムプロンプトに「深く考えず直接答えること」と加えたが、思考はほとんど減らなかった。ドキュメントに沿った次の一手はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "指示の文言をさらに強め、システムプロンプトと各ユーザーターンの両方で「思考しないこと」を繰り返す。思考するかどうかはプロンプトで決まるので、言い回しを強めれば止められる。",
+    "why": "Steering thinking のドキュメントは、Haiku 5.5 では直接答えるようプロンプトで頼んでも思考は止まらなかったと述べ、思考を減らすには effort を下げるよう案内している。"
+   },
+   {
+    "id": "b",
+    "text": "thinking に budget_tokens を小さく指定して、思考に使うトークンの上限を決める。adaptive thinking でも予算を渡せば、その量で思考が打ち切られる。",
+    "why": "adaptive thinking では思考の予算を設定しない。Haiku 5.5 は思考の種類として adaptive だけに対応し、enabled を 400 エラーで拒否する。"
+   },
+   {
+    "id": "c",
+    "text": "max_tokens を応答本文がちょうど収まる程度まで小さくし、思考に回る余地をなくす。思考のトークンは max_tokens には数えられないので、本文は途中で切れない。",
+    "why": "思考は max_tokens に数えられる。思考と本文の合計の上限なので、小さくすると思考の途中で応答が切れ、stop_reason が max_tokens になる。"
+   },
+   {
+    "id": "d",
+    "text": "effort を low に下げる。Haiku 5.5 で思考を減らすには effort を下げるよう案内されており、low は単純で大量のリクエストに向く水準とされている。",
+    "why": "正しい。effort は思考の頻度と深さを決める主な手段で、Haiku 5.5 の推奨でも low はチャット、短いツール作業、単純で大量のリクエストに使うとされている。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Steering thinking のドキュメントによると、Claude の思考は adaptive で、思考するかどうかと量を決める主な手段は effort です。思考を減らしたいときは、プロンプトで誘導する前に effort を下げるよう勧めています。Haiku 5.5 については、プロンプトで直接答えるよう頼んでも思考が止まらなかったと明記しています。Effort のドキュメントは、Haiku 5.5 の low を単純で大量のリクエストに使う水準としています。\n\n見分け方: Haiku 5.5 では文言を強めても確実には減りません(a)。adaptive thinking では思考の予算を設定せず、Haiku 5.5 は enabled を拒否します(b)。max_tokens は思考と本文を合わせた上限なので、小さくすると応答が切れます(c)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost",
+   "https://platform.claude.com/docs/en/build-with-claude/effort",
+   "https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting"
+  ]
+ },
+ {
+  "id": "arp-mod-019",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Opus 5.5 で、effort を high にした法務文書の分析 API を運用している。max_tokens は、思考のない応答を想定して 2,000 にしてある。難しい案件の一部で stop_reason が \"max_tokens\" になり、回答が途中で切れる。切れた案件はどれも推論が必要で、品質を落とせない。Steering thinking のドキュメントに沿った対処はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "effort を low に下げて思考を減らし、max_tokens の枠を本文に残す。応答が切れるのは考えすぎが原因なので、推論を減らしても回答の品質は変わらない。",
+    "why": "effort を下げるのは、切れた応答が考えすぎだった場合の対処である。推論が必要で品質を落とせない案件では、上限を引き上げるほうを選ぶ。"
+   },
+   {
+    "id": "b",
+    "text": "max_tokens を引き上げて、思考と回答の両方が収まる余地を作る。思考は max_tokens に数えられるため、思考のない応答を想定した値では足りなくなる。",
+    "why": "正しい。max_tokens は思考と本文を合わせた出力の上限で、思考を前提にしない値は難しいリクエストでは小さすぎることが多い。品質が重要なら上限を引き上げる。"
+   },
+   {
+    "id": "c",
+    "text": "thinking に budget_tokens を指定して思考の量を決め、本文と合わせて max_tokens に収まるようにする。adaptive thinking でも思考の予算は自分で決めるのが基本である。",
+    "why": "adaptive thinking では思考の予算を設定せず、費用は max_tokens と effort で抑える。Opus 5.5 は思考の種類として enabled を 400 エラーで拒否する。"
+   },
+   {
+    "id": "d",
+    "text": "thinking の display を omitted にして、思考の内容を応答に含めないようにする。見えない思考は出力に数えられないので、max_tokens の枠をすべて本文に回せる。",
+    "why": "display は見える内容を変えるだけで、課金される出力トークンは summarized と同じく思考の全体である。思考が出力に数えられることは変わらない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。Steering thinking のドキュメントによると、max_tokens は思考と本文を合わせた出力の上限で、思考のない応答を想定した値は、難しいリクエストで思考が始まると小さすぎることが多いとされます。stop_reason: \"max_tokens\" が出たときの対処は、max_tokens を引き上げるか effort を下げるかの 2 つで、切れた応答に推論が必要だったかで選びます。品質が重要なら上限を引き上げ、考えすぎなら effort を下げます。\n\n見分け方: この場面は品質を落とせないので、effort を下げる(a)のは合いません。adaptive thinking では思考の予算を設定しません(c)。display を omitted にしても課金される思考のトークンは変わらず、見える内容が変わるだけです(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost",
+   "https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting"
+  ]
+ },
+ {
+  "id": "arp-mod-020",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Sonnet 5.5 のレポート生成エージェントで、共通の長い指示(約 40,000 トークン)を 5 分の TTL でキャッシュしている。1 回の応答の生成に約 4 分かかり、応答を受け取ってから 2〜3 分後に、同じプレフィックスで次のリクエストを送る。ブレークポイントの位置は正しいのに、次のリクエストでキャッシュの読み出しが起きないことが多い。ドキュメントに沿った説明と対処はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "TTL は応答の完了時点から数えるので、2〜3 分後の次のリクエストは期限内である。原因は TTL ではないので、ブレークポイントを 4 つまで増やして読み出しの候補を増やす。",
+    "why": "TTL はキャッシュを書き込んだり読み出したりしたリクエストの開始から数え、応答の生成時間も含まれる。完了から数えるのではない。"
+   },
+   {
+    "id": "b",
+    "text": "キャッシュは 5 分ごとに必ず消えるので、使うたびに期限が延びることはない。指示を 2 つのブロックに分け、片方ずつ交互に書き込んで常にどちらかを有効に保つ。",
+    "why": "キャッシュの期限は、キャッシュされた内容が使われるたびに更新される。交互に書き込むような方法はドキュメントにない。"
+   },
+   {
+    "id": "c",
+    "text": "1 時間の TTL にしても、5 分のものとレイテンシは変わらないので効果はない。応答を複数のリクエストに分けて、1 回の生成が 1 分以内に終わるようにする。",
+    "why": "5 分と 1 時間のキャッシュでレイテンシが同じなのは事実だが、ここでの問題は期限切れである。1 時間の TTL なら次のリクエストまで期限が残る。"
+   },
+   {
+    "id": "d",
+    "text": "TTL は書き込みや読み出しをしたリクエストの開始から数え、生成にかかった時間もその中に含まれる。次のリクエストが期限を過ぎているので、cache_control に \"ttl\": \"1h\" を指定する。",
+    "why": "正しい。応答の生成に 4 分かかると、次のリクエストは完了から約 1 分以内に始める必要がある。それより後になるなら 1 時間の TTL を使うよう案内されている。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Prompt caching のドキュメントによると、キャッシュの期限は、エントリを書き込むか読み出したリクエストの開始から数え、応答の完了からではありません。生成にかかった時間も期限に含まれ、たとえば応答のストリーミングに 4 分かかると、次のリクエストは完了から約 1 分以内に始める必要があります。応答が長く、次のリクエストが期限を過ぎるおそれがあるなら、1 時間の TTL を使うよう案内しています。1 時間の書き込みは基本の入力料金の 2 倍です。\n\n見分け方: 期限は完了からではなく開始から数えます(a)。期限はキャッシュが使われるたびに更新されます(b)。5 分と 1 時間でレイテンシは同じですが、ここで効くのは期限の長さです(c)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "arp-mod-021",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Opus 5.5 の社内ヘルプデスクで、全社共通の長い運用マニュアルをシステムプロンプトに置く。会話が始まるのは 1 日に数回で、会話と会話の間は 10〜40 分空く。会話が始まると、数十秒おきにやり取りが続く。1 つのリクエストの中で、マニュアルの末尾と会話の最後のブロックにブレークポイントを置く。Prompt caching のドキュメントに沿った TTL の指定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "マニュアルの末尾に \"ttl\": \"1h\"、会話の最後のブロックには既定の 5 分を指定する。長い TTL のエントリが短いものより前に来るので、1 つのリクエストで混在させられる。",
+    "why": "正しい。会話の間隔が 5 分を超えるマニュアルは 1 時間、数十秒おきに使われる会話の部分は無料で更新され続ける 5 分が合う。1 時間のエントリは 5 分のものより前に置く必要がある。"
+   },
+   {
+    "id": "b",
+    "text": "マニュアルの末尾に既定の 5 分、会話の最後のブロックに \"ttl\": \"1h\" を指定する。利用者が返信するまでの待ち時間に備えるため、後ろのブロックほど長い TTL にする。",
+    "why": "TTL を混在させるときは、長い TTL のエントリが短いものより前に来なければならない。5 分のエントリの後ろに 1 時間のエントリを置く構成は、この制約に反する。"
+   },
+   {
+    "id": "c",
+    "text": "両方のブレークポイントに \"ttl\": \"1h\" を指定する。1 時間のキャッシュは 5 分のものよりレイテンシが小さいので、数十秒おきのやり取りでも応答が速くなる。",
+    "why": "5 分と 1 時間のキャッシュはレイテンシの面で同じである。5 分より短い間隔で使う部分は、追加料金なしで更新され続ける 5 分のキャッシュを使うよう案内されている。"
+   },
+   {
+    "id": "d",
+    "text": "TTL はリクエストのトップレベルで 1 つだけ指定する設定なので、マニュアルの間隔に合わせてリクエスト全体を 1 時間にする。ブロックごとの cache_control には TTL を書かず、type だけを指定する。",
+    "why": "TTL は cache_control の中に \"ttl\" として書き、1 つのリクエストで 1 時間と 5 分の cache_control を併用できる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Prompt caching のドキュメントによると、5 分より短い間隔で使うプロンプトは 5 分のキャッシュのままにします。追加料金なしで更新され続けるためです。1 時間のキャッシュは、5 分より長く 1 時間より短い間隔で使われるプロンプトに向きます。1 つのリクエストで 1 時間と 5 分の cache_control を併用できますが、長い TTL のエントリが短いものより前に来なければなりません。キャッシュは tools、system、messages の順なので、マニュアル(system)に 1 時間、会話の末尾に 5 分を置けます。\n\n見分け方: 5 分の後ろに 1 時間を置く(b)のは順序の制約に反します。レイテンシは 5 分と 1 時間で同じです(c)。TTL は cache_control ごとに \"ttl\" で指定します(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+  ]
+ },
+ {
+  "id": "arp-mod-022",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Opus 5 で社内向けの調査レポートを生成している。システムプロンプトは Markdown の見出しと箇条書きで書かれており、その中に「Markdown を使わないこと」という一文がある。出力には見出し、太字、短い箇条書きが多く、読みにくいと言われている。Prompting best practices の出力形式の助言に最も沿った改善はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "effort を low に下げる。effort は出力トークン全体の量を決めるので、下げれば応答が短くなり、見出しや箇条書きも減って散文に近づく。",
+    "why": "Opus 5 では effort を上げ下げしても見える応答の長さは確実には変わらないとされ、簡潔さはプロンプトで明示するよう案内されている。書式を変える手段でもない。"
+   },
+   {
+    "id": "b",
+    "text": "禁止する書式(見出し、太字、箇条書き)をシステムプロンプトの冒頭に Markdown の箇条書きで一覧にし、それぞれに「使わないこと」と書き添えて禁止を明確にする。",
+    "why": "してはいけないことを並べる形のままで、してほしい書き方を示していない。プロンプトの書式は出力の書式に影響しうるので、箇条書きで書くと逆効果になりうる。"
+   },
+   {
+    "id": "c",
+    "text": "禁止の一文を「回答は、なめらかに流れる散文の段落で書くこと」のような、してほしい書き方を述べる指示に改め、システムプロンプト自体の見出しと箇条書きも散文に直す。",
+    "why": "正しい。してはいけないことではなく、してほしいことを伝える。プロンプトの書き方を望む出力に合わせ、プロンプトから Markdown を除くと出力の Markdown も減らせるとされている。"
+   },
+   {
+    "id": "d",
+    "text": "書式の指示はシステムプロンプトから外し、各 user メッセージの末尾で毎回「Markdown を使わないこと」と伝える。新しい入力の直後に置いた指示のほうが強く効くため。",
+    "why": "指示の場所を移しても、してはいけないことを伝える形は変わらない。ユーザーのターンに置けば書式の指示が強く効くという記述は出典にない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Prompting best practices の Control the format of responses によると、出力の書式を導くには、してはいけないこと(「Markdown を使わない」)ではなく、してほしいこと(「なめらかに流れる散文の段落で書く」)を伝えるのが効果的です。また、プロンプトの書式は応答の書式に影響しうるので、プロンプトの書き方を望む出力に合わせ、プロンプトから Markdown を除くと出力の Markdown も減らせるとしています。\n\n見分け方: Opus 5 では effort を変えても見える応答の長さは確実には変わらず、簡潔さはプロンプトで明示するよう案内されています(a)。禁止の一覧を箇条書きで足す(b)のは、否定の形のままでプロンプトの書式も出力と食い違います。指示の場所を user メッセージに移しても(d)、否定の形は変わりません。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ]
+ },
+ {
+  "id": "arp-mod-023",
+  "cert": "architect-pro",
+  "domain": "models-prompting-and-context-engineering",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "契約審査の支援で、1 件あたり 12 本の契約書(合計約 150,000 トークン)を読ませ、契約書の間で矛盾する条項を指摘させる。現行のプロンプトは、冒頭に指示と出力例を置き、その後に契約書を区切りなしで連結している。回答では、どの契約書の条項かの取り違えと、関係のない条項への言及が目立つ。Prompting best practices の長いコンテキストの助言に最も沿った改善はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "指示と出力例を冒頭に置いたまま、各契約書の前に「--- 次の文書 ---」という区切りの行を入れ、契約書の名前もその行に書く。指示を先に読ませれば、契約書を読む観点が最初に定まるため。",
+    "why": "ドキュメントは長い資料を質問や指示、例より上に置き、質問を末尾に置くよう勧めている。複数の文書は XML タグとメタデータで構造化するよう勧めている。"
+   },
+   {
+    "id": "b",
+    "text": "契約書を冒頭に置いて各々を <document> で囲み、<source> と <document_content> の子タグを付ける。質問と指示は末尾に置き、まず関係する条項を引用させてから分析させる。",
+    "why": "正しい。長い資料を上部に置き、複数の文書を <document> と子タグで構造化し、先に関係する部分を引用させるのは、いずれも長いコンテキストの助言にある方法である。"
+   },
+   {
+    "id": "c",
+    "text": "契約書を冒頭に移し、質問と指示を末尾に置く。各契約書は Markdown の見出しで区切って出典名を 1 行目に書く。引用させると根拠の取り違えが増えるので、引用は求めずに直接分析させる。",
+    "why": "配置は助言に沿うが、ドキュメントは長い文書の課題で先に関係する部分を引用させるよう勧めている。引用させると関係する内容に集中し、ほかを無視しやすくなるとされる。"
+   },
+   {
+    "id": "d",
+    "text": "「契約審査の専門家」という役割をシステムプロンプトで与え、出力例を 10 件以上に増やして回答の形と観点をそろえる。契約書の配置と区切り方は今のままにする。",
+    "why": "役割の設定は振る舞いと口調を定めるもので、配置の問題は解決しない。例の数の目安は 3〜5 件とされている。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。Prompting best practices の Long context prompting によると、20k トークンを超えるような長い入力では、長い文書を質問、指示、例より上に置きます。末尾に置いた質問は、テストで応答の品質を最大 30% 改善したとされます。複数の文書は <document> で囲み、<document_content> と <source> などの子タグを付けます。さらに、先に関係する部分を引用させると、関係する内容に集中しやすくなるとしています。\n\n見分け方: 指示を冒頭に置いたままの区切り行(a)は、配置と構造化の助言に合いません。c は配置は正しいものの、勧められている引用を外しています。役割と例の増量(d)は配置の問題に答えておらず、例の目安は 3〜5 件です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+  ]
  }
 ]

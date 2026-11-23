@@ -742,5 +742,416 @@
    "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
    "https://platform.claude.com/docs/en/models/overview"
   ]
+ },
+ {
+  "id": "arp-sol-021",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "scenarioId": null,
+  "type": "single",
+  "stem": "Managed Agents で運用中の請求照会エージェント(現在 version 3)のシステムプロンプトを改善して更新し、version 4 ができた。本番の大半のセッションは version 3 のまま動かし、一部のセッションだけで version 4 を試してから切り替えたい。Start a session のドキュメントに沿った方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "セッションの作成時に agent の ID を文字列で渡す。文字列で渡したセッションは、そのセッションを作った時点で本番に使っている版に固定されるので、version 4 を試すセッションとは自然に分かれる。",
+    "why": "ID を文字列で渡すと、エージェントの最新の版でセッションが作られる。本番のセッションも version 4 になり、版を分けられない。"
+   },
+   {
+    "id": "b",
+    "text": "version 3 用と version 4 用に別々の environment を作り、environment の版をセッションに固定して切り替える。environment に版の履歴が残るので、どの設定で動いたかも追える。",
+    "why": "environment は版を持たない。ドキュメントは、頻繁に更新するなら変更を自分で記録するよう案内している。エージェントの版を選ぶ仕組みでもない。"
+   },
+   {
+    "id": "c",
+    "text": "本番のセッションは agent に {\"type\": \"agent\", \"id\": ..., \"version\": 3} のオブジェクトを渡して版を固定し、試すセッションだけ version 4 を指定して作る。",
+    "why": "正しい。版を指定したオブジェクトを渡すと、どの版が動くかを制御でき、新しい版の展開を段階的に進められる。"
+   },
+   {
+    "id": "d",
+    "text": "更新時に version を省略すると既存の版が上書きされて version 3 が消えるので、version 3 の設定で別のエージェントを作り直し、本番はその新しい ID を文字列で渡す。",
+    "why": "更新は設定が変わると新しい版を作り、版の履歴は残る(List versions で取得できる)。version を省略した更新は、現在の版を確かめずに適用されるだけで、旧版を消すものではない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Start a session のドキュメントによると、agent に ID を文字列で渡すとエージェントの最新の版でセッションが作られます。特定の版にセッションを固定するにはオブジェクト({\"type\": \"agent\", \"id\", \"version\"})を渡し、これでどの版が動くかを制御して新しい版の展開を段階的に進められます。Define your agent のページによると、エージェントは更新で設定が変わるたびに新しい版を作ります。\n\n見分け方: 文字列で渡すと最新の版になるので、本番も version 4 に切り替わります(a)。environment は版を持たず、変更の記録は自分で残すよう案内されています(b)。version を省略した更新は、現在の版を確かめずに適用されるだけで、新しい版が作られ、旧版の履歴は残ります(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/managed-agents/sessions",
+   "https://platform.claude.com/docs/en/managed-agents/agent-setup",
+   "https://platform.claude.com/docs/en/managed-agents/environments"
+  ]
+ },
+ {
+  "id": "arp-sol-022",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "scenarioId": null,
+  "type": "single",
+  "stem": "Managed Agents のエージェントは、bash や read などの agent toolset と MCP のツールを持っている。1 つのセッションだけで、カスタムツール lookup_invoice を追加し、モデルも別のものに変えて試したい。エージェントの版は増やしたくない。agent_with_overrides の使い方として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "tools の override には、元のツールも含めてそのセッションで使うツールをすべて書く。model を override するときは、使いたい effort も model のオブジェクトの中に書く。",
+    "why": "正しい。override はエージェントの設定とマージされず、値を丸ごと置き換える。model の override もオブジェクト全体を置き換えるので、エージェントの effort は引き継がれない。"
+   },
+   {
+    "id": "b",
+    "text": "tools の override には、追加したい lookup_invoice だけを書けばよい。override の値はエージェントの元の設定にマージされるので、model を変えてもエージェントの effort はそのまま引き継がれる。",
+    "why": "override はマージされない。lookup_invoice だけを書くと、そのセッションのツールはそれだけになる。model の override では effort が引き継がれず、そのモデルの既定の水準で動く。"
+   },
+   {
+    "id": "c",
+    "text": "override を使うとエージェントの新しい版が作られるので、試したあとで不要な版を整理するか、ほかのセッションが新しい版を拾わないよう、それらのセッションの版を固定しておく。",
+    "why": "override は作成するセッションにだけ適用され、エージェントを変えず、新しい版も作らない。同じエージェントを参照するほかのセッションは影響を受けない。"
+   },
+   {
+    "id": "d",
+    "text": "まず tools を null にして元のツールを外し、同じリクエストで lookup_invoice を足す。エージェントに skills が設定されていても、tools は null にすれば常に空にできる。",
+    "why": "セッションの skills が空でないときに tools を空にすると、skills が read ツールを必要とするため 400 エラーになる。null は項目を空にする指定で、追加の手段ではない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Start a session のドキュメントによると、agent_with_overrides はエージェントの版を作らずに 1 つのセッションだけ設定を変える形式で、値を指定した項目はエージェントの値を丸ごと置き換え、マージはされません。そのため tools の override にはそのセッションで使うツールをすべて書きます。model の override もオブジェクト全体を置き換えるので、エージェントの effort は引き継がれず、特定の水準で動かすには override の model の中に effort を書きます。\n\n見分け方: マージされるという前提が誤りで、lookup_invoice だけのツール構成になります(b)。override はエージェントを変えず、版も作らず、ほかのセッションに影響しません(c)。skills があるセッションで tools を空にすると 400 エラーです(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/managed-agents/sessions"
+  ]
+ },
+ {
+  "id": "arp-sol-023",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "scenarioId": null,
+  "type": "single",
+  "stem": "Managed Agents のクラウド環境で、エージェントが社外のパートナー API(api.partner.example.com)を呼び、作業の前に pip でパッケージを入れる。情報セキュリティ部門は「外部へ出られる先を最小限に」と求めている。Cloud environment setup のドキュメントに沿った networking の設定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "unrestricted にする。一般的な安全のためのブロックリストが危険なサイトへの通信を止めるので、実際の通信先はパートナー API とパッケージのレジストリにほぼ限られる。",
+    "why": "ブロックリストは許可リストではなく、ほかのサイトへの到達を制限しない。unrestricted は、事前に列挙できないサイトに届く必要があるときだけ使うよう案内されている。"
+   },
+   {
+    "id": "b",
+    "text": "limited にして allowed_hosts に \"https://api.partner.example.com:443\" と pypi.org、files.pythonhosted.org を書き、allow_package_managers は false のまま packages に pip のパッケージを書く。",
+    "why": "allowed_hosts にはスキーム、ポート、パスを含めない。packages を指定するときは allow_package_managers を true にしないと、allowed_hosts にレジストリを書いていても 400 エラーになる。"
+   },
+   {
+    "id": "c",
+    "text": "limited にして allowed_hosts に *.partner.example.com を書き、allow_mcp_servers を true にする。ワイルドカードは partner.example.com 自体にも一致し、パッケージの取得も MCP サーバーの許可に含まれる。",
+    "why": "*.partner.example.com はサブドメインに一致するが partner.example.com 自体には一致しない。allow_mcp_servers はエージェントに設定した MCP サーバーへの通信を許すもので、パッケージのレジストリは含まない。"
+   },
+   {
+    "id": "d",
+    "text": "limited にして allowed_hosts に api.partner.example.com を書き、allow_package_managers を true にして、packages に pip のパッケージを書く。",
+    "why": "正しい。limited は allowed_hosts の先だけに通信を絞り、allow_package_managers を true にすると公開のパッケージレジストリやコードのホストにも届く。packages を使うときは true が必須である。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Cloud environment setup のドキュメントによると、limited は allowed_hosts に書いたホストだけに通信を絞るモードで、事前に列挙できないサイトに届く必要がない限りこちらを使うよう案内されています。allow_package_managers を true にすると公開のパッケージレジストリなどにも届き、packages を指定するときは true にしないと 400 エラーです。\n\n見分け方: unrestricted の安全用のブロックリストは許可リストではありません(a)。allowed_hosts にスキームやポートは書けず、allow_package_managers が false のまま packages を使うと拒否されます(b)。*.example.com の形は親のドメイン自体には一致せず、allow_mcp_servers は MCP サーバーへの通信を許すだけです(c)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/managed-agents/environments"
+  ]
+ },
+ {
+  "id": "arp-sol-024",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "scenarioId": null,
+  "type": "single",
+  "stem": "Agent SDK で作った社内エージェントに、監査部門から「承認のされ方にかかわらず、すべてのツール呼び出しを社内の方針と照合し、違反なら止める」という要件が出た。今は canUseTool のコールバックで照合しているが、Read と Grep は allowedTools に入れ、ファイルの編集は acceptEdits で自動承認している。Configure permissions のドキュメントに沿った対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "canUseTool の照合はそのまま残し、permissionMode を bypassPermissions に変える。bypassPermissions では確認の画面が出ない代わりに、すべての呼び出しが canUseTool を通る。",
+    "why": "bypassPermissions では呼び出しが canUseTool より前に承認され、コールバックはごく一部の呼び出しでしか呼ばれない。TypeScript SDK はこの構成で警告を出す。"
+   },
+   {
+    "id": "b",
+    "text": "照合を PreToolUse フックに移す。フックは allow ルールや acceptEdits で承認される呼び出しにも実行され、フックの deny は bypassPermissions でも効く。",
+    "why": "正しい。ドキュメントは、allow ルール、acceptEdits、bypassPermissions で承認される呼び出しを確かめるには、それらにも実行される PreToolUse フックを使うよう案内している。"
+   },
+   {
+    "id": "c",
+    "text": "allowedTools の Read と Grep を、Read(/src/**) のような指定子付きの規則に書き換える。指定子付きの規則なら、一致した呼び出しも承認の前に canUseTool に回される。",
+    "why": "指定子付きの規則も、一致した呼び出しは自動で承認する。canUseTool に回るのは、一致しなかった呼び出しのうち承認が必要なものである。"
+   },
+   {
+    "id": "d",
+    "text": "permissionMode を dontAsk にして、確認が必要な呼び出しをすべて canUseTool で判定させる。dontAsk は人への確認の代わりにコールバックで自動判定するモードである。",
+    "why": "dontAsk は確認が必要な呼び出しを、canUseTool を呼ばずに拒否するモードである。allow ルールで承認された呼び出しはそのまま動くので、照合も漏れる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。Configure permissions のドキュメントによると、allow ルール、acceptEdits、bypassPermissions のいずれかで承認された呼び出しは canUseTool に届かず、そこに置いた権限の確認は黙って素通りされます。これらの呼び出しを確かめるには、それらにも実行される PreToolUse フックを使うよう案内されており、フックの deny は bypassPermissions でも効きます。\n\n見分け方: bypassPermissions では大半の呼び出しがコールバックより前に承認されます(a)。Read(/src/**) のような指定子付きの規則も、一致した呼び出しは自動で承認します(c)。dontAsk は確認の代わりに拒否するモードで、canUseTool は呼ばれません(d)。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/permissions"
+  ]
+ },
+ {
+  "id": "arp-sol-025",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "scenarioId": null,
+  "type": "single",
+  "stem": "複数の顧客企業(テナント)が契約書の PDF をアップロードし、Claude に分析させる SaaS を Files API で作る。テナント間でファイルを確実に分離し、アップロードから 30 日たったファイルは自動で使えなくしたい。Files API のドキュメントに沿った設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "1 つのワークスペースにすべてのテナントのファイルを置き、file_id とテナントの対応をアプリのデータベースで管理する。期限は、必要になった時点でファイルのメタデータを更新して設定する。",
+    "why": "利用者とファイルの対応をアプリで持つことはドキュメントも勧めているが、ワークスペースに使える API キーならそのワークスペースのどのファイルにもアクセスできる。期限はアップロード時に一度だけ設定し、あとから変更できない。"
+   },
+   {
+    "id": "b",
+    "text": "テナントごとにワークスペースを分ける。期限は設けず、30 日たったファイルはいったんダウンロードして自社の保管庫に移し、それから DELETE /v1/files/{file_id} で削除する。",
+    "why": "アップロードしたファイルはダウンロードできない。ダウンロードできるのは、スキルやコード実行ツールが作ったファイルだけである。"
+   },
+   {
+    "id": "c",
+    "text": "テナントごとにワークスペースを分け、アップロードのときに expires_in_seconds を 2592000(30 日)にする。期限が来たファイルを参照するリクエストは推論の前に失敗する。",
+    "why": "正しい。ワークスペースがファイルの分離の境界で、テナントごとに分けると強く分離できる。expires_in_seconds は 3,600〜7,776,000 秒の整数で指定する。"
+   },
+   {
+    "id": "d",
+    "text": "テナントごとに API キーを発行して同じワークスペースで使い分け、expires_in_seconds を 2592000 にする。期限が来たファイルは、メタデータも含めてその時点で完全に消える。",
+    "why": "ワークスペースに使える API キーなら、そのワークスペースのどのファイルにもアクセスできるので、キーを分けても分離にならない。期限が来たファイルのメタデータは、最大 30 日間は読める。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Files API のドキュメントによると、マルチテナントのアプリではテナントごとにワークスペースを作るよう案内されており、ワークスペースがファイルの分離の境界になります。自動で期限切れにするには、アップロード時に expires_in_seconds(3,600〜7,776,000 秒)を指定します。期限が来たファイルは内容のダウンロードが 404 になり、参照する Messages のリクエストは推論の前に失敗します。\n\n見分け方: 対応表をアプリで持つことは勧められていますが、同じワークスペースのファイルにはそのワークスペースのどのキーからもアクセスでき、期限はアップロード時に一度だけ設定します(a)。アップロードしたファイルはダウンロードできません(b)。API キーを分けても境界にはならず、期限後もメタデータは最大 30 日読めます(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/files"
+  ]
+ },
+ {
+  "id": "arp-sol-026",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "scenarioId": null,
+  "type": "single",
+  "stem": "Agent SDK で、顧客ごとのプロジェクト管理エージェントを自社のコンテナ基盤でホストする。顧客は数日おきに短いやり取りをするだけで、その間セッションは使われない。使われない間はコンテナを止めて費用を抑えたいが、戻ってきた顧客には以前の会話の続きから応対したい。Hosting the Agent SDK のドキュメントに沿ったパターンはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "一時的なコンテナを使い、起動時に SessionStore からセッションを読み込んで更新を書き戻す。顧客ごとに保存したセッション ID で resume する。",
+    "why": "正しい。Hybrid sessions のパターンで、多くのやり取りにまたがり、間は使われないセッションに向く。SessionStore なしでコンテナを止めると会話の記録も失われるので、このパターンでは必須である。"
+   },
+   {
+    "id": "b",
+    "text": "常駐のコンテナを複数並べてロードバランサーの後ろに置き、sessionId のコンシステントハッシュで各セッションを同じコンテナに割り当て、サブプロセスを動かしたまま待たせる。",
+    "why": "Long-running sessions のパターンで、継続的なトラフィックなどに向く。使われない間もコンテナを動かし続けるので、止めて費用を抑えるという要件に合わない。"
+   },
+   {
+    "id": "c",
+    "text": "タスクごとにコンテナを作って終わったら破棄し、顧客が戻ったら新しいコンテナで continue: true を指定する。ディレクトリの最新のセッションが自動で見つかる。",
+    "why": "セッションの記録はコンテナのローカルディスクにあり、コンテナを破棄すると失われる。continue はそのマシンの現在のディレクトリで最新のセッションを探すだけである。"
+   },
+   {
+    "id": "d",
+    "text": "一時的なコンテナを使い、SessionStore に会話の記録と CLAUDE.md などの作業ディレクトリのファイルをまとめて写す。再起動時には作業環境全体がそこから戻る。",
+    "why": "SessionStore が写すのは会話の記録だけで、CLAUDE.md や作業ディレクトリの成果物は含まれない。それらは共有ボリュームの利用などで別に保存する。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Hosting the Agent SDK のドキュメントによると、Hybrid sessions は、起動時に SessionStore から読み込み、更新を書き戻す一時的なコンテナのパターンで、多くのやり取りにまたがるが間は使われないセッションに向きます。使われない間はコンテナを止め、利用者が戻ると起動します。SessionStore なしでコンテナを止めると会話の記録も失われるため、このパターンでは必須とされています。\n\n見分け方: 常駐のコンテナとコンシステントハッシュは Long-running sessions の構成で、使われない間も動き続けます(b)。ローカルディスクの記録はコンテナを破棄すると消えます(c)。SessionStore は会話の記録だけを写し、CLAUDE.md などは別に保存します(d)。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/hosting",
+   "https://code.claude.com/docs/en/agent-sdk/sessions"
+  ]
+ },
+ {
+  "id": "arp-sol-027",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "scenarioId": null,
+  "type": "multi",
+  "stem": "Agent SDK を 1 つのコンテナで動かし、複数のテナントのリクエストを処理している。あるテナントのセッションに、別のテナントの CLAUDE.md の内容が入り込んでいたことが分かった。Hosting the Agent SDK の「Multi-tenant isolation」に沿った対策を 2つ選べ。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各テナントの会話の記録を、SessionStore でテナント別のストアに写す。SessionStore は CLAUDE.md などのメモリファイルも写すので、ストアを分ければメモリも分かれる。",
+    "why": "SessionStore が写すのは会話の記録だけで、CLAUDE.md などのメモリファイルや作業ディレクトリの成果物は含まない。"
+   },
+   {
+    "id": "b",
+    "text": "settingSources(Python は setting_sources)を空の配列にし、env で CLAUDE_CODE_DISABLE_AUTO_MEMORY=1 を設定する。",
+    "why": "正しい。空の配列で user、project、local の設定を読まなくなる。自動メモリは settingSources にかかわらずシステムプロンプトに読み込まれるので、別に無効にする。"
+   },
+   {
+    "id": "c",
+    "text": "settingSources を空の配列にするだけでよい。自動メモリを含め、ファイルシステムから読み込まれる設定とメモリは、すべて settingSources で読み込みが制御される。",
+    "why": "~/.claude/projects/<project>/memory/ の自動メモリは、settingSources にかかわらず読み込まれる。CLAUDE_CODE_DISABLE_AUTO_MEMORY=1 が別に要る。"
+   },
+   {
+    "id": "d",
+    "text": "CLAUDE_CONFIG_DIR をテナントごとのディレクトリに向け、すべての query() の呼び出しでテナントごとの cwd を明示的に渡す。",
+    "why": "正しい。テナントどうしが ~/.claude.json の全体設定を共有しないようにし、作業ディレクトリもテナントごとに分ける。"
+   }
+  ],
+  "answer": [
+   "b",
+   "d"
+  ],
+  "explanation": "正解は b と d です。Hosting the Agent SDK のドキュメントによると、SDK は既定で設定と CLAUDE.md をファイルシステムから読むため、複数のテナントを扱う共有コンテナではテナントの文脈が漏れることがあります。対策として、settingSources を空の配列にして user、project、local の設定を読まないこと、settingSources にかかわらず読み込まれる自動メモリを CLAUDE_CODE_DISABLE_AUTO_MEMORY=1 で無効にすること、CLAUDE_CONFIG_DIR をテナントごとに分けること、テナントごとの cwd を毎回渡すことが挙げられています。\n\n見分け方: SessionStore は会話の記録だけを写し、メモリファイルは含みません(a)。自動メモリは settingSources では止まらないため、空の配列だけでは足りません(c)。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/hosting"
+  ]
+ },
+ {
+  "id": "arp-sol-028",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "scenarioId": null,
+  "type": "single",
+  "stem": "Agent SDK(TypeScript)で Claude Opus 5 を使う調査エージェントが、サブエージェントを次々に起動し、そのサブエージェントがさらにサブエージェントを起動して、費用が読めなくなった。入れ子をなくし、同時に動く数と 1 回の query の費用にも上限を設けたい。Subagents in the SDK のドキュメントに沿った設定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "システムプロンプトに「依頼されない限り Agent ツールを呼ばない」と書く。claude_code のプリセットでも同じ趣旨の指示が入るので、これで委任が止まり、上限の設定は要らない。",
+    "why": "こうした指示は Claude を誘導するだけである。ドキュメントは上限も設定するよう案内しており、上限は Claude がどう委任しても Claude Code が強制する。"
+   },
+   {
+    "id": "b",
+    "text": "env に { CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH: \"1\", CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS: \"5\" } だけを渡し、maxBudgetUsd を設定する。env は継承した環境変数に追加される。",
+    "why": "TypeScript SDK の env はサブプロセスの環境を置き換えるので、PATH などを残すには process.env を展開して含める。継承した環境に統合されるのは Python SDK である。"
+   },
+   {
+    "id": "c",
+    "text": "各サブエージェントの AgentDefinition に費用の上限を書き、メインの query には上限を設けない。maxBudgetUsd は、メインのエージェント自身のリクエストだけを数えるからである。",
+    "why": "maxBudgetUsd はサブエージェントのリクエストも含めて query の支出を数える。ドキュメントの AgentDefinition の表に、費用の上限の項目はない。"
+   },
+   {
+    "id": "d",
+    "text": "env に process.env を展開したうえで CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH を \"1\"、CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS を \"5\" にし、maxBudgetUsd を設定する。",
+    "why": "正しい。深さを 1 にするとサブエージェントは自分のサブエージェントを起動できず、同時実行数の上限を超える起動は拒否され、費用の上限に達すると query は error_max_budget_usd で終わる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Subagents in the SDK のドキュメントによると、サブエージェントの増え方は、入れ子の深さ(CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH、既定 3、1 で入れ子なし)、同時実行数(CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS、既定 20)、query 全体の支出(maxBudgetUsd、サブエージェントのリクエストを含む)の 3 つで抑えられます。深さと同時実行数は env で渡し、TypeScript の env はサブプロセスの環境を置き換えるので process.env を展開します。\n\n見分け方: 委任を控えさせる指示は誘導にすぎず、上限も設定するよう案内されています(a)。process.env を含めないと PATH などが消えます(b)。maxBudgetUsd はサブエージェントの支出も数えます(c)。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/subagents"
+  ]
+ },
+ {
+  "id": "arp-sol-029",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "scenarioId": null,
+  "type": "single",
+  "stem": "Agent SDK で、数日かけて Web アプリを作る長時間のコーディングエージェントを動かす。コンテキストウィンドウをまたぐたびに、次のセッションが半分だけ実装された機能の状況を推測し直したり、途中で「完成した」と判断して止まったりする。記事 Effective harnesses for long-running agents の方法に沿った設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "コンパクションの頻度を上げ、1 つのセッションでアプリ全体を一度に実装させる。要約が次のコンテキストに引き継がれるので、進捗のファイルや機能の一覧を別に用意する必要はない。",
+    "why": "記事は、コンパクションだけでは足りないとしている。一度に作ろうとすることが、途中でコンテキストを使い切り、半端な実装を残す失敗の原因として挙げられている。"
+   },
+   {
+    "id": "b",
+    "text": "最初のセッションで、要件を細かく分けた機能の一覧(すべて failing)、init.sh、進捗ファイル、最初の git コミットを用意させ、以降のセッションでは 1 回に 1 機能ずつ進めさせる。",
+    "why": "正しい。記事の初期化エージェントとコーディングエージェントの分担である。各セッションは進捗ファイルと git の履歴で状況をつかみ、終わりにコミットと進捗の更新を残す。"
+   },
+   {
+    "id": "c",
+    "text": "機能の一覧を Markdown のチェックリストにし、エージェントが実装に合わせて項目の文言や構成を自由に書き直せるようにする。一覧が実装の実態に追従するからである。",
+    "why": "記事は、モデルが不適切に書き換えにくい JSON を選び、passes の状態だけを変えるよう強く指示している。項目の削除や編集は機能の欠落やバグにつながるとしている。"
+   },
+   {
+    "id": "d",
+    "text": "単体テストと curl での確認が通れば機能を完了にさせ、ブラウザでの確認は最後のセッションでまとめて行う。各セッションの開始時は、すぐ次の機能の実装に入らせる。",
+    "why": "記事では、単体テストや curl では端から端まで動かないことに気づけず、ブラウザ自動化で人と同じように確かめさせると改善した。開始時にも基本的な動作確認をしてから新しい機能に入らせている。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。記事 Effective harnesses for long-running agents によると、最初のセッション(初期化エージェント)で init.sh、作業の記録を残す claude-progress.txt、最初の git コミットを用意し、要件を 200 を超える機能に分けた一覧を、すべて failing の状態で書かせました。以降のセッションは 1 回に 1 機能ずつ進め、終わりに git のコミットと進捗の記録を残します。\n\n見分け方: 記事はコンパクションだけでは足りないとし、一度に作ろうとすることを失敗の原因に挙げています(a)。一覧は書き換えられにくい JSON にし、passes だけを変えさせています(c)。完了の判定にはブラウザ自動化での端から端までの確認を求め、開始時にも基本的な動作を確かめさせています(d)。",
+  "refs": [
+   "https://www.anthropic.com/research/effective-harnesses-for-long-running-agents"
+  ]
+ },
+ {
+  "id": "arp-sol-030",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "scenarioId": null,
+  "type": "single",
+  "stem": "社内の Slack を扱うエージェントのツールが、スレッドの本文に加えて thread_ts、channel_id、user_id などを毎回すべて返すため、多くの依頼で応答のトークンが無駄になっている。一方、返信の取得など後続のツール呼び出しに thread_ts が要る場面もある。記事 Writing effective tools for agents の助言に沿った設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "ツールに response_format の enum(\"concise\" と \"detailed\")の引数を設け、ふだんは本文だけを返し、ID が要るときはエージェントが detailed を選べるようにする。",
+    "why": "正しい。記事の例では、concise の応答は約 3 分の 1 のトークンで済み、後続の呼び出しに要る thread_ts などは detailed の応答から取り出せる。"
+   },
+   {
+    "id": "b",
+    "text": "応答から ID をすべて取り除き、本文だけを返すツールにする。後続の呼び出しに ID が要るときは、スレッドの本文を引数に取る別のツールを作り、そこで ID を引き直させる。",
+    "why": "記事は、下流の呼び出しのために技術的な識別子が要る場面を認め、response_format で concise と detailed を選べるようにして両方に対応する方法を示している。"
+   },
+   {
+    "id": "c",
+    "text": "記事が JSON の応答が最も精度が高いと示しているので、すべてのツールの応答を JSON に統一したうえで、エージェントが判断に使わない ID のフィールドを削る。",
+    "why": "記事は、XML、JSON、Markdown のどれがよいかは課題とエージェントによって違い、一律の正解はないので評価で選ぶよう勧めている。"
+   },
+   {
+    "id": "d",
+    "text": "応答が長くなりすぎないよう、ツールの出力を 25,000 トークンで切り詰め、切り詰めたことは伝えずに返す。Claude Code と同じ上限なので、エージェントは扱い方を知っている。",
+    "why": "記事は、切り詰めるなら、より効率的な使い方へエージェントを導く指示を添えるよう勧めている。25,000 トークンは Claude Code の既定の制限として紹介されているだけである。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。記事 Writing effective tools for agents によると、ツールは関連性の高い情報だけを返すべきですが、下流のツール呼び出しのために技術的な識別子が要る場面もあります。その両方に応えるには、response_format の enum の引数を設け、エージェントが \"concise\" と \"detailed\" を選べるようにします。記事の Slack の例では、concise の応答は ID を含まず、約 3 分の 1 のトークンで済みました。\n\n見分け方: ID を常に削ると、ID が要る後続の呼び出しに応えられません(b)。応答の形式に一律の正解はなく、評価で選ぶよう勧められています(c)。切り詰めるときは、絞り込みやページ分けなどへ導く指示を添えるよう勧められています(d)。",
+  "refs": [
+   "https://www.anthropic.com/research/writing-tools-for-agents"
+  ]
+ },
+ {
+  "id": "arp-sol-031",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "scenarioId": null,
+  "type": "single",
+  "stem": "契約書(プレーンテキストの document)から契約期間、更新条件、解約通知の期限の 3 項目を抜き出し、各値に根拠となる原文の箇所を付けて社内システムに登録したい。Citations のドキュメントに沿った実装はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "document で citations.enabled を true にし、output_config.format に 3 項目の JSON スキーマを指定する。スキーマに沿った JSON が返り、各値にはそれぞれの引用が付く。",
+    "why": "引用を有効にした document と output_config.format を一緒に使うと 400 エラーになる。引用はテキストと交互に出力する必要があり、厳密なスキーマの制約と両立しない。"
+   },
+   {
+    "id": "b",
+    "text": "citations.enabled を true にし、プロンプトで「JSON オブジェクトだけを返し、ほかの文章は書かない」と指示して、返ってきた JSON をそのまま解析して登録する。",
+    "why": "リクエストは成功するが、JSON だけを求めるプロンプトでは、引用がほとんど、またはまったく付かないことがある。"
+   },
+   {
+    "id": "c",
+    "text": "citations.enabled を true にし、1 項目 1 行の「項目名: 値」の形で答えて各行に引用を付けるよう指示する。コードで行と引用を対応させ、各項目に値と引用があるかを確かめる。",
+    "why": "正しい。ドキュメントが示す、引用付きで構造化されたデータを得る方法である。API は値と引用のどちらも保証しないので、コードで確かめる。"
+   },
+   {
+    "id": "d",
+    "text": "引用の位置を細かくするため、document をプレーンテキストではなく PDF に変換して渡す。PDF では 0 始まりの文字の位置で引用が返るので、値の箇所を特定しやすい。",
+    "why": "PDF の引用は 1 始まりのページ番号の範囲で返る。文字の位置で返るのはプレーンテキストで、引用の細かさを制御するなら custom content を使う。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Citations のドキュメントによると、抜き出した値ごとに引用を得るには、1 項目 1 行で答えるよう指示し、返った行をコードで構造化されたデータにします。text ブロックを順に読んで行に分け、各ブロックの citations をその行に結び付け、各項目に値と少なくとも 1 つの引用があるかを確かめます。API はどちらも保証しないからです。\n\n見分け方: 引用を有効にした文書と output_config.format の併用は 400 エラーです(a)。JSON だけを求めるプロンプトでは引用がほとんど付かないことがあります(b)。PDF の引用はページ番号の範囲で、文字の位置はプレーンテキストの形式です。細かさを制御するのは custom content です(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/citations"
+  ]
  }
 ]

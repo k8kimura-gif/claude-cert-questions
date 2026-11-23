@@ -858,5 +858,423 @@
    "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices",
    "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization"
   ]
+ },
+ {
+  "id": "arp-int-024",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Opus 5.5 で長いレポートをストリーミングで生成している。途中でネットワークが切れ、手元には受け取り済みのテキストのブロックと、途中まで届いた tool_use の入力 JSON がある。応答全体を最初から作り直さずに続きを得たい。Streaming messages の「Error recovery」に沿う対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "受け取り済みの部分を assistant メッセージの先頭に置いた継続リクエストを送る。途中まで届いた tool_use の入力 JSON もその末尾に付けておき、Claude が切れた位置からそのまま続きを生成できるようにする。",
+    "why": "部分的な応答を assistant メッセージに置くのは Claude 4.5 以前のモデルの手順である。4.6 以降は user メッセージで続きを求める。また tool_use ブロックは部分的には回復できない。"
+   },
+   {
+    "id": "b",
+    "text": "途中まで届いた tool_use の入力 JSON に足りない閉じ括弧を補って完成させ、tool_use ブロックとして履歴に加える。そのうえで、受け取ったテキストとあわせて送り、ツール呼び出しも含めて続きを生成させる。",
+    "why": "tool_use と thinking のブロックは部分的に回復できないとドキュメントは述べている。補った JSON はモデルが生成したものではない。"
+   },
+   {
+    "id": "c",
+    "text": "受け取ったテキストまでを保存し、その部分の応答と、続きから書くよう求める指示を入れた user メッセージで新しいリクエストを送る。tool_use は部分的に戻せないので、最後のテキストから再開する。",
+    "why": "正しい。Claude 4.6 以降の手順と、tool_use と thinking は部分的に回復できず直近のテキストブロックから再開するというベストプラクティスに沿う。"
+   },
+   {
+    "id": "d",
+    "text": "途中の応答は破棄し、max_tokens を大きくした同じリクエストを最初から送り直す。切断は応答が長すぎたことが原因なので、上限を上げておけば同じ切断は再発しない。",
+    "why": "切断はネットワークの問題やタイムアウトなどで起こり、max_tokens とは別の話である。ページは受け取り済みの部分を保存して再開し、全体の再処理を避ける手順を示している。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Streaming messages の「Error recovery」によると、ネットワークの問題やタイムアウトで中断したストリームは、受け取り済みの部分を保存し、続きを求めるリクエストを作って再開できます。Claude 4.6 以降のモデルでは、部分的な応答を assistant メッセージに置くのではなく、部分的な応答と続きから書くよう求める指示を入れた user メッセージを加えます。また tool_use と thinking のブロックは部分的には回復できず、直近のテキストブロックから再開します。\n\n見分け方: (a) の assistant メッセージに置く方法は Claude 4.5 以前の手順で、途中の tool_use を含める点も誤りです。(b) は部分的に回復できない tool_use を補って使っています。(d) は全体をやり直しており、切断の原因も max_tokens ではありません。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/streaming"
+  ]
+ },
+ {
+  "id": "arp-int-025",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "SDK を使わずに、Messages API のストリーミング(server-sent events)を直接処理するクライアントを実装する。ツール呼び出しの入力、停止理由、利用量を正しく扱いたい。Streaming messages のドキュメントに沿う実装はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "input_json_delta の部分的な JSON 文字列を蓄積し、content_block_stop の後でパースする。usage は message_delta の累積値を使い、stop_reason も message_delta から読む。未知のイベント型は無視する。",
+    "why": "正しい。入力のデルタは部分的な JSON 文字列で、usage は累積値、stop_reason は message_delta で届く。新しいイベント型が増えうるので、未知の型は穏当に扱う。"
+   },
+   {
+    "id": "b",
+    "text": "input_json_delta は届くたびに JSON としてパースし、パースできないデルタは壊れたものとして捨てる。usage は message_delta ごとに足し合わせて合計を出し、stop_reason は最初に届く message_start の値を使う。",
+    "why": "デルタは部分的な JSON 文字列なので、単体ではパースできないのが普通である。usage は累積値なので足すと二重に数える。stop_reason は message_start では null である。"
+   },
+   {
+    "id": "c",
+    "text": "ドキュメントの一覧にないイベント型を受け取ったら、プロトコル違反としてストリームを止めてエラーとして記録する。途中に混ざる ping イベントも想定外の入力として、同じく異常として扱い、接続を張り直す。usage と stop_reason は最後の message_stop から読む。",
+    "why": "バージョニングの方針により新しいイベント型が追加されることがあり、未知の型は穏当に扱うよう求められている。ping イベントはストリームに任意の数だけ含まれうる。stop_reason と usage は message_delta で届く。"
+   },
+   {
+    "id": "d",
+    "text": "HTTP ステータスが 200 で始まったストリームには途中でエラーが入らないので、ストリーム内のエラー処理は省く。どのブロックも content_block_delta で中身が届く前提で、デルタを順に連結して組み立てる。usage は message_delta の値を累積値として使う。",
+    "why": "高負荷時の overloaded_error のように、エラーはストリームの途中にも届くことがある。また redacted_thinking や web_search_tool_result などは、デルタなしで丸ごと届く。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Streaming messages のドキュメントによると、tool_use ブロックのデルタ(input_json_delta)は部分的な JSON 文字列で、文字列を蓄積して content_block_stop を受けてからパースできます。message_delta の usage のトークン数は累積値です。Stop reasons のページによると、stop_reason は message_start では null で、message_delta で届きます。新しいイベント型が追加されうるので、未知の型は穏当に扱うよう求めています。\n\n見分け方: (b) はデルタを単体でパースし、累積値の usage を足しています。(c) は未知のイベント型や ping を異常として止めています。(d) はストリームの途中の error イベント(overloaded_error など)と、デルタなしで届くブロックを考えていません。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/streaming",
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ]
+ },
+ {
+  "id": "arp-int-026",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "web_fetch(サーバーツール)と自社の run_command(クライアントツール)を渡したエージェントで、応答の stop_reason が tool_use だった。content には run_command の tool_use ブロックと、結果ブロックのない web_fetch の server_tool_use ブロックがある。続きのリクエストの組み立てとして正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "pause_turn のときと同じく、応答の content を assistant メッセージとしてそのまま送り返し、user メッセージは付けない。web_fetch の結果が届いてから run_command を実行する。",
+    "why": "pause_turn はクライアントの tool_use を待たせることがない。クライアントツールが待っているときは stop_reason が tool_use で、tool_result を返して続ける。"
+   },
+   {
+    "id": "b",
+    "text": "run_command の tool_result と、未実行の web_fetch に対する is_error: true の tool_result の 2 つを user メッセージに入れ、その後に「続けてください」というテキストを加えて送る。",
+    "why": "待っているサーバーツールには tool_result を返さない。また tool_result の後にテキストなどを置くとターンの終わりとみなされ、400 の invalid_request_error になる。"
+   },
+   {
+    "id": "c",
+    "text": "web_fetch はまだ実行されていないので次のリクエストでは tools から外し、run_command の tool_result だけを入れた user メッセージを送る。ツール定義の分のトークンも減らせる。",
+    "why": "待っているサーバーツールが tools にないと、「but no `web_fetch` tool was provided」を含む 400 になる。同じ tools 配列で送る必要がある。"
+   },
+   {
+    "id": "d",
+    "text": "応答の content を変えずに assistant メッセージとして加え、run_command の tool_result だけを入れた user メッセージを付けて、同じ tools 配列で送る。API が待っていた web_fetch を実行してから続ける。",
+    "why": "正しい。Server tools の「Mixing server tools and client tools in one turn」の手順どおりである。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Server tools のドキュメントによると、サーバーツールとクライアントツールが同じ並列呼び出しに含まれると、API はサーバーツールを実行せずに stop_reason: \"tool_use\" で返します。続けるには、応答をそのまま assistant メッセージとして加え、クライアントの tool_use ごとの tool_result だけを入れた user メッセージを、同じ tools 配列で送ります。API は待っていたサーバーツールを実行してから続けます。\n\n見分け方: (a) は pause_turn の続け方で、クライアントツールが待っている応答には使えません。(b) は待っているサーバーツールに tool_result を返し、tool_result の後にテキストを置いており 400 になります。(c) は待っている web_fetch を tools から外しており 400 になります。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools",
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ]
+ },
+ {
+  "id": "arp-int-027",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude API で Claude Opus 5.5 を使う分析アシスタントで、stop_reason が refusal の応答が増えた。stop_details.category は reasoning_extraction と cyber の 2 種類である。reasoning_extraction の多い機能では、システムプロンプトが回答の前に <reasoning> タグへ推論をすべて書くよう求めている。ドキュメントに沿う対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "refusal は混雑時に出る一時的な判定なので、同じモデルに同じリクエストを指数バックオフで再送する。stop_details.explanation の文面を解析してカテゴリーを見分け、カテゴリーごとに再送の上限回数を変える。",
+    "why": "断られたリクエストは別のモデルで再試行するよう案内されている。explanation の文面は安定しないので、解析せずに表示するものとされている。"
+   },
+   {
+    "id": "b",
+    "text": "reasoning_extraction は推論をタグに書かせる指示を外してプロンプトを直す。cyber は fallbacks: \"default\" の server-side fallback で推奨モデルに再試行させる。",
+    "why": "正しい。reasoning_extraction には推奨のフォールバックモデルがなく、プロンプトを変えるよう求められている。それ以外は別モデルでの再試行で答えが得られることが多い。"
+   },
+   {
+    "id": "c",
+    "text": "どちらのカテゴリーも fallbacks: \"default\" による server-side fallback に任せる。reasoning_extraction でも推奨モデルに回され、そのモデルなら <reasoning> タグへの出力が許される。",
+    "why": "reasoning_extraction には推奨のフォールバックモデルがない。別モデルで再試行せず、プロンプトを変えるよう案内されている。"
+   },
+   {
+    "id": "d",
+    "text": "refusal の応答に途中までの出力があれば、部分的な回答として利用者に見せ、残りを別のモデルで生成して連結する。分類器による拒否はどのカテゴリーでも課金されないので、何度再試行しても費用は増えず、回数の上限を気にせずに再試行を続けられる。",
+    "why": "途中までの出力は不完全なものとして破棄するよう求められている。また出力前の拒否でも、bio、frontier_llm、reasoning_extraction は課金され、途中での拒否は入力と出力済みの分が課金される。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。Refusals and fallback のドキュメントによると、refusal は HTTP 200 の通常の応答で、stop_details.category が方針の分野を示します。多くは別のモデルに同じリクエストを送れば答えが得られ、Claude API では fallbacks: \"default\" と server-side-fallback-2026-07-01 の beta ヘッダーで推奨モデルに自動で再試行させられます。一方 reasoning_extraction は推論を出力に書かせるプロンプトから起き、推奨のフォールバックがないため、プロンプトを変えるよう案内されています。\n\n見分け方: (a) は同じモデルに再送し、表示用の explanation を解析しています。(c) は reasoning_extraction も別モデルに回せるとしています。(d) は破棄すべき途中の出力を使い、課金されるカテゴリーがあることも見落としています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/refusals-and-fallback",
+   "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ]
+ },
+ {
+  "id": "arp-int-028",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude API の web search tool を使う製品調査のアシスタントで、検索先を自社の docs.example.com と、example.com/blog 以下の記事だけに限りたい。1 ターンの検索は 5 回までにする。組織の Claude Console には、web search で許可するドメインの一覧が設定されている。ドキュメントに沿う設定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "allowed_domains に \"docs.example.com\" と \"example.com/blog\" を書き、max_uses を 5 にする。失敗した検索や、pause_turn の後に続く同じターンの検索も回数に数えられる。組織の許可一覧に含まれる範囲で指定する。",
+    "why": "正しい。スキームなしのドメイン、web search でのパスの指定、max_uses の数え方、組織の一覧との関係がドキュメントの記述に沿う。"
+   },
+   {
+    "id": "b",
+    "text": "allowed_domains に \"https://docs.example.com\" と \"*.example.com/blog\" を書いて、子ドメインもまとめて許可する。max_uses は成功した検索だけを数えるので、失敗する分を見込んで少し多めの 8 にしておく。",
+    "why": "ドメインにスキームは付けず、ワイルドカードはドメインの部分に使えない(不正な形式は 400)。失敗した検索も max_uses に数えられる。"
+   },
+   {
+    "id": "c",
+    "text": "allowed_domains に \"example.com\" を書き、同時に blocked_domains に \"api.example.com\" を書いて不要な子ドメインを除く。max_uses はリクエストごとの上限なので、pause_turn で続いた分は数え直しになる。",
+    "why": "allowed_domains と blocked_domains は同じリクエストで併用できず 400 になる。max_uses は 1 ターン単位で、pause_turn で続く以前のリクエストの検索も数えられる。"
+   },
+   {
+    "id": "d",
+    "text": "組織の許可一覧はリクエストの allowed_domains で上書きできるので、Console の設定にない docs.example.com もリクエスト側で許可する。max_uses を超えた検索は HTTP 429 のエラーとして返るので、アプリ側で再試行の間隔を空けて送り直す。",
+    "why": "リクエストの allowed_domains は組織の許可一覧の部分集合でなければならず、外れた指定は検証エラーになる。上限を超えると web_search_tool_result が max_uses_exceeded のエラーになる。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。web search tool と Server tools のドキュメントによると、allowed_domains にはスキームを付けないドメインを書き、web search ではパス(example.com/blog)も指定できます。max_uses は 1 ターンの検索の回数の上限で、失敗した検索も数えられ、pause_turn の後に続くリクエストなど、同じターンの以前のリクエストの検索も数えられます。リクエストの allowed_domains は組織の許可一覧の部分集合でなければなりません。\n\n見分け方: (b) はスキームとドメイン部分のワイルドカードを使っており、失敗した検索の扱いも誤りです。(c) は 2 つのドメインの指定を併用しており、max_uses の範囲も誤りです。(d) は組織の一覧を上書きできるとし、上限を超えたときの返り方も誤りです。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools"
+  ]
+ },
+ {
+  "id": "arp-int-029",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "AWS を標準とする企業が Claude を使う。課金は AWS 経由にし、認証は AWS IAM(SigV4)で行いたい。アプリは Files API、web search tool、Message Batches API を使う。HIPAA readiness や、AWS を唯一のデータ処理者にする要件はない。ドキュメントに沿う選択はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude in Amazon Bedrock(bedrock-mantle)を使う。Claude API と同じ形の Messages API なので、Files API、web search tool、Message Batches API もそのまま利用できる。",
+    "why": "Claude in Amazon Bedrock は Files API、web search などのサーバーツール、Message Batches API に対応していない。リクエストの形が同じでも機能の範囲は違う。"
+   },
+   {
+    "id": "b",
+    "text": "Claude Platform on AWS と Amazon Bedrock は、どちらも AWS が推論の基盤を運用する同じ仕組みの別名なので、機能に差はない。料金の安いほうを選べばよい。",
+    "why": "Claude Platform on AWS は Anthropic が運用し、Bedrock は AWS が運用する。API の範囲、機能の提供時期、データ処理者などが異なる。"
+   },
+   {
+    "id": "c",
+    "text": "Claude Platform on AWS を使う。Anthropic が運用し、Claude API と同じエンドポイントを AWS の認証と AWS Marketplace の課金で使えるため、Files API などもそのまま使える。",
+    "why": "正しい。Claude Platform on AWS は Claude API と同等の機能(例外は一覧あり)を、AWS の認証と課金で提供する。"
+   },
+   {
+    "id": "d",
+    "text": "Claude in Amazon Bedrock を使い、文書は Files API の代わりに毎回 base64 で送り、web search はアプリ側で実装し、バッチ処理だけは Claude API へ直接送る。",
+    "why": "Claude API へ直接送る部分は AWS 経由の課金と IAM 認証の要件を満たさない。Claude Platform on AWS なら、これらの機能をそのまま AWS 経由で使える。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Claude Platform on AWS のドキュメントによると、このサービスは Anthropic が運用し、Claude API のエンドポイントを AWS IAM(SigV4)か API キーの認証と、AWS Marketplace の課金で提供します。Files API やバッチ処理も Claude API と同様に使え、web search tool のページも利用できる基盤に挙げています。HIPAA readiness などが必要な場合や、AWS を唯一のデータ処理者にしたい場合は Claude in Amazon Bedrock を選ぶよう案内しています。\n\n見分け方: (a) の Claude in Amazon Bedrock は Files API、サーバーツール、Message Batches API に対応しません。(b) は運用者の違いを無視しています。(d) は一部を Claude API に直接送っており、課金と認証の要件を満たしません。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws",
+   "https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool"
+  ]
+ },
+ {
+  "id": "arp-int-030",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "機密データを扱う社内エージェントに、Claude が書いたコードを実行する run_code(クライアントツール)と web fetch tool を渡している。Claude がデータを埋め込んだ URL をコードに出力させ、その URL を web fetch で取得する、という持ち出しの経路を塞ぎたい。web fetch tool のドキュメントに沿う設定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude 自身の出力にだけ現れた URL はもともと取得できない仕様で、Claude が書いたコードを実行した run_code の結果も Claude の出力の一部として扱われる。そのため、この経路を塞ぐための追加の設定はいらず、ツールの組み合わせもこのままでよい。",
+    "why": "既定では、クライアントツールの結果は、Claude が書いた文字列をそのまま返すものでも取得元として許される。run_code の結果は Claude の出力とはみなされない。"
+   },
+   {
+    "id": "b",
+    "text": "url_sources の client_tool_results に except の指定で run_code を挙げ、その結果を取得元から外す。あわせて allowed_domains で既知の安全なドメインに限り、max_uses で取得の回数を抑える。",
+    "why": "正しい。url_sources の例と、持ち出しの危険を減らす手段として挙げられている設定に沿う。"
+   },
+   {
+    "id": "c",
+    "text": "取得してよい URL をシステムプロンプトにだけ並べておく。web fetch はシステムプロンプトに書かれた URL しか取得できないので、それ以外の URL はすべて url_not_allowed のエラーになり、コードが出力した URL も持ち出しの経路にならない。",
+    "why": "システムプロンプトにだけ現れる URL は、むしろ取得できない。取得させるには user メッセージにも含める必要があり、許可リストの役割は果たさない。"
+   },
+   {
+    "id": "d",
+    "text": "blocked_domains に社外の主なドメインを並べ、allowed_domains にも社内のドメインを加えて二重に絞る。社内の子ドメインは *.example.com のワイルドカードでまとめて許可する。",
+    "why": "allowed_domains と blocked_domains は同じリクエストで併用できない。ワイルドカードはドメインの部分には使えず、パスの部分だけで使える。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。web fetch tool のドキュメントによると、Claude が取得できるのは会話に現れた URL(user メッセージ、クライアントツールの結果、以前の web search や web fetch の結果)だけです。ただし既定では、Claude が書いた文字列を返すクライアントツールの結果も取得元として許されます。url_sources の client_tool_results に except で run_code を指定すると、その結果を取得元から外せます。持ち出しへの対策としては、ほかに allowed_domains と max_uses が挙げられています。\n\n見分け方: (a) はクライアントツールの結果が既定で取得元になることを見落としています。(c) のシステムプロンプトにだけある URL は取得できません。(d) は 2 つのドメインの指定を併用し、ドメインの部分にワイルドカードを使っています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-fetch-tool",
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools"
+  ]
+ },
+ {
+  "id": "arp-int-031",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "MCP 仕様 2026-07-28 版に沿って新しい MCP サーバーを作る。(1) ツールの中で文書の要約に LLM を使う、(2) クライアントが指定した特定のリソースが更新されたら知らせる、(3) 運用のログを残す。仕様の Key Changes と各ページに沿う設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "(1) は sampling/createMessage でクライアント側の LLM を使い、サーバーに API キーを置かない。(2) は resources/subscribe で購読を受け付ける。(3) は logging/setLevel で受けたレベルで notifications/message を送る。",
+    "why": "Sampling と Logging は 2026-07-28 版で非推奨になり、新しい実装では採用しないよう求められている。resources/subscribe と logging/setLevel は削除された。"
+   },
+   {
+    "id": "b",
+    "text": "(1) は InputRequiredResult で sampling/createMessage を返して LLM を使う。(2) は HTTP GET のエンドポイントで SSE のストリームを開いて更新を流す。(3) は各結果の _meta にログを入れる。",
+    "why": "Sampling は MRTR の形でも非推奨であり、新規の実装は採用しないよう求められている。HTTP GET のエンドポイントは subscriptions/listen に置き換えられた。"
+   },
+   {
+    "id": "c",
+    "text": "(1) は LLM プロバイダーの API を直接呼ぶ。(2) は listChanged だけを宣言し、リソースの一覧が変わるたびに通知する。(3) はレベルを問わず、すべての要求の応答ストリームに notifications/message を流す。",
+    "why": "特定のリソースの更新を知らせるのは subscribe 機能で、一覧の変化を知らせる listChanged とは別である。logLevel を含まない要求に notifications/message を送ってはならない。"
+   },
+   {
+    "id": "d",
+    "text": "(1) は LLM プロバイダーの API と直接統合する。(2) は subscribe 機能を宣言し、subscriptions/listen の resourceSubscriptions で指定されたリソースに notifications/resources/updated を送る。(3) は stderr か OpenTelemetry を使う。",
+    "why": "正しい。Key Changes の非推奨の項目が示す移行先と、Resources のページの Subscriptions の仕組みに沿う。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。MCP 仕様 2026-07-28 版の Key Changes によると、Sampling と Logging は非推奨で、新しい実装は採用しないよう求められます。移行先は、Sampling が LLM プロバイダーの API との直接の統合、Logging が stderr か OpenTelemetry です。resources/subscribe は subscriptions/listen に置き換えられ、Resources のページでは subscribe 機能を持つサーバーが resourceSubscriptions で指定されたリソースの更新を notifications/resources/updated で届けます。\n\n見分け方: (a) は非推奨の機能と削除されたメソッドを使っています。(b) は非推奨の Sampling と、置き換えられた HTTP GET のエンドポイントを使っています。(c) は listChanged と subscribe を取り違え、ログの送り方も仕様に反します。",
+  "refs": [
+   "https://modelcontextprotocol.io/specification/2026-07-28/changelog",
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/resources",
+   "https://modelcontextprotocol.io/specification/2026-07-28/client/sampling"
+  ]
+ },
+ {
+  "id": "arp-int-032",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Git を操作するエージェントで、Claude が 1 つの応答に create_branch、その枝への commit_files、open_pull_request の 3 つの tool_use を返した。後の呼び出しは前の呼び出しの結果に依存している。Parallel tool use のドキュメントに沿う処理はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "現れた順に逐次実行し、最初に失敗したところで止める。実行しなかった呼び出しにも is_error: true と短い説明の tool_result を返し、3 つの結果を 1 つの user メッセージにまとめる。",
+    "why": "正しい。順序に依存があるときは、逐次実行して最初の失敗で止める方法が妥当とされ、実行しなかった呼び出しにも is_error: true を返すよう求められている。"
+   },
+   {
+    "id": "b",
+    "text": "同じ応答に並んだ tool_use は互いに独立していることを API が保証するので、Promise.all で 3 つを同時に実行し、それぞれの結果を tool_use_id で対応付けて 1 つの user メッセージで返す。",
+    "why": "API は実行の順序を決めず、互いに依存する呼び出しが同じ応答に並ぶこともある。依存があるときは逐次の実行が妥当とされている。"
+   },
+   {
+    "id": "c",
+    "text": "現れた順に逐次実行して失敗したところで止め、実行しなかった呼び出しの tool_result は省いて返す。Claude は結果の返ってこない呼び出しを未実行と判断し、次のターンで自動的に同じ呼び出しを出し直してくれる。",
+    "why": "実行しなかった呼び出しにも、is_error: true と短い説明を付けた tool_result を返す必要がある。tool_use ごとに 1 つの tool_result を返す。"
+   },
+   {
+    "id": "d",
+    "text": "順序を保つため、1 つ実行するたびに、その結果だけを入れた user メッセージを送ってから次の呼び出しに進む。前の結果に依存する呼び出しは、このように結果を分けて 1 つずつ返すのが、取り違えを防ぐ確実な方法である。",
+    "why": "結果を別々の user メッセージで返すのは誤った形で、Claude に並列の呼び出しを避けるよう「教える」ことになる。結果はすべて 1 つの user メッセージで返す。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Parallel tool use のドキュメントによると、複数の tool_use をどう実行するかはアプリケーションが決め、API は実行の順序を定めません。副作用や順序の要件があるツールは逐次の実行が向き、依存があるときは逐次実行して最初の失敗で止める方法が妥当とされています。どの方法でも、tool_use ごとの tool_result を次の 1 つの user メッセージにまとめ、実行しなかった呼び出しには is_error: true と短い説明を返します。\n\n見分け方: (b) は API が独立性を保証すると誤解しています。(c) は実行しなかった呼び出しの tool_result を省いています。(d) は結果を別々のメッセージで返しており、並列の呼び出しを妨げる誤った形です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use"
+  ]
+ },
+ {
+  "id": "arp-int-033",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "EU の企業が Claude Models on Google Cloud(Google managed)で Claude Opus 5.5 を使う。推論のデータは EU の中にとどめる必要があるが、1 つのリージョンに限る義務はなく、できるだけ高い可用性がほしい。endpoint の選び方とコストの見積もりとして、ドキュメントに沿うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "global endpoint を使う。推奨の endpoint で可用性が最も高く、Claude Opus 5.5 も使え、料金もいちばん安いので、この要件をすべて満たす。",
+    "why": "global endpoint は容量のある任意のリージョンへリクエストを送るため、データを EU の中にとどめる要件を満たさない。"
+   },
+   {
+    "id": "b",
+    "text": "regional endpoint の \"europe-west1\" を使う。単一のリージョンに固定すればデータの所在は最も確実で、料金も global と同じなので、Claude Opus 5.5 の本番の基盤に向く。",
+    "why": "regional endpoint が提供するのは Claude Sonnet 4.6 以前のモデルだけで、Claude Opus 5.5 には使えない。また regional は global より 10% 高い。"
+   },
+   {
+    "id": "c",
+    "text": "multi-region endpoint の \"eu\" を使う。リクエストは EU 内の任意のリージョンに送られ、単一のリージョンより可用性が高い。料金は global より 10% 高いものとして見積もる。",
+    "why": "正しい。multi-region は広い地域内でのデータ所在と、単一のリージョンより高い可用性が必要な場合に向き、10% の上乗せがある。"
+   },
+   {
+    "id": "d",
+    "text": "multi-region endpoint の \"eu\" を使う。料金は global と同じとして見積もり、負荷が増えたら同じ multi-region endpoint のまま provisioned throughput を追加で購入する。",
+    "why": "multi-region と regional の endpoint は global より 10% 高い。provisioned throughput には regional endpoint が必要である。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Claude Models on Google Cloud(Google managed)のドキュメントによると、endpoint のうち global は容量のある任意のリージョンへ、multi-region は米国または EU の中の任意のリージョンへ送り、後者は広い地域内のデータ所在と高い可用性が要る場合に向きます。regional endpoint は Claude Sonnet 4.6 以前のモデルだけを提供します。multi-region と regional は global より 10% 高くなります。\n\n見分け方: (a) の global はデータが EU の外に出る可能性があります。(b) の regional では Claude Opus 5.5 を使えず、料金も高くなります。(d) は 10% の上乗せと、provisioned throughput に regional endpoint が要ることを見落としています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/google-managed"
+  ]
+ },
+ {
+  "id": "arp-int-034",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "リモート MCP サーバーのツールが、利用者に代わって外部の決済サービスを呼ぶ。最初の tools/call を処理していて、その利用者の決済サービスへの認可がまだ済んでいないと分かった。MCP 仕様 2026-07-28 版の Elicitation に沿う実装はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "form モードの elicitation で決済サービスの API キーを入力してもらう。requestedSchema に文字列の項目を 1 つ置けばクライアントが入力欄を作り、利用者は送信前に内容を確かめられる。",
+    "why": "パスワード、API キー、アクセストークン、決済の認証情報を form モードで求めてはならず、そうした情報を扱うやりとりには url モードを使わなければならない。"
+   },
+   {
+    "id": "b",
+    "text": "InputRequiredResult で url モードの elicitation/create を返し、認可の URL に誘導する。accept は同意を示すだけなので、元の要求が再試行されたら完了を確かめ、未了なら再び InputRequiredResult を返す。",
+    "why": "正しい。url モードの accept は同意であって完了ではなく、サーバーは再試行された要求の requestState や自分の状態から完了を判断する。"
+   },
+   {
+    "id": "c",
+    "text": "url モードの elicitation で認可の URL を示し、外部での認可が終わったら notifications/elicitation/complete をクライアントに送る。元の要求とは elicitationId で対応付ける。",
+    "why": "notifications/elicitation/complete と elicitationId は 2026-07-28 版で削除された。クライアントは元の要求を再試行して結果を知り、対応付けはサーバーが requestState に入れた識別子で行う。"
+   },
+   {
+    "id": "d",
+    "text": "url モードの elicitation で認可の URL を示し、クライアントから accept が返ってきたら外部での認可は完了したとみなし、そのまま決済サービスの API を呼び出す。",
+    "why": "url モードの accept は、利用者がやりとりに同意したことを示すだけで、外部での操作が終わったことを意味しない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。MCP 仕様 2026-07-28 版の Elicitation によると、サーバーは InputRequiredResult に elicitation/create を入れて利用者の入力を求めます。第三者の認可や決済のような機密のやりとりには url モードを使い、その情報は MCP クライアントを通りません。url モードの accept は同意を示すだけで完了を意味しないため、サーバーは再試行された元の要求で、requestState などから完了したかを判断し、最終結果か次の InputRequiredResult を返します。\n\n見分け方: (a) は form モードで API キーという機密情報を求めており、禁止されています。(c) の通知と elicitationId は 2026-07-28 版で削除されました。(d) は accept を完了と取り違えています。",
+  "refs": [
+   "https://modelcontextprotocol.io/specification/2026-07-28/client/elicitation",
+   "https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/mrtr",
+   "https://modelcontextprotocol.io/specification/2026-07-28/changelog"
+  ]
  }
 ]

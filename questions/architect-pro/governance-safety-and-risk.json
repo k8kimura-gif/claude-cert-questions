@@ -630,5 +630,306 @@
    "https://code.claude.com/docs/en/sandboxing",
    "https://code.claude.com/docs/en/security"
   ]
+ },
+ {
+  "id": "arp-gov-018",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Enterprise の組織で、claude.ai の Managed settings(server-managed settings)に permissions.deny のルールを設定した。ところが、CI ジョブで claude -p を会社の Claude Console の API キー(ANTHROPIC_API_KEY)で動かすと、そのルールが効いていなかった。Server-managed settings のページに沿う対処はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "server-managed settings に forceRemoteSettingsRefresh: true を加える。CI ジョブは起動時に最新の設定を取得するまで待ち、取得できなければ終了するので、deny のルールなしでジョブが動くことはなくなる。",
+    "why": "セッションに届くのは、認証に使った資格情報を所有する組織の設定だけである。Console の API キーのセッションに claude.ai の組織の設定は届かないので、取得を待たせる設定を足しても変わらない。"
+   },
+   {
+    "id": "b",
+    "text": "CI の実行マシンに managed settings のファイルを配置する。または claude setup-token で作り組織に承認したトークンを CLAUDE_CODE_OAUTH_TOKEN に設定し、ANTHROPIC_API_KEY を外す。",
+    "why": "正しい。Console の API キーは claude.ai とは別の Console の組織に属するので、ページはこの 2 つの方法を示している。"
+   },
+   {
+    "id": "c",
+    "text": "claude setup-token で作ったトークンを CLAUDE_CODE_OAUTH_TOKEN に設定し、起動を速く安定させるために --bare を付ける。これで claude.ai の組織の設定がジョブに届く。",
+    "why": "ページは、bare mode は CLAUDE_CODE_OAUTH_TOKEN を読まないので、OAuth トークンの方法は --bare のジョブには使えないと述べている。"
+   },
+   {
+    "id": "d",
+    "text": "同じ会社のドメインのアカウントで作った Console の API キーなら、claude.ai の組織の設定も届く。CI ジョブの直前に一度 claude を起動して、取得した設定のキャッシュを実行マシンに作っておけばよい。",
+    "why": "Console の API キーは、それを作った Console の組織に属し、claude.ai の Team や Enterprise の組織とは別の組織である。組織外のアカウントには設定は届かない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。Server-managed settings のページによると、セッションには、認証に使った資格情報を所有する組織の managed settings が届きます。Console の API キーは Console の組織に属し、claude.ai の組織とは別なので、CI ジョブには届きません。対処として、claude setup-token で作り組織に承認したトークンを CLAUDE_CODE_OAUTH_TOKEN に設定する(優先される ANTHROPIC_API_KEY は外す)方法と、実行マシンに managed settings のファイルを置く方法が示されています。\n\n見分け方: forceRemoteSettingsRefresh(a)は取得の失敗時に起動を止める設定で、別の組織に届けるものではありません。--bare(c)は CLAUDE_CODE_OAUTH_TOKEN を読みません。同じ会社でも Console の組織は別の組織です(d)。",
+  "refs": [
+   "https://code.claude.com/docs/en/server-managed-settings"
+  ]
+ },
+ {
+  "id": "arp-gov-019",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Enterprise の組織で、組織全体の server-managed settings に Read(./secrets/**) の deny と disableBypassPermissionsMode を設定している。データ分析チームにだけ MCP サーバーを追加で許可するため、グループごとの構成(group configurations)に切り替える。データ分析チームの構成には MCP の許可だけを書く案が出ている。ページに沿う判断はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "案のままでよい。グループの構成は組織全体の構成の上に重ねて適用されるので、グループには組織全体との差分だけを書けば、deny などの制限は組織全体の構成から引き継がれる。",
+    "why": "ページによると、構成どうしも組織全体の構成とも統合されない。差分だけを書くと、そのグループには deny などの制限が届かない。"
+   },
+   {
+    "id": "b",
+    "text": "案のままでよい。複数のグループに属するメンバーには、所属する各グループの構成が合成されて配られ、deny のルールは和集合になるので、セキュリティのグループに deny を書いておけば全員に必ず効く。",
+    "why": "ページによると、複数のグループに属するメンバーは、順位が最も高い構成だけを受け取る。構成は合成されない。"
+   },
+   {
+    "id": "c",
+    "text": "案のままでよい。catch-all(Everyone else)を設定しなくても、どのグループの構成にも当たらないメンバーには、切り替え後も組織全体の構成が配られ続ける。",
+    "why": "catch-all を設定しないと、どのグループにも当たらないメンバーのローカルのセッションには server-managed settings が届かない。組織全体の構成が配られるのは切り替えの前までである。"
+   },
+   {
+    "id": "d",
+    "text": "各グループの構成と catch-all に、全員に課す制限も含めて必要な設定をすべて書く。複数のグループに属する人は最上位の構成だけを受け取るので、制限の強いグループを上位に並べる。",
+    "why": "正しい。構成は互いにも組織全体の構成とも統合されないので、ページは全員への制限をすべてのグループの構成と catch-all に入れるよう述べている。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Server-managed settings のページによると、Enterprise プランではグループごとに構成を割り当てられますが、各メンバーが受け取る構成は 1 つだけです。構成は互いにも組織全体の構成とも統合されないので、各構成にそのグループに必要な設定をすべて書き、全員に課す制限はすべてのグループの構成と catch-all に入れます。複数のグループに属するメンバーは順位が最も高い構成だけを受け取るので、制限の強いグループや範囲の狭いグループを上位に置きます。\n\n見分け方: 差分だけを書く(a)と制限が抜けます。構成は合成されません(b)。catch-all がないと、どのグループにも当たらないメンバーには server-managed settings が届きません(c)。",
+  "refs": [
+   "https://code.claude.com/docs/en/server-managed-settings"
+  ]
+ },
+ {
+  "id": "arp-gov-020",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "チームの dev container で Claude Code を --dangerously-skip-permissions 付きで無人実行したい。セキュリティ担当は、プロジェクトに悪意のある内容が入っていた場合の被害を心配している。Development containers のページに沿う構成はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "remoteUser を非 root にし、外向きの通信を必要な宛先に絞る。ホストの ~/.ssh やクラウドの認証情報はマウントせず、リポジトリ限定か短命のトークンを渡し、信頼するリポジトリだけで使う。",
+    "why": "正しい。ページは、このフラグを使うとコンテナ内で読めるものは持ち出されうると警告し、これらの対策を挙げている。"
+   },
+   {
+    "id": "b",
+    "text": "コンテナがホストから隔離しているので、ホストの ~/.ssh をそのままマウントしても安全である。持ち出しを防ぐには、Claude の操作をあとからログで確認する運用を加えればよい。",
+    "why": "ページは、このフラグで動かすと、コンテナ内で読めるものは持ち出されうると警告し、~/.ssh などのホストの秘密情報をマウントしないよう勧めている。"
+   },
+   {
+    "id": "c",
+    "text": "コンテナ内のファイアウォールを確実に動かすため、remoteUser を root にして claude を起動する。root ならファイアウォールの設定もコンテナの中で完結するので、追加の権限は要らない。",
+    "why": "CLI は root で起動されるとこのフラグを拒否する。参照用のコンテナは、ファイアウォールのために NET_ADMIN と NET_RAW の capability を runArgs で加えている。"
+   },
+   {
+    "id": "d",
+    "text": "組織のポリシーを Dockerfile で /etc/claude-code/managed-settings.json にコピーする。最も高い優先度で適用されるので、リポジトリに書き込める開発者でも外すことはできない。",
+    "why": "Dockerfile はリポジトリにあるので、書き込み権限のある人なら手順を変えたり消したりできる。外せないポリシーには server-managed settings か MDM を使うよう、ページは述べている。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Development containers のページによると、--dangerously-skip-permissions で動かすと、悪意のあるプロジェクトがコンテナ内で読めるもの(~/.claude の認証情報を含む)を持ち出すことは防げません。ページは、信頼するリポジトリだけで使うこと、ホストの ~/.ssh などの秘密情報をマウントせずリポジトリ限定か短命のトークンを使うこと、非 root で動かすこと、外向き通信の制限と組み合わせることを挙げています。\n\n見分け方: コンテナでも中で読める秘密情報は守れません(b)。CLI は root ではこのフラグを拒否します(c)。Dockerfile はリポジトリにあり、書き込める人が変えられるので、外せないポリシーには server-managed settings か MDM を使います(d)。",
+  "refs": [
+   "https://code.claude.com/docs/en/devcontainer"
+  ]
+ },
+ {
+  "id": "arp-gov-021",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "開発チームが、Anthropic のホストする環境の Claude Code のクラウドセッションで、GitHub のリポジトリを扱い始める。セキュリティ担当は、セッションが main ブランチを直接更新したり、ブランチやタグを消したりしないかを懸念している。ドキュメントに沿う理解と対策はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "GitHub proxy は、セッションが作成した作業ブランチ以外への push をすべて拒否する。そのため、main への直接の push も、ブランチやタグの削除も、追加の設定なしで防がれている。",
+    "why": "GitHub proxy は、どのブランチを更新できるかは制限しない。更新できるブランチを絞るには GitHub のブランチ保護ルールやルールセットを使う。"
+   },
+   {
+    "id": "b",
+    "text": "GitHub のブランチ保護ルールで main を保護すれば十分である。セッションの接続に使う GitHub のアクセスに管理者のバイパスが許されていても、セッションからの push は止まる。",
+    "why": "ドキュメントによると、接続した GitHub のアクセスがバイパスできるルールは、セッションの push を止めない。"
+   },
+   {
+    "id": "c",
+    "text": "ブランチの削除やタグなどブランチ以外の push は GitHub proxy が拒否する。更新できるブランチを絞るには、接続した GitHub のアクセスではバイパスできないブランチ保護ルールかルールセットを設ける。",
+    "why": "正しい。proxy が拒否するのは削除とブランチ以外の push で、更新できるブランチは GitHub のルールで決まる。"
+   },
+   {
+    "id": "d",
+    "text": "環境のネットワークアクセスの設定を None にする。外部への通信が止まるので、GitHub への push もできなくなり、main の更新もブランチの削除も起きない。",
+    "why": "GitHub の操作はすべて専用の GitHub proxy を通り、環境のネットワークのアクセスレベルとは独立している。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Security のページと Configure cloud environments のページによると、Anthropic のホストする環境では GitHub の操作はすべて GitHub proxy を通り、実際の認証情報は VM に入りません。proxy はブランチの削除と、タグなどブランチ以外の push を拒否しますが、どのブランチを更新できるかは制限しません。それは、接続した GitHub のアクセスにブランチ保護ルールやルールセットを適用して GitHub が決めます。\n\n見分け方: proxy は作業ブランチ以外への push を拒否しません(a)。アクセスがバイパスできるルールは push を止めません(b)。GitHub proxy は環境のネットワークのアクセスレベルとは独立しています(d)。",
+  "refs": [
+   "https://code.claude.com/docs/en/security",
+   "https://code.claude.com/docs/en/cloud-environments"
+  ]
+ },
+ {
+  "id": "arp-gov-022",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "本番のワークスペースで動く夜間のバッチ処理が、退職予定のエンジニア A の個人用 API キー(personal key)で Claude API を呼んでいる。情報セキュリティの方針は「キーが持ち主より長く生き残らないこと」で、A の退職後もバッチは止めたくない。Authentication のページに沿う移行はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "キーを本番のワークスペースのワークスペースキーに作り替える。ワークスペースキーは作成者が組織を離れても動き続けるので、誰が退職してもバッチが止まらず、セキュリティの方針にも沿う。",
+    "why": "ワークスペースキーは誰の ID でもなく、作成者が離れても動き続けるレガシーのキーである。ページは新しい連携には ID に結び付いたキーを勧めている。"
+   },
+   {
+    "id": "b",
+    "text": "後任のエンジニア B に個人用キーを作ってもらい、バッチの環境変数を差し替える。B が異動したときは、Admin API で新しい担当者のキーを自動で作成する運用にする。",
+    "why": "ページは、共有した個人用キーは 1 人として動き、その人が離れると止まると述べる。また Admin API はキーを作成できず、読み取り、名前の変更、状態の変更だけを行う。"
+   },
+   {
+    "id": "c",
+    "text": "A のキーはそのまま使い続ける。A を組織から外すとキーは止まるが、あとで A を再招待すれば同じキーが復元されるので、バッチが止まっても運用担当者が短時間で元に戻せる。",
+    "why": "個人用キーは、持ち主が組織から外れると止まり、アーカイブされる。再招待しても、アーカイブされたキーは復元されない。"
+   },
+   {
+    "id": "d",
+    "text": "管理者が作ったサービスアカウントを本番のワークスペースに追加し、そのワークスペースに限定したキーを作って差し替えてから、A のキーを削除する。",
+    "why": "正しい。共有や無人のワークロードには、独自の ID を持つサービスアカウントのキーを使うよう、ページは勧めている。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Authentication のページによると、個人用キーとサービスアカウントのキーは ID に結び付いており、その ID が組織から外れるとキーも止まるので、持ち主より長く生き残りません。CI や本番サービスのような共有・無人のワークロードには、組織の管理者がサービスアカウントを作り、ワークロードに独自の ID を持たせます。サービスアカウントのキーは、作成したユーザーが外れても動き続けます。\n\n見分け方: ワークスペースキー(a)はレガシーで、作成者が離れても動き続けます。共有した個人用キー(b)は持ち主が離れると止まり、Admin API はキーを作成できません。アーカイブされた個人用キーは再招待しても戻りません(c)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/manage-claude/authentication",
+   "https://platform.claude.com/docs/en/manage-claude/workspaces",
+   "https://platform.claude.com/docs/en/manage-claude/admin-api"
+  ]
+ },
+ {
+  "id": "arp-gov-023",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "通販会社が、Claude を組み込んだ顧客サポートのチャットボットを社外の顧客向けに公開する。ボットには「さくら」という名前を付ける。マーケティング部門は、人と話しているように感じてもらうため AI であることを伏せたいと言っている。Usage Policy に沿う設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各チャットセッションの開始時か製品の画面で、AI と話していることを利用者に伝える。Anthropic、Claude、使っているモデルの名前まで示す必要はない。",
+    "why": "正しい。Additional Use Case Guidelines は、社外の利用者と直接やり取りするチャットボットに、少なくとも各セッションの開始時か製品の画面での開示を求める。"
+   },
+   {
+    "id": "b",
+    "text": "AI であることを開示し、その表示には Anthropic の名前と、使っているモデル(たとえば Claude Sonnet 5.5)の名前を必ず含める。名前を示さない開示は要件を満たさない。",
+    "why": "Usage Policy は、開示に Anthropic、Claude、使っているモデルを示す必要はないと明記している。"
+   },
+   {
+    "id": "c",
+    "text": "利用者から「人間ですか」と尋ねられたときだけ、AI であると正直に答えるようシステムプロンプトで指示する。尋ねられない限りは、ボットの名前を名乗るだけで要件を満たせる。",
+    "why": "開示は少なくとも各チャットセッションの開始時か製品の画面で行う必要があり、尋ねられたときだけ答える形では満たさない。"
+   },
+   {
+    "id": "d",
+    "text": "AI の開示が必要なのは、法律や医療のような High-risk の用途だけである。通販のサポートは High-risk に当たらないので、開示するかどうかは自社で決めてよい。",
+    "why": "Additional Use Case Guidelines は、High-risk かどうかに関係なく適用される。社外の利用者と直接やり取りするチャットボットには開示が要る。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Usage Policy の Additional Use Case Guidelines によると、社外の利用者と直接やり取りする消費者向けのチャットボットや AI エージェントは、人ではなく AI とやり取りしていることを利用者に開示しなければなりません。開示は少なくとも各チャットセッションの開始時か製品の画面で行い、Anthropic、Claude、使っているモデルを示す必要はありません。このガイドラインは、High-risk の推奨や物理的な動作を伴うかどうかに関係なく適用されます。\n\n見分け方: 名前の明示(b)は求められていません。尋ねられたときだけ答える形(c)は、開始時か画面での開示という最低限を満たしません。High-risk でなくても開示は要ります(d)。",
+  "refs": [
+   "https://www.anthropic.com/legal/aup"
+  ]
+ },
+ {
+  "id": "arp-gov-024",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Enterprise を導入する会社の CISO が「社員の会話がモデルの学習に使われることは避けたい」と求めている。Privacy Center の商用製品の記事に沿う対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "商用製品でも、既定では入力と出力が学習に使われる。Organization settings > Data and Privacy で、組織全体の学習へのデータ提供をオプトアウトする設定を有効にする。",
+    "why": "記事によると、商用製品の入力と出力は既定では学習に使われない。"
+   },
+   {
+    "id": "b",
+    "text": "Custom data retention で保持期間を最短の 30 日にする。社員が thumbs up/down で送ったフィードバックも、会話と同じく 30 日で消えるので、学習に使われる心配はなくなる。",
+    "why": "フィードバックとして送った会話は、会話の保持とは別に最大 5 年保存され、学習に使われうると記事は述べている。"
+   },
+   {
+    "id": "c",
+    "text": "既定では学習に使われないが、thumbs up/down のフィードバックは会話全体が保存され学習に使われうる。Owner が Data and Privacy の Rate chats を無効にする。",
+    "why": "正しい。Primary Owner と Owner は、Rate chats の設定でメンバーのフィードバック送信を無効にできる。"
+   },
+   {
+    "id": "d",
+    "text": "フィードバックには、Google Drive などのコネクタや MCP サーバーから読み込んだ生の内容がすべて含まれる。学習を避けるには、組織でコネクタの利用を無効にする。",
+    "why": "記事によると、フィードバックにはコネクタ(リモートとローカルの MCP サーバーを含む)の生の内容は含まれない。会話に直接コピーされた場合は含まれうる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Privacy Center の「Is my data used for model training?」によると、Claude for Work や Anthropic API などの商用製品の入力と出力は、既定では学習に使われません。ただし、thumbs up/down などで明示的にフィードバックを送ると、関連する会話全体が最大 5 年保存され、学習に使われることがあります。Team や Enterprise の Primary Owner と Owner は、Organization settings > Data and Privacy の Rate chats でフィードバックの送信を無効にできます。\n\n見分け方: 商用製品は既定で学習に使われません(a)。フィードバックの保存は会話の保持期間とは別で最大 5 年です(b)。コネクタの生の内容はフィードバックに含まれません(d)。",
+  "refs": [
+   "https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training",
+   "https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data"
+  ]
+ },
+ {
+  "id": "arp-gov-025",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "契約レビューのアプリで Claude Opus 5.5 を使っている。誤っていそうな回答が出たとき、Reduce hallucinations のページの chain-of-thought verification で、どこで誤った前提を置いたかを確かめたい。現状、応答の thinking ブロックは thinking フィールドが空で返ってくる。ドキュメントに沿う方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "システムプロンプトで、推論の過程を <reasoning> タグに入れて応答本文に書くよう指示する。本文に出た推論を読めば、どこで誤ったかが分かる。",
+    "why": "Thinking のページは、本文で推論を求めるのではなく thinking ブロックを読むよう勧め、内部の推論を本文に求める依頼を reasoning_extraction で断るモデルがあると述べる。"
+   },
+   {
+    "id": "b",
+    "text": "thinking の設定に display: \"summarized\" を指定し、誤っていそうな回答が出たときに、その応答の thinking ブロックにある要約された推論を確認する。",
+    "why": "正しい。Opus 5.5 の display の既定は \"omitted\" で、\"summarized\" を指定すると推論の要約が返る。"
+   },
+   {
+    "id": "c",
+    "text": "thinking ブロックの signature には暗号化された完全な思考が入っているので、それを復号して生の chain of thought を読み、誤った前提を特定する。",
+    "why": "signature は複数ターンの継続のために暗号化された思考を運ぶもので、どの display の設定でも生の chain of thought は返らない。"
+   },
+   {
+    "id": "d",
+    "text": "同じプロンプトを 5 回実行して、多数を占めた回答を正しいものとして採用する。回答がそろえば、推論の誤りもなかったと判断できる。",
+    "why": "best-of-N は出力を比べて不一致からハルシネーションの兆候を見つける手法で、推論のどこで誤ったかは示さない。多数決の回答を正しいとみなす根拠もない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。Reduce hallucinations のページは、chain-of-thought verification として、thinking を display: \"summarized\" で使い、回答が誤っていそうなときに thinking ブロックの要約された推論を確認するよう述べています。Thinking のページによると、Claude Opus 5.5 では display の既定が \"omitted\" で、thinking フィールドが空で返るので、\"summarized\" を指定する必要があります。\n\n見分け方: 推論を本文に書かせる指示(a)は reasoning_extraction で断られることがあります。signature(c)は継続のための暗号化された思考で、生の chain of thought はどの設定でも返りません。best-of-N(d)は不一致を見つける手法で、誤りの箇所は示しません。",
+  "refs": [
+   "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+   "https://platform.claude.com/docs/en/build-with-claude/thinking"
+  ]
  }
 ]

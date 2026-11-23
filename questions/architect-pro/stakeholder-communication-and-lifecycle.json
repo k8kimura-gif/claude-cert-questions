@@ -592,5 +592,341 @@
   "refs": [
    "https://platform.claude.com/docs/en/api/versioning"
   ]
+ },
+ {
+  "id": "arp-stk-017",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "社内のコードレビュー用エージェントを Claude Managed Agents で運用する計画を、財務部門に承認してもらう。財務担当者から「夜間にまとめて動かすのだから Batch API と同じ 50% 割引が効くはずだ。セッションの時間料金は、ユーザーの返信を待っている間もずっとかかるのか」と質問された。Pricing ページに沿った説明はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "夜間に起動するセッションは非同期の処理として扱われるので、トークンには Batch API の 50% 割引が適用される。ただしセッションの時間料金は、作成から終了までに経過した時間の全体にかかる。",
+    "why": "Pricing ページは、セッションはステートフルで対話的でバッチのモードがないため、Batch API の割引は適用されないとしている。時間料金も running の間だけ計上される。"
+   },
+   {
+    "id": "b",
+    "text": "トークンはモデルの料金表どおりに課金され、Managed Agents ではプロンプトキャッシュの倍率も適用されない。セッションの時間料金は idle の間も含めて計上されるので、返信待ちを短くする設計が要る。",
+    "why": "Pricing ページは、プロンプトキャッシュの倍率は Managed Agents でも同じように適用されるとしている。また idle の時間は時間料金に数えない。"
+   },
+   {
+    "id": "c",
+    "text": "セッションはステートフルで対話的なため Batch API の割引は適用されない。時間料金はステータスが running の間だけ計上され、idle で返信やツールの確認を待つ時間は数えない。",
+    "why": "正しい。Pricing ページの Claude Managed Agents pricing の記述どおりである。トークンはモデルの料金で課金され、時間料金は running の時間だけを計る。"
+   },
+   {
+    "id": "d",
+    "text": "Batch API の割引は適用されない。代わりに、セッションの時間料金に加えて、コード実行のコンテナ時間も実行時間に応じて別に課金されるので、セッション時間とコンテナ時間の両方を見積もりに入れておく必要がある。",
+    "why": "Pricing ページは、Managed Agents ではセッションの時間料金がコード実行のコンテナ時間の課金に置き換わり、コンテナ時間を別に請求しないとしている。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Pricing ページによると、Claude Managed Agents はトークンとセッションの実行時間の 2 つで課金されます。トークンはモデルの料金で課金され、プロンプトキャッシュの倍率も同じように適用されますが、セッションはステートフルで対話的でバッチのモードがないため、Batch API の割引は適用されません。時間料金は 1 セッション時間あたり $0.08 で、ステータスが running の間だけ計上され、idle(次のメッセージやツールの確認を待つ間)、rescheduling、terminated の時間は数えません。\n\n見分け方: 夜間に動かしてもバッチ割引は付きません(a)。キャッシュの倍率は適用され、idle は数えません(b)。セッションの時間料金はコード実行のコンテナ時間の課金に置き換わるもので、コンテナ時間は別に請求されません(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/pricing"
+  ]
+ },
+ {
+  "id": "arp-stk-018",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "契約書の一括レビューで、1 リクエストあたり約 30 万トークンのプロンプトを送る。共通の約 25 万トークンをプロンプトキャッシュに載せるので、毎回新しく送るのは 5 万トークンほどになる。コスト管理の担当者が、Claude Haiku 5.5 と Claude Sonnet 5.5 の見積もりの前提を確認したいと言っている。Pricing ページに沿った前提はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Haiku 5.5 はプロンプトが 10 万トークンを超えるリクエストに高い料金がかかり、プロンプトの長さにはキャッシュの読み出しと書き込みも含む。Sonnet 5.5 は 1M のコンテキスト全体が標準料金である。",
+    "why": "正しい。Pricing ページの Long context pricing の記述どおりである。このワークロードは Haiku 5.5 では毎回高い料金の側になる。"
+   },
+   {
+    "id": "b",
+    "text": "Haiku 5.5 の高い料金はキャッシュされていない入力トークンだけで判定されるため、毎回新しく送る 5 万トークンが 10 万トークンを下回る限り、低い料金のままで済む。Sonnet 5.5 は 1M 全体が標準料金である。",
+    "why": "Pricing ページは、プロンプトの長さにはキャッシュの読み出しと書き込みを含むすべての入力トークンを数え、一部がキャッシュヒットでも閾値を超えれば高い料金になるとしている。"
+   },
+   {
+    "id": "c",
+    "text": "どちらのモデルも、20 万トークンを超えるリクエストには長いコンテキストの割増料金がかかるので、両方とも割増を前提に見積もる。さらに、割増の対象のリクエストにはキャッシュとバッチの割引が適用されない。",
+    "why": "Pricing ページは、Claude 4.6 以降のモデル(Haiku 5.5 を除く)は 1M のコンテキスト全体を標準料金で使え、キャッシュとバッチの割引も全体に標準どおり適用されるとしている。"
+   },
+   {
+    "id": "d",
+    "text": "Haiku 5.5 は、同じ会話の中で一度でも 10 万トークンを超えると、それより前のリクエストも高い料金で計算し直される。そのため会話を 10 万トークンを超えない単位に分けて送る設計にする。",
+    "why": "Pricing ページは、各リクエストは単独で料金が決まり、それより前のリクエストは請求済みの料金のままだとしている。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Pricing ページの Long context pricing によると、Claude 4.6 以降のモデル(Claude Haiku 5.5 を除く)は 1M トークンのコンテキスト全体を標準料金で使え、キャッシュとバッチの割引も全体に標準どおり適用されます。Claude Haiku 5.5 はプロンプトの長さで料金が変わり、10 万トークンを超えるリクエストは高い料金になります。プロンプトの長さには、キャッシュの読み出しと書き込みを含むすべての入力トークンが数えられます。\n\n見分け方: 一部がキャッシュヒットでも閾値を超えれば高い料金です(b)。Sonnet 5.5 に長いコンテキストの割増はなく、割引も適用されます(c)。各リクエストは単独で料金が決まり、前のリクエストは請求済みの料金のままです(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/pricing"
+  ]
+ },
+ {
+  "id": "arp-stk-019",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "自社は Claude Opus 4.8 について、契約期間中の Priority Tier のコミットメントを持っている。営業責任者が「Priority Tier があるのだから、繁忙期にコミットメントを超える量を送っても、すべて優先で処理され、レート制限にもかからないと顧客に案内してよいか」と聞いてきた。Service tiers のページに沿った説明はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "コミットメントを超えた要求も Priority Tier として処理され、超過分は月末にまとめて精算される。Priority Tier の要求には通常のレート制限がかからないので、そのとおり顧客に案内してよい。",
+    "why": "Service tiers のページは、コミットメントを超えた要求は自動で標準の層に回るとし、Priority Tier に割り当てられた要求も通常のレート制限を消費するとしている。"
+   },
+   {
+    "id": "b",
+    "text": "コミットメントを超えた要求はすべて拒否されるので、繁忙期だけは service_tier を \"standard_only\" にして、最初からすべての要求を標準の層で送るようにクライアントを切り替えておく。",
+    "why": "ページは、コミットメントを超えた要求は拒否されず標準の層に回るとしている。\"standard_only\" は Priority Tier の容量を使いたくないときの指定である。"
+   },
+   {
+    "id": "c",
+    "text": "service_tier の既定は \"standard_only\" なので、Priority Tier を使うにはすべての要求で priority を明示する必要がある。明示した要求は通常のレート制限の対象から外れる。",
+    "why": "ページによると service_tier の既定は \"auto\" で、Priority Tier の容量があればそれを使う。Priority Tier の要求も通常のレート制限を消費する。"
+   },
+   {
+    "id": "d",
+    "text": "コミットメントを超えた分は自動で標準の層に回る。Priority Tier の要求も通常のレート制限を消費し、超えれば拒否される。どの層で処理されたかは応答の usage.service_tier で分かる。",
+    "why": "正しい。Service tiers のページの、コミットメントを超えた要求の扱い、Priority Tier とレート制限の関係、usage の service_tier の説明どおりである。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Service tiers のページによると、Priority Tier は稼働率 99.5% を目標とし、コミットメントを超えた要求は自動で標準の層に回ります。Priority Tier に割り当てられた要求は、Priority Tier の容量と通常のレート制限の両方を消費し、レート制限を超える場合は拒否されます。service_tier の既定は \"auto\" で、応答の usage に割り当てられた層が入るので、どの層で処理されたかを確かめられます。\n\n見分け方: 超過分は Priority Tier では処理されず、レート制限も免れません(a)。超過分は拒否されず標準の層に回り、\"standard_only\" は Priority Tier の容量を使いたくないときの指定です(b)。既定は \"auto\" で、明示してもレート制限は外れません(c)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/service-tiers"
+  ]
+ },
+ {
+  "id": "arp-stk-020",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "市場調査エージェントに、Claude API の web search ツールと web fetch ツールを使わせる。月次の予算を申請するため、ツールの料金の前提を財務部門に説明する。Pricing ページに沿った説明はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "web search は検索 1,000 回あたり $10 で、返された結果の件数に応じて加算される。エラーで失敗した検索も 1 回として課金されるので、再試行の回数も見込んで予算を組む。",
+    "why": "Pricing ページは、検索 1 回は結果の件数にかかわらず 1 回と数え、エラーで失敗した検索は課金しないとしている。"
+   },
+   {
+    "id": "b",
+    "text": "web search は 1,000 回あたり $10 に加え、検索結果が入力トークンとして数えられ、後のターンでも数えられる。web fetch に追加料金はなく、取得した内容のトークン料金だけがかかる。",
+    "why": "正しい。Pricing ページの Web search tool と Web fetch tool の記述どおりである。"
+   },
+   {
+    "id": "c",
+    "text": "web search と web fetch はどちらも 1,000 回あたり $10 の追加料金がかかる。取得した内容は会話に残っても入力トークンとしては数えられないので、会話が長くなってもトークン費用は増えない。",
+    "why": "Pricing ページは、web fetch には追加料金がないとし、検索結果は後のターンでも入力トークンとして数えられるとしている。"
+   },
+   {
+    "id": "d",
+    "text": "web search の料金はトークン料金に含まれ、追加料金はない。ただし web search と一緒に使うコード実行は実行時間で課金されるので、コンテナの時間を別に見積もる必要がある。",
+    "why": "Pricing ページは、web search は 1,000 回あたり $10 の追加料金があるとし、web_search_20260209 以降と一緒に使うコード実行は追加料金がないとしている。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。Pricing ページによると、Claude API の web search は検索 1,000 回あたり $10 で、検索で生まれた内容には標準のトークン料金もかかります。検索結果は、ターンの中で検索を続ける間も、後のターンでも入力トークンとして数えられます。web fetch には追加料金がなく、会話のコンテキストに入った取得内容のトークン料金だけを払います。\n\n見分け方: 検索は結果の件数にかかわらず 1 回と数え、エラーで失敗した検索は課金されません(a)。web fetch に回数の料金はなく、結果は後のターンでも数えられます(c)。web search には回数の料金があり、web_search_20260209 以降と一緒に使うコード実行は追加料金がかかりません(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/pricing"
+  ]
+ },
+ {
+  "id": "arp-stk-021",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "先月作ったばかりの Claude Console の組織で、来月、大規模な顧客向け機能を公開する。営業部門は「公開日から Scale 層の上限で処理できる前提で、顧客に処理量を案内したい」と言っている。Rate limits のページに沿った計画はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "層は契約時に選ぶものなので、Console で Scale 層を選んで料金を前払いしておけば、公開日から Scale 層のレート制限と月額の支出上限がそのまま適用される。営業には Scale 層の表の値で処理量を案内してよい。",
+    "why": "Rate limits のページは、組織は利用の履歴とアカウントの状況に基づいて自動で層に置かれるとしている。前払いで層を選ぶ仕組みは書かれていない。"
+   },
+   {
+    "id": "b",
+    "text": "レート制限は API キーごとにかかるので、公開用に新しい API キーを複数発行してトラフィックを分ければ、組織として Scale 層に相当する処理量を確保できる。",
+    "why": "Rate limits のページは、制限は組織の単位で設定されるとしている。キーを増やしても組織の上限は変わらない。"
+   },
+   {
+    "id": "c",
+    "text": "層は利用の履歴とアカウントの状況で自動的に決まり、新しい組織は標準より低い Evaluation 層から始まることがある。Console で現在の層を確かめ、足りなければ公開前に Request tier increase で依頼する。",
+    "why": "正しい。Rate limits のページは、層の決まり方、Evaluation 層、Rate limits ページでの層と上限の確認、Request tier increase による引き上げの依頼を説明している。"
+   },
+   {
+    "id": "d",
+    "text": "新しい組織は必ず Start 層から始まり、毎月 1 段ずつ自動で上がる。公開日までに Build 層に上がっているよう、今月のうちにテスト用の大量のリクエストを一度に流して利用の実績を作り、層の判定に間に合わせておく。",
+    "why": "ページに毎月 1 段ずつ上がるという記述はなく、新しい組織は Evaluation 層から始まることがある。急な大量の送信はランプ制限の 429 を招きうる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Rate limits のドキュメントによると、レート制限は使用量の層(usage tier)で決まり、組織は利用の履歴とアカウントの状況に基づいて自動で層に置かれ、時間とともに上の層へ移れます。新しい組織や利用の履歴が少ない組織は、標準の制限より低い Evaluation 層から始まることがあります。制限は組織の単位で、Console の Rate limits ページで層と現在の制限を確認でき、引き上げはそのページの Request tier increase で依頼します。\n\n見分け方: 層を前払いで選ぶ仕組みは書かれていません(a)。制限は組織の単位で、キーを増やしても変わりません(b)。毎月 1 段ずつという記述はなく、急な大量の送信はランプ制限を招きえます(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/rate-limits"
+  ]
+ },
+ {
+  "id": "arp-stk-022",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "CFO から「部門ごとに Claude API の月額の上限を決め、上限に達したら止めたい」と依頼された。現在は全部門が Default Workspace の API キーを使っており、同じワークスペースで Console の playground や Claude Managed Agents のセッションも使われている。Workspaces と Rate limits のドキュメントに沿った設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "部門ごとにワークスペースを作ってキーを移し、それぞれに月額の spend limit を設定する。Default Workspace の spend limit は playground や Managed Agents の利用を止めないことがあるので、組織の spend limit も設定する。",
+    "why": "正しい。ドキュメントは、ワークスペースごとに spend limit を設定でき、Default Workspace の spend limit は playground や Managed Agents の利用を数えないことがあり、組織の spend limit はそれらにも適用されるとしている。"
+   },
+   {
+    "id": "b",
+    "text": "ワークスペースは増やさず、Default Workspace の中で部門ごとのメンバーを登録し、メンバーごとの月額の spend limit を設定する。部門のメンバーの上限の合計が、その部門の上限になる。",
+    "why": "Workspaces のページは、Default Workspace は独自のメンバー一覧を持たず、メンバーごとの月額の spend limit に対応するのは Claude Code ワークスペースだけだとしている。"
+   },
+   {
+    "id": "c",
+    "text": "部門ごとにワークスペースを作り、各ワークスペースの spend limit の合計を組織の上限より大きく設定する。ワークスペースの上限は組織の上限より優先されるので、繁忙期の部門は組織の上限を超えて使える。",
+    "why": "ドキュメントは、ワークスペースの上限は組織の上限より低く抑えることはできても引き上げることはできず、合計が上回っても組織全体の上限は常に適用されるとしている。"
+   },
+   {
+    "id": "d",
+    "text": "部門ごとにワークスペースを作って spend limit を設定する。上限に達すると 429 と retry-after ヘッダーが返るので、各部門のクライアントは retry-after の秒数だけ待って再試行するよう実装する。",
+    "why": "Rate limits のページは、自分で設定した spend limit に達すると HTTP 400 の invalid_request_error が返り、上限を上げるか外すと早く再開できるとしている。retry-after 付きの 429 は Claude Code ワークスペースの例外である。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Workspaces と Rate limits のドキュメントによると、ワークスペースごとに月額の spend limit と rate limit を設定できますが、組織の上限を超えて引き上げることはできず、組織全体の上限は常に適用されます。Default Workspace の spend limit は、Console の playground や Claude Managed Agents のセッションなどの利用を数えない、または止めないことがあり、組織の spend limit はそれらすべてに適用されます。\n\n見分け方: Default Workspace は独自のメンバー一覧を持たず、メンバーごとの spend limit は Claude Code ワークスペースだけです(b)。ワークスペースの上限は組織の上限を超えられません(c)。自分で設定した spend limit に達すると 400 の invalid_request_error が返ります(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/manage-claude/workspaces",
+   "https://platform.claude.com/docs/en/api/rate-limits"
+  ]
+ },
+ {
+  "id": "arp-stk-023",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "経理向けの社内ダッシュボードは、レガシーの Usage and Cost API の /v1/organizations/cost_report を使っている。Usage and Cost Analytics API へ移行する計画を経理チームに説明する。移行で変わる点として、ドキュメントに沿ったものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "新しい API は beta ヘッダーなしで呼べ、日付の範囲にも上限がない。これまでどおり 1 年分の費用を 1 回のリクエストで取得できるので、ダッシュボードの取得処理は変えずに、エンドポイントの URL を差し替えるだけで済む。",
+    "why": "移行の表によると、新しい API は全リクエストに anthropic-beta: analytics-usage-cost-2026-08-24 が要り、1 リクエストの範囲は最大 31 日である。"
+   },
+   {
+    "id": "b",
+    "text": "新しい API でも Default Workspace の workspace_id は null で返る。workspace_id が null の行を Default Workspace の費用として扱っている既存の集計処理はそのまま使えるので、ワークスペース別の内訳は変えずに経理へ出し続けられる。",
+    "why": "新しい API は Default Workspace の費用を実際の wrkspc_ の ID で返す。null で返すのはレガシーの API である。"
+   },
+   {
+    "id": "c",
+    "text": "新しい API の amount はクレジットを差し引いた後の請求額で、割引前の定価は返されない。定価との差を経理に示すには、価格表を別に掛け合わせて計算する必要がある。",
+    "why": "Cost endpoint の説明では、amount は割引後でクレジット適用前の費用で、定価での費用は list_amount として返る。"
+   },
+   {
+    "id": "d",
+    "text": "全リクエストに anthropic-beta: analytics-usage-cost-2026-08-24 が要り、範囲は最大 31 日になる。Default Workspace は null ではなく実際の ID で返り、amount に加えて定価の list_amount も返る。",
+    "why": "正しい。Usage and Cost Analytics API のページの移行の表と Cost endpoint の説明どおりである。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Usage and Cost Analytics API のページの「Migrate from the Usage and Cost API」によると、新しい API は全リクエストに anthropic-beta: analytics-usage-cost-2026-08-24 が要り、1 リクエストは最大 31 日です。レガシーの API で null だった Default Workspace の workspace_id は、実際の ID になります。Cost endpoint の amount は割引後でクレジット適用前の費用で、定価での費用は list_amount で返ります。\n\n見分け方: beta ヘッダーと 31 日の上限があり、長い範囲は分割します(a)。Default Workspace は実際の ID で返ります(b)。定価は list_amount で取得でき、amount はクレジット適用前です(c)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/manage-claude/usage-cost-analytics-api",
+   "https://platform.claude.com/docs/en/manage-claude/usage-cost-api"
+  ]
+ },
+ {
+  "id": "arp-stk-024",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "プロダクトマネージャーが、anthropic-beta ヘッダーで有効にする beta の機能を、顧客向けの本番機能に使いたいと提案している。リスクを関係者に説明し、運用の計画に入れる。Beta headers のページに沿ったものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "beta の機能は一般提供の機能と同じ料金とレート制限で提供され、破壊的な変更も入らない。違いは名前に日付が付くことだけなので、通常の機能と同じ運用で足りる。",
+    "why": "Beta headers のページは、beta の機能は実験的で、破壊的な変更、非推奨や削除、レート制限や料金の違いがありうると警告している。"
+   },
+   {
+    "id": "b",
+    "text": "beta の機能は実験的で、通知のうえでの破壊的な変更、非推奨や削除、レート制限や料金の違い、地域による提供の差がありうる。更新はリリースノートで追い、文書どおりの beta 名を送る。",
+    "why": "正しい。Beta headers のページの警告と、正確な beta 名を使うこと、beta の機能の更新はリリースノートを見ることの案内どおりである。"
+   },
+   {
+    "id": "c",
+    "text": "beta 名を誤って送っても、API はそのヘッダーを無視して通常の処理を続けるので、綴りの誤りは本番の障害にならない。名前は日付の部分を省いた短い形で送ってもよい。",
+    "why": "Beta headers のページは、無効な beta 名や組織が利用できない beta を送ると 400 エラーになるとし、文書どおりの正確な名前を使うよう求めている。"
+   },
+   {
+    "id": "d",
+    "text": "beta の機能は一度組織で有効にすれば、どのクラウドでも同じ方法で使える。Amazon Bedrock の InvokeModel API でも、anthropic-beta ヘッダーに名前を入れれば同じように有効になる。",
+    "why": "ページは、すべてのプラットフォームがすべての beta を受け付けるわけではないとし、InvokeModel API はヘッダーではなく本文の anthropic_beta 配列から beta 名を読むとしている。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。Beta headers のページによると、beta の機能は実験的で、通知のうえで破壊的な変更が入る、非推奨になる・削除される、レート制限や料金が異なる、すべての地域で使えるとは限らない、という可能性があります。beta 名は文書に書かれたとおりの正確な名前を使い、beta の機能の更新はリリースノートで確認するよう案内しています。\n\n見分け方: 料金やレート制限が違いうるので、通常の機能と同じ扱いにはできません(a)。無効な beta 名や利用できない beta は 400 エラーになります(c)。すべてのプラットフォームがすべての beta を受け付けるわけではなく、InvokeModel API は本文の anthropic_beta 配列で受け取ります(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/beta-headers"
+  ]
+ },
+ {
+  "id": "arp-stk-025",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "規制対応のため、Claude Opus 5.5 を使う社内アシスタントの推論を米国内に限る(inference_geo: \"us\")ことになった。財務部門から「費用はどう変わるか、処理量の上限に影響はあるか」と聞かれた。同じ組織で Claude Haiku 4.5 を使う別の処理にも、同じ方針を当てはめたいという声がある。Data residency のドキュメントに沿った説明はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "1.1 倍がかかるのは入力と出力のトークンだけで、キャッシュの書き込みと読み出しは標準の料金のまま。米国内の推論には専用のレート制限が別にあるので、global の利用と枠を取り合うこともない。",
+    "why": "Data residency のページは、1.1 倍は入力、出力、キャッシュの書き込みと読み出しのすべてにかかるとし、レート制限はすべての geo で共有されるとしている。"
+   },
+   {
+    "id": "b",
+    "text": "1.1 倍はすべてのモデルに一律にかかるので、Haiku 4.5 の処理にも inference_geo: \"us\" を付ければ同じ倍率で米国内に限れる。Amazon Bedrock に移しても、同じ 1.1 倍が適用される。",
+    "why": "ページは、inference_geo は Claude 4.6 以降のモデルで使え、Haiku 4.5 などで付けると 400 になるとしている。Bedrock は独自の地域別の料金で、inference_geo も使わない。"
+   },
+   {
+    "id": "c",
+    "text": "Claude 4.6 以降のモデルでは、入力、出力、キャッシュの書き込みと読み出しのすべてに 1.1 倍がかかる。レート制限は geo の間で共有される。Haiku 4.5 は inference_geo に対応せず、付けると 400 になる。",
+    "why": "正しい。Data residency のページの Pricing と Model availability、レート制限が geo で共有されるという記述どおりである。"
+   },
+   {
+    "id": "d",
+    "text": "1.1 倍は Messages API の要求だけにかかる。Managed Agents のエージェントで model の inference_geo を \"us\" に固定したセッションは標準の料金のままなので、米国内に限る処理は Managed Agents に寄せると費用を抑えられる。",
+    "why": "ページは、エージェントのモデル設定で inference_geo を \"us\" に固定した場合も、セッションのモデルの要求に同じ 1.1 倍がかかるとしている。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Data residency のドキュメントによると、Claude 4.6 以降のモデルで米国内に限る推論(inference_geo: \"us\")は、入力、出力、キャッシュの書き込みと読み出しのすべての区分で標準の 1.1 倍の料金になります。inference_geo は Claude 4.6 以降で使え、Claude Haiku 4.5 などそれより前のモデルで付けると 400 エラーになります。レート制限はすべての geo で共有されます。\n\n見分け方: 倍率はキャッシュにもかかり、米国内専用の枠はありません(a)。古いモデルは対応せず、Bedrock は独自の地域別の料金です(b)。Managed Agents でも、エージェントで \"us\" に固定すれば同じ 1.1 倍がかかります(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/manage-claude/data-residency",
+   "https://platform.claude.com/docs/en/about-claude/pricing"
+  ]
  }
 ]

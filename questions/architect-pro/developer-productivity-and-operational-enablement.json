@@ -368,5 +368,119 @@
   "refs": [
    "https://code.claude.com/docs/en/sub-agents"
   ]
+ },
+ {
+  "id": "arp-dev-011",
+  "cert": "architect-pro",
+  "domain": "developer-productivity-and-operational-enablement",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "プラットフォームチームが、社内リポジトリに Claude Code のスキルを 2 つ追加する。1 つは本番環境へデプロイする手順で、副作用があり、実行のタイミングは開発者が決めたい。もう 1 つは旧システムの仕組みを説明する背景知識で、Claude には関係する場面で参照してほしいが、開発者がコマンドとして実行する意味はない。SKILL.md の frontmatter の設定として、ドキュメントに沿う組み合わせはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "デプロイのスキルに user-invocable: false を設定して Claude の自動実行を止め、背景知識のスキルに disable-model-invocation: true を設定して / メニューから隠す。",
+    "why": "2 つの項目の役割が逆である。user-invocable: false は利用者が呼び出せなくする設定で、disable-model-invocation: true は Claude が自分から呼び出せなくする設定である。"
+   },
+   {
+    "id": "b",
+    "text": "デプロイのスキルの allowed-tools に Read と Grep だけを列挙して Bash を使えなくし、背景知識のスキルには user-invocable: false を設定する。",
+    "why": "allowed-tools は、列挙したツールをそのスキルを呼び出したターンの間だけ確認なしで使えるようにする項目で、使えるツールを制限しない。ツールを外すのは disallowed-tools である。また、Claude が自分から呼び出すことも止まらない。"
+   },
+   {
+    "id": "c",
+    "text": "デプロイのスキルに disable-model-invocation: true を設定して Claude が自分から実行しないようにし、背景知識のスキルに user-invocable: false を設定する。",
+    "why": "正しい。disable-model-invocation: true は副作用のある作業や実行のタイミングを自分で決めたい作業向けで、user-invocable: false はコマンドとして実行する意味のない背景知識向けである。"
+   },
+   {
+    "id": "d",
+    "text": "デプロイのスキルの description に「自動では使わず、利用者の指示があるときだけ使うこと」と書き、背景知識のスキルは frontmatter を空にして既定のまま置く。",
+    "why": "description は Claude がいつスキルを使うかを判断する材料で、自動での呼び出しを止める設定ではない。既定では利用者も Claude も呼び出せるので、背景知識のスキルも / メニューから実行できるままになる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Claude Code の Skills のドキュメントによると、既定では利用者も Claude もスキルを呼び出せます。disable-model-invocation: true は Claude が自分から呼び出せなくする設定で、/commit や /deploy のような副作用のある作業や、タイミングを自分で決めたい作業向けとされています。user-invocable: false は / メニューから隠して利用者が呼び出せなくする設定で、legacy-system-context のような、コマンドとして実行する意味のない背景知識向けです。\n\n見分け方: (a) は 2 つの項目の役割を取り違えています。(b) の allowed-tools は、スキルを呼び出したターンの間だけ列挙したツールを事前に許可する項目で、ツールを制限しません。(d) の description は呼び出しの判断材料であって、自動での呼び出しを止める設定ではありません。",
+  "refs": [
+   "https://code.claude.com/docs/en/skills"
+  ]
+ },
+ {
+  "id": "arp-dev-012",
+  "cert": "architect-pro",
+  "domain": "developer-productivity-and-operational-enablement",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "あるリポジトリで、チームがコミットした .claude/settings.json に \"spinnerTipsEnabled\": true と、permissions.allow の [\"Bash(npm run test *)\"] がある。開発者の ~/.claude/settings.json には \"spinnerTipsEnabled\": false と、permissions.allow の [\"Bash(git status *)\"] がある。managed settings と --settings は使っておらず、開発者はこのフォルダの workspace trust を受け入れている。このプロジェクトで対話セッションを始めたときの動作として、ドキュメントに沿うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "スピナーのヒントは表示されない。個人の ~/.claude/settings.json は本人の好みを表すので、チームの設定より優先される。permissions.allow は両方のファイルのルールが合わさって使われる。",
+    "why": "優先順位は user settings が最も低く、shared project settings はその上にある。プロジェクトで個人の値を使いたいときは .claude/settings.local.json に書く。"
+   },
+   {
+    "id": "b",
+    "text": "スピナーのヒントは表示される。permissions.allow は 2 つのファイルのリストが結合され、両方のルールが使われる。",
+    "why": "正しい。同じキーは上位の shared project settings の値が使われ、permissions.allow のようなリストのキーは上書きされずに結合される。"
+   },
+   {
+    "id": "c",
+    "text": "スピナーのヒントは表示される。permissions.allow も上位の .claude/settings.json のリストだけが使われ、~/.claude/settings.json のリストは置き換えられて無視される。",
+    "why": "リストのキーは、上位のファイルの値で置き換えられずに結合される。各ファイルは、ほかのファイルの項目を消さずに項目を足せる。"
+   },
+   {
+    "id": "d",
+    "text": "スピナーのヒントは表示される。ただし、プロジェクトの permissions.allow は trust の後も使われず、~/.claude/settings.json の allow のルールだけが使われる。",
+    "why": "プロジェクトの permissions.allow は、workspace trust を受け入れた後に使われる。この場面では trust を受け入れているので、プロジェクトのルールも使われる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。Claude Code の Settings のドキュメントによると、同じキーが複数の場所にあるときは最も上位の値が使われ、順位は managed settings、コマンドライン、.claude/settings.local.json、.claude/settings.json、~/.claude/settings.json の順です。spinnerTipsEnabled はプロジェクトの true が使われます。一方、permissions.allow のようなリストのキーは、1 つを選ばずに結合されます。\n\n見分け方: (a) の user settings は最下位です。個人の値をプロジェクトで使うには .claude/settings.local.json に書きます。(c) はリストも上書きされると考えています。(d) のプロジェクトの permissions.allow は、trust を受け入れた後は使われます。",
+  "refs": [
+   "https://code.claude.com/docs/en/settings",
+   "https://code.claude.com/docs/en/permissions"
+  ]
+ },
+ {
+  "id": "arp-dev-013",
+  "cert": "architect-pro",
+  "domain": "developer-productivity-and-operational-enablement",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "テックリードが、社内マーケットプレイスのプラグインを project スコープでインストールし、enabledPlugins の入った .claude/settings.json をコミットした。別の開発者がそれを取り込んで新しいセッションを始めたが、プラグインのスキルが使えない。/plugin の Errors タブには isn't installed here で終わる行がある。ドキュメントに沿った説明と対処はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "プロジェクトの enabledPlugins は workspace trust を受け入れるまで保留される。開発者が trust のダイアログを受け入れれば、Claude Code が次の起動時にプラグインを自動で取得して読み込む。",
+    "why": "外部のソースにあるプラグインを Claude Code が取得するのは、user settings、git が追跡しない .claude/settings.local.json、--settings、managed settings が true にしたときだけで、コミットされたプロジェクトの設定は含まれない。"
+   },
+   {
+    "id": "b",
+    "text": "project スコープは、インストールを実行したテックリードの環境だけで有効になる。チーム全員に同じプラグインを配るには、managed settings の enabledPlugins に入れるしかない。",
+    "why": "project スコープは、コミットした .claude/settings.json を通じて、そのリポジトリで作業する全員に対してプラグインを有効にする。"
+   },
+   {
+    "id": "c",
+    "text": "開発者の ~/.claude/settings.json の enabledPlugins に同じプラグインが false で残っていて、user settings がプロジェクトの設定より優先されたため、読み込まれなかった。",
+    "why": "同じプラグインが複数のスコープで設定されているときは、プロジェクトの設定が user settings より優先される。また、表示されたエラーはプラグインが未インストールであることを示している。"
+   },
+   {
+    "id": "d",
+    "text": "コミットはプラグインを有効にするだけで、各自のマシンには取得されない。開発者がクローンごとに claude plugin install <name>@<marketplace> --scope project を実行する。",
+    "why": "正しい。コミットした項目は共同作業者に対してプラグインを有効にするが、各自のマシンには取得しない。各自がクローンごとにインストールし、/reload-plugins か新しいセッションで読み込む。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Install and manage plugins のドキュメントによると、project スコープで .claude/settings.json に入った項目は、コミットすると共同作業者に対して有効になりますが、各自のマシンには取得されません。各自がクローンごとに claude plugin install <name>@<marketplace> --scope project を実行します。その後、/reload-plugins か新しいセッションで読み込まれます(Plugin loading reference)。\n\n見分け方: (a) 外部のソースのプラグインを取得するのは user settings や managed settings などが true にしたときで、コミットされたプロジェクトの設定は含まれません。(b) project スコープはリポジトリで作業する全員が対象です。(c) は優先順位が逆です。",
+  "refs": [
+   "https://code.claude.com/docs/en/plugins/install",
+   "https://code.claude.com/docs/en/plugins/loading",
+   "https://code.claude.com/docs/en/plugins"
+  ]
  }
 ]
