@@ -1,0 +1,315 @@
+[
+ {
+  "id": "claude-md",
+  "title": "CLAUDE.md とルール(置き場所・読み込み・整理)",
+  "summary": "Claude Code の各セッションは新しいコンテキストで始まり、CLAUDE.md はセッションをまたいで持ち越す永続的な指示を書く Markdown のファイルです。置き場所でスコープが決まり、管理ポリシー(組織全体)、ユーザー(~/.claude/CLAUDE.md、自分の全プロジェクト)、プロジェクト(./CLAUDE.md か ./.claude/CLAUDE.md、バージョン管理でチームと共有)、ローカル(./CLAUDE.local.md、自分だけ)があります。作業ディレクトリとその上の階層の CLAUDE.md は起動時に読み込まれ、下の階層のものは Claude がその下のファイルを読む・書く・編集するときに読み込まれます。見つかったファイルは上書きし合わず、連結されます。CLAUDE.md は強制される設定ではなくコンテキストとして扱われるため、確かめられる具体的な指示を短く書き、1 ファイル 200 行未満を目安にします。コードベースの一部にだけ関係する指示はパスを絞ったルールに、複数の手順からなる作業はスキルに移します。",
+  "points": [
+   ".claude/rules/ には話題ごとのファイル(testing.md など)を置ける。paths のないルールは起動時に .claude/CLAUDE.md と同じ優先度で読み込まれ、フロントマターの paths に glob(例 \"src/api/**/*.ts\")を書いたルールは、一致するファイルを Read、Write、Edit で扱うときに読み込まれる",
+   "@path/to/import でほかのファイルを取り込める。相対パスは取り込み元のファイルから解決し、再帰は最大 4 段。取り込んだファイルは一緒に読み込まれるため、長いファイルの整理には役立つがコンテキストの消費は減らない",
+   "読み込まれたかは、まず /context(fullscreen では /context all)の内訳で確かめる。/memory はユーザーとプロジェクトのメモリファイルの場所を一覧し、開いて編集でき、auto memory の切り替えもできる。下の階層の CLAUDE.md は必要時に読み込まれるので起動時の内訳には出ない",
+   "claude -p は対話のセッションと同じように CLAUDE.md などを見つけて読み込む。--bare を付けると CLAUDE.md、フック、スキルなどの自動検出を飛ばす",
+   "2 つの指示が矛盾すると、Claude はどちらかを任意に選ぶことがある。CLAUDE.md、下の階層の CLAUDE.md、.claude/rules/ を定期的に見直す",
+   "決まった時点で必ず実行したいこと(コミットの前、ファイルの編集の後など)はフックにする。組織として強制する規則は、管理設定の permissions.deny などに書く",
+   "ベストプラクティスは、Claude がコードから読み取れないこと(テストや型検査のコマンド、紛らわしい箇所、リポジトリにない決定、2 回直したこと)だけを書くよう勧め、アーキテクチャやファイル構成を書く助言は古いものとしている。/init で出発点を作れる(既にあるときは上書きせず改善を提案する)",
+   "個人の、そのプロジェクトだけの指示は CLAUDE.local.md に書いて .gitignore に加える。全プロジェクトに当てはまる個人のルールは ~/.claude/rules/ に置ける"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/memory",
+    "title": "How Claude remembers your project"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/debug-your-config",
+    "title": "Debug your configuration"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/headless",
+    "title": "Run Claude Code programmatically"
+   }
+  ],
+  "checked": "2026-11-23"
+ },
+ {
+  "id": "claude-code-headless",
+  "title": "Claude Code の非対話実行(claude -p)",
+  "summary": "Claude Code は、-p(--print)フラグを付けると非対話で実行できます。公式ドキュメントはこれを Agent SDK の CLI としての使い方と位置付け、スクリプトや CI/CD での利用を想定しています。成功すると終了コード 0、失敗すると 0 以外で終わるため、スクリプトで分岐できます。--output-format で出力の形を選べ、text(既定)、json(結果、セッション ID、メタデータを含む JSON)、stream-json(逐次届く改行区切りの JSON)があります。決まったスキーマに沿った出力が必要なときは、--output-format json と --json-schema を組み合わせ、応答の structured_output フィールドから取り出します。--bare を付けると、フック、スキル、MCP サーバー、CLAUDE.md などの自動検出を飛ばして起動を速くできます。",
+  "points": [
+   "--output-format json の通常の応答では、テキストの結果は result フィールドに入る。total_cost_usd とモデルごとの費用の内訳も含まれる(クライアント側の推定値)",
+   "--json-schema を使った応答では、構造化された出力は structured_output フィールドに入る。Claude が依頼を断った場合など、有効な出力なしで終わるとこのフィールドは付かないので、使う前に存在を確かめる",
+   "--allowedTools は、列挙したツールを確認なしで使えるようにする(事前の許可)。使えるツールを絞るのは --tools",
+   "--permission-mode で、セッション全体の権限モード(auto、dontAsk、acceptEdits など)を指定できる",
+   "--max-turns でエージェントのターン数を制限できる(print モードのみ。既定は無制限)",
+   "claude mcp serve は、Claude Code 自体を MCP サーバーとして起動し、他のアプリケーションから接続させるためのもの",
+   "-p でも、利用者が呼び出すスキルとカスタムコマンドは使え、プロンプトに /skill-name を含めると展開される。--bare はスキルの自動検出も飛ばす。--bare はスクリプトや SDK の呼び出しに勧められ、将来 -p の既定になる予定",
+   "-p では信頼の確認(workspace trust)のダイアログが出ない。信頼していないフォルダでの -p では、.claude/settings.json の permissions.allow は使われない(deny と ask は効く)。許可するツールは --allowedTools などで渡す"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/headless",
+    "title": "Run Claude Code programmatically"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/cli-reference",
+    "title": "CLI reference"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/permissions",
+    "title": "Configure permissions"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/mcp",
+    "title": "Connect Claude Code to tools via MCP"
+   }
+  ],
+  "checked": "2026-11-23"
+ },
+ {
+  "id": "claude-code-hooks",
+  "title": "フックによる決定的な制御(Claude Code と Agent SDK)",
+  "summary": "フックは、エージェントの実行の決まった時点(ツールの呼び出しの前後、セッションの開始、停止など)で利用者のコードを動かす仕組みです。Claude Code では設定ファイルの hooks にシェルコマンドなどを書き、Agent SDK ではオプションの hooks にコールバック関数を渡します(設定ファイルのシェルコマンドのフックも、settingSources が有効なら読み込まれます)。Claude Code のベストプラクティスは、モデルが読んで判断する非決定的な指示(プロンプト、CLAUDE.md、スキル)と、ハーネスが必ず適用する決定的な仕組み(フック、deny ルール、管理設定)を分け、毎回必ず起きてほしいこと、決して起きてはならないことは後者にするよう勧めています。PreToolUse はツールの実行前に走り、permissionDecision で呼び出しを許可(allow)、拒否(deny)、確認(ask)、保留(defer)でき、updatedInput で入力を書き換えられます。PostToolUse は実行後に走り、additionalContext でツールの結果に情報を足すほか、updatedToolOutput で Claude が見る前に出力を置き換えられます。",
+  "points": [
+   "フックは例外のない規則のためのもの。ベストプラクティスの例では、.env を読まない、編集後に整形する、migrations を触らない、のうち「ほぼ守られる」では足りないものをフックに移し、Prefer named exports のように例外の多い規則は CLAUDE.md に残す",
+   "prompt と agent のフックは別のモデルが判断するので決定的ではない。確実に強制するには command、http、mcp_tool のフックを使い、フック自体が失敗したときも止めるなら onFailure: \"block\" を付ける",
+   "Claude Code のコマンドのフックは、終了コード 2 で動作を止め、標準エラーに書いた理由がイベントによっては Claude にフィードバックとして渡る",
+   "PreToolUse の deny の理由(permissionDecisionReason)は Claude に示される。複数のフックの判定が分かれたときは deny、defer、ask、allow の順に優先される",
+   "マッチャーはイベントの対象(ツールのフックではツール名)に対するパターン(例: \"Write|Edit\"、\"^mcp__\")。MCP のツールの名前は mcp__<server>__<action> の形",
+   "Write|Edit に一致させたフックは、Claude が Bash のコマンドでファイルを書く場合には動かない。Bash での書き込みを止めるにはサンドボックスの設定を使う",
+   "updatedToolOutput は組み込みのツールと MCP のツールの両方で使える。以前からある updatedMCPToolOutput は MCP のツールの出力だけを置き換える",
+   "Prompting best practices は、支払いを扱うエージェント向けの推奨の指示文について、Claude を導くだけで何も強制しないとし、お金を動かせるツールの呼び出しはすべて人が承認するよう勧めている"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/agent-sdk/hooks",
+    "title": "Intercept and control agent behavior with hooks"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/hooks",
+    "title": "Hooks reference"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/hooks-guide",
+    "title": "Automate actions with hooks"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "title": "Prompting best practices"
+   }
+  ],
+  "checked": "2026-11-23"
+ },
+ {
+  "id": "claude-code-subagents",
+  "title": "サブエージェントによるコンテキストの分離(Claude Code と Agent SDK)",
+  "summary": "Claude Code のサブエージェントは、特定の種類の作業を受け持つ専用の AI アシスタントで、それぞれ自分のコンテキストウィンドウで、専用のシステムプロンプト、使えるツールの範囲、独立した権限を持って動きます。検索結果、ログ、ファイルの中身でメインの会話があふれるような作業を任せると、サブエージェントは自分のコンテキストで作業し、要約だけを返します。Claude は、変更を加えずにコードベースを検索・理解するときに組み込みの Explore に任せ、探索の結果をメインの会話のコンテキストに入れずに済ませます。Agent SDK でも同じで、サブエージェントの途中のツール呼び出しと結果はサブエージェントの中にとどまり、親には最後のメッセージだけが返ります。サブエージェント(フォークを除く)は新しい独立したコンテキストで始まり、メインの会話の履歴も既に読んだファイルも見えないため、Claude が作業を要約した委任のメッセージを書き、サブエージェントはそこから作業します。",
+  "points": [
+   "サブエージェントが向くのは、メインに要らない冗長な出力が出る作業、ツールや権限を制限したい作業、自己完結して要約を返せる作業",
+   "メインの会話が向くのは、やり取りの多い作業、計画・実装・テストのように段階が多くの文脈を共有する作業、小さな変更、遅延が重要な場面",
+   "独立した調査は、複数のサブエージェントで並行して進め、Claude が結果を統合できる(例: 認証、データベース、API のモジュールを並行して調べる)。調査の道筋が互いに依存しないときに最もよく働く",
+   "多くのサブエージェントが詳しい結果を返すと、メインのコンテキストを大きく消費しうる。ベストプラクティスは、短い要約を返させるよう勧めている",
+   "費用は主にトークン。新しいサブエージェントは会話が既に持つ文脈を集め直すため、かえって遅くなることもある。既定では同じモデル(またはより小さいモデル)が同じ作業をするので、答えが賢くなるわけではない",
+   "定義の必須フィールドは name と description。tools で使えるツールを制限でき(省くと使えるツールをすべて引き継ぐ)、model で Haiku のような安いモデルに回せる",
+   "Agent SDK では query() の agents パラメータでプログラムから定義する方法が推奨されている。AgentDefinition は description(いつ使うか)と prompt(システムプロンプト)が必須で、tools、model、maxTurns などは任意。Claude は Agent ツールでサブエージェントを呼び出す(system:init のツール一覧では Task と表示され、Claude Code v2.1.63 より前は tool_use ブロックでも Task)",
+   "メインのスレッドとして動くエージェントの tools から Agent を外すと、サブエージェントを起動できない。Agent SDK の allowedTools は列挙したツールを事前に許可するだけで使えるツールを絞らず、Agent のように確認なしで動くツールは列挙しなくても動く"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/sub-agents",
+    "title": "Create custom subagents"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/agent-sdk/subagents",
+    "title": "Subagents in the SDK"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/agent-sdk/permissions",
+    "title": "Configure permissions"
+   }
+  ],
+  "checked": "2026-11-23"
+ },
+ {
+  "id": "claude-code-skills",
+  "title": "Claude Code のスキル(置き場所・フロントマター・サブエージェントでの実行)",
+  "summary": "スキルは、SKILL.md に書いた指示で Claude ができることを広げる仕組みです。Claude は関係があるときにスキルを使い、利用者は /skill-name で直接呼び出せます。カスタムコマンドはスキルに統合され、既存の .claude/commands/ のファイルも引き続き動きますが、新しく作るものには補助ファイルも置けるスキルが勧められています。置き場所で読み込まれる範囲が決まり、個人用は ~/.claude/skills/<skill-name>/SKILL.md(自分の全プロジェクト)、プロジェクト用は .claude/skills/<skill-name>/SKILL.md(コミットしてチームと共有)、ほかに Enterprise やプラグインなどがあります。同じ名前のスキルがあると、Enterprise が個人より、個人がプロジェクトより優先されます。CLAUDE.md と違い、スキルの本文は使われるときにだけ読み込まれるため、チームの手順や長い参照資料に向きます。フロントマターはすべて任意で、Claude がいつ使うかを判断する description だけが推奨されています。",
+  "points": [
+   "allowed-tools: スキルを呼び出したターンの間、列挙したツールを確認なしで使えるよう許可する。次のメッセージを送ると許可は消える。使えるツールを制限するものではない",
+   "disallowed-tools: スキルが有効な間、列挙したツールを使えるツールから取り除く。次のメッセージを送ると制限は消える。すべてのスキルとプロンプトで止めるなら、権限設定の deny ルールを使う",
+   "argument-hint: 補完のときに期待する引数を示す(例 [issue-number])。引数は本文の $ARGUMENTS、位置で取り出す $ARGUMENTS[N] や $N で受け取る",
+   "context: fork: スキルを新しいサブエージェントで実行する。種類は agent で選び(Explore、Plan、general-purpose、.claude/agents/ の定義など。省略時は general-purpose)、サブエージェントは会話の履歴を見ない。結果はメインの会話に返る",
+   "disable-model-invocation: true にすると Claude は自分では呼び出さない(デプロイのように副作用のある作業向け)。user-invocable: false にすると Claude だけが呼び出せる",
+   "呼び出されたスキルの内容は 1 つのメッセージとして会話に入り、その後のターンでも残る。Claude Code はスキルのファイルを後のターンで読み直さない",
+   "Claude Code のスキルは Agent Skills のオープンな標準に従い、呼び出しの制御やサブエージェントでの実行などを拡張している"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/skills",
+    "title": "Extend Claude with skills"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/best-practices",
+    "title": "Best practices for Claude Code"
+   }
+  ],
+  "checked": "2026-11-23"
+ },
+ {
+  "id": "claude-code-config-scopes",
+  "title": "Claude Code の設定の置き場所と共有の範囲(プロジェクトと個人)",
+  "summary": "Claude Code は、指示、設定、スキル、サブエージェント、メモリを、プロジェクトのディレクトリとホームディレクトリの ~/.claude から読み込みます。公式ドキュメント(Explore the .claude directory)は、プロジェクトのファイルは git にコミットしてチームと共有し、~/.claude のファイルは自分の全プロジェクトに適用される個人の設定だと説明しています。同じ種類のファイルに、共有用と個人用の置き場所が対になっています。CLAUDE.md はプロジェクト(./CLAUDE.md か ./.claude/CLAUDE.md)とユーザー(~/.claude/CLAUDE.md)、設定は共有のプロジェクト(.claude/settings.json)、プロジェクトの個人(.claude/settings.local.json)、ユーザー(~/.claude/settings.json)、スキルは .claude/skills/ と ~/.claude/skills/、サブエージェントは .claude/agents/ と ~/.claude/agents/、MCP サーバーはプロジェクトの .mcp.json と個人の ~/.claude.json です。組織全体には、管理設定や管理ポリシーの CLAUDE.md を配布できます。",
+  "points": [
+   "設定の優先順位は高い順に、管理設定、コマンドライン(--settings)、プロジェクトの個人、共有のプロジェクト、ユーザー。permissions.allow のような多くのリストは上書きせず統合される",
+   ".claude/settings.local.json は、Claude Code が書くときに git の除外に加える。手で作ったときは自分で .gitignore に加える。権限の確認で \"Yes, and don't ask again\" を選ぶと、allow ルールがこのファイルに保存される",
+   "settings.json の権限やフックは Claude Code が直接適用し、Claude が従うかに関係なく強制される。CLAUDE.md や .claude/rules/ は強制されない指示",
+   "同じ名前のスキルは Enterprise、個人、プロジェクトの順に優先する。同じ名前のサブエージェントは、管理設定、--agents、.claude/agents/、~/.claude/agents/、プラグインの順に優先する",
+   "~/.claude/CLAUDE.md はプロジェクトの CLAUDE.md と一緒に読み込まれ、矛盾するとどちらに従うかは決まらない。応答のスタイルやコミットの形式のように、どこでも当てはまる好みだけを書く",
+   "そのプロジェクトだけの個人の指示は ./CLAUDE.local.md に書き、.gitignore に加える",
+   ".claude/commands/ と ~/.claude/commands/ は単一ファイルのコマンドで、今も動く。新しく作るならスキルが勧められている"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/claude-directory",
+    "title": "Explore the .claude directory"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/settings",
+    "title": "Settings files and precedence"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/memory",
+    "title": "How Claude remembers your project"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/skills",
+    "title": "Extend Claude with skills"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/sub-agents",
+    "title": "Create custom subagents"
+   }
+  ],
+  "checked": "2026-11-23"
+ },
+ {
+  "id": "claude-code-permissions",
+  "title": "Claude Code の権限ルール、設定ファイルとサンドボックス",
+  "summary": "Claude Code では、どのツールを確認なしで使えるか、どれを使えないかを権限ルールで指定します。ルールには allow(確認なしで使える)、ask(使う前に確認する)、deny(使えない)の 3 種類があり、deny、ask、allow の順に評価されて最初に一致したものが結果になります。より具体的な allow ルールでも、一致する deny ルールの例外にはできません。ルールは settings.json の permissions に書き、/permissions の画面でも確認や追加ができます。権限ルールはモデルではなく Claude Code が強制するもので、プロンプトや CLAUDE.md の指示ではルールは変わりません。Read と Edit の拒否ルールは、組み込みのファイルツールと、Claude Code が解析できるリダイレクトや cat、sed などのファイルコマンドに適用されますが、ファイルを名指ししないコマンドや、Python や Node のスクリプトのように間接的に読み書きするサブプロセスには適用されません。OS のレベルで強制するには Bash のサンドボックスを有効にし、権限とサンドボックスを補い合う層として両方を使います。",
+  "points": [
+   "ルールの例: \"Bash(npm run test *)\" を allow に、\"Read(./.env)\" を deny に書く。Edit ルールはファイルを編集するすべての組み込みツールに適用される",
+   "Bash のようにツール名だけの deny ルールは、そのツールを Claude のコンテキストから取り除く。Bash(rm *) のようにパターンを付けると、一致する呼び出しだけを止める",
+   "Read の拒否ルールは同じパスへの Edit と Write も止める。NotebookEdit は対象外なので、どのツールにも変えさせないパスには Edit の拒否ルールを加える",
+   "設定ファイルは、ユーザー(~/.claude/settings.json)、共有のプロジェクト(.claude/settings.json)、個人のプロジェクト(.claude/settings.local.json)、組織の管理設定。優先順位は高い順に、管理設定、コマンドライン、個人のプロジェクト、共有のプロジェクト、ユーザー",
+   ".claude/settings.json をコミットすると、リポジトリを取得した全員が同じ権限、フック、プラグインの設定を使う。権限の確認で \"Yes, and don't ask again\" を選ぶと、allow ルールが .claude/settings.local.json に保存される",
+   "サンドボックスは、シェルコマンド(Bash、PowerShell、Monitor)とその子プロセスのファイルシステムとネットワークへのアクセスを OS のレベルで制限する。既定では無効で、/sandbox か sandbox.enabled で有効にする",
+   "サンドボックスの既定の書き込み先は、作業ディレクトリ、利用者ごとの一時ディレクトリ、追加したディレクトリ。ネットワークは許可したドメインを確かめるプロキシを通る(許可ドメインは最初は空)",
+   "サンドボックスの制限は、プロンプトインジェクションが Claude の判断を回避しても適用される。Claude のファイルツール、MCP サーバー、フックはサンドボックスの外で動く",
+   "Manual モードでは、Bash コマンドやファイルの変更は承認を求める。読み取り専用の操作は作業ディレクトリの中なら承認不要"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/permissions",
+    "title": "Configure permissions"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/settings",
+    "title": "Settings files and precedence"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/sandboxing",
+    "title": "Configure the sandboxed Bash tool"
+   }
+  ],
+  "checked": "2026-11-23"
+ },
+ {
+  "id": "claude-code-plugins",
+  "title": "Claude Code のプラグイン",
+  "summary": "Claude Code のプラグインは、スキル、エージェント(サブエージェント)、フック、MCP サーバーなどの部品を入れたディレクトリで、Claude Code が 1 つの単位としてインストールして読み込みます。多くのプラグインはマーケットプレイス(プラグインの一覧と取得先をまとめたカタログ)から入れますが、受け取ったフォルダから読み込んだり、自分で作ったりもできます。スキルやサブエージェント、フック、MCP サーバーはプラグインなしでも単独で使えます。公式ドキュメントは、複数の部品を 1 つの単位にまとめたいときにプラグインを使うとしています。他の人が作った構成を 1 つのコマンドで入れてマーケットプレイスから更新を受けるとき、自分の構成をチームに渡す、多くのプロジェクトに入れる、版を付けて公開するときに向きます。マニフェストは .claude-plugin/plugin.json に置きます。",
+  "points": [
+   "plugin.json で必須なのは name だけ。version、description、author、dependencies などを任意で書ける。知らない最上位のフィールドは取り除かれる",
+   "version を設定すると、変更するまで利用者はその版に固定される(command ソースのプラグインなど、固定されない例外がある)",
+   "dependencies は、このプラグインが動くために有効でなければならないプラグインの一覧。\"name\"、\"name@marketplace\"、オブジェクトの形で書ける",
+   "インストールのスコープは user(この端末のすべてのプロジェクト)、project(コミットした .claude/settings.json で、リポジトリの全員に有効)、local(自分とこのリポジトリだけ)",
+   "有効なプラグインは、使わないセッションでもスキルなどの名前と説明がコンテキストに入り、MCP サーバーやフックも動く",
+   "プラグインの実行は利用者の権限で行われる",
+   "project スコープの項目は、コミットすると共同作業者に対して有効になるが、各自のマシンには取得されない。各自がクローンごとに claude plugin install <name>@<marketplace> --scope project を実行する",
+   "project の .claude/settings.json でだけ有効にしたプラグインは、手元にインストールするまでセッションの開始時に読み込まれない。マーケットプレイスが手元にあれば、/plugin の Errors タブに isn't installed here で終わる行が出る"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/plugins",
+    "title": "Plugins overview"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/plugins-reference",
+    "title": "Plugin manifest reference"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/plugins/install",
+    "title": "Install and manage plugins"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/plugins/loading",
+    "title": "Plugin loading reference"
+   }
+  ],
+  "checked": "2026-11-23"
+ },
+ {
+  "id": "claude-code-costs",
+  "title": "Claude Code の費用の把握と削減(組織の管理とトークンの節約)",
+  "summary": "Claude Code は API のトークン消費で課金されます。公式ドキュメント(Manage costs effectively)によると、企業の導入での平均は、稼働日 1 日あたり開発者 1 人約 13 ドル、月 150〜250 ドルで、9 割の利用者は稼働日あたり 30 ドル未満です。組織での費用の見え方と上限のかけ方は、利用の経路で変わります。Teams・Enterprise プランは座席ごとの利用枠から引かれ、claude.ai の管理画面で管理します。Claude Console(API)はワークスペースの支出上限と Cost ページ、Claude Code Analytics API で管理します。Amazon Bedrock などのクラウドプロバイダーでは、費用はクラウドの請求画面と予算の機能で管理し、Anthropic の分析ダッシュボードと Claude Code Analytics API はこの利用を対象にしません。トークンを減らす方法としては、無関係な作業の間で /clear を使う、作業に合ったモデルを選ぶ、フックで前処理する、詳しい手順を CLAUDE.md からスキルに移す、冗長な作業をサブエージェントに任せる、などが挙げられています。",
+  "points": [
+   "/usage の Session の欄は API のトークン使用量で、API の利用者向け。ドルの値は既定では定価からローカルで計算した推定値で、/clear で新しいセッションになると 0 から数え直す",
+   "API やクラウドプロバイダーで想定外に費用が高いときは、たいてい /clear しないまま続けた長いセッションか、Opus を既定のモデルにしたままが原因。最も影響の大きい習慣は、無関係な作業の間で /clear することと、作業に合ったモデルを選ぶこと",
+   "クラウドプロバイダーでの開発者ごとの費用の把握には、OpenTelemetry、Claude apps gateway、LLM ゲートウェイ(LiteLLM など)の 3 つが挙げられている。OpenTelemetry はすべての経路で使え、開発者ごとのトークンと費用の指標をほぼリアルタイムで自社の基盤に送れる唯一の方法",
+   "フックは Claude が見る前にデータを前処理できる。10,000 行のログを読ませる代わりに ERROR を grep して一致した行だけを返せば、コンテキストを数万トークンから数百トークンに減らせる",
+   "CLAUDE.md はセッションの開始時に読み込まれ、スキルは呼び出されたときだけ読み込まれる。特定の作業の詳しい手順はスキルに移し、CLAUDE.md は 200 行未満を目安にする",
+   "テストの実行、ドキュメントの取得、ログの処理はサブエージェントに任せると、冗長な出力はサブエージェントのコンテキストに残り、要約だけが戻る。ただしサブエージェントのリクエストも利用量に数えられる",
+   "MCP のツール定義は既定で遅延読み込みされる。gh や aws のような CLI はツールごとの一覧を加えないので、MCP サーバーよりコンテキストの効率がよい。使わないサーバーは /mcp で無効にする",
+   "思考のトークンは出力トークンとして課金される。簡単な作業では /effort で effort を下げられる。Opus 5.5、Sonnet 5.5、Haiku 5.5、Fable のモデルでは思考をオフにできない"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/costs",
+    "title": "Manage costs effectively"
+   }
+  ],
+  "checked": "2026-11-23"
+ },
+ {
+  "id": "claude-code-monitoring",
+  "title": "Claude Code の利用の監視(OpenTelemetry)",
+  "summary": "Claude Code は、利用状況、費用、ツールの動きを OpenTelemetry で書き出せます。公式ドキュメント(Monitoring)によると、指標は時系列のメトリクスとして、イベントはログとして送られ、分散トレースも任意で送れます(beta)。有効にするには CLAUDE_CODE_ENABLE_TELEMETRY=1 を設定し、OTEL_METRICS_EXPORTER や OTEL_LOGS_EXPORTER でエクスポーターを選び、OTEL_EXPORTER_OTLP_ENDPOINT で送り先を指定します。管理者は managed settings の env に書いて全利用者に配れます。Claude Code は、リポジトリの .claude/settings.json と .claude/settings.local.json にある OpenTelemetry のエクスポーターの変数を無視するので、リポジトリからテレメトリを有効にしたり、送り先を選んだり、内容を取得したりはできません。設定は managed settings に書くか、各開発者がシェルか ~/.claude/settings.json に書きます。",
+  "points": [
+   "managed settings に OTEL_EXPORTER_OTLP_ENDPOINT を設定すると、開発者が設定した信号ごとのエンドポイントは起動時に取り除かれ、1 つの信号だけ別の収集先に向けることはできなくなる",
+   "エクスポーターの選択(OTEL_METRICS_EXPORTER など)は通常の優先順位に従うので、開発者の設定で信号をオフにできる。固定したいときは managed settings にも書く。リポジトリの設定でも、エクスポーターを none にして信号をオフにすることはできる",
+   "主な指標は claude_code.session.count、claude_code.lines_of_code.count、claude_code.pull_request.count、claude_code.commit.count、claude_code.cost.usage(USD)、claude_code.token.usage、claude_code.code_edit_tool.decision、claude_code.active_time.total",
+   "プロンプトの本文の記録は既定でオフで、OTEL_LOG_USER_PROMPTS=1 で有効にする。ツールの引数(Bash のコマンドなど)は OTEL_LOG_TOOL_DETAILS=1 で記録する",
+   "Claude Code は OTEL_* の環境変数を、Bash ツール、フック、MCP サーバーなど自分が起動するサブプロセスに渡さない",
+   "指標が届くかは、セッションの開始時に送られる claude_code.session.count で確かめる。届かないときは claude --debug-file <path> のログの [3P telemetry] のエラーを見る"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/monitoring-usage",
+    "title": "Monitoring"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/costs",
+    "title": "Manage costs effectively"
+   }
+  ],
+  "checked": "2026-11-23"
+ }
+]

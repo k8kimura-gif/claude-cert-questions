@@ -31,9 +31,14 @@
   "answer": [
    "d"
   ],
-  "explanation": "CLAUDE.md と自動メモリは、毎回の会話の開始時に読み込まれるコンテキストで、強制される設定ではない。Claude の判断にかかわらず操作を止めるには、PreToolUse フックを使う。",
+  "explanation": "正解は d です。Claude Code のメモリのドキュメント(How Claude remembers your project)によると、Claude は CLAUDE.md を強制される設定ではなくコンテキストとして扱います。指示が具体的で簡潔なほど守られやすくなりますが、Claude の判断にかかわらず操作を止めたいときは、PreToolUse フックを使うよう案内されています。\n\n見分け方: (a) と (b) は CLAUDE.md を強制される設定とみなしていますが、ドキュメントはコンテキストだと明記しています。(c) は逆に効果がないとしていますが、ドキュメントは書き方によって守られやすさが変わると説明しており、書く意味がないわけではありません。確実な強制が必要な部分だけをフックに移すのが筋です。",
   "refs": [
-   "https://code.claude.com/docs/en/memory"
+   "https://code.claude.com/docs/en/memory",
+   "https://code.claude.com/docs/en/hooks-guide"
+  ],
+  "topics": [
+   "claude-md",
+   "claude-code-hooks"
   ]
  },
  {
@@ -68,9 +73,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "出典は、1 つの CLAUDE.md を 200 行未満にすることを目安とし、一部のコードにだけ関係する指示は、パス指定のルールに移すよう勧める。インポートは整理には役立つが、コンテキストの消費は減らない。",
+  "explanation": "正解は b です。Claude Code のメモリのドキュメントは、CLAUDE.md を 1 ファイルあたり 200 行未満にすることを目安とし、長いファイルはコンテキストを多く消費して指示の守られ方を下げると説明しています。コードの一部にだけ関係する指示は、一致するファイルを扱うときにだけ読み込まれる、パスを指定したルール(.claude/rules/)に移すよう勧めています。\n\n見分け方: (a) は長さを変えずに強調で補おうとしていますが、ドキュメントが挙げる原因は長さです。(c) の @ によるインポートは整理には役立ちますが、取り込んだファイルは一緒に読み込まれるので、コンテキストの消費は減りません。(d) について、ドキュメントは矛盾する指示があると Claude がどちらかを任意に選ぶことがあるとして、定期的に見直すよう勧めています。",
   "refs": [
    "https://code.claude.com/docs/en/memory"
+  ],
+  "topics": [
+   "claude-md"
   ]
  },
  {
@@ -105,9 +113,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "出典は、無関係な作業の間で /clear を使い、モデルを作業に合わせて選ぶことを、最も影響の大きい習慣として挙げる。古いコンテキストは以後のすべてのメッセージでトークンを消費する。",
+  "explanation": "正解は a です。Claude Code の費用のドキュメント(Manage costs effectively)は、API やクラウドプロバイダーでの想定外に高い費用は、たいてい /clear しないまま続けた長いセッションか、Opus を既定のモデルにしたままが原因だとし、最も影響の大きい習慣として、無関係な作業の間で /clear することと、作業に合ったモデルを選ぶことを挙げています。古いコンテキストは、以後のすべてのメッセージでトークンを消費します。\n\n見分け方: (b) は逆で、長いセッションでは毎回の要求で会話全体を送るため、キャッシュの読み出しでも利用量が増えます。(c) について、ドキュメントは多くのコーディング作業には Sonnet で十分で、Opus は複雑な設計判断などに取っておくよう勧めています。(d) の思考のトークンは出力トークンとして課金され、簡単な作業では effort を下げるよう勧められています。",
   "refs": [
    "https://code.claude.com/docs/en/costs"
+  ],
+  "topics": [
+   "claude-code-costs"
   ]
  },
  {
@@ -142,9 +153,14 @@
   "answer": [
    "d"
   ],
-  "explanation": "Bedrock などのクラウドプロバイダー経由の利用は、Anthropic の分析ダッシュボードの対象外である。開発者ごとの把握には、OpenTelemetry、Claude アプリゲートウェイ、LLM ゲートウェイ(LiteLLM など)を使う。",
+  "explanation": "正解は d です。Claude Code の費用のドキュメントによると、Amazon Bedrock などのクラウドプロバイダーでの利用は、Claude Code がクラウドから Anthropic に指標を送らないため、分析ダッシュボードと Claude Code Analytics API の対象外です。開発者ごとの費用の把握には、各開発者の端末から OpenTelemetry で指標を自社の基盤に送る方法、Claude apps gateway、キーごとに支出を追跡する LLM ゲートウェイ(LiteLLM など)の 3 つが挙げられています。\n\n見分け方: (a) の Claude Code Analytics API は Claude Console(API)の利用者向けで、クラウドプロバイダーの利用は含みません。(b) の /usage の金額はセッションごとの定価での推定値で、組織の集計の仕組みではありません。(c) について、クラウドプロバイダーでは費用はクラウドの請求画面で見るとされています。",
   "refs": [
-   "https://code.claude.com/docs/en/costs"
+   "https://code.claude.com/docs/en/costs",
+   "https://code.claude.com/docs/en/monitoring-usage"
+  ],
+  "topics": [
+   "claude-code-costs",
+   "claude-code-monitoring"
   ]
  },
  {
@@ -179,9 +195,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "出典は、フックでデータを前処理する例を挙げる。10,000 行のログを読ませる代わりに、フックで ERROR の行だけを返せば、コンテキストを数万トークンから数百トークンに減らせる。",
+  "explanation": "正解は b です。Claude Code の費用のドキュメントは、フックで Claude が見る前にデータを前処理する方法を挙げています。10,000 行のログを Claude に読ませてエラーを探させる代わりに、フックで ERROR を grep して一致した行だけを返せば、コンテキストを数万トークンから数百トークンに減らせると説明しています。例として、Bash の実行前に動く PreToolUse フックでテストの出力を末尾の 100 行に絞る設定も示されています。\n\n見分け方: (a) は人手での選別で、ドキュメントが示すのは自動の前処理です。(c) のモデルの切り替えは、読ませるトークンの量を減らしません。ドキュメントは逆に、Opus を複雑な作業に取っておくよう勧めています。(d) の CLAUDE.md はセッションの開始時に毎回読み込まれるので、内容を足すほど基本のコンテキストが増えます。",
   "refs": [
    "https://code.claude.com/docs/en/costs"
+  ],
+  "topics": [
+   "claude-code-costs",
+   "claude-code-hooks"
   ]
  },
  {
@@ -216,9 +236,12 @@
   "answer": [
    "b"
   ],
-  "explanation": "出典によると、--bare を付けると、フック、スキル、カスタムコマンド、サブエージェント、プラグイン、MCP サーバー、自動メモリ、CLAUDE.md の自動検出を省いて起動する。付けない -p は、対話セッションと同じようにこれらを読み込む。bare モードでは、Anthropic API を使う場合に ANTHROPIC_API_KEY が必要で、サブスクリプションのログインは使えない。bare モードは、スクリプトや SDK の呼び出しに推奨されている。",
+  "explanation": "正解は b です。Claude Code を非対話で実行するドキュメント(Run Claude Code programmatically)によると、--bare を付けると、フック、スキル、カスタムコマンド、サブエージェント、インストール済みのプラグイン、MCP サーバー、自動メモリ、CLAUDE.md の自動検出を省いて起動します。--bare はスクリプトや SDK からの呼び出しに推奨されるモードとされています。bare モードはサブスクリプションのログインを使わないので、ANTHROPIC_API_KEY を設定します。\n\n見分け方: (a) は個人の設定を CI に持ち込むことになり、揃える範囲が開発者の数だけ増えます。(c) は手作業で読み込み対象を消す方法で、ドキュメントが用意する --bare を使えば済みます。(d) は誤りで、--bare を付けない -p は、プロジェクトの .claude/settings.json のフックを実行し、.mcp.json のサーバーに接続します。",
   "refs": [
    "https://code.claude.com/docs/en/headless"
+  ],
+  "topics": [
+   "claude-code-headless"
   ]
  },
  {
@@ -253,9 +276,12 @@
   "answer": [
    "d"
   ],
-  "explanation": "出典は、--output-format json と --json-schema を併用すると、指定した JSON スキーマに沿った出力が得られ、セッション ID や使用量などのメタデータとともに、structured_output フィールドに入ると説明している。スキーマが不正な場合、claude は「Error: --json-schema is not a valid JSON Schema」で終了する。format キーワードは受け付けられるが、注釈として扱われ、強制されない。",
+  "explanation": "正解は d です。Claude Code を非対話で実行するドキュメントによると、--output-format json と --json-schema を組み合わせると、指定した JSON スキーマに沿った出力が得られ、セッション ID や使用量などのメタデータとともに、structured_output フィールドに入ります。ドキュメントの例も、関数名を文字列の配列として取り出すものです。\n\n見分け方: (a) は出力の形を保証せず、スクリプトの側で文字列を解析することになります。(b) は指示に頼るだけで、スキーマに沿う保証がありません。--json-schema を使わない場合、テキストの結果は result フィールドに入ります。(c) の format キーワードは受け付けられますが、注釈として扱われ、強制されません。",
   "refs": [
    "https://code.claude.com/docs/en/headless"
+  ],
+  "topics": [
+   "claude-code-headless"
   ]
  },
  {
@@ -290,9 +316,12 @@
   "answer": [
    "a"
   ],
-  "explanation": "出典は、Claude Code が、リポジトリの .claude/settings.json と .claude/settings.local.json にある OpenTelemetry のエクスポーター変数を無視すると説明する。そのため、リポジトリからテレメトリを有効にしたり、送信先を選んだり、内容を取得したりはできない。管理者は managed settings に設定するか、各開発者がシェルまたは ~/.claude/settings.json に設定する。managed settings に OTEL_EXPORTER_OTLP_ENDPOINT を設定すると、開発者が設定した信号ごとのエンドポイントは取り除かれる。",
+  "explanation": "正解は a です。Claude Code の監視のドキュメント(Monitoring)によると、Claude Code は、リポジトリの .claude/settings.json と .claude/settings.local.json にある OpenTelemetry のエクスポーターの変数を無視します。そのため、リポジトリからテレメトリを有効にしたり、送り先を選んだり、内容を取得したりはできません。管理者は managed settings に設定するか、各開発者がシェルか ~/.claude/settings.json に設定します。\n\n見分け方: (b) は誤りで、設定の優先順位の最上位は managed settings です。また、これらの変数はリポジトリの設定からは使われません。(c) について、ドキュメントは環境変数(CLAUDE_CODE_ENABLE_TELEMETRY など)で設定する方法を示しています。(d) は逆で、managed settings に OTEL_EXPORTER_OTLP_ENDPOINT を設定すると、開発者が設定した信号ごとのエンドポイントは取り除かれます。",
   "refs": [
    "https://code.claude.com/docs/en/monitoring-usage"
+  ],
+  "topics": [
+   "claude-code-monitoring"
   ]
  },
  {
@@ -327,9 +356,12 @@
   "answer": [
    "c"
   ],
-  "explanation": "出典によると、一致するフックは並行して実行され、終了後に Claude Code が出力を統合する。PreToolUse の許可の判断では、最も制限の強い答えが適用され、順序は deny、defer、ask、allow である。例では、ログのフックは終了コード 0 で判断を報告せず、ガードレールのフックが終了コード 2 で呼び出しを拒否する。deny が優先されるので、コマンドはブロックされ、ガードレールの stderr が Claude に示される。ログは、先に実行されたフックが書くので残る。",
+  "explanation": "正解は c です。Claude Code のフックのガイド(Automate actions with hooks)によると、同じイベントに一致した複数のフックはすべて最後まで実行され、その後で Claude Code が結果を統合します。PreToolUse の許可の判断では、最も制限の強い答えが適用され、順序は deny、defer、ask、allow です。ガイドの同じ例では、2 つのフックが並行して実行され、ログのフックは終了コード 0 で判断を報告せず、ガードレールのフックが終了コード 2 で拒否します。deny が優先されてコマンドはブロックされ、ガードレールの stderr が Claude に示されます。\n\n見分け方: (a) と (b) は、1 つ目のフックの終了で許可が決まると考えていますが、すべてのフックの結果が統合されます。(d) について、ガイドは 1 つのフックの deny がほかのフックの実行を止めないとし、ログはすでに書かれているので残ると説明しています。",
   "refs": [
    "https://code.claude.com/docs/en/hooks-guide"
+  ],
+  "topics": [
+   "claude-code-hooks"
   ]
  },
  {
@@ -364,9 +396,13 @@
   "answer": [
    "b"
   ],
-  "explanation": "出典は、サブエージェントを、検索結果、ログ、ファイルの内容など、メインの会話に残す必要のない出力が多い副次的な作業に使うよう説明する。サブエージェントは、独自のシステムプロンプト、ツールのアクセス、独立した権限をもち、自分のコンテキストウィンドウで作業して、要約だけを返す。ただし、サブエージェントのリクエストもメインの会話と同じ使用量の上限に数えられる。",
+  "explanation": "正解は b です。Claude Code のサブエージェントのドキュメント(Create custom subagents)によると、テストの実行やドキュメントの取得のように冗長な出力を出す作業をサブエージェントに任せると、冗長な出力はサブエージェントのコンテキストに留まり、関係する要約だけがメインの会話に戻ります。各サブエージェントは、独自のシステムプロンプト、決められたツール、独立した権限を持ち、自分のコンテキストウィンドウで動きます。\n\n見分け方: (a) は出力そのものがメインの会話に入るので、コンテキストは減りません。(c) は逆で、メインの会話には要約だけが戻ります。(d) について、ドキュメントはサブエージェントも自分の要求を送り、それがメインの会話と同じ利用量の上限に数えられると説明しています。",
   "refs": [
    "https://code.claude.com/docs/en/sub-agents"
+  ],
+  "topics": [
+   "claude-code-subagents",
+   "claude-code-costs"
   ]
  },
  {
@@ -404,6 +440,9 @@
   "explanation": "正解は c です。Claude Code の Skills のドキュメントによると、既定では利用者も Claude もスキルを呼び出せます。disable-model-invocation: true は Claude が自分から呼び出せなくする設定で、/commit や /deploy のような副作用のある作業や、タイミングを自分で決めたい作業向けとされています。user-invocable: false は / メニューから隠して利用者が呼び出せなくする設定で、legacy-system-context のような、コマンドとして実行する意味のない背景知識向けです。\n\n見分け方: (a) は 2 つの項目の役割を取り違えています。(b) の allowed-tools は、スキルを呼び出したターンの間だけ列挙したツールを事前に許可する項目で、ツールを制限しません。(d) の description は呼び出しの判断材料であって、自動での呼び出しを止める設定ではありません。",
   "refs": [
    "https://code.claude.com/docs/en/skills"
+  ],
+  "topics": [
+   "claude-code-skills"
   ]
  },
  {
@@ -442,6 +481,10 @@
   "refs": [
    "https://code.claude.com/docs/en/settings",
    "https://code.claude.com/docs/en/permissions"
+  ],
+  "topics": [
+   "claude-code-config-scopes",
+   "claude-code-permissions"
   ]
  },
  {
@@ -481,6 +524,9 @@
    "https://code.claude.com/docs/en/plugins/install",
    "https://code.claude.com/docs/en/plugins/loading",
    "https://code.claude.com/docs/en/plugins"
+  ],
+  "topics": [
+   "claude-code-plugins"
   ]
  }
 ]
