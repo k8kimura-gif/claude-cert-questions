@@ -2454,5 +2454,413 @@
    }
   ],
   "checked": "2026-11-23"
+ },
+ {
+  "id": "fine-grained-tool-streaming",
+  "title": "Fine-grained tool streaming(ツール入力の細かいストリーミング)",
+  "summary": "Fine-grained tool streaming は、Claude が生成するツールの入力を、サーバー側でバッファや JSON の検証をせずにクライアントへ送る機能です。文書やコードのような大きなパラメータの最初の断片が届くまでの時間が短くなり、断片は通常のツール使用と同じストリーミングのイベント(input_json_delta の partial_json)で届きます。有効にするには、必要なユーザー定義のツールごとに eager_input_streaming を true にし、リクエストのストリーミングを有効にします。省略すると標準のストリーミングになり、API は各パラメータの値をバッファして検証してから送るので、大きなパラメータは生成を終えるまで何も届きません。検証されない断片が届くため、連結した入力は不完全または不正な JSON になりえます。",
+  "points": [
+   "有効化はツールごとの eager_input_streaming: true とストリーミングの有効化。省略すると標準(バッファあり)のストリーミング",
+   "以前の fine-grained-tool-streaming-2025-05-14 ベータヘッダーはツールごとの設定に置き換えられた。明示的な false はヘッダーがあってもバッファを保つ",
+   "このヘッダーは computer use や browser use のツールセットと同時に送れず、API はリクエストを拒否する",
+   "content_block_start の input: {} は場所を示すだけで、partial_json の断片を連結し、ブロックが閉じたら解析する",
+   "解析は失敗に備えて行う。max_tokens で止まるとパラメータが途中で切れることもあるので stop_reason を確かめる",
+   "不正な入力は INVALID_JSON をキーにした JSON 文字列を content にし、is_error: true の tool_result で Claude に返す。ラッパーは文字列の連結ではなく JSON ライブラリで作る",
+   "すべてのモデルで使え、ゼロデータ保持と HIPAA readiness の対象"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/fine-grained-tool-streaming",
+    "title": "Fine-grained tool streaming"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "api-errors",
+  "title": "Claude API のエラーと再試行",
+  "summary": "Claude API のエラーは、HTTP のステータスコードと、type と message を持つトップレベルの error オブジェクトの JSON で返り、本文には request_id も入ります。主なものは、400 invalid_request_error(要求の形式や内容の問題。自分で設定した組織やワークスペースの支出上限に達したときも 400)、401 authentication_error、403 permission_error、404 not_found_error、413 request_too_large、429 rate_limit_error、500 api_error、504 timeout_error、529 overloaded_error(API の一時的な過負荷)です。公式 SDK は、接続エラー、レート制限、5xx などの一時的な失敗を指数バックオフで既定 2 回、retry-after ヘッダーがあればそれに従って自動で再試行し、max_retries で変えられます。ストリーミングでは 200 を返した後にもエラーが起こりえて、その場合は通常のエラー処理の仕組みに従いません。",
+  "points": [
+   "500 api_error は指数バックオフで再試行し、続くなら request ID を添えてサポートに連絡する",
+   "529 overloaded_error は全利用者の高い負荷で起こりうる。ストリーミングでは event: error の overloaded_error として届く",
+   "429 には、使用ティアの月の支出上限によるもの(retry-after がなく、利用が再開するまで失敗し続ける)やランプ制限によるものもある",
+   "すべての応答に request-id ヘッダーがあり、エラーの本文の request_id と同じ値。サポートへの問い合わせに含める",
+   "SDK の型付きの例外クラスで捕まえ、メッセージの文字列照合に頼らない。具体的なクラスから順に処理する",
+   "大きな max_tokens はストリーミングか Message Batches API で使う。SDK は非ストリーミングのリクエストが 10 分を超えそうでないかを検証する",
+   "Claude 4.6 以降のモデルは assistant の事前入力(prefill)を受け付けず 400 を返す"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/api/errors",
+    "title": "Claude API errors"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "title": "Streaming messages"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "mcp-primitives",
+  "title": "MCP のプロンプト・リソース・ツール(誰が使うかを決めるか)",
+  "summary": "MCP のサーバーが提供する主な機能のうち、プロンプト、リソース、ツールは、それぞれ誰が使うかを決めるかが違います。仕様 2026-07-28 版の各ページの User Interaction Model によると、プロンプトは user-controlled で、利用者が明示的に選んで使うことを意図したひな形です。典型例はユーザーインターフェースのスラッシュコマンドで、内容はサーバーが定義します。リソースは application-driven で、ファイル、データベースのスキーマ、アプリケーション固有の情報など、文脈を与えるデータを URI で識別し、ホストのアプリケーションが必要に応じて取り込み方を決めます。ツールは model-controlled で、言語モデルが文脈の理解と利用者のプロンプトに基づいて自動で見つけて呼び出します。いずれも、プロトコル自体は特定の操作の形を強制しません。",
+  "points": [
+   "プロンプト: prompts/list で一覧、prompts/get で内容を取得する。引数で内容を調整できる",
+   "リソース: resources/list、resources/read、パラメーター付きの resources/templates/list がある",
+   "リソースの更新の通知は subscriptions/listen で特定のリソースを指定して受ける(resourceSubscriptions)。2026-07-28 版で resources/subscribe と resources/unsubscribe を置き換えた",
+   "一覧の結果は、要求に付いた認可(付与されたスコープなど)によって変わってよい",
+   "ツールの呼び出しは、安全のため人が拒否できるようにしておくべき(SHOULD)とされる",
+   "2026-07-28 版で非推奨になったのは Roots、Sampling、Logging などで、プロンプトとリソースは仕様に残っている"
+  ],
+  "sources": [
+   {
+    "url": "https://modelcontextprotocol.io/specification/2026-07-28/server/prompts",
+    "title": "Prompts"
+   },
+   {
+    "url": "https://modelcontextprotocol.io/specification/2026-07-28/server/resources",
+    "title": "Resources"
+   },
+   {
+    "url": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+    "title": "Tools"
+   },
+   {
+    "url": "https://modelcontextprotocol.io/specification/2026-07-28/changelog",
+    "title": "Key Changes"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "agent-sdk-custom-tools",
+  "title": "Agent SDK のカスタムツール(インプロセスの MCP サーバー)",
+  "summary": "Agent SDK では、自分の関数をカスタムツールとして Claude に使わせられます。ツールは名前、説明、入力のスキーマ、ハンドラーの 4 つで定義し(TypeScript は tool()、Python は @tool)、createSdkMcpServer / create_sdk_mcp_server でまとめたサーバーを query の mcpServers に渡します。このサーバーはアプリケーションのプロセスの中で動きます。ツールの完全な名前は mcp__{server_name}__{tool_name} で、server_name は mcpServers に付けたキーです。呼び出しを事前に承認するには、この名前(またはサーバー単位のワイルドカード)を allowedTools に書きます。ツールがコンテキストに入るかと、呼び出しが承認されるかは別の層で、前者は tools オプション、後者は allowedTools などで決めます。",
+  "points": [
+   "tools: [] で組み込みのツールはすべて外れ、MCP のツールには影響しない。tools: [\"Read\", \"Grep\"] なら列挙した組み込みだけが残る",
+   "allowedTools は列挙したツールを事前承認する。列挙しなかったツールの呼び出しは権限の流れに回る",
+   "TypeScript では、createSdkMcpServer() が返す設定の tools 配列で permission_policy を always_ask にすると、allowedTools がそのツールを承認しなくなり canUseTool に届く。always_deny で禁止",
+   "readOnlyHint: true の注釈は、他の読み取り専用のツールと並列に呼べるかを決める。注釈はメタデータで強制力はない",
+   "ハンドラーの例外は agent loop を止めず、エラーの結果として Claude に返る。isError: true を返すと Claude が読む文面を自分で書ける",
+   "ツールが多いときは tool search で必要なときに読み込む"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/agent-sdk/custom-tools",
+    "title": "Give Claude custom tools"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/agent-sdk/mcp",
+    "title": "Connect to external tools with MCP"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "programmatic-tool-calling",
+  "title": "Programmatic tool calling(コード実行からのツール呼び出し)",
+  "summary": "Programmatic tool calling は、Claude がコード実行のコンテナの中で、ツールを関数として呼び出すコードを書いて動かす仕組みです。ツールを呼ぶたびにモデルとの往復をしなくて済むので、複数のツールを使う処理の遅延が減り、結果をコードで絞り込んでからモデルに渡せるので、トークンの消費も減ります。使うには code_execution_20260120 以降のコード実行ツールを含め、コードから呼ばせたいツールに allowed_callers: [\"code_execution_20260120\"] を付けます。コードがツールを呼ぶとコード実行が一時停止し、API が caller の入った tool_use ブロックを返します。結果を返すとコードが続きから動き、途中の結果は Claude のコンテキストに入らず、コードの最終的な出力だけが入ります。",
+  "points": [
+   "allowed_callers: [\"direct\"] が既定。両方を並べると直接とコードの両方から呼べる",
+   "続きのリクエストでは、一時停止した応答の container の ID を渡し(ないと拒否される)、同じ tools の配列を送る",
+   "保留中の呼び出しに答える user メッセージは tool_result だけにする(テキストは入れられない)。content は文字列か text ブロック",
+   "strict: true のツール、tool_choice による強制、disable_parallel_tool_use: true とは併用できない",
+   "MCP connector のツールや computer use / browser use のツールセットはプログラムから呼べない",
+   "結果が約 4 分以内に届かないと、実行中のコードの中で TimeoutError になる",
+   "連続する 1 回ずつの呼び出しだけのワークフローでは得にならない(τ²-bench では費用が約 8% 増えた)"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling",
+    "title": "Programmatic tool calling"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "mid-conversation-system-messages",
+  "title": "会話の途中の system メッセージとツールの変更",
+  "summary": "トップレベルの system フィールドはキャッシュされるプレフィックスの先頭近くにあり、1 文を足すだけでもハッシュが変わって、システムプロンプトとそれ以降のキャッシュが外れます。Mid-conversation system messages では、role: \"system\" のメッセージを messages の、指示が効き始める位置に加えます。それ以前のキャッシュは一致したまま、新しい指示は利用者の文ではなく運用者の指示として扱われ、衝突すると user の指示より優先されます。ツールについても、tools の配列は system より前にあり編集すると会話全体のキャッシュが外れるので、全体を最初から tools に宣言し、system のメッセージの tool_addition と tool_removal のブロックで、ある時点から提示や取り下げをします(ベータ)。",
+  "points": [
+   "内容を持つ system のメッセージは、user のターン(tool_result を運ぶものを含む)の直後に置き、末尾にするか assistant のターンを続ける。messages の先頭にはできない",
+   "ツールの出力や取得した文書など外部の文を system のメッセージに入れない。運用者の権限を与えてしまうので tool_result に置く",
+   "Claude Sonnet 5.5 と Claude Haiku 5.5 では、作業中の利用者の入力は最後の tool_result の後に text ブロックで加え、ハーネスの通知は別の system のメッセージにする",
+   "ツールの変更は Claude API では inline-tools-2026-09-15 のベータヘッダー。defer_loading: true のツールは tool_addition が示すまで提示されない",
+   "最初から分かっているツールは tools に宣言して参照で加え、値での定義は開始時に分からないものや後で変わるものに使う",
+   "clear_at: \"next_user_message\" のターン単位のメッセージは text だけで、tool_addition などは 400。ベータヘッダー mid-conversation-system-clear-at-2026-08-21 が要る",
+   "送った system のメッセージを後から編集・削除すると、その位置からキャッシュが外れる"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages",
+    "title": "Mid-conversation system messages and tool changes"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-haiku-5-5",
+    "title": "Prompting Claude Haiku 5.5"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "memory-tool",
+  "title": "Memory tool(会話をまたぐ記憶)",
+  "summary": "Memory tool は、Claude がメモリのファイルのディレクトリに情報を保存し、会話をまたいで読み出せるようにするツールです。必要な情報を最初にすべて読み込むのではなく、学んだことをファイルに記録して必要なときに読み戻すので、長時間のセッションでも作業中の文脈を絞れます。クライアント側で動くツールで、Claude はファイル操作を要求するだけで、アプリケーションが自分の保存先で実行し、結果を tool_result で返します。/memories はハンドラーが実際の保存先(利用者ごとのディレクトリやデータベースのキーなど)に対応させる接頭辞です。tools に {\"type\": \"memory_20250818\", \"name\": \"memory\"} を加えるだけで設定でき、view、create、str_replace、insert、delete、rename の各コマンドのハンドラーを実装します。",
+  "points": [
+   "name は memory でなければならず、Anthropic が提供するツールなので入力のスキーマは定義しない",
+   "tools にあると、作業の前にメモリのディレクトリを確認し、コンテキストのリセットに備えて進み具合を記録するよう求める指示を API が自動でシステムプロンプトに加える",
+   "ハンドラーは /memories の外のパスを拒否する。/memories で始まるかの確認、正規の形に解決して範囲内かの確認、../ や URL エンコードされた並び(%2e%2e%2f)の拒否",
+   "安全策はアプリケーションの責任: 機微な情報の除去、ファイルの大きさの上限、長く使われないファイルの削除",
+   "長時間のエージェントでは、コンパクションで文脈を小さく保ち、要約を経ても残すべき情報をメモリに残す併用が勧められている",
+   "複数セッションのパターン: 最初のセッションで進捗のログと機能のチェックリストを作り、以後は最初に読み、終わる前に更新する"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+    "title": "Memory tool"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "prompting-claude-haiku-5-5",
+  "title": "Claude Haiku 5.5 のプロンプト",
+  "summary": "Prompting Claude Haiku 5.5 は、このモデルに特有のプロンプトの書き方をまとめています。Claude Haiku 4.5 のプロンプトは、推論を応答に書かせるものを除き、多くはそのまま動くとしています。思考の量は effort で調整し(既定は medium)、budget_tokens は 400 エラーになります。検索ツールを渡すときは今日の日付も渡し、日付は会話の開始時に一度だけ描画して、日をまたいだら新しい日付を最新のターンで伝えます。検索を省く傾向は low の effort と長いシステムプロンプトで最も起こり、日付の直後に、変わりうる事柄は検索するよう促す文を加えます。全面的に検索させる指示は、テストで不要な検索を増やし、正答は増えませんでした。",
+  "points": [
+   "ページの勧める文をシステムプロンプトに加えるのは新しい会話だけ。保存した会話を新しいシステムプロンプトで再開し思考のブロックを送り返すと 400 になりうる",
+   "tool result を通じたプロンプトインジェクションに抵抗するよう訓練されているので、作業中の利用者の文は tool_result に入れず、最後の tool_result の後に text ブロックで加える",
+   "チャットボットでは、利用者が反論したり繰り返し頼んだりしてもシステムプロンプトの規則を守るよう求める文を加える。指示の順守が最も重要なら high の effort も使う",
+   "思考を切ったうえで JSON の出力形式を求めると必要なツール呼び出しを飛ばすことがある。適応的思考を使うか、JSON は最終回答だけに適用すると指示する",
+   "長いエージェントのプロンプトと low の effort では早く止まることがあり、作業を終えるまで続けるよう求める文や effort の引き上げで減る",
+   "安全の分類器による拒否(stop_reason: \"refusal\")にはサーバー側のフォールバックがない。推論を応答に書かせる指示は reasoning_extraction で断られうる"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-haiku-5-5",
+    "title": "Prompting Claude Haiku 5.5"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "agent-sdk-sessions",
+  "title": "Agent SDK のセッション(continue・resume・fork)",
+  "summary": "Work with sessions のドキュメントによると、セッションは SDK がエージェントの作業中に蓄積する会話の履歴で、プロンプト、ツール呼び出し、ツールの結果、応答をすべて含み、SDK が自動でディスクに書きます。セッションに戻ると、既に読んだファイル、行った分析、下した判断を含む文脈で続きから作業できます。保存されるのは会話で、ファイルシステムではありません。1 回の query() の中ではエージェントが必要なだけターンを重ねるので、セッションの扱いが必要になるのは、文脈を共有すべき複数のプロンプトを送るときです。continue と resume はどちらも既存のセッションを再開して追記し、continue は現在のディレクトリの最新のセッションを、resume は指定したセッション ID を使います。fork は元の履歴の写しから始まる新しいセッションを作り、元は変わりません。",
+  "points": [
+   "1 つのプロセスでの複数ターンの会話は、Python の ClaudeSDKClient か TypeScript の continue: true を使う。ID を扱う必要がない",
+   "continue は一度に 1 つの会話を扱うアプリ向け。利用者ごとのセッションがあるアプリや、最新でないセッションに戻るときは、ID を保存して resume を使う",
+   "セッション ID は結果メッセージの session_id から得る(成功でもエラーでも含まれる)。TypeScript では init の SystemMessage にも直接ある",
+   "resume の用途の例: 完了した作業の続き、error_max_turns や error_max_budget_usd で止まった実行を上限を上げて再開、プロセスの再起動後の復元",
+   "fork は resume と併せて指定する(Python は fork_session=True、TypeScript は forkSession: true)。独自の ID を持つ新しいセッションになり、元の ID と履歴は変わらない",
+   "fork が分岐させるのは会話の履歴だけで、分岐先の編集は同じディレクトリで動くセッションから見える。ファイルの変更を分岐させて戻すには file checkpointing を使う",
+   "ディスクに何も書きたくない作業は、TypeScript の persistSession: false(Python は env に CLAUDE_CODE_SKIP_PROMPT_HISTORY)",
+   "セッションファイルは作ったマシンにある。別のホストで再開するには、SessionStore のアダプター、セッションファイルの移動、またはセッションに頼らず結果をアプリの状態として新しいセッションのプロンプトに渡す方法がある(最後のものが多くの場合より堅牢とされる)"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/agent-sdk/sessions",
+    "title": "Work with sessions"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "harness-design-long-running",
+  "title": "長時間のアプリ開発のハーネス設計(プランナー・生成・評価者)",
+  "summary": "Anthropic の記事 Harness design for long-running application development は、GAN に着想を得て生成エージェントと評価エージェントを分ける構成を、主観的なフロントエンドのデザインと、人の介在なしの完全なアプリの開発の両方に適用した記録です。素朴な実装が失敗する理由として、コンテキストが埋まるにつれて一貫性を失うこと(一部のモデルは上限が近いと考えると早く作業を切り上げる「context anxiety」を示す)と、自分の作品を評価させると質が平凡でも自信を持って褒める自己評価の問題を挙げています。最終的な構成はプランナー、生成、評価者の 3 つのエージェントで、数時間の自律的なコーディングで完全なアプリを作りました。",
+  "points": [
+   "コンテキストのリセット(コンテキストを消して新しいエージェントを始め、構造化した引き継ぎで状態と次の手順を渡す)は、まっさらな状態を与える。コンパクションは連続性を保つが、まっさらにはならない。Sonnet 4.5 ではコンパクションだけでは足りなかったが、Opus 4.5 ではリセットをなくし、Agent SDK の自動コンパクションで 1 つの連続したセッションとして動かした",
+   "作業するエージェントと評価するエージェントを分けるのは強い手段。分けただけで甘さはすぐには消えないが、独立した評価者を懐疑的に調整するほうが、生成側を自分の作品に批判的にさせるよりはるかに扱いやすい",
+   "主観的な品質は、デザインの原則と好みを表す採点基準で採点できる形にする(デザインの質、独創性、技巧、機能性の 4 つ)。評価者は点数の内訳つきの few-shot の例で較正し、Playwright MCP で実際のページを操作してから採点した",
+   "プランナーは 1〜4 文の依頼を完全な製品仕様に広げる。細かい実装を先に決めて誤ると誤りが下流に連鎖するので、製品の文脈と高水準の技術設計に集中させた",
+   "生成側と評価者は各スプリントの前に「完了」の条件を合意するスプリント契約を結び、ファイルでやり取りした。評価者の基準にはそれぞれ閾値があり、1 つでも下回ればスプリントは失敗とした",
+   "単独の実行(20 分、$9)に比べて完全なハーネス(6 時間、$200)は 20 倍以上高価だったが、出力の質の差は明らかだった",
+   "各部品はモデルが単独でできないことの仮定を表し、その仮定は誤りうるうえ、モデルの向上ですぐ古くなりうる。大胆に削る試みは性能を再現できず、1 つずつ外して影響を確かめた。プランナーを外すと生成側は機能の少ないアプリを作った",
+   "評価者は固定の判断ではなく、課題が現在のモデル単独で確実にできる範囲を超えるときに費用に見合う。新しいモデルが出たら、効かなくなった部品を外し、新しい部品を足すよう見直す"
+  ],
+  "sources": [
+   {
+    "url": "https://www.anthropic.com/research/harness-design-long-running-apps",
+    "title": "Harness design for long-running application development"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "agent-evals-by-type",
+  "title": "エージェントの種類ごとの評価と採点器の種類",
+  "summary": "Anthropic の記事 Demystifying evals for AI agents によると、エージェントの評価は通常、コードによる採点器、モデルによる採点器、人による採点器の 3 種類を組み合わせ、それぞれがトランスクリプトか成果(試行の終わりの環境の最終状態)の一部を評価します。コードによる採点器は速く安価で客観的で再現でき、デバッグしやすい一方、期待するパターンに完全には一致しない妥当な変化に弱く、細かな違いを捉えにくいです。モデルによる採点器は柔軟で規模を広げられ、細かな違いや自由形式の出力を扱えますが、非決定的でコードより高価で、精度のために人の採点者との較正が要ります。人による採点器は最も質が高い一方、高価で遅いです。記事は、コーディング、会話、調査、コンピューター操作の各エージェントの評価の進め方を示しています。",
+  "points": [
+   "タスクごとの得点の付け方には、重み付け(採点器の合計が閾値に達する)、二値(すべての採点器が合格)、その混合がある",
+   "コーディング: 決定的な採点器が自然(コードが動き、テストが通るか)。合否のテストに加えてトランスクリプトも採点するとよい。実際にはユニットテストと、全体のコード品質を見る LLM のルーブリックが中心",
+   "会話: やり取りの質そのものが評価の対象で、多くの場合、利用者を模擬する 2 つ目の LLM が要る。成功は多次元(チケットが解決したか、10 ターン未満か、口調が適切か)。正しい解が複数ありうるので、通常はモデルによる採点で伝え方の質と目標の達成を見る",
+   "調査: 品質は課題に照らしてしか判断できず、専門家の意見が割れる、参照する内容が変わって正解が動く、といった難しさがある。根拠の検査、網羅の検査、情報源の質の検査を組み合わせ、客観的な正解がある質問には完全一致を使う。LLM のルーブリックは専門家の判断で頻繁に較正する",
+   "コンピューター操作: 実際の環境かサンドボックスで動かし、意図した成果を達成したかを確かめる。WebArena は、確認ページの表示ではなく、注文が実際に行われたかをバックエンドの状態で確かめる",
+   "ブラウザのエージェントは、トークン効率とレイテンシの釣り合いが要る。DOM による操作は速いがトークンを多く使い、スクリーンショットは遅いがトークン効率が良い(Wikipedia の要約は DOM、Amazon での商品探しは画面)。Claude for Chrome では、文脈ごとに適切な手段を選べているかを評価した",
+   "記事の評価の例では、採点器に加えて、ターン数、ツール呼び出しの数、合計トークン数、最初のトークンまでの時間、出力の速度などの指標も記録している"
+  ],
+  "sources": [
+   {
+    "url": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
+    "title": "Demystifying evals for AI agents"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "claude-code-zero-data-retention",
+  "title": "Claude Code の Zero Data Retention(対象範囲と無効になる機能)",
+  "summary": "Claude Code の Zero Data Retention(ZDR)は、Claude for Enterprise の条件を満たすアカウントに提供されます。有効にすると、Claude Code のセッションのプロンプトと応答はリアルタイムで処理され、応答を返した後は保存されません(法令の遵守や不正利用への対処に必要な場合を除く)。標準の Enterprise プランには含まれず、管理画面から有効にもできず、Anthropic のアカウントチームを通じて組織ごとに有効にします。対象は Claude for Enterprise での Claude Code の推論呼び出しで、claude.ai のチャット、Cowork、Claude in Chrome、サードパーティの統合や MCP サーバーが処理するデータなどは対象外です。プロンプトや応答の保存を必要とする機能はバックエンドで自動的に無効になります。",
+  "points": [
+   "ZDR は組織ごとに有効にされ、同じアカウントの下の新しい組織には自動で適用されない",
+   "ZDR は ZDR を有効にした組織に認証したリクエストに適用される。個人のアカウントや別の組織の API キーでのセッションは対象外で、forceLoginMethod と forceLoginOrgUUID で組織へのログインを強制できる",
+   "claude.ai のチャット、Cowork、Claude in Chrome、ユーザーと席の管理のデータ、サードパーティの統合(MCP サーバーなど)は ZDR の対象外",
+   "クラウドセッション、Remote Control、Claude Code のアーティファクト、フィードバックの送信(/feedback、/bug、/share)などはバックエンドで無効になる",
+   "Claude Fable 5.2 などの Covered Models は既定でデータ保持を要し、使えるかどうかは Covered Models の方針で決まる",
+   "ZDR があっても、法令や Usage Policy 違反への対処のため、フラグが付いたセッションの入出力は最大 2 年保持されうる",
+   "Claude for Enterprise の ZDR は Anthropic の直接のプラットフォームだけに適用され、Bedrock などはそれぞれのプラットフォームの方針に従う"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/zero-data-retention",
+    "title": "Zero data retention"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/data-usage",
+    "title": "Data usage"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "claude-code-login-restriction",
+  "title": "Claude Code のサインインを組織に限る(forceLoginMethod と forceLoginOrgUUID)",
+  "summary": "Claude Code で開発者の claude.ai のログインを特定の Anthropic の組織に限るには、managed settings に forceLoginMethod と forceLoginOrgUUID を設定します。forceLoginOrgUUID に組織 ID を入れると、ほかの組織への claude.ai のログインはエラーになり、使っている資格情報が一覧にない組織のものなら起動時に終了します。ANTHROPIC_API_KEY、ANTHROPIC_AUTH_TOKEN、apiKeyHelper のような環境の資格情報は、組織の所属を確かめられないため起動時に止められます。一方、保存済みの Claude Console の資格情報がどの組織のものかは起動時に検証されません。これらのキーはデバイス管理で配布します。server-managed settings は組織に認証した後にしか届かないので、最初のログインを向け直せません。",
+  "points": [
+   "forceLoginOrgUUID には claude.ai の管理画面にある組織 ID を設定する",
+   "保存済みの Console の資格情報の組織は起動時に検証されないので、Console のログインの制限に forceLoginOrgUUID を頼らない",
+   "forceLoginOrgUUID の下では ANTHROPIC_API_KEY、ANTHROPIC_AUTH_TOKEN、apiKeyHelper の資格情報は起動時に止められる",
+   "claude setup-token と /install-github-app は forceLoginMethod だけを強制し、別の組織のトークンを作れる",
+   "キーはデバイス管理で配布する。server-managed settings は組織への認証の後にしか届かない",
+   "allowedProviders は、管理対象のマシンが Claude に到達できる経路(Anthropic API、Bedrock など)を限定する"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/authentication",
+    "title": "Authentication"
+   },
+   {
+    "url": "https://code.claude.com/docs/en/settings",
+    "title": "Settings files and precedence"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "compliance-api",
+  "title": "Compliance API(監査・保全のための記録の取得)",
+  "summary": "Compliance API は、Claude Enterprise と Claude Console の顧客に、組織の Activity Feed へのプログラムからのアクセスを提供します。Claude Enterprise の組織では、ユーザー・役割・グループの一覧、組織ごとの有効な設定、claude.ai のチャット・ファイル・プロジェクト、Cowork や Claude Code などのセッションのトランスクリプトも扱えます。セキュリティ、法務、コンプライアンスのチームが、活動の監査、内容の取得や削除、下流のツールへのイベントの取り込みに使います。エンドポイントは /v1/compliance/* にあり、x-api-key と anthropic-version ヘッダーを使います。キーは、claude.ai で作る Compliance Access Key と、Claude Console で作る Admin API キーの 2 種類です。",
+  "points": [
+   "Compliance Access Key は Safety Cases API の一部を除くすべてのエンドポイントに届く。Admin API キーは Activity Feed に届く",
+   "Activity Feed(GET /v1/compliance/activities)は read:compliance_activities スコープを持つキーで読める",
+   "チャット、ファイル、プロジェクト、セッションなどの内容のエンドポイントは Claude Enterprise のデータだけを返す",
+   "すべての /v1/compliance/* は親の組織ごとに毎分 600 リクエストのレート制限を共有する",
+   "claude.ai の監査ログのエクスポートは、遡れる期間に上限がある CSV で、チャットなどの内容を含まない。継続的な利用は Compliance API に統一するよう勧められている",
+   "Analytics API は集計した利用量と費用を返す別の API で、イベントごとの記録は返さない",
+   "Inference hooks は推論の前に判定する仕組みで、Compliance API は事後に記録を取り出す"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/manage-claude/compliance-api",
+    "title": "Compliance API"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "inference-hooks",
+  "title": "Inference hooks(推論の前の allow / deny の判定)",
+  "summary": "Inference hooks は、Claude Enterprise の組織が、統制の対象となる推論のリクエストごとに、組織や委託先のセキュリティベンダーが運用する AI security server へ会話のトランスクリプトを送り、allow か deny の判定を受けてから推論を進める仕組みです。deny されたリクエストはモデルに届きません。Anthropic のサーバー側で動くため、端末に何も入れずに、claude.ai、Cowork、Claude Code などの組織の Claude 製品すべてに一様に効きます。最も多い使い方は DLP で、規制対象や機密の情報を含むプロンプトを拒否します。判定は allow か deny だけで、プロンプトの書き換えや伏せ字への置き換えはできません。",
+  "points": [
+   "設定には claude.ai の organization:manage 権限が要り、Owner と Primary owner だけが持つ",
+   "prompt イベントは推論の前に、tool_call イベントは Validate tool calls を有効にした組織でツールの実行前に発生する",
+   "判定の制限時間は既定で 5 秒。サーバーに届かないときは、組織の設定に従って拒否するか検査なしで通す",
+   "shadow mode、rollout percentage、役割ごとの除外で段階的に導入できる",
+   "AI security server には生のファイルや画像のバイト、システムプロンプトは送られない",
+   "Claude Platform の組織(API 経由の利用)、Amazon Bedrock、Google Cloud では使えない",
+   "Inference hooks は推論の前に止める仕組み、Compliance API は事後に監査する仕組み"
+  ],
+  "sources": [
+   {
+    "url": "https://platform.claude.com/docs/en/manage-claude/inference-hooks",
+    "title": "Inference hooks"
+   },
+   {
+    "url": "https://platform.claude.com/docs/en/manage-claude/compliance-api",
+    "title": "Compliance API"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "claude-code-data-usage",
+  "title": "Claude Code のデータの扱い(保持・テレメトリ・WebFetch の確認)",
+  "summary": "Claude Code の Data usage のページは、学習への利用、データの保持、外部への通信をまとめています。商用(Team、Enterprise、API など)では、Development Partner Program などで提供を選ばない限り、Claude Code に送ったコードやプロンプトで生成モデルを学習しません。商用の標準の保持期間は 30 日です。運用のテレメトリは利用の指標とエラー報告の 2 種類で、DISABLE_TELEMETRY や DISABLE_ERROR_REPORTING で個別に、CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC でまとめて止められます。WebFetch ツールは取得の前にホスト名を api.anthropic.com に送って遮断リストと照合し、この確認は提供元にも CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC にも左右されません。",
+  "points": [
+   "商用ユーザーの標準の保持期間は 30 日。ZDR は Claude for Enterprise の条件を満たすアカウント向け",
+   "クライアントはセッションのトランスクリプトを ~/.claude/projects/ に既定で 30 日保存し、cleanupPeriodDays で変えられる",
+   "/feedback、/bug、/share で送ったトランスクリプトは 5 年保持される。DISABLE_FEEDBACK_COMMAND で止められる",
+   "Bedrock、Google Cloud、Microsoft Foundry などでは、エラー報告、テレメトリ、バグ報告が既定で無効",
+   "WebFetch の確認はホスト名だけを送り、通過したホスト名は 5 分キャッシュされる",
+   "WebFetch の確認は skipWebFetchPreflight: true で止められる。止めると遮断リストを参照しないので、WebFetch の権限ルールの併用が勧められる"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/data-usage",
+    "title": "Data usage"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "claude-code-github-actions",
+  "title": "Claude Code GitHub Actions(claude-code-action)の導入と権限",
+  "summary": "Claude Code GitHub Actions は、リポジトリのワークフローの中で Claude Code を動かす GitHub Action です。issue や pull request で @claude に言及すると、Claude がコードを分析し、変更を実装してコミットを push します。prompt 入力を渡せば、任意の GitHub のイベントで自動で動きます。導入は、Claude Code で /install-github-app を実行するクイックセットアップか、App のインストール、秘密情報の追加、ワークフローのコピーを自分で行う手動の方法があります。組織で展開するときは、App を組織に一度入れ、秘密情報を組織レベルの Actions secret にするか、workload identity federation で長期の秘密情報を保存しない構成にできます。",
+  "points": [
+   "認証は ANTHROPIC_API_KEY か、claude setup-token で作る CLAUDE_CODE_OAUTH_TOKEN。複数のリポジトリで共有するなら、個人のサブスクリプションに結びつく OAuth トークンより API キーを使う",
+   "workload identity federation では anthropic_federation_rule_id などの入力を設定し、ワークフローに id-token: write を与える",
+   "Claude GitHub App の権限は Code Review などと共有される一式で、一部だけを受け入れることはできない。絞るには Contents、Issues、Pull requests を持つ独自の App を作る",
+   "prompt がなければ interactive mode(@claude を待つ)、prompt があれば automation mode で動く",
+   "issue と pull request のイベントでは、起動したユーザーにリポジトリへの書き込み権限が要る。bot は allowed_bots に載せない限り拒否される",
+   "費用は GitHub Actions の実行時間と API のトークンの 2 つ。--max-turns やワークフローのタイムアウトで抑える"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/github-actions",
+    "title": "Claude Code GitHub Actions"
+   }
+  ],
+  "checked": "2026-11-24"
+ },
+ {
+  "id": "claude-code-output-styles",
+  "title": "Claude Code の output styles(組み込みとカスタムのスタイル)",
+  "summary": "output style は、セッションのすべての応答について、Claude の役割、口調、応答の形式を決める指示のまとまりです。Claude Code には Default のほかに Proactive、Concise、Explanatory、Learning の 4 つの組み込みのスタイルがあり、Markdown のファイルでカスタムのスタイルも作れます。スタイルは Claude が従う指示であり、何かが必ず起きることを保証しません。毎回必ず実行したいことにはフック、プロジェクトの知識には CLAUDE.md を使います。カスタムのスタイルは、完全なシステムプロンプトでは、keep-coding-instructions を true にしない限り Claude Code のソフトウェア開発の指示の節を外します。",
+  "points": [
+   "/output-style、/config のメニューで選ぶと、結果は .claude/settings.local.json に保存される",
+   "settings の outputStyle は大文字小文字を区別し、一致しない値は Default になる",
+   "カスタムのスタイルはユーザー(~/.claude/output-styles)、プロジェクト(.claude/output-styles)、managed policy に置ける。ファイル名がスタイル名になる",
+   "keep-coding-instructions の既定値は false。プラグインのスタイルは force-for-plugin で自動適用できる",
+   "スタイルはメインの会話と fork に効き、ほかのサブエージェントには効かない",
+   "Explanatory と Learning は応答が長くなり出力トークンが増える。Concise は短くする"
+  ],
+  "sources": [
+   {
+    "url": "https://code.claude.com/docs/en/output-styles",
+    "title": "Output styles"
+   }
+  ],
+  "checked": "2026-11-24"
  }
 ]

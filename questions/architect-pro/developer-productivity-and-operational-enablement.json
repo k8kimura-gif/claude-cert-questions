@@ -528,5 +528,86 @@
   "topics": [
    "claude-code-plugins"
   ]
+ },
+ {
+  "id": "arp-dev-014",
+  "cert": "architect-pro",
+  "domain": "developer-productivity-and-operational-enablement",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "プラットフォームチームが、社内の 40 のリポジトリに Claude Code GitHub Actions(anthropics/claude-code-action)を展開する。セキュリティ部門の要件は、(1) 長期間有効な秘密情報をリポジトリにも組織にも保存しない、(2) GitHub App に与える権限を、このアクションが使うものに絞る、の 2 つである。Code Review や web の auto-fix は使わない。Claude Code GitHub Actions のページに沿う構成はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各リポジトリで /install-github-app を実行する。クイックセットアップは、このアクションに必要な最小の権限だけを持つ App を入れ、秘密情報を保存しない認証を設定するので、2 つの要件をまとめて満たせる。",
+    "why": "誤り。クイックセットアップは API キーか OAuth トークンをリポジトリの secret に保存する。Claude GitHub App は全権限の一式でしか入れられない。"
+   },
+   {
+    "id": "b",
+    "text": "テックリードが claude setup-token で作った OAuth トークンを組織レベルの Actions secret に入れ、Claude GitHub App のインストール時に Contents、Issues、Pull requests の 3 つの権限だけを選んで許可する。",
+    "why": "誤り。OAuth トークンは作った人のサブスクリプションに結びつき、共有には API キーが勧められる。また GitHub は App の権限の一部だけを受け入れることを許さない。"
+   },
+   {
+    "id": "c",
+    "text": "Contents、Issues、Pull requests だけを持つ独自の GitHub App を作る。認証は Console のサービスアカウントへの workload identity federation にし、anthropic_federation_rule_id などの入力と、ワークフローの id-token: write を設定する。",
+    "why": "正しい。権限を絞るには独自の App を作る。workload identity federation なら、ワークフローの OIDC トークンを Claude API のアクセスに交換し、長期の秘密情報を保存しない。"
+   },
+   {
+    "id": "d",
+    "text": "Console の API キーを組織レベルの Actions secret に保存し、各ワークフローの permissions を contents: read だけにする。ワークフローの権限を絞れば、Claude GitHub App の権限も同じ範囲に自動で絞られる。",
+    "why": "誤り。API キーは長期の秘密情報で、要件 (1) に反する。App の権限はインストール時に一式で受け入れるもので、ワークフローの permissions で変わるとは書かれていない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Claude GitHub App は、Code Review などほかの Claude の機能と共有される 1 つの権限一式を持ち、GitHub は一部だけの受け入れを許しません。このアクションが使う権限(Contents、Issues、Pull requests)だけにしたい組織は、独自の GitHub App を作ります。長期の秘密情報を保存しないには workload identity federation を使い、anthropic_federation_rule_id、anthropic_organization_id などの入力を設定し、ワークフローに id-token: write を与えます。\n\n見分け方: 「秘密情報を保存しない」は OIDC による federation、「権限を絞る」は独自の App です。クイックセットアップ(a)と、権限を選んで入れる案(b)は、どちらもページの記述と合いません。",
+  "refs": [
+   "https://code.claude.com/docs/en/github-actions"
+  ],
+  "topics": [
+   "claude-code-github-actions"
+  ]
+ },
+ {
+  "id": "arp-dev-015",
+  "cert": "architect-pro",
+  "domain": "developer-productivity-and-operational-enablement",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "チームリーダーが、新しく参加した開発者向けに、コードを書くたびに設計の理由を短く説明させるカスタムの output style を作り、あるリポジトリで全員に既定で使わせたい。Claude Code のソフトウェア開発の指示(変更の範囲の決め方や作業の確認など)はそのまま残したい。Output styles のページに沿う構成はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "スタイルのファイルを .claude/output-styles/ に置き、フロントマターに keep-coding-instructions: true を書く。共有の .claude/settings.json の outputStyle にスタイル名を大文字小文字まで正確に書き、コミットする。",
+    "why": "正しい。カスタムのスタイルは、この項目を true にしない限り、ソフトウェア開発の指示の節を外す。outputStyle の値は大文字小文字を区別する。"
+   },
+   {
+    "id": "b",
+    "text": "スタイルのファイルを .claude/output-styles/ に置き、フロントマターは省く。カスタムのスタイルは、組み込みのスタイルと同じく Default の指示に追加される形で必ず働くので、ソフトウェア開発の指示は何も書かなくても自動的に残る。共有の settings の outputStyle は小文字の名前で書けばよい。",
+    "why": "誤り。完全なシステムプロンプトでは、カスタムのスタイルは keep-coding-instructions を true にしない限り、ソフトウェア開発の指示の節を外す。既定値は false である。outputStyle の値は大文字小文字を区別し、一致しないと Default になる。"
+   },
+   {
+    "id": "c",
+    "text": "各開発者に /output-style でスタイルを選ばせる。選んだ結果は共有の .claude/settings.json に保存されるので、誰か 1 人が選んでコミットすれば、全員に同じスタイルが行き渡る。",
+    "why": "誤り。/output-style や /config で選んだ結果は、個人用の .claude/settings.local.json に保存される。共有するには .claude/settings.json に書く。"
+   },
+   {
+    "id": "d",
+    "text": "スタイルのファイルを .claude/output-styles/ に置いて outputStyle で選ぶ。output style はサブエージェントにもそのまま適用されるので、テストを走らせるサブエージェントの応答にも、同じ説明が付くようになる。",
+    "why": "誤り。output style が効くのはメインの会話と fork だけで、ほかのサブエージェントは自分のシステムプロンプトで動くため、スタイルの影響を受けない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。カスタムの output style は Markdown のファイルで、プロジェクトでは .claude/output-styles に置きます。完全なシステムプロンプトでは、カスタムのスタイルは Claude Code のソフトウェア開発の指示の節を外すので、それを残すにはフロントマターで keep-coding-instructions: true にします。outputStyle の値は大文字小文字を区別し、一致しなければ Default になります。チームで共有するなら、コミットする .claude/settings.json に書きます。\n\n見分け方: /output-style で選んだ結果は個人用の settings.local.json に入ります(c)。スタイルはメインの会話と fork に効き、ほかのサブエージェントには効きません(d)。",
+  "refs": [
+   "https://code.claude.com/docs/en/output-styles",
+   "https://code.claude.com/docs/en/settings"
+  ],
+  "topics": [
+   "claude-code-output-styles"
+  ]
  }
 ]

@@ -1251,5 +1251,247 @@
   "topics": [
    "citations"
   ]
+ },
+ {
+  "id": "arp-sol-032",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "TypeScript の Agent SDK で、多数の社員が同じサーバープロセス(同じ作業ディレクトリ)から使うコードレビュー支援を作る。社員ごとに前回の会話の続きから応対したい。また、社員が「JWT ではなく OAuth2 で直したらどうなるか」を試すときは、元の会話の流れも残して後で戻れるようにしたい。Work with sessions のドキュメントに沿った設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "各 query() に continue: true を付ける。SDK が現在のディレクトリの最新のセッションを自動で見つけるので、社員ごとのセッション ID を保存しなくても、それぞれの会話の続きに戻れる。",
+    "why": "continue は現在のディレクトリで最新のセッションを探すだけで、一度に 1 つの会話を扱うアプリに向く。社員ごとのように複数のセッションがある場合は、ID を保存して resume を使う。"
+   },
+   {
+    "id": "b",
+    "text": "結果メッセージの session_id を社員ごとに保存し、resume で再開する。別案を試すときも同じセッションを resume して指示だけ変えれば、会話は自動で枝分かれし、元の履歴はそのまま残る。",
+    "why": "resume は既存のセッションを再開して追記するので、別案のやり取りが元の履歴に加わる。元を変えずに分岐させるのは fork である。"
+   },
+   {
+    "id": "c",
+    "text": "結果メッセージの session_id を社員ごとに保存して resume で再開し、別案は resume に forkSession: true を付けて新しい ID のセッションに分ける。ファイルの変更を戻すには file checkpointing を使う。",
+    "why": "正しい。resume は特定の ID のセッションに戻る方法で、複数のセッションを持つアプリで必要になる。fork は元の履歴を写した新しいセッションを作り、元は変わらない。fork が分けるのは会話で、ファイルではない。"
+   },
+   {
+    "id": "d",
+    "text": "別案ごとに forkSession: true で分岐させる。fork は会話の履歴と作業ディレクトリのファイルの両方を複製するので、OAuth2 の案で編集したファイルは元の JWT のセッションからは見えず、file checkpointing のような別の仕組みも要らない。",
+    "why": "fork が分岐させるのは会話の履歴で、ファイルシステムではない。分岐したエージェントの編集は実際に行われ、同じディレクトリで動くセッションから見える。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Work with sessions のドキュメントによると、continue は現在のディレクトリの最新のセッションを探し、resume は指定したセッション ID に戻ります。利用者ごとにセッションがあるアプリでは ID を保存して resume を使い、ID は結果メッセージの session_id から得ます。fork(TypeScript は forkSession: true)は元の履歴を写した新しいセッションを作り、元の ID と履歴は変わりません。ただし分岐するのは会話だけなので、ファイルの変更を戻すには file checkpointing を使います。\n\n見分け方: continue は最新の 1 件しか見つけません(a)。resume だけでは元の履歴に追記されます(b)。fork はファイルを複製しません(d)。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/sessions"
+  ],
+  "topics": [
+   "agent-sdk-sessions"
+  ]
+ },
+ {
+  "id": "arp-sol-033",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Agent SDK の query() の agents で、移行スクリプトを点検するサブエージェント migration-checker を定義した。親のエージェントは、利用者とのやり取りで決めた方針(対象のテーブルと、前回の実行で出たエラーの内容)を把握している。ところが migration-checker は方針を知らないまま作業し、点検だけのはずがファイルを書き換えることもあった。関係のない依頼で呼ばれることもある。Subagents in the SDK のドキュメントに沿った対処はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "description にいつ使うかを具体的に書き、tools を [\"Read\", \"Grep\", \"Glob\"] にする。方針とエラーの内容は、親が Agent ツールに渡すプロンプトに含めるよう指示する。",
+    "why": "正しい。Claude は description を見て呼ぶかどうかを決め、tools でサブエージェントが使えるツールを絞れる。親からサブエージェントに渡るのは Agent ツールのプロンプトの文字列だけなので、必要な情報はそこに書かせる。"
+   },
+   {
+    "id": "b",
+    "text": "方針とエラーの内容を親の systemPrompt に書き足す。サブエージェントは親のシステムプロンプトと会話の履歴を引き継いで始まるので、改めて渡さなくても方針に沿って点検できる。",
+    "why": "フォークでないサブエージェントは新しいコンテキストで始まり、親の会話の履歴もシステムプロンプトも受け取らない。"
+   },
+   {
+    "id": "c",
+    "text": ".claude/agents/ に同じ名前の migration-checker の Markdown を置き、ツールを Read と Grep に絞った定義で上書きする。ファイルの定義は、プログラムで渡した agents の定義より優先されるからである。",
+    "why": "同じ名前なら、プログラムで定義したエージェントがファイルの定義より優先される。また、親の方針が伝わらない問題も解決しない。"
+   },
+   {
+    "id": "d",
+    "text": "model を 'inherit' にして親と同じモデルを使わせ、background を true にする。親と同じモデルで動くサブエージェントは、親の会話の文脈も共有したうえで、バックグラウンドで点検を進める。",
+    "why": "'inherit' は親のモデルを使う指定で、会話の文脈は共有しない。background は報告を待たずにバックグラウンドで動かす設定で、ツールの制限とも関係しない。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Subagents in the SDK のドキュメントによると、Claude は各サブエージェントの description を見て呼ぶかどうかを決めるので、明確で具体的な説明を書きます。AgentDefinition の tools に列挙すると、使えるツールをそれに限れます(読み取りだけの分析なら Read、Grep、Glob)。フォークでないサブエージェントは新しいコンテキストで始まり、親から渡るのは Agent ツールのプロンプトの文字列だけなので、ファイルのパス、エラーの内容、決めた方針はそこに直接含めます。\n\n見分け方: 親の会話の履歴とシステムプロンプトは渡りません(b)。同じ名前ならプログラムの定義が優先されます(c)。'inherit' はモデルの指定で、文脈は共有しません(d)。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/subagents"
+  ],
+  "topics": [
+   "claude-code-subagents"
+  ]
+ },
+ {
+  "id": "arp-sol-034",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "法務部門向けに、契約書レビューのエージェントを Claude Managed Agents で作る。要件は「モデル、システムプロンプト、ツール、MCP サーバー、スキルを一度定義して多くの依頼で使い回す」「実行場所は Anthropic のクラウドのサンドボックスか自社のセルフホストのサンドボックスから選ぶ」「依頼ごとに別々に動かす」「実行中に担当者が追加の指示を出す」の 4 つである。Claude Managed Agents overview の中核の概念への対応として正しいものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Session にモデル、システムプロンプト、ツールを定義して使い回し、Agent で実行場所を選ぶ。依頼ごとに Environment を作り、実行中の追加の指示は Environment の設定を更新して伝える。Events は Session の設定項目の 1 つである。",
+    "why": "概念の役割が入れ替わっている。モデルやツールは Agent、実行場所は Environment、依頼ごとの実行は Session、やり取りするメッセージは Events に当たる。"
+   },
+   {
+    "id": "b",
+    "text": "依頼のたびに Agent を作り直し、契約書の内容をシステムプロンプトに埋め込む。Environment は Agent の定義の一部として書き、実行中の追加の指示は、いったんセッションを終えてから新しいセッションで渡すので、依頼の間で設定が混ざらない。",
+    "why": "Agent は一度作って ID で複数のセッションから参照する。Environment は Agent とは別の概念で、実行中も追加の user イベントで誘導したり、中断したりできる。"
+   },
+   {
+    "id": "c",
+    "text": "Agent と Environment を一度作り、依頼ごとに Session を始める。実行中には追加の指示を送れないので、依頼の内容と想定される指示は、すべて最初の user イベントにまとめて書いておく。",
+    "why": "overview の流れでは、実行中に追加の user イベントを送って誘導したり、中断して方向を変えたりできる。"
+   },
+   {
+    "id": "d",
+    "text": "Agent にモデル、システムプロンプト、ツール、MCP サーバー、スキルを定義して ID で参照し、Environment で実行場所を選ぶ。依頼ごとに Session を始め、追加の指示は user イベントで送る。",
+    "why": "正しい。overview の 4 つの中核の概念と「How it works」の流れのとおりである。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Claude Managed Agents overview によると、中核の概念は 4 つです。Agent はモデル、システムプロンプト、ツール、MCP サーバー、スキルで、一度作って ID で複数のセッションから参照します。Environment はセッションが動く場所の設定で、Anthropic が管理するクラウドのサンドボックスか、自社の基盤のセルフホストのサンドボックスです。Session は環境の中で特定のタスクを行うエージェントのインスタンス、Events はアプリとエージェントがやり取りするメッセージです。実行中も追加の user イベントで誘導したり、中断したりできます。\n\n見分け方: (a) は役割が入れ替わっています。(b) は Agent を毎回作り、Environment を Agent の一部にしています。(c) は実行中の誘導ができないとしています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/managed-agents/overview"
+  ],
+  "topics": [
+   "managed-agents"
+  ]
+ },
+ {
+  "id": "arp-sol-035",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "広告用のランディングページを自動で作るエージェントを開発している。作ったエージェント自身にデザインを評価させると、人の目には平凡な出来でも毎回高く評価してしまい、反復しても改善が進まない。記事 Harness design for long-running application development の知見に沿った設計はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "生成するエージェントのプロンプトに「自分の作品に厳しくあれ」と強く書き、評価と修正を同じエージェントの中で繰り返させる。役割を分けると引き継ぎの手間とトークンが増えるので、まず 1 つのエージェントで批判的な姿勢を引き出す。",
+    "why": "記事は、生成側を自分の作品に批判的にさせるより、独立した評価者を懐疑的に調整するほうがはるかに扱いやすいとしている。"
+   },
+   {
+    "id": "b",
+    "text": "生成と評価を別のエージェントに分け、評価者には具体的な採点基準と、点数の内訳を付けた few-shot の例を与えて較正する。評価者の批評を生成側に返して反復させる。",
+    "why": "正しい。記事は作業するエージェントと評価するエージェントを分け、デザインの原則を採点基準にし、内訳つきの few-shot の例で評価者を較正した。批評は次の反復の入力として生成側に返した。"
+   },
+   {
+    "id": "c",
+    "text": "評価を別のエージェントに分ければ、LLM が LLM の出力に甘くなる傾向は解消されるので、追加の調整は要らない。評価者のプロンプトは「このデザインは美しいか」を 10 段階で問う 1 文にとどめる。",
+    "why": "記事は、分けただけでは甘さはすぐには消えず、評価者を懐疑的に調整する必要があるとする。「美しいか」は一貫して答えにくく、原則に沿っているかを問う基準を与えている。"
+   },
+   {
+    "id": "d",
+    "text": "評価者は置かずに生成を 1 回で終え、人が最後に確認する。デザインのような主観的な品質は採点できる形にならないので、評価は自動化の対象から外すというのが記事の結論である。",
+    "why": "記事は、美しさは点数に完全には還元できないが、デザインの原則と好みを表す採点基準で改善できるとして、主観的な品質を採点できる形にした。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。記事 Harness design for long-running application development によると、エージェントは自分の作品を評価させると、質が平凡でも自信を持って褒める傾向があり、デザインのような主観的なタスクで特に目立ちます。作業するエージェントと評価するエージェントを分けることが有効で、独立した評価者を懐疑的に調整するほうが、生成側を自分に批判的にさせるより扱いやすいとしています。筆者は 4 つの採点基準を書き、点数の内訳つきの few-shot の例で評価者を較正しました。\n\n見分け方: (a) は自己評価のままです。(c) について記事は、分けただけでは甘さは消えないとしています。(d) は採点基準で主観的な品質を採点できる形にした記事の方法と逆です。",
+  "refs": [
+   "https://www.anthropic.com/research/harness-design-long-running-apps"
+  ],
+  "topics": [
+   "harness-design-long-running",
+   "agentic-workflow-patterns"
+  ]
+ },
+ {
+  "id": "arp-sol-036",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "以前のモデルに合わせて作った長時間のコーディング用ハーネス(仕様を書くプランナー、スプリントに分けて実装する生成エージェント、スプリントごとに検査する評価者)を運用している。より能力の高い新しいモデルが出たが、1 回の実行が長く費用も大きい。記事 Harness design for long-running application development の考え方に沿った進め方を 2つ選んでください。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "構成要素を 1 つずつ外し、そのたびに最終の成果物への影響を確かめる。ハーネスの各部品は、モデルが自力でできないことについての仮定を表しており、モデルの向上で古くなりうるからである。",
+    "why": "正しい。記事は、各部品はモデルが単独でできないことの仮定を表し、その仮定は誤っていたり、モデルの向上ですぐ古くなったりするとして、1 つずつ外して影響を確かめる方法をとった。"
+   },
+   {
+    "id": "b",
+    "text": "部品をまとめて大胆に削り、単一のエージェントの構成と比べる。一度に削ったほうが、どの部品が性能を支えているかを早く見分けられる。",
+    "why": "記事の筆者は、最初に大胆に削ったが元の性能を再現できず、どの部品が効いているのかも分かりにくくなったため、1 つずつ外す方法に移った。"
+   },
+   {
+    "id": "c",
+    "text": "評価者は、課題が新しいモデル単独では確実にこなせない範囲にあるときに費用に見合うと考え、範囲内の作業では省くか、最後の 1 回の検査にまとめる。",
+    "why": "正しい。記事は、評価者を置くかは固定の判断ではなく、課題が現在のモデルの単独で確実にできる範囲を超えるときに費用に見合うとした。スプリントをなくした後は、評価者を最後の 1 回にまとめた。"
+   },
+   {
+    "id": "d",
+    "text": "新しいモデルは計画が丁寧なので、まずプランナーを外し、利用者の 1〜4 文の依頼をそのまま生成エージェントに渡す。仕様を書く段階を省けば、実行時間を大きく減らせる。",
+    "why": "記事ではプランナーを残した。プランナーがないと、生成側は仕様を書かずに作り始め、機能の少ないアプリしか作らなかった(under-scope)。"
+   }
+  ],
+  "answer": [
+   "a",
+   "c"
+  ],
+  "explanation": "正解は a と c です。記事 Harness design for long-running application development によると、ハーネスの各部品はモデルが単独でできないことについての仮定を表し、その仮定は誤りうるうえ、モデルの向上ですぐ古くなりえます。筆者は大胆に削る試みで性能を再現できず、1 つずつ外して影響を確かめる方法に移りました。新しいモデルではスプリントを外し、評価者は最後の 1 回にまとめました。評価者は、課題が現在のモデルの単独で確実にできる範囲を超えるときに費用に見合うとしています。\n\n見分け方: (b) は記事で失敗した進め方です。(d) について記事はプランナーを残しており、ないと生成側が機能の少ないアプリを作ったとしています。",
+  "refs": [
+   "https://www.anthropic.com/research/harness-design-long-running-apps"
+  ],
+  "topics": [
+   "harness-design-long-running"
+  ]
+ },
+ {
+  "id": "arp-sol-037",
+  "cert": "architect-pro",
+  "domain": "solution-design-and-architecture",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Managed Agents で、Claude Sonnet 5 のエージェントにバックエンドの機能を最初から最後まで実装させる。大きな設計判断の前と最後の確認でだけ Claude Opus 5.5 の判断を借りたい。作業の委任やワークフローの実行はさせず、作業はこのエージェント自身に行わせる。Multiagent orchestration のドキュメントに沿った設定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "multiagent_20261001 の型で advisor を {\"type\": \"enabled\", \"model\": \"claude-opus-5-5\"} にするだけでよい。subagents と workflows は既定で無効なので、委任もワークフローの実行も起きない。",
+    "why": "この型では subagents と workflows は既定で有効である。advisor だけを設定すると、エージェントは inline のエージェントへの委任やワークフローの実行もできる。"
+   },
+   {
+    "id": "b",
+    "text": "Opus 5.5 のエージェントを作り、subagents の predefined_agents に anthropic.advisor という名前で登録する。こうすると主スレッドだけでなく、各サブエージェントも同じ advisor に相談できる。",
+    "why": "advisor は predefined_agents に入れられず、advisor を有効にすると anthropic.advisor の名前は予約されて 400 になる。相談できるのは主スレッドだけで、サブエージェントは相談できない。"
+   },
+   {
+    "id": "c",
+    "text": "multiagent_20261001 の型で advisor を {\"type\": \"enabled\", \"model\": \"claude-opus-5-5\"} にし、subagents と workflows を {\"type\": \"disabled\"} にする。相談する場面はシステムプロンプトで伝える。",
+    "why": "正しい。advisor は既定で無効で、有効にすると主スレッドが作業の途中で助言を求められる。advisor に相談して作業をすべて自分で行うエージェントにするには、subagents と workflows を無効にする。"
+   },
+   {
+    "id": "d",
+    "text": "費用を抑えるため、エージェントのモデルを Opus 5.5 にし、advisor を Sonnet 5 にする。advisor には max_uses と max_tokens を設定して、相談の回数と 1 回の長さに上限を設ける。",
+    "why": "エージェントのモデルは advisor より能力が高くてはならず、無効な組み合わせは 400 で拒否される。Managed Agents の advisor の設定に max_uses や max_tokens の項目はない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Multiagent orchestration のドキュメントによると、advisor は既定で無効で、{\"type\": \"enabled\", \"model\": \"...\"} の 2 つの項目で有効にすると、主スレッドが計画や最後の確認などで助言を求められます。この型では subagents と workflows が既定で有効なので、作業を自分で行わせるには両方を {\"type\": \"disabled\"} にします。例のシステムプロンプトも、大きな設計判断の前に advisor に相談するよう書いています。\n\n見分け方: subagents と workflows は既定で有効です(a)。advisor は predefined_agents に入れられず、相談できるのは主スレッドだけです(b)。エージェントのモデルが advisor より高い能力の組み合わせは拒否され、max_uses などの項目もありません(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/managed-agents/multiagent-orchestration"
+  ],
+  "topics": [
+   "managed-agents-multiagent"
+  ]
  }
 ]

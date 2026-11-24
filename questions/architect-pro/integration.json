@@ -1391,5 +1391,341 @@
    "mcp-elicitation",
    "mcp-2026-07-28-changes"
   ]
+ },
+ {
+  "id": "arp-int-035",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Opus 5.5 を使うコード生成アプリで、クライアントツール write_file の content パラメータに数千行のコードが入る。ストリーミングで受けているが、パラメータを書き終えるまで何も届かず、画面が止まって見える。ツールの入力を生成されるそばから表示したい。Fine-grained tool streaming のドキュメントに沿う実装はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "リクエストに anthropic-beta: fine-grained-tool-streaming-2025-05-14 ヘッダーを付ける。今も推奨される有効化の方法で、同じリクエストの computer use のツールセットにもそのまま効き、個々のツールの定義を変えずに全ツールの入力が細かく届く。",
+    "why": "ヘッダーは旧来の方法で、ツールごとの eager_input_streaming に置き換えられた。computer use や browser use のツールセットと同時に送ると、API はリクエストを拒否する。"
+   },
+   {
+    "id": "b",
+    "text": "write_file に eager_input_streaming: true を付ける。API は各パラメータを検証してから断片を送るので、partial_json を連結した文字列は必ず有効な JSON になり、そのまま JSON.parse してツールを実行してよい。",
+    "why": "有効にすると API は入力をバッファせず検証もしないので、不完全な JSON や不正な JSON を受け取ることがある。max_tokens で止まると、パラメータが途中で切れることもある。"
+   },
+   {
+    "id": "c",
+    "text": "write_file に eager_input_streaming: true を付けてストリーミングで送る。断片を連結した入力の解析は失敗に備え、不正な JSON なら INVALID_JSON をキーにした JSON 文字列を is_error: true の tool_result で返す。",
+    "why": "正しい。ツールごとに eager_input_streaming を true にしてストリーミングを有効にする。検証されない断片が届くので解析を守り、不正な JSON は INVALID_JSON の形で is_error: true の tool_result として Claude に伝えるよう案内されている。"
+   },
+   {
+    "id": "d",
+    "text": "ツールの定義は変えず、max_tokens を下げて応答を短く区切り、続きは次のリクエストで書かせる。標準のストリーミングでも 1 つのパラメータは短い断片に分かれて少しずつ届くので、1 回あたりのパラメータが短ければ表示の遅れはなくなる。",
+    "why": "標準のストリーミングでは API が各パラメータの値をバッファして検証してから送るので、大きなパラメータは書き終わるまで何も届かない。max_tokens で止めると、入力が途中で切れる。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Fine-grained tool streaming のドキュメントによると、必要なユーザー定義のツールごとに eager_input_streaming を true にし、ストリーミングを有効にします。省略した標準のストリーミングでは、API が各パラメータの値をバッファして検証してから送るので、大きなパラメータは生成を終えるまで届きません。有効にすると断片は検証されずに届き、不完全または不正な JSON もありうるので、解析を守ります。不正な入力は INVALID_JSON をキーにした JSON 文字列を is_error: true の tool_result で返します。\n\n見分け方: (a) のベータヘッダーはツールごとの設定に置き換えられ、computer use のツールセットとは併用できません。(b) は検証されない断片を必ず有効な JSON だとしています。(d) は標準のストリーミングでも大きなパラメータが少しずつ届くとしています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/fine-grained-tool-streaming",
+   "https://platform.claude.com/docs/en/build-with-claude/streaming"
+  ],
+  "topics": [
+   "fine-grained-tool-streaming",
+   "streaming"
+  ]
+ },
+ {
+  "id": "arp-int-036",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude API を呼ぶ社内サービスのエラー処理を見直している。ログには (1) HTTP 529 の overloaded_error、(2) HTTP 200 で始まったストリーミングの途中に届いた event: error(overloaded_error)、(3) 自社で設定したワークスペースの支出上限(spend limit)に達したときの 400 invalid_request_error がある。Claude API errors のドキュメントに沿う処理はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "529 のような一時的な失敗は公式 SDK の自動再試行に任せ、(2) は HTTP のステータスではなくストリームの error イベントとして扱う。(3) は再試行しない。各リクエストの request-id を記録しておく。",
+    "why": "正しい。SDK は一時的な失敗を指数バックオフで既定 2 回再試行する。ストリーミングでは 200 の後にもエラーが起こり、通常のエラー処理の仕組みには従わない。支出上限の 400 は待っても通らない。request-id は問い合わせに使う。"
+   },
+   {
+    "id": "b",
+    "text": "529 は利用者全体の混雑ではなく、自社の組織がレート制限を超えたことを表すので、ITPM と OTPM の上限の引き上げを申請する。(2) は HTTP 200 で応答が始まっているので成功として扱い、それまでに受け取ったテキストをそのまま利用者に返す。",
+    "why": "529 は API の一時的な過負荷で、全利用者の高い負荷で起こりうる。レート制限は 429 の rate_limit_error。ストリーミングでは 200 の後にもエラーが届くので、成功とはみなせない。"
+   },
+   {
+    "id": "c",
+    "text": "4xx と 5xx を区別せず、すべてのエラーを同じ指数バックオフで成功するまで再試行する。(3) の 400 もしばらく待てば通るので再試行の対象に含め、エラーの種類は error.message の文字列を照合して見分ける。",
+    "why": "400 は要求の形式や内容の問題、または自分で設定した支出上限で、待っても解決しない。エラーは SDK の型付きの例外クラスで捕まえ、メッセージの文字列照合に頼らないよう勧められている。"
+   },
+   {
+    "id": "d",
+    "text": "SDK の自動再試行を max_retries: 0 で止め、529 を受けたらすぐに別のモデルへ切り替える。(2) のストリーム中のエラーは SDK が HTTP の 529 に変換して例外にするので、(1) と同じ catch 節でまとめて処理できる。",
+    "why": "自動再試行は一時的な失敗のための既定の動作で、止める理由はない。ストリーム中のエラーは 200 の後に起こり、標準のエラー処理の仕組みには従わないとドキュメントは書いている。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Claude API errors のドキュメントによると、公式 SDK は接続エラー、レート制限、5xx のような一時的な失敗を、指数バックオフで既定 2 回、retry-after ヘッダーがあればそれに従って自動で再試行します。529 の overloaded_error は API の一時的な過負荷です。ストリーミングでは 200 を返した後にもエラーが起こりえて、その場合は標準のエラー処理の仕組みに従いません。自分で設定した組織やワークスペースの支出上限に達したときも 400 が返ります。すべての応答には request-id ヘッダーがあり、サポートへの問い合わせに使います。\n\n見分け方: (b) は 529 をレート制限と取り違え、ストリーム中のエラーを成功扱いにしています。(c) は待っても通らない 400 まで再試行し、文字列照合で判定しています。(d) は自動再試行を止め、ストリーム中のエラーが HTTP の 529 になるとしています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/errors",
+   "https://platform.claude.com/docs/en/build-with-claude/streaming"
+  ],
+  "topics": [
+   "api-errors",
+   "streaming"
+  ]
+ },
+ {
+  "id": "arp-int-037",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "月次の売上データ(.xlsx)を Claude に分析させ、グラフの PNG と集計の PDF を作らせて、自社のポータルに載せたい。試作では、Claude が「レポートを /tmp/report.pdf に保存しました」と答えるのに、アプリ側でそのファイルを取得できないことがあった。Files API と code execution tool のドキュメントに沿う構成はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": ".xlsx を Files API にアップロードし、document ブロックの source に file_id を指定して送る。生成したファイルは、コード実行のコンテナからポータルのストレージへ HTTPS で直接アップロードするよう Claude に指示しておく。",
+    "why": ".xlsx は document ブロックに対応せず、分析するデータは container_upload ブロックで渡す。コード実行のコンテナはインターネットへの接続が無効で、外部へ送信できない。"
+   },
+   {
+    "id": "b",
+    "text": ".xlsx をアップロードして container_upload ブロックで渡し、コード実行ツールを含める。処理後は、アップロードした .xlsx の file_id を使って Files API から加工済みのファイルをダウンロードする。コンテナでの変更は元のファイルに反映される。",
+    "why": "自分でアップロードしたファイルはダウンロードできず、アップロード後に内容を変えることもできない。生成されたファイルは、コード実行の結果に別の file_id で返る。"
+   },
+   {
+    "id": "c",
+    "text": ".xlsx をテキストに変換してメッセージに直接入れ、Claude にグラフと PDF を Base64 の文字列として応答の本文に書き出させる。アプリは応答のテキストから Base64 の部分を切り出して、ファイルに戻してからポータルに載せる。",
+    "why": "ドキュメントが示す方法ではない。データを分析させるときは container_upload でコード実行ツールに渡し、コード実行で生成したファイルは Files API でダウンロードする。"
+   },
+   {
+    "id": "d",
+    "text": ".xlsx をアップロードして container_upload ブロックで参照し、コード実行ツールを含める。成果物は $OUTPUT_DIR にコピーさせて同じコマンドで ls させ、結果の file_id を Files API でダウンロードする。",
+    "why": "正しい。データは container_upload でコード実行に渡す。コマンドの $OUTPUT_DIR の直下に置いたファイルだけが結果の file_id として返り、Files API でダウンロードできる。ほかの場所に書いたファイルはコンテナに残るだけで返らない。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。code execution tool のドキュメントによると、Excel などのデータは Files API でアップロードし、container_upload ブロックで参照して、コード実行ツールを含めて送ります。各 bash_code_execution の呼び出しには空の $OUTPUT_DIR が用意され、その直下のファイルだけが結果の file_id として返り、Files API でダウンロードできます。ほかの場所のファイルはコンテナに残るだけなので、$OUTPUT_DIR にコピーし、同じコマンドで ls させるよう案内されています。\n\n見分け方: (a) は .xlsx を document ブロックで渡し、インターネットに出られないコンテナから送信させています。(b) はダウンロードできない、変更もされないアップロード済みのファイルから成果物を取ろうとしています。(c) はドキュメントにない方法です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool",
+   "https://platform.claude.com/docs/en/build-with-claude/files"
+  ],
+  "topics": [
+   "files-api"
+  ]
+ },
+ {
+  "id": "arp-int-038",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "法務部向けの MCP サーバーを MCP 仕様 2026-07-28 版で作る。提供したいのは、(1) 利用者が「契約レビュー」などの定型の手順をスラッシュコマンドのように選んで始める指示のひな形、(2) 条項データベースのスキーマなど、ホストのアプリケーションが文脈として取り込むデータ、(3) チケットの起票のように、モデルが文脈から判断して呼び出す操作である。仕様の各ページの User Interaction Model に沿う割り当てはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "(1) をツール、(2) をプロンプト、(3) をリソースにする。仕様では、ツールは利用者が明示的に選んで使うもの、プロンプトはホストが文脈として取り込むもの、リソースはモデルが自動で呼ぶ操作として設計されている。",
+    "why": "役割を取り違えている。ツールはモデルが呼ぶもの(model-controlled)、プロンプトは利用者が選ぶもの(user-controlled)、リソースはホストのアプリケーションが取り込み方を決めるもの(application-driven)。"
+   },
+   {
+    "id": "b",
+    "text": "(1) をプロンプト、(2) をリソース、(3) をツールにする。プロンプトは利用者が選ぶもの、リソースはホストのアプリケーションが取り込み方を決めるもの、ツールはモデルが呼ぶものとされている。",
+    "why": "正しい。仕様はプロンプトを user-controlled、リソースを application-driven、ツールを model-controlled と位置づけている。"
+   },
+   {
+    "id": "c",
+    "text": "3 つともツールとして実装する。2026-07-28 版でプロンプトとリソースは非推奨(Deprecated)になり、ツールの結果として返す方式に統一されたので、新しいサーバーではツールだけを宣言する。",
+    "why": "2026-07-28 版で非推奨になったのは Roots、Sampling、Logging などで、プロンプトとリソースは仕様に残っている。prompts/list や resources/read などのメッセージも定義されている。"
+   },
+   {
+    "id": "d",
+    "text": "(1) をプロンプト、(2) と (3) をリソースにする。リソースはモデルが文脈から判断して読み書きする操作の単位で、チケットの起票もリソースへの書き込みとして表せる。ツールは使わない。",
+    "why": "リソースは application-driven で、ホストのアプリケーションが文脈への取り込み方を決めるもの。モデルが文脈から判断して呼び出す操作はツール(model-controlled)にする。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。MCP 仕様 2026-07-28 版の各ページの User Interaction Model によると、プロンプトは user-controlled で、利用者が明示的に選んで使うことを意図しており、典型例はユーザーインターフェースのスラッシュコマンドです。リソースは application-driven で、ホストのアプリケーションが必要に応じて文脈への取り込み方を決めます。ツールは model-controlled で、言語モデルが文脈の理解と利用者のプロンプトに基づいて自動で見つけて呼び出します。ツールの呼び出しは、人が拒否できるようにしておくべきとされています。\n\n見分け方: (a) は 3 つの役割を取り違えています。(c) の非推奨は Roots、Sampling、Logging などで、プロンプトとリソースは残っています。(d) はモデルが判断して呼ぶ操作をリソースにしています。",
+  "refs": [
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/prompts",
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/resources",
+   "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+   "https://modelcontextprotocol.io/specification/2026-07-28/changelog"
+  ],
+  "topics": [
+   "mcp-primitives",
+   "mcp-tools-spec"
+  ]
+ },
+ {
+  "id": "arp-int-039",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "TypeScript の Agent SDK で受注対応のエージェントを作る。自社の lookup_order(参照のみ)と refund_order(返金を実行)をカスタムツールにし、createSdkMcpServer で作ったサーバーを mcpServers のキー orders で渡す。要件は、組み込みのツールは使わせず自社のツールだけにすること、lookup_order は確認なしで動かすこと、refund_order は毎回 canUseTool の承認を通すことである。Give Claude custom tools のドキュメントに沿う設定はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "allowedTools に \"lookup_order\" と \"refund_order\" を書く。allowedTools は使えるツールを並べた許可リストとして働くので、並べなかった組み込みのツールは Claude のコンテキストから外れ、返金の呼び出しも確認のために canUseTool へ回る。",
+    "why": "allowedTools は列挙したツールの呼び出しを事前に承認するもので、使えるツールを絞らない。名前も mcp__orders__lookup_order のように、サーバーのキーを含む完全な名前で書く。"
+   },
+   {
+    "id": "b",
+    "text": "allowedTools に \"mcp__orders__*\" を書いて両方を事前承認し、refund_order の annotations に destructiveHint: true を付ける。破壊的と宣言したツールは、この注釈だけで承認の対象に戻り、canUseTool が呼ばれるようになる。",
+    "why": "注釈はメタデータで、強制力はない。allowedTools に含まれていても承認に回すには、permission_policy を always_ask にする。"
+   },
+   {
+    "id": "c",
+    "text": "tools: [] で組み込みを外し、allowedTools に \"mcp__orders__lookup_order\" を書く。refund_order は createSdkMcpServer() の返す設定の tools 配列で permission_policy を \"always_ask\" にする。",
+    "why": "正しい。tools: [] は組み込みをすべて外し、MCP のツールには影響しない。ツールの名前は mcp__{server_name}__{tool_name}。always_ask にすると allowedTools がそのツールを承認しなくなり、canUseTool に届く。"
+   },
+   {
+    "id": "d",
+    "text": "disallowedTools に \"mcp__orders__refund_order\" を書いて返金の呼び出しを承認の流れに回し、allowedTools に \"mcp__orders__lookup_order\" を書く。組み込みのツールは、mcpServers を渡すと自動で Claude のコンテキストから外れる。",
+    "why": "disallowedTools はツールを外したり、一致する呼び出しを拒否したりする設定で、承認に回すものではない。組み込みのツールを外すのは tools オプションで、mcpServers を渡しても外れない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。Give Claude custom tools のドキュメントによると、ツールをまとめたサーバーを mcpServers に渡し、事前承認には mcp__{server_name}__{tool_name} の名前を allowedTools に書きます。tools: [] なら組み込みはすべてコンテキストから外れ、MCP のツールは残ります。TypeScript では、サーバーの設定の tools 配列で permission_policy を always_ask にすると、allowedTools がそのツールを承認しなくなり、canUseTool に届きます。\n\n見分け方: (a) は allowedTools をツールの制限と誤解し、名前も不完全です。(b) の destructiveHint は強制力のないメタデータです。(d) の disallowedTools は承認に回す設定ではなく、組み込みも外れません。",
+  "refs": [
+   "https://code.claude.com/docs/en/agent-sdk/custom-tools",
+   "https://code.claude.com/docs/en/agent-sdk/mcp"
+  ],
+  "topics": [
+   "agent-sdk-custom-tools",
+   "agent-sdk-permissions"
+  ]
+ },
+ {
+  "id": "arp-int-040",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Claude API の programmatic tool calling で、社内の query_sales(クライアントツール)に allowed_callers: [\"code_execution_20260120\"] を付け、コード実行ツールと一緒に渡している。応答が stop_reason: \"tool_use\" で止まり、caller にコード実行が入った query_sales の tool_use が返った。続きのリクエストの組み立てとして、Programmatic tool calling のドキュメントに沿うものを 2つ選んでください。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "応答の container の ID を続きのリクエストに渡し、最初のリクエストと同じ tools の配列を送る。",
+    "why": "正しい。保留中のプログラムからの呼び出しがあるのに container の ID がない続きのリクエストは拒否される。コードを再開するにはコード実行ツールが必要なので、同じ tools の配列を送る。"
+   },
+   {
+    "id": "b",
+    "text": "結果を返す user メッセージに、tool_result に続けて「結果を集計して上位 5 件だけ答えて」というテキストを加え、コードの続きの方針を Claude に伝える。",
+    "why": "保留中のプログラムからの呼び出しに答えるときは、user メッセージは tool_result のブロックだけにする。結果の後であってもテキストは入れられない。"
+   },
+   {
+    "id": "c",
+    "text": "query_sales の結果を、表を描いたグラフの画像として image ブロックで tool_result に入れて返す。実行中のコードの側で画像を解析できるので、表のテキストより多くの情報を渡せる。",
+    "why": "プログラムからの呼び出しに答える tool_result の content は、文字列か text ブロックでなければならず、画像や文書などのブロックは拒否される。"
+   },
+   {
+    "id": "d",
+    "text": "query_sales の結果は、文字列か text ブロックを content にした tool_result で返す。この途中の結果は Claude のコンテキストには入らず、コードの最終的な出力だけが入る。",
+    "why": "正しい。結果は実行中のコードに渡され、途中の結果は Claude のコンテキストウィンドウに読み込まれない。Claude のコンテキストに入るのはコードの最終的な出力だけである。"
+   }
+  ],
+  "answer": [
+   "a",
+   "d"
+  ],
+  "explanation": "正解は a と d です。Programmatic tool calling のドキュメントによると、コードがツールを呼ぶとコード実行が一時停止し、tool_use が返ります。続きのリクエストでは、一時停止した応答の container の ID を渡し(ないと拒否されます)、最初と同じ tools の配列を送ります。結果を返す user メッセージは tool_result だけにし、各 content は文字列か text ブロックにします。結果は実行中のコードに渡され、途中の結果は Claude のコンテキストに入らず、コードの最終的な出力だけが入ります。\n\n見分け方: (b) は保留中の呼び出しに答える user メッセージにテキストを入れています。通常のクライアントツールでは許されますが、プログラムからの呼び出しでは許されません。(c) は tool_result に画像を入れていますが、受け付けられるのは文字列か text ブロックだけです。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling"
+  ],
+  "topics": [
+   "programmatic-tool-calling"
+  ]
+ },
+ {
+  "id": "arp-int-041",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Haiku 5.5 で請求書の項目を抽出するパイプラインがあり、record_invoice ツールを tool_choice: {\"type\": \"tool\", \"name\": \"record_invoice\"} で強制している。運用で、(1) 応答に thinking ブロックも説明のテキストも付かない、(2) 1 つの会話の中で、確認のターンだけ tool_choice を auto に切り替えると、キャッシュの読み出しが減る、という 2 点が報告された。Define tools のドキュメントに沿う説明はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude Haiku 5.5 は強制のツール指定を受け付けないモデルで、指定は黙って auto として扱われる。(1) はその副作用で、(2) は tool_choice を変えると、ツール定義とシステムプロンプトを含むキャッシュ全体が無効になるためである。",
+    "why": "Define tools の表では、Claude Haiku 5.5 は強制を受け付けるモデルとして挙げられている(Opus 5.5 などは 400)。tool_choice の変更で無効になるのはメッセージのブロックで、ツール定義とシステムプロンプトはキャッシュに残る。"
+   },
+   {
+    "id": "b",
+    "text": "強制すると応答はツール呼び出しから始まるので、説明のテキストは出ず、思考も省かれる。tool_choice を変えるとメッセージのブロックのキャッシュは無効になるが、ツール定義とシステムプロンプトは残る。",
+    "why": "正しい。any や tool では応答がツール呼び出しから始まり、前置きの説明は出ない。強制は受け付けるすべてのモデルで思考も省く。tool_choice の変更はメッセージのブロックだけに影響する。"
+   },
+   {
+    "id": "c",
+    "text": "(1) は thinking を明示していないためで、thinking: {\"type\": \"enabled\", \"budget_tokens\": 2000} を加えれば、強制したままでも思考と説明が出る。(2) は tool_choice がキャッシュのキーに入らないので、別の原因を調べる必要がある。",
+    "why": "手動の拡張思考(enabled)は any と tool に対応せずエラーになり、Claude Haiku 5.5 は enabled 自体を 400 で拒否する。tool_choice の変更はメッセージのブロックのキャッシュを無効にする。"
+   },
+   {
+    "id": "d",
+    "text": "(1) は tool_choice が tool のときだけ起こり、any にすれば Claude は呼び出しの前に説明を書く。(2) は確認のターンが短く、キャッシュできる最小の長さに届かないためで、tool_choice の変更とは関係がない。",
+    "why": "any でも tool でも応答はツール呼び出しから始まり、前置きの説明は出ない。tool_choice の変更は、メッセージのブロックのキャッシュを無効にする。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。Define tools の Forcing tool use によると、tool_choice が any や tool のとき、API は応答をツール呼び出しから始めさせるので、tool_use の前に説明は出ません。強制を受け付けるすべてのモデルで思考も省かれます。表では、Claude Haiku 5.5 のように思考が既定で有効なモデルも強制を受け付けます。説明や思考が要るなら、auto にしてプロンプトで使うツールを指示します。tool_choice の変更はメッセージのブロックのキャッシュを無効にしますが、ツール定義とシステムプロンプトはキャッシュに残ります。\n\n見分け方: (a) は Haiku 5.5 が強制を受け付けないとし、キャッシュの影響範囲も広く取っています。(c) の手動の拡張思考は強制と併用できず、Haiku 5.5 では 400 です。(d) は any なら説明が出るとし、キャッシュへの影響も否定しています。",
+  "refs": [
+   "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+   "https://platform.claude.com/docs/en/api/errors"
+  ],
+  "topics": [
+   "define-tools",
+   "prompt-cache-invalidation"
+  ]
+ },
+ {
+  "id": "arp-int-042",
+  "cert": "architect-pro",
+  "domain": "integration",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude API で Claude Opus 5.5 を使うサポートエージェントで、返金のツール issue_refund は、会話の途中で本人確認が済んでから初めて Claude に使わせたい。必要なツールは会話の開始時から分かっており、長い会話のプロンプトキャッシュの読み出しは保ちたい。Mid-conversation system messages and tool changes のドキュメントに沿う方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "最初は tools に issue_refund を入れずに送り、本人確認が済んだリクエストから tools の配列の末尾に追加する。末尾への追加は既存の定義を変えないので、tools より後ろにあるシステムプロンプトとメッセージのキャッシュはそのまま読み出せる。",
+    "why": "tools はハッシュされるプレフィックスの中で system より前にあり、編集すると会話全体のキャッシュが無効になる。末尾への追加でも同じである。"
+   },
+   {
+    "id": "b",
+    "text": "本人確認が済んだら、clear_at: \"next_user_message\" を付けた role: \"system\" のメッセージに、issue_refund を参照する tool_addition ブロックを入れる。ターン単位のメッセージなので、次の user のターン以降には残らず、それまでのキャッシュも汚さない。",
+    "why": "clear_at を付けたターン単位のメッセージは text だけを持てる。tool_addition や tool_removal を入れると 400 エラーになる。"
+   },
+   {
+    "id": "c",
+    "text": "本人確認が済むたびに、role: \"system\" のメッセージの tool_addition に issue_refund の完全な定義を値で入れる。ツールは事前に tools に宣言せず、必要になった時点でメッセージの中だけで定義するのが推奨の形である。",
+    "why": "最初のリクエストで分かっているツールは tools に defer_loading: true で宣言し、後から参照で加えるよう勧められている。値での定義は、開始時に分からないものや後で変わるものに使う。"
+   },
+   {
+    "id": "d",
+    "text": "tools に issue_refund を defer_loading: true で宣言し、inline-tools-2026-09-15 のベータヘッダーを付ける。本人確認の後、role: \"system\" のメッセージで issue_refund を参照する tool_addition を送る。",
+    "why": "正しい。defer_loading: true のツールは tool_addition が示すまで提示されない。tools の配列は変わらないので、キャッシュされたプレフィックスはそのまま保たれる。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Mid-conversation system messages のドキュメントによると、tools はプレフィックスの中で system より前にあり、編集すると会話全体のキャッシュが無効になります。そこでツールを最初から tools に宣言し、role: \"system\" のメッセージの tool_addition と tool_removal で、ある時点から提示や取り下げをします。defer_loading: true のツールは tool_addition が示すまで提示されません。Claude API では inline-tools-2026-09-15 のベータヘッダーを使います。\n\n見分け方: (a) は tools を編集しており、会話全体のキャッシュが外れます。(b) のターン単位のメッセージは text だけで、tool_addition は 400 です。(c) は開始時に分かっているツールを値で定義しており、推奨に反します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages"
+  ],
+  "topics": [
+   "mid-conversation-system-messages",
+   "prompt-cache-invalidation"
+  ]
  }
 ]

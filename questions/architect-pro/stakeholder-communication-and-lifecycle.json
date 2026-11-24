@@ -1012,5 +1012,253 @@
    "data-residency",
    "api-pricing"
   ]
+ },
+ {
+  "id": "arp-stk-026",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "社内の複数のアプリと開発者の Claude Code が Claude Opus 4.5 を使っている。アプリのコードは日付のない claude-opus-4-5 を指定し、Claude Code ではサブエージェントの定義でこのモデルを指定しているものがある。2026-11-23 に、Anthropic から Claude API での廃止予定の通知が届いた。経営層と各チームへの説明として、Model deprecations のページに沿うものはどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "通知の対象は日付付きの claude-opus-4-5-20251101 だけで、日付のない claude-opus-4-5 は、退役後は自動的に後継のモデルを指す別名として残る。アプリのコードはそのままでよく、Claude Code のサブエージェントの定義だけを直せばよい。",
+    "why": "誤り。この廃止には、日付のない ID の claude-opus-4-5 も含まれると明記されている。"
+   },
+   {
+    "id": "b",
+    "text": "退役日を過ぎてもモデルは Deprecated の状態のまま動き続け、信頼性が下がるだけである。退役日の後に、問題が出たアプリから順に移行すれば足りるので、急いで計画を立てる必要はない。",
+    "why": "誤り。退役(Retired)したモデルへのリクエストは失敗する。退役日より前に移行を済ませるよう書かれている。"
+   },
+   {
+    "id": "c",
+    "text": "Claude Code はサインインしたプランに合わせてモデルを自動で選び直すので、Claude Code の側は何もしなくてよい。アプリだけを、推奨の後継の claude-opus-4-8 に移せばよい。",
+    "why": "誤り。推奨の後継は claude-opus-5-5 である。Claude Code も、使っているモデルを確かめ、モデルを指定しているすべての箇所を直す必要がある。"
+   },
+   {
+    "id": "d",
+    "text": "退役は 2027-01-22 で、日付のない ID も含まれる。推奨の後継は claude-opus-5-5 で、退役日より十分前にテストして移す。Claude Code は先に更新し、サブエージェントの定義など、モデルを指定しているすべての箇所を直す。",
+    "why": "正しい。廃止の履歴の表と、Migrating to replacements の Claude Code の手順に合う。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。2026-11-23 の通知で、claude-opus-4-5-20251101 は 2027-01-22 に Claude API で退役し、推奨の後継は claude-opus-5-5 です。この退役には日付のない claude-opus-4-5 も含まれます。退役したモデルへのリクエストは失敗するため、退役日より十分前に後継でテストして移行します。Claude Code を使う場合は、新しいモデルが新しい版を必要とすることがあるので先に更新し、サブエージェントの定義を含めてモデルを指定している箇所をすべて直します。\n\n見分け方: 日付のない ID も同じ退役に含まれる点(a)と、退役後は動かない点(b)を押さえます。後継は表の Recommended replacement で確かめます(c)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+  ],
+  "topics": [
+   "model-migration"
+  ]
+ },
+ {
+  "id": "arp-stk-027",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "社内文書の要約サービスを Claude Sonnet 4.6 から Claude Sonnet 5.5 へ移す。財務部門は、Pricing ページの単価(MTok あたり、Sonnet 4.6 は入力 $3・出力 $15、Sonnet 5.5 は入力 $2・出力 $10)に、先月の Sonnet 4.6 のトークン数をそのまま掛け、「費用は 3 分の 1 減る」と経営層に報告しようとしている。ドキュメントに沿う指摘はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "見積もりは正しい。トークン数は入力の文字数で決まり、同じテキストならどのモデルでも同じ数になるので、単価の比だけで費用の変化を見積もれる。",
+    "why": "誤り。トークン数はモデルのトークナイザーによって変わる。Claude 4.7 以降のモデルは新しいトークナイザーを使う。"
+   },
+   {
+    "id": "b",
+    "text": "Claude 4.7 以降のモデルは新しいトークナイザーで、同じテキストがおよそ 30% 多いトークンになる。移行先のモデル ID でトークンカウントを使い数え直してから見積もる。",
+    "why": "正しい。Pricing ページとトークンカウントのページに、古いモデルで測った数を使い回さず、使う予定のモデルで数え直すよう書かれている。"
+   },
+   {
+    "id": "c",
+    "text": "Sonnet 5.5 の新しいトークナイザーは同じテキストをおよそ 30% 少ないトークンで表すので、この見積もりはむしろ控えめすぎる。実際の削減は 3 分の 1 より大きくなると報告してよい。",
+    "why": "誤り。新しいトークナイザーは、同じテキストでおよそ 30% 多いトークンを生む。"
+   },
+   {
+    "id": "d",
+    "text": "トークナイザーの違いは請求には反映されず、請求は移行前のモデルの数え方にそろえて計算される。したがって、先月のトークン数を使った見積もりのまま報告してよい。",
+    "why": "誤り。トークンカウントのページは、古いモデルで測ったトークン数を費用の見積もりに再利用せず、使う予定のモデルで数えるよう勧めている。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。Pricing ページによると、Claude 4.7 以降のモデルは新しいトークナイザーを使い、同じテキストからおよそ 30% 多いトークンを生みます(増え方は内容によります)。Sonnet 4.6 以前は以前のトークナイザーです。トークンカウントのページも、古いモデルで測った数を使い回さず、使う予定のモデルで数え直すよう勧めています。トークンカウントは無料で使えます(レート制限はあります)。\n\n見分け方: モデルの世代をまたぐ費用の比較では「単価 × トークン数」の両方が変わります。単価の比だけで見積もる a や d は、トークン数の変化を見落としています。増える方向を逆にした c にも注意します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/pricing",
+   "https://platform.claude.com/docs/en/build-with-claude/token-counting"
+  ],
+  "topics": [
+   "api-pricing",
+   "token-counting"
+  ]
+ },
+ {
+  "id": "arp-stk-028",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Console の組織で、開発者 80 人が Console のアカウントで Claude Code にサインインして使っている(API 課金)。同じ組織では顧客向けの本番アプリも動いている。財務部門は開発者ごとの月額の上限を求め、本番チームは Claude Code の利用が本番のレート制限を圧迫しないかを心配している。Workspaces のページに沿う対応はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude Code workspace に、Console から開発者ごとの API キーを手作業で作って配り、キーごとに月額の上限を付ける。本番のキーとは別のキーになるので、本番のレート制限にも影響しない。",
+    "why": "誤り。Claude Code workspace のキーはサインイン時に Claude Code が発行するもので、Console から手作業では作れない。"
+   },
+   {
+    "id": "b",
+    "text": "Claude Code workspace をアーカイブし、開発者には本番と同じワークスペースの API キーを使わせて、そのワークスペースの spend limit で全体の費用を抑える。管理するワークスペースが減り、運用が単純になる。",
+    "why": "誤り。Claude Code workspace をアーカイブすると、組織全体で Console 課金での Claude Code のサインインが使えなくなる。本番と同じ上限を分け合うことにもなる。"
+   },
+   {
+    "id": "c",
+    "text": "Claude Code workspace のユーザーごとの月額 spend limit を使う。Claude Code の利用は別にレート制限されるので、Rate limits の画面で、組織の上限に占める Claude Code の割合にも上限を付ける。",
+    "why": "正しい。ユーザーごとの月額の上限に対応するのはこのワークスペースだけで、管理者は組織の上限に占める Claude Code の割合を制限できる。"
+   },
+   {
+    "id": "d",
+    "text": "Default Workspace に spend limit を設定する。Console のアカウントでの Claude Code の利用は常に Default Workspace に計上されるので、これで開発者全体の費用を抑えられ、本番のワークスペースにも影響しない。",
+    "why": "誤り。Console のアカウントで初めてサインインすると、Claude Code workspace が自動で作られ、そこに追加される。Default Workspace の spend limit は一部の利用を数えないこともある。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。メンバーが Console のアカウントで初めて Claude Code にサインインすると、組織に Claude Code workspace が自動で作られ、以後サインインしたメンバーはそこに追加されます。Claude Code はサインイン時にユーザーごとの API キーをこのワークスペースに発行し、Console から手作業でキーは作れません。このワークスペースはユーザーごとの月額 spend limit に対応する唯一のワークスペースで、Claude Code の利用は別にレート制限され、管理者は組織の上限に占める割合を制限できます。\n\n見分け方: Claude Code の利用の管理は Claude Code workspace に集まっています。キーの手作業の発行(a)や、ワークスペースのアーカイブ(b)はできない・してはいけない操作です。",
+  "refs": [
+   "https://platform.claude.com/docs/en/manage-claude/workspaces"
+  ],
+  "topics": [
+   "workspaces"
+  ]
+ },
+ {
+  "id": "arp-stk-029",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "顧客サポートの 1 つのアプリが、約 40,000 トークンの共通のシステムプロンプトをプロンプトキャッシュに載せ、高いキャッシュヒット率で Claude API を使っている。CFO は、このアプリの費用を 3 つの事業部に配賦するため、事業部ごとにワークスペースを分け、トラフィックを 3 つに分けて流すよう求めた。ドキュメントに沿う助言はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude API ではキャッシュがワークスペースごとに分かれ、分けると各ワークスペースが別々にキャッシュを作るのでヒット率が下がりうる。配賦が目的なら、1 つのワークスペースで事業部ごとにキーを分け、Usage and Cost Analytics API で api_key_id ごとに集計する。",
+    "why": "正しい。キャッシュは Claude API ではワークスペースごとに分離される。Console の組織では api_key_id で利用量と費用を分けて集計できる。"
+   },
+   {
+    "id": "b",
+    "text": "プロンプトキャッシュは組織の中で共有されるので、ワークスペースを分けてもキャッシュヒット率は変わらない。事業部ごとにワークスペースを分けるだけで、配賦と費用の両方の要件を満たせる。",
+    "why": "誤り。組織どうしでキャッシュを共有しないことに加え、Claude API ではワークスペースどうしでも分離される。"
+   },
+   {
+    "id": "c",
+    "text": "ワークスペースを分けると、キャッシュの読み出しに割引が効かなくなり、基本の入力料金で課金される。費用が大きく増えるので、配賦は請求書の総額を事業部の利用者数で手作業で按分するしかない。",
+    "why": "誤り。読み出しの倍率はワークスペースで変わらない。起きうるのはワークスペースごとの書き込みが増えることである。また、API キーごとに利用量と費用を集計する手段がある。"
+   },
+   {
+    "id": "d",
+    "text": "ワークスペースを分けると、組織のレート制限とは別に各ワークスペースに同じ量の上限が付くので、処理できる量が 3 倍になる。キャッシュへの影響は小さいので、分けるのが性能の面でも得である。",
+    "why": "誤り。組織全体の上限は、ワークスペースの上限の合計がそれを超えていても常に適用される。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Workspaces と Prompt caching のページによると、Claude API では、プロンプトキャッシュは組織どうしに加えてワークスペースどうしでも分離され、各ワークスペースが自分のキャッシュを作ります。同じプレフィックスでも 3 つのワークスペースそれぞれで書き込みが要り、ヒット率が下がりえます。費用の配賦は、Usage and Cost Analytics API の cost エンドポイントで api_key_id などの次元ごとに集計できます。\n\n見分け方: 「ワークスペースを分ける」ことには、キャッシュとレート制限の両面で副作用があります。キャッシュは共有されず(b)、組織の上限は分けても増えません(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/manage-claude/workspaces",
+   "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+   "https://platform.claude.com/docs/en/manage-claude/usage-cost-analytics-api",
+   "https://platform.claude.com/docs/en/api/rate-limits"
+  ],
+  "topics": [
+   "workspaces",
+   "prompt-caching",
+   "usage-cost-analytics-api"
+  ]
+ },
+ {
+  "id": "arp-stk-030",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "自社は Claude Opus 4.8 について、契約期間中の Priority Tier のコミットメント(入力と出力のトークン毎分)を持っている。規制対応で inference_geo: \"us\" を使うことになり、同時に長い共通のプレフィックスを 1 時間 TTL でキャッシュする設計に変える。運用チームが、コミットメントの消費がどう変わるかを経営層に説明する。Service tiers のページに沿う説明はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Priority Tier の容量は料金と関係なく実際のトークン数で消費されるので、US 内の推論にしても、1 時間 TTL のキャッシュ書き込みにしても、1 トークンにつき 1 のまま消費量は変わらない。",
+    "why": "誤り。消費は料金の比に合わせて数えられ、キャッシュの読み書きや US 内の推論で 1 トークンあたりの消費が変わる。"
+   },
+   {
+    "id": "b",
+    "text": "キャッシュから読んだトークンは Priority Tier の容量を消費しないので、キャッシュの利用を増やすほど、コミットメントを増やさずに優先で処理できる量をいくらでも伸ばせる。",
+    "why": "誤り。キャッシュの読み出しも、1 トークンにつき 0.1 として容量を消費する。"
+   },
+   {
+    "id": "c",
+    "text": "inference_geo: \"us\" を指定したリクエストは Priority Tier の対象外になり、すべて標準の層で処理される。規制対応の分のトラフィックはコミットメントを使わないので、その分の容量が余る。",
+    "why": "誤り。US 内の推論も Priority Tier の対象で、Claude 4.6 以降のモデルでは入出力とも 1 トークンにつき 1.1 として消費する。"
+   },
+   {
+    "id": "d",
+    "text": "消費は料金の比に合わせて数える。US 内の推論は入出力とも 1 トークンにつき 1.1、1 時間 TTL のキャッシュ書き込みは 2.00、読み出しは 0.1 なので、同じ処理でも消費が増えうる。",
+    "why": "正しい。How requests get assigned tiers の数え方のとおりで、この比は各トークンの相対的な料金を反映している。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Priority Tier の容量の消費は、トークンの種類ごとの相対的な料金を反映した比で数えます。入力では、キャッシュの読み出しが 0.1、5 分 TTL の書き込みが 1.25、1 時間 TTL の書き込みが 2.00、Claude 4.6 以降での inference_geo: \"us\" が 1.1 です。出力も US 内の推論では 1.1 です。容量が足りなければリクエストは標準の層で処理されます。\n\n見分け方: 「料金が 1.1 倍なら消費も 1.1 倍」と料金表と対応づけて覚えます。実トークン数で数えるという a、読み出しを 0 とする b、US 内の推論が対象外という c は、いずれもこの対応から外れます。",
+  "refs": [
+   "https://platform.claude.com/docs/en/api/service-tiers",
+   "https://platform.claude.com/docs/en/about-claude/pricing"
+  ],
+  "topics": [
+   "service-tiers"
+  ]
+ },
+ {
+  "id": "arp-stk-031",
+  "cert": "architect-pro",
+  "domain": "stakeholder-communication-and-lifecycle",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "社内ヘルプデスクの Q&A を Claude Haiku 5.5 で動かす。各リクエストは、プロンプトキャッシュに載せた約 120,000 トークンの社内マニュアルと、毎回新しい約 2,000 トークンの質問からなる。財務担当は「新しく送るのは 2,000 トークンだけなので、100,000 トークン以下のプロンプトの料金で計算できる」と見積もった。Pricing ページに沿う指摘はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "見積もりは正しい。Haiku 5.5 のプロンプトの長さは、キャッシュに載っていない新しい入力だけで数えるので、各リクエストは 2,000 トークンとして 100,000 トークン以下の料金になる。",
+    "why": "誤り。プロンプトの長さは、キャッシュの読み出しと書き込みを含むすべての入力トークンで数える。"
+   },
+   {
+    "id": "b",
+    "text": "プロンプトの長さはキャッシュの読み書きも含むすべての入力で数える。各リクエストが 100,000 トークンを超えるので、キャッシュに当たった部分も含めて高い方の料金になる。",
+    "why": "正しい。リクエストごとに判定し、閾値を超えたリクエストは一部がキャッシュに当たっていても高い方の料金になる。"
+   },
+   {
+    "id": "c",
+    "text": "100,000 トークンを超えると、超えた分のトークンだけに高い方の料金がかかる。最初の 100,000 トークンまでは低い方の料金のままなので、高くなるのはマニュアルの約 20,000 トークン分だけである。",
+    "why": "誤り。閾値を超えたリクエストは、そのリクエスト全体が高い方の料金になる。"
+   },
+   {
+    "id": "d",
+    "text": "Haiku 5.5 も Claude 4.6 以降のモデルと同じく、1M トークンのコンテキストウィンドウ全体を標準の料金で使える。長さによる料金の差はないので、キャッシュの読み出しの倍率だけを考えればよい。",
+    "why": "誤り。1M のコンテキストを標準の料金で使えるのは、Haiku 5.5 を除く Claude 4.6 以降のモデルである。Haiku 5.5 はプロンプトの長さで料金が変わる。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。Claude Haiku 5.5 は、プロンプトが 100,000 トークンを超えるリクエストに高い方の料金(入力、キャッシュの書き込みと読み出し、出力のすべて)がかかります。プロンプトの長さは、キャッシュの読み出しと書き込みを含むすべての入力トークンで数え、リクエストごとに判定します。閾値を超えたリクエストは、一部がキャッシュに当たっていても高い方の料金です。\n\n見分け方: 「キャッシュに当たれば単価は下がるが、長さの判定からは外れない」と分けて考えます。新しい入力だけで数える a、超えた分だけに課金する c は誤りです。ほかの Claude 4.6 以降のモデルとは扱いが違う点(d)にも注意します。",
+  "refs": [
+   "https://platform.claude.com/docs/en/about-claude/pricing"
+  ],
+  "topics": [
+   "api-pricing"
+  ]
  }
 ]

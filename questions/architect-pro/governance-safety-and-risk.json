@@ -1010,5 +1010,251 @@
    "reduce-hallucinations",
    "thinking"
   ]
+ },
+ {
+  "id": "arp-gov-026",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "multi",
+  "scenarioId": null,
+  "stem": "Claude for Enterprise の組織で、Anthropic のアカウントチームを通じて Claude Code の Zero Data Retention(ZDR)を有効にしてもらった。CISO 向けに、ZDR が何に及び、何に及ばないかを説明する資料を作る。Claude Code の Zero data retention のページの記述に合うものを2つ選んでください。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "同じアカウントの下で後から作った新しい組織にも、既存の組織の ZDR が自動で引き継がれるので、組織を増やすときに追加の手続きは要らない。",
+    "why": "誤り。ZDR は組織ごとに有効にされ、同じアカウントの下の新しい組織には自動で適用されない。新しい組織ごとにアカウントチームへ有効化を依頼する。"
+   },
+   {
+    "id": "b",
+    "text": "クラウドセッションや Remote Control のように、プロンプトや応答を保存する必要がある機能は、バックエンドで自動的に無効になる。",
+    "why": "正しい。保存を要する機能(クラウドセッション、Remote Control、/feedback など)は、クライアントの表示にかかわらずバックエンドで無効になる。"
+   },
+   {
+    "id": "c",
+    "text": "同じ組織のメンバーが claude.ai のチャットや Cowork で行う会話も、Claude Code と同じ ZDR の取り決めの下で保持されなくなる。",
+    "why": "誤り。claude.ai のチャットと Cowork は、ZDR の対象外の一覧に入っている。標準のデータ保持の方針に従う。"
+   },
+   {
+    "id": "d",
+    "text": "Claude Code から使う MCP サーバーやサードパーティのツールが処理したデータは ZDR の対象外なので、それぞれのデータの扱いを別に確認する。",
+    "why": "正しい。サードパーティのツール、MCP サーバー、外部の統合が処理するデータは ZDR の対象外で、各サービスの扱いを独自に確認するよう書かれている。"
+   }
+  ],
+  "answer": [
+   "b",
+   "d"
+  ],
+  "explanation": "正解は b と d です。Claude Code の ZDR は、Claude for Enterprise での Claude Code の推論呼び出しを対象にし、組織ごとに有効にされます。プロンプトや応答の保存を必要とする機能(クラウドセッション、Remote Control、/feedback などの送信)は、バックエンドで自動的に無効になります。MCP サーバーやサードパーティの統合が処理するデータは ZDR の対象外で、各サービスの扱いを別に確認するよう書かれています。\n\n見分け方: ZDR は「組織単位」で「Claude Code の推論」に及ぶ、と押さえます。新しい組織には自動で適用されず、組織ごとにアカウントチームへ依頼します(a)。claude.ai のチャットや Cowork は、ZDR の対象外の一覧に入っています(c)。",
+  "refs": [
+   "https://code.claude.com/docs/en/zero-data-retention",
+   "https://code.claude.com/docs/en/data-usage"
+  ],
+  "topics": [
+   "claude-code-zero-data-retention"
+  ]
+ },
+ {
+  "id": "arp-gov-027",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "開発チームが Claude Code のサンドボックスを使っている。サンドボックスの中のコマンドに GH_TOKEN の実際の値を見せたくないが、gh コマンドが api.github.com に認証付きで通信することは続けたい。チームは、sandbox.credentials.envVars に GH_TOKEN を mode: \"mask\" で登録した設定を、リポジトリの .claude/settings.json にコミットする案を出した。Sandboxing のページに沿う判断はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "案のままでよい。GH_TOKEN のような既知のトークンはサンドボックスが既定の一覧で保護しているので、mask の指定は念のための追加にすぎない。リポジトリの設定に置けば、全員の環境に同じ指定がそろう。",
+    "why": "誤り。資格情報の既定の deny の一覧はなく、列挙したファイルと変数だけが制限される。さらに mask はリポジトリの設定ファイルでは無視される。"
+   },
+   {
+    "id": "b",
+    "text": "mode を \"deny\" に変えてリポジトリの設定に置く。deny なら変数はコマンドから見えなくなり、gh の認証はサンドボックスのプロキシが実際の値で代わりに付けるので、TLS の終端も宛先の指定も要らない。",
+    "why": "誤り。deny は変数をコマンドの実行前に消すだけで、実際の値を差し込むのは mask のときのプロキシである。deny では gh は認証できない。"
+   },
+   {
+    "id": "c",
+    "text": "mask は実際の資格情報をどこへ送るかを許す設定なので、リポジトリの設定ファイルでは無視される。ユーザー設定か managed settings に、injectHosts を api.github.com とした mask の項目と network.tlsTerminate を置き、その宛先を network.allowedDomains でも許可する。",
+    "why": "正しい。mask と tlsTerminate はユーザー設定、managed settings、--settings からだけ使われる。プロキシが値を差し込むには TLS の終端と、許可リストで通る宛先が要る。"
+   },
+   {
+    "id": "d",
+    "text": "mask は環境変数には使えずファイルにしか使えないので、トークンを ~/.config/gh/hosts.yml に移し、files の項目を mode: \"mask\" にしてリポジトリの設定にコミットする。こうすれば macOS でも Linux でも、全員の gh がそのまま動く。",
+    "why": "誤り。envVars の項目も mask を受け付ける。mask はリポジトリの設定では無視され、macOS ではファイルの mask は読み取りの禁止になり、gh はサンドボックスの中で動かない。"
+   }
+  ],
+  "answer": [
+   "c"
+  ],
+  "explanation": "正解は c です。sandbox.credentials の mask は、コマンドには毎セッションの代わりの値(sentinel)を見せ、許可した宛先への送信時にプロキシが実際の値に差し替えます。実際の資格情報を送る先を許す設定なので、mask、network.tlsTerminate などはユーザー設定、managed settings、--settings からだけ使われ、リポジトリの .claude/settings.json や .claude/settings.local.json では無視されます。差し替えには TLS の終端と、network.allowedDomains で通る injectHosts の宛先が要ります。\n\n見分け方: 「見せずに使わせる」は mask、「使わせない」は deny です。deny では変数が消えるだけで gh は認証できません(b)。資格情報の既定の deny の一覧はなく、書いたものだけが守られます(a)。",
+  "refs": [
+   "https://code.claude.com/docs/en/sandboxing"
+  ],
+  "topics": [
+   "claude-code-sandboxing"
+  ]
+ },
+ {
+  "id": "arp-gov-028",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "全社で Claude Code を導入する。情報システム部門は、社員が個人の Pro アカウントや他社の組織のアカウントで Claude Code にサインインし、会社の管理の外で業務のコードを扱うことを防ぎたい。社員の端末は MDM で管理しており、claude.ai の server-managed settings も使っている。Claude Code の Authentication のページに沿う構成はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "forceLoginMethod を \"claudeai\"、forceLoginOrgUUID を自社の組織 ID にした managed settings を MDM で配布する。server-managed settings は組織にサインインした後にしか届かないので、最初のサインインの制御には使えない。",
+    "why": "正しい。この 2 つのキーはデバイス管理で配布するよう書かれている。server-managed settings は組織への認証の後に届くため、最初のサインインを向け直せない。"
+   },
+   {
+    "id": "b",
+    "text": "forceLoginMethod と forceLoginOrgUUID を server-managed settings だけに設定する。claude.ai から全メンバーに配布される設定なので、MDM で端末に何も配布しなくても、Claude Code の最初のサインインの時点で組織外のアカウントが拒否される。",
+    "why": "誤り。server-managed settings は組織に認証した後にしか届かず、最初のサインインには効かない。"
+   },
+   {
+    "id": "c",
+    "text": "forceLoginOrgUUID を設定する。Claude Console でのサインインで保存された資格情報も起動時に組織が検証されるので、Console の API キーで使っている社員も、自動で自社の組織の利用に限定される。",
+    "why": "誤り。起動時に、保存済みの Console の資格情報がどの組織のものかは検証されない。Console のサインインの組織を制限する目的で forceLoginOrgUUID に頼らないよう書かれている。"
+   },
+   {
+    "id": "d",
+    "text": "リポジトリの .claude/settings.json に forceLoginOrgUUID を書いてコミットする。プロジェクトの設定は managed settings より優先されるので、各リポジトリを開いたときに、組織外のアカウントでのサインインを確実に止められる。端末ごとの配布の作業も要らない。",
+    "why": "誤り。設定の優先順位は managed settings が最上位で、プロジェクトの設定はその下にある。ページはこれらのキーを managed settings に置き、デバイス管理で配布するよう求めている。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。Claude Code のサインインを特定の組織の claude.ai アカウントに限るには、managed settings に forceLoginMethod と forceLoginOrgUUID を設定します。claude.ai の別の組織へのログインはエラーになり、ANTHROPIC_API_KEY などの環境の資格情報も起動時に止められます。これらのキーはデバイス管理で配布します。server-managed settings は組織に認証した後にしか届かないため、最初のサインインを向け直せないからです。\n\n見分け方: 「最初のサインインより前に効く必要がある設定は、端末に置く」と考えます。server-managed settings だけでは届く前にサインインが済みます(b)。保存済みの Console の資格情報は、起動時に組織が検証されません(c)。",
+  "refs": [
+   "https://code.claude.com/docs/en/authentication",
+   "https://code.claude.com/docs/en/settings"
+  ],
+  "topics": [
+   "claude-code-login-restriction",
+   "claude-code-server-managed-settings"
+  ]
+ },
+ {
+  "id": "arp-gov-029",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Enterprise の組織で、法務部門が訴訟対応のため、特定の社員の claude.ai のチャットの内容と、Claude Code のセッションのトランスクリプトを取り出せるようにしたい。セキュリティ部門は、ログインや管理操作のイベントを SIEM に継続的に取り込みたい。Compliance API のページに沿う方法はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Claude Console で Admin API キーを作り、/v1/compliance/* の各エンドポイントを呼ぶ。Admin API キーは組織の管理者の権限を持つので、Activity Feed だけでなく、チャットの内容やセッションのトランスクリプトも取り出せる。",
+    "why": "誤り。Admin API キーで呼べるのは Activity Feed(と、条件付きで Safety Cases API)である。チャットやセッションなどの内容のエンドポイントには Compliance Access Key が要る。"
+   },
+   {
+    "id": "b",
+    "text": "claude.ai の Organization settings > Data and privacy にある監査ログのエクスポートを定期的にダウンロードする。CSV に組織のイベントとチャットの内容が含まれるので、SIEM への取り込みと法務の要件を 1 つの仕組みで満たせる。",
+    "why": "誤り。監査ログのエクスポートは遡れる期間に上限がある CSV のダウンロードで、チャット、ファイル、プロジェクトの内容は含まれない。継続的な利用には Compliance API に統一するよう勧められている。"
+   },
+   {
+    "id": "c",
+    "text": "Claude Code Analytics API を使い、社員ごとのセッションを取得する。この API はセッションごとの記録を返すので、トランスクリプトの保全と、SIEM へのイベントの取り込みの両方に使える。",
+    "why": "誤り。Analytics API は IT や FinOps 向けに集計した利用量と費用を返す。イベントごとの記録を返す Compliance API とは別の API で、キーも別に用意する。"
+   },
+   {
+    "id": "d",
+    "text": "Compliance API を有効にし、claude.ai で必要なスコープを付けた Compliance Access Key を作る。このキーでチャットやセッションのトランスクリプトを取得し、Activity Feed を SIEM に取り込む。",
+    "why": "正しい。Compliance Access Key は claude.ai で作り、(Safety Cases API の一部を除く)すべてのエンドポイントに届く。Activity Feed は read:compliance_activities スコープのキーで読める。"
+   }
+  ],
+  "answer": [
+   "d"
+  ],
+  "explanation": "正解は d です。Compliance API は /v1/compliance/* のエンドポイントで、組織の Activity Feed、ユーザーや設定、claude.ai のチャット・ファイル・プロジェクト、Cowork や Claude Code のセッションのトランスクリプトを返します。キーは 2 種類あり、claude.ai で作る Compliance Access Key は(Safety Cases API の一部を除き)すべてのエンドポイントに届き、Claude Console で作る Admin API キーは Activity Feed に届きます。\n\n見分け方: 内容(チャットやトランスクリプト)が要るなら Compliance Access Key です。Admin API キーは Activity Feed 向けです(a)。監査ログのエクスポートは内容を含まない CSV で(b)、Analytics API は集計値を返す別の API です(c)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/manage-claude/compliance-api"
+  ],
+  "topics": [
+   "compliance-api"
+  ]
+ },
+ {
+  "id": "arp-gov-030",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "Claude Enterprise の組織で、社員が Claude Code、Cowork、claude.ai に機密区分の情報を入力した場合に、モデルに届く前に止めたい(DLP)。社内の DLP スキャナーはすでにある。導入初日から誤検知で全社員の作業を止める事態は避けたい。Inference hooks のページに沿う進め方はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "Compliance API でチャットとセッションのトランスクリプトを定期的に取得し、DLP スキャナーで検査する。違反が見つかった会話を、その時点でモデルに届く前に止める。",
+    "why": "誤り。Compliance API は事後に記録を取り出す仕組みで、推論の前に止めることはできない。推論の前に止めるのは Inference hooks である。"
+   },
+   {
+    "id": "b",
+    "text": "DLP スキャナーにつながる AI security server を Inference hooks に設定し、まず shadow mode で判定を観察してから、検査する割合を段階的に上げて拒否を有効にする。",
+    "why": "正しい。Inference hooks は推論の前に会話を AI security server に送り、allow か deny の判定を待つ。shadow mode や rollout percentage で段階的に導入できる。"
+   },
+   {
+    "id": "c",
+    "text": "Inference hooks の判定で、機密の部分だけを伏せ字にしたプロンプトを返してモデルへ渡す。作業を止めずに済むので、shadow mode などの段階的な導入は要らず、初日から全員に適用できる。",
+    "why": "誤り。判定は allow か deny だけで、プロンプトの書き換えや伏せ字への置き換えはできない(現在の制限)。"
+   },
+   {
+    "id": "d",
+    "text": "各社員の端末の Claude Code にフックを配り、プロンプトを DLP スキャナーに送らせる。端末に入れたフックは同じ端末で使う claude.ai や Cowork の会話にも効くので、1 つの仕組みで全製品を覆える。",
+    "why": "誤り。Inference hooks は Anthropic のサーバー側で動くため、端末に何も入れずに組織のすべての Claude 製品に一様に効く。Claude Code に配ったフックでは claude.ai や Cowork の会話は覆えない。"
+   }
+  ],
+  "answer": [
+   "b"
+  ],
+  "explanation": "正解は b です。Inference hooks は、Claude Enterprise の組織が、統制の対象となる推論のリクエストごとに、組織の AI security server へ会話を送り、allow か deny の判定を受けてから推論を進める仕組みです。サーバー側で動くため、claude.ai、Cowork、Claude Code などに一様に効きます。shadow mode で判定を観察し、rollout percentage や役割ごとの除外で段階的に適用できます。\n\n見分け方: 「推論の前に止める」は Inference hooks、「事後に記録を取り出す」は Compliance API です(a)。判定は allow か deny だけで、書き換えには対応していません(c)。端末ごとのフックでは製品をまたいで覆えません(d)。",
+  "refs": [
+   "https://platform.claude.com/docs/en/manage-claude/inference-hooks",
+   "https://platform.claude.com/docs/en/manage-claude/compliance-api"
+  ],
+  "topics": [
+   "inference-hooks",
+   "compliance-api"
+  ]
+ },
+ {
+  "id": "arp-gov-031",
+  "cert": "architect-pro",
+  "domain": "governance-safety-and-risk",
+  "type": "single",
+  "scenarioId": null,
+  "stem": "外部への通信を許可リストで管理している会社で、Claude Code を Amazon Bedrock 経由で使っている。不要な通信を減らすため CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC も設定した。ところが WebFetch ツールでのページの取得だけが失敗する。ネットワーク担当は api.anthropic.com への通信を許可していない。Claude Code の Data usage のページに沿う説明と対処はどれか。",
+  "choices": [
+   {
+    "id": "a",
+    "text": "WebFetch は取得の前にホスト名を api.anthropic.com に送って安全性を確認し、これはモデルの提供元に関係なく動き、この変数でも止まらない。api.anthropic.com を許可するか、skipWebFetchPreflight を true にして WebFetch の権限ルールで宛先を絞る。",
+    "why": "正しい。この確認はホスト名だけを送り、CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC の影響を受けない。止めると遮断リストを参照しなくなるので、権限ルールの併用が勧められている。"
+   },
+   {
+    "id": "b",
+    "text": "Bedrock を使う設定では WebFetch ツール自体が既定で無効になる。CLAUDE_CODE_USE_BEDROCK を外して Claude API に切り替えない限り、WebFetch は使えないので、取得が要る作業は別の手段で行う。",
+    "why": "誤り。Bedrock で既定で無効になるのはエラー報告、テレメトリ、バグ報告で、WebFetch の確認は提供元に関係なく動く。"
+   },
+   {
+    "id": "c",
+    "text": "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC が WebFetch の通信も止めている。この変数を外し、代わりに DISABLE_TELEMETRY と DISABLE_ERROR_REPORTING を個別に設定すれば、利用の指標とエラー報告の送信を止めたまま、WebFetch のページ取得だけが動くようになる。",
+    "why": "誤り。WebFetch の確認はこの変数の影響を受けない。変数を入れ替えても、api.anthropic.com に届かない限り失敗は続く。"
+   },
+   {
+    "id": "d",
+    "text": "WebFetch は取得する URL の全体とページの内容を Anthropic に送って検査するので、機密の保護のために止めるべきである。DISABLE_FEEDBACK_COMMAND を 1 にすると、この検査のための送信が止まる。",
+    "why": "誤り。送るのはホスト名だけで、URL の全体、パス、ページの内容は送らない。止めるには settings の skipWebFetchPreflight を使う。"
+   }
+  ],
+  "answer": [
+   "a"
+  ],
+  "explanation": "正解は a です。WebFetch はページを取得する前に、ホスト名を api.anthropic.com に送り、Anthropic の遮断リストと照合します。送るのはホスト名だけで、提供元が Bedrock などでも動き、CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC の影響も受けません。api.anthropic.com に届かない環境では、そのドメインを許可するか、settings で skipWebFetchPreflight: true にします。止めると遮断リストを参照しなくなるので、WebFetch の権限ルールで宛先を絞ることが勧められています。\n\n見分け方: この確認は「提供元にも、通信を減らす変数にも左右されない例外」です。Bedrock で既定で止まるのはテレメトリなどです(b)。変数を入れ替えても解決しません(c)。",
+  "refs": [
+   "https://code.claude.com/docs/en/data-usage"
+  ],
+  "topics": [
+   "claude-code-data-usage"
+  ]
  }
 ]
